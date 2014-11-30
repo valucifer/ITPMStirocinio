@@ -85,7 +85,7 @@
 			});
 			
 			$("#listTrainingProfessore").empty();
-			for(var i = 0; i < 10; i++){
+			/*for(var i = 0; i < 10; i++){
 				myArrayForListTraining[i] = i;
 				var stringToAppend_tmp = '<a href="#" class="list-group-item" onclick="return false;" style="cursor:default;">';
 					stringToAppend_tmp = stringToAppend_tmp + '<p id="paragraphDescriptionListTraining_'+i+'" class="list-group-item-text">'+i+' - aaaa - '+i+'</p><div class="vertical-top" align="right">';
@@ -94,7 +94,34 @@
 					stringToAppend_tmp = stringToAppend_tmp + '</div></a>';
 					
 				$("#listTrainingProfessore").append(stringToAppend_tmp);
-			}			
+			}*/
+			$.get("http://localhost:8080/Project_ITPMS/SelectTrainingByProfessorServlet",{primaryKey:localStorage.getItem("primaryKey")}).done(function(e){
+				var parsed = jQuery.parseJSON(e);
+				if(parsed.status==1){
+					/*$("#messageTrainingControl").attr("class","alert alert-success");
+					$("#messageTrainingControl").html("<strong>Eccellente, </strong>in tirocinio è stato inserito nel database.\n A breve apparirà nella lista");
+					setTimeout(function(){
+							location.reload();
+						},5000);*/
+					myArrayForListTraining = parsed.TrainingForSpecificProfessorList;
+					for(var i = 0; i < myArrayForListTraining.length; i++){
+						var tmpIDTraining=myArrayForListTraining[i].idOfferTraining;
+						var tmpDescriptionTraining=myArrayForListTraining[i].descriptionTraining;
+						var stringToAppend_tmp = '<a href="#" class="list-group-item" onclick="return false;" style="cursor:default;">';
+						stringToAppend_tmp = stringToAppend_tmp + '<p id="paragraphDescriptionListTraining_'+tmpIDTraining+'" class="list-group-item-text">'+tmpDescriptionTraining+'</p><div class="vertical-top" align="right">';
+						stringToAppend_tmp = stringToAppend_tmp + '<button id="modifyListTraining_'+tmpIDTraining+'" class="btn btn-orange btn-sm" onclick=modifyTrainingToDatabase('+tmpIDTraining+')><i class="fa fa-pencil"></i><span> Modifica</span></button>';
+						stringToAppend_tmp = stringToAppend_tmp + '<button id="removeListTraining_'+tmpIDTraining+'" class="btn btn-red btn-sm" onclick=removeTrainingToDatabase('+tmpIDTraining+')><i class="fa fa-trash"></i><span> Elimina</span></button>';
+						stringToAppend_tmp = stringToAppend_tmp + '</div></a>';
+						
+						$("#listTrainingProfessore").append(stringToAppend_tmp);
+					}
+				}else{
+					alert("bho");
+				}
+			}).fail(function(e){
+				$("#messageTrainingControl").attr("class","alert alert-warning");
+				$("#messageTrainingControl").html("<strong>Spiacente, </strong>ci sono problemi col server. Riprova più tardi");
+			});
 		});
 	</script>
 
@@ -418,18 +445,19 @@
 					$("#messageTrainingControl").html('<center><i class="fa fa-spin fa-2x fa-circle-o-notch" style="font-size:2em;color:#38548f;"></i></center>');
 					$.get("http://localhost:8080/Project_ITPMS/InsertTrainingByProfessorServlet",{descriptionTraining:description,primaryKey:pKey}).done(function(e){
 						var parsed = jQuery.parseJSON(e);
-						alert("ciao");
 						if(parsed.status==1){
-						alert("ciao");
-							$("#messageControl").attr("class","alert alert-success");
-							$("#messageControl").html("<strong>Spiacente, </strong>le tue credenziali non presenti nel database.");
+							$("#messageTrainingControl").attr("class","alert alert-success");
+							$("#messageTrainingControl").html("<strong>Eccellente, </strong>in tirocinio è stato inserito nel database.\n A breve apparirà nella lista");
+							setTimeout(function(){
+									location.reload();
+								},5000);
 						}else{
-							$("#messageControl").attr("class","alert alert-danger");
-							$("#messageControl").html("<strong>Spiacente, </strong>le tue credenziali non presenti nel database.");
+							$("#messageTrainingControl").attr("class","alert alert-danger");
+							$("#messageTrainingControl").html("<strong>Spiacente, </strong>si sono verificati dei problemi nell inserire il tirocinio. Riprova più tardi");
 						}
 					}).fail(function(e){
-						$("#messageControl").attr("class","alert alert-warning");
-							$("#messageControl").html("<strong>Spiacente, </strong>le tue credenziali non presenti nel database.");
+						$("#messageTrainingControl").attr("class","alert alert-warning");
+						$("#messageTrainingControl").html("<strong>Spiacente, </strong>ci sono problemi col server. Riprova più tardi");
 					});
 				}
 				$("#addTrainingProfessore").text("Aggiungi Tirocinio");

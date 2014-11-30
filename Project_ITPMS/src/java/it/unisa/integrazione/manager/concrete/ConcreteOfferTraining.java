@@ -60,5 +60,13 @@ public class ConcreteOfferTraining implements OfferTraining{
     public void setOrganization_idOrganization(int Organization_idOrganization){
         this.Organization_idOrganization= Organization_idOrganization;
     }
+    
+    public String getDescription(){
+        return description;
+    }
+    
+    public void setDescription(String descr){
+        this.description= descr;
+    }
             
 }

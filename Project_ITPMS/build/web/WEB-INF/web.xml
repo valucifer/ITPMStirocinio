@@ -16,6 +16,10 @@
         <servlet-name>InsertTrainingByProfessorServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.InsertTrainingByProfessorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>SelectTrainingByProfessorServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.SelectTrainingByProfessorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticateUserServlet</servlet-name>
         <url-pattern>/AuthenticateUserServlet</url-pattern>
@@ -31,6 +35,10 @@
     <servlet-mapping>
         <servlet-name>InsertTrainingByProfessorServlet</servlet-name>
         <url-pattern>/InsertTrainingByProfessorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>SelectTrainingByProfessorServlet</servlet-name>
+        <url-pattern>/SelectTrainingByProfessorServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

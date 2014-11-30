@@ -324,3 +324,17 @@ SELECT * FROM Department WHERE idDepartment = pkDepartment;
 
 END
 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainingByPrimaryKeyToTheProfessor`( in pkProfessor INT )
+BEGIN
+
+SELECT * FROM OfferTraining WHERE FK_Professor = pkProfessor;
+
+END
+

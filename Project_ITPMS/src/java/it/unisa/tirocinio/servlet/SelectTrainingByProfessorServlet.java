@@ -5,17 +5,20 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.manager.concrete.*;
+import it.unisa.integrazione.manager.concrete.ConcreteOfferTraining;
 import it.unisa.tirocinio.database.ProfessorDBOperation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -23,7 +26,7 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-public class InsertTrainingByProfessorServlet extends HttpServlet {
+public class SelectTrainingByProfessorServlet extends HttpServlet {
     private final JSONObject message = new JSONObject();
 
     /**
@@ -40,25 +43,27 @@ public class InsertTrainingByProfessorServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
+        JSONArray trainingInfoForSpecificProf = new JSONArray();
         try {
-            String description = request.getParameter("descriptionTraining");
             int primaryKey = Integer.parseInt(request.getParameter("primaryKey"));
             ProfessorDBOperation professor = new ProfessorDBOperation();
-            if(professor.setOfferTrainingByProfessorByFK_Account(description, primaryKey)){
-                message.put("status", 1);
-                message.put("description", "Insert Training Success");
-                response.getWriter().write(message.toString());
-            }else{
-                message.put("status", 0);
-                message.put("description", "Insert Training Error");
-                response.getWriter().write(message.toString());
+            ArrayList<ConcreteOfferTraining> training = professor.getOfferTrainingByProfessorByFK_Account(primaryKey);
+            for(int i = 0; i < training.size(); i++){
+                ConcreteOfferTraining tmp_training = training.get(i);
+                JSONObject trainingInfo = new JSONObject();
+                trainingInfo.put("idOfferTraining",tmp_training.getidOfferTraining());
+                trainingInfo.put("descriptionTraining",tmp_training.getDescription());
+                trainingInfoForSpecificProf.put(trainingInfo);
             }
+            message.put("status",1);
+            message.put("TrainingForSpecificProfessorList", trainingInfoForSpecificProf);
+            response.getWriter().write(message.toString());
         } catch (ClassNotFoundException ex) {
             Logger.getLogger(InsertTrainingByProfessorServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (SQLException ex) {
             Logger.getLogger(InsertTrainingByProfessorServlet.class.getName()).log(Level.SEVERE, null, ex);
         } catch (JSONException ex) {
-            Logger.getLogger(InsertTrainingByProfessorServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(SelectTrainingByProfessorServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

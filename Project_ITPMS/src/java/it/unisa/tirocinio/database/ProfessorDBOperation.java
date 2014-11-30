@@ -7,6 +7,7 @@ package it.unisa.tirocinio.database;
 
 import it.unisa.integrazione.database.DBConnection;
 import it.unisa.integrazione.manager.concrete.ConcreteDepartment;
+import it.unisa.integrazione.manager.concrete.ConcreteOfferTraining;
 import it.unisa.integrazione.manager.concrete.ConcreteProfessor;
 import java.io.IOException;
 import static java.lang.System.out;
@@ -15,6 +16,7 @@ import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.util.ArrayList;
 
 /**
  *
@@ -73,26 +75,16 @@ public class ProfessorDBOperation {
     
     public boolean setOfferTrainingByProfessorByPrimaryKey(String description, int primaryKeyProf) throws SQLException, ClassNotFoundException, IOException{
         ConcreteProfessor aProf = getInformationForProfessorByPrimaryKey(primaryKeyProf);
-        ConcreteDepartment aDepa = new ConcreteDepartment();
         aConnection = DBConnection.connect();
         CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");        
-        CallableStatement pcSelectDepa = aConnection.prepareCall("{call getDepartment(?)}");      
-        pcSelectDepa.setInt("pkDepartment",aProf.getFKDepartment());
-        ResultSet rs = pcSelectDepa.executeQuery();
-        while (rs.next()) {
-            aDepa.setIdDepartment(rs.getInt(1));
-            out.println(aDepa.getIdDepartment());
-        }
         pcInsertTraining.setString("trainingDescription", description);
         pcInsertTraining.setInt("FK_Professor", aProf.getIdProfessor());
         pcInsertTraining.setInt("FK_Department", aProf.getFKDepartment());
-        int result = pcInsertTraining.executeUpdate();
+        boolean result = pcInsertTraining.execute();
         pcInsertTraining.close();
-        pcSelectDepa.close();
         aConnection.close();
-        if (result == 1 )
-            return true;
-        return false;
+       
+        return result;
     }
     
     public boolean setOfferTrainingByProfessorByFK_Account(String description, int FKAccount) throws SQLException, ClassNotFoundException, IOException{
@@ -105,9 +97,26 @@ public class ProfessorDBOperation {
         boolean result = pcInsertTraining.execute();
         pcInsertTraining.close();
         aConnection.close();
-        if (result)
-            return true;
-        return false;
+       
+        return !result;
     }
     
+    public ArrayList<ConcreteOfferTraining> getOfferTrainingByProfessorByFK_Account(int FKAccount) throws SQLException, ClassNotFoundException, IOException{
+        ConcreteProfessor aProf = getInformationForProfessorByFK_Account(FKAccount);
+        aConnection = DBConnection.connect();
+        ArrayList<ConcreteOfferTraining> arrayOfferTraining = new ArrayList<ConcreteOfferTraining>();
+        CallableStatement pcSelectTraining = aConnection.prepareCall("{call getOfferTrainingByPrimaryKeyToTheProfessor(?)}");        
+        pcSelectTraining.setInt("pkProfessor",aProf.getIdProfessor());
+        ResultSet rs = pcSelectTraining.executeQuery();
+        while (rs.next()) {
+            ConcreteOfferTraining aTrain = new ConcreteOfferTraining();
+            aTrain.setidOfferTraining(rs.getInt(1));
+            aTrain.setDescription(rs.getString(2));
+            arrayOfferTraining.add(aTrain);
+        }
+        pcSelectTraining.close();
+        aConnection.close();
+        return arrayOfferTraining;    
+    }
 }
+    
