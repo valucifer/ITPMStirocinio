@@ -2,10 +2,14 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< HEAD
         <group>
             <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/InsertTrainingByProfessorServlet.java</file>
             <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/database/OrganizationDBOperation.java</file>
             <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/InsertTrainingByOrganizationServlet.java</file>
         </group>
+=======
+        <group/>
+>>>>>>> 89ff977bfcad5a472ff87864032bc5c9705ae64c
     </open-files>
 </project-private>
