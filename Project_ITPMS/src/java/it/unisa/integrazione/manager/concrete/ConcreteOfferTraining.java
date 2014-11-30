@@ -15,16 +15,20 @@ public class ConcreteOfferTraining implements OfferTraining{
 
    private int idOfferTraining;
    private String description;
-   private String FK_Organization;
+   private int FK_Organization;
+   private int FK_Department;
+   private int FK_Professor;
    private int Organization_idOrganization;
            
     public ConcreteOfferTraining(){
     }
     
-    public ConcreteOfferTraining(int idOfferTraining, String description, String FK_Organization, int Organization_idOrganization){
+    public ConcreteOfferTraining(int idOfferTraining, String description,int FK_Department,int FK_Professor, int FK_Organization, int Organization_idOrganization){
         this.idOfferTraining=idOfferTraining;
         this.description=description;
         this.FK_Organization= FK_Organization;
+        this.FK_Department= FK_Department;
+        this.FK_Professor= FK_Professor;
         this.Organization_idOrganization=Organization_idOrganization;
     }
     
@@ -37,6 +41,22 @@ public class ConcreteOfferTraining implements OfferTraining{
         this.idOfferTraining=primaryKey;
     }
     
+    public int getFKProfessor() {
+        return this.FK_Professor;
+    }
+
+    public void setFKProfessor(int fkProf) {
+        this.FK_Professor=fkProf;
+    }
+    
+    public int getFKDepartment() {
+        return this.FK_Department;
+    }
+
+    public void setFKDepartment(int fkDep) {
+        this.FK_Department=fkDep;
+    }
+    
     public int getidOfferTraining(){
         return idOfferTraining;
     }
@@ -45,11 +65,11 @@ public class ConcreteOfferTraining implements OfferTraining{
         this.idOfferTraining=idOfferTraining;
     }
     
-    public String getFKOrganization(){
+    public int getFKOrganization(){
         return FK_Organization;
     }
     
-    public void setFKOrganization(String FK_Organization){
+    public void setFKOrganization(int FK_Organization){
         this.FK_Organization=FK_Organization;
     }
     

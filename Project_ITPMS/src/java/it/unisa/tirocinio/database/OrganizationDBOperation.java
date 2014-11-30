@@ -6,59 +6,36 @@
 package it.unisa.tirocinio.database;
 
 import it.unisa.integrazione.database.DBConnection;
-import it.unisa.integrazione.manager.concrete.*;
+import it.unisa.integrazione.manager.concrete.ConcreteDepartment;
+import it.unisa.integrazione.manager.concrete.ConcreteOfferTraining;
+import it.unisa.integrazione.manager.concrete.ConcreteOrganization;
+import it.unisa.integrazione.manager.concrete.ConcreteProfessor;
 import java.io.IOException;
+import static java.lang.System.out;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.GregorianCalendar;
+import java.util.ArrayList;
 
 /**
  *
- * @author katiasolomita
+ * @author Valentino
  */
 public class OrganizationDBOperation {
-
-    /*
-     * To change this license header, choose License Headers in Project Properties.
-     * To change this template file, choose Tools | Templates
-     * and open the template in the editor.
-     */
     private Connection aConnection;
 
-    public OrganizationDBOperation() throws ClassNotFoundException, SQLException, IOException {
+    public OrganizationDBOperation() throws ClassNotFoundException, SQLException, IOException{
+        
+    }
+    
+    public ConcreteOrganization getInformationForOrganizationByPrimaryKey(int primaryKey) throws SQLException, ClassNotFoundException, IOException{
         aConnection = DBConnection.connect();
-    }
-
-    /**
-     * 
-     * @param FK_Account
-     * @return
-     * @throws SQLException
-     */
-    public ConcreteOrganization getInformationbyFK_Account(int FK_Account) throws SQLException {
+        CallableStatement pcSelectOrganization = aConnection.prepareCall("{call getOrganizationForPrimaryKey(?)}");        
         ConcreteOrganization aOrga = new ConcreteOrganization();
-        Statement aStatement = aConnection.createStatement();
-        String query = "select * from Organization where FK_Account = '" + FK_Account + "'";
-        ResultSet rs = aStatement.executeQuery(query);
-        while (rs.next()) {
-        }        
-        aConnection.close();
-        return aOrga;
-    }
-
-    /**
-     *
-     * @param PrimaryKey
-     * @return
-     * @throws SQLException
-     */
-    public ConcreteOrganization getInformationbyPrimaryKey(int primaryKey) throws SQLException, ClassNotFoundException, IOException {
-        ConcreteOrganization aOrga = new ConcreteOrganization();
-        Statement aStatement = aConnection.createStatement();
-        String query = "select * from Organization where FK_Account = '" + primaryKey + "'";
-        ResultSet rs = aStatement.executeQuery(query);
+        pcSelectOrganization.setInt("pKeyOrganization",primaryKey);
+        ResultSet rs = pcSelectOrganization.executeQuery();
         while (rs.next()) {
             aOrga.setIdOrganization(rs.getInt(1));
             aOrga.setCompanyName(rs.getString(2));
@@ -68,69 +45,87 @@ public class OrganizationDBOperation {
             aOrga.setMail(rs.getString(6));
             aOrga.setFK_Account(rs.getInt(7));
             aOrga.setFisicPerson(rs.getInt(8));
+            aOrga.setProfesor(rs.getInt(9));
+        }
+        pcSelectOrganization.close();
+        aConnection.close();
+        return aOrga;
+    }
+    
+    public ConcreteOrganization getInformationForOrganizationByFK_Account(int FKAccount) throws SQLException, ClassNotFoundException, IOException{
+        aConnection = DBConnection.connect();
+        CallableStatement pcSelectOrganization = aConnection.prepareCall("{call getOrganizationForFK_Account(?)}");        
+        ConcreteOrganization aOrga = new ConcreteOrganization();
+        pcSelectOrganization.setInt("fkOrganization",FKAccount);
+        ResultSet rs = pcSelectOrganization.executeQuery();
+        while (rs.next()) {
+            aOrga.setIdOrganization(rs.getInt(1));
+            aOrga.setCompanyName(rs.getString(2));
+            aOrga.setCity(rs.getString(3));
+            aOrga.setAddres(rs.getString(4));
             aOrga.setPhone(rs.getString(5));
             aOrga.setMail(rs.getString(6));
-            
-        }        
+            aOrga.setFK_Account(rs.getInt(7));
+            aOrga.setFisicPerson(rs.getInt(8));
+            aOrga.setProfesor(rs.getInt(9));
+        }
+        pcSelectOrganization.close();
         aConnection.close();
         return aOrga;
     }
     
-    /**
-     *
-     * @param FK_Account
-     * @return
-     * @throws SQLException
-     */
-    public ConcreteDepartment getFK_DepartmentbyFK_Account(int FK_Account) throws SQLException {
-        ConcreteStaff aAdmin = new ConcreteStaff();
-        Statement aStatement = aConnection.createStatement();
-        String query = "select FK_Department from Staff where FK_Account = '" + FK_Account + "'";
-        ResultSet rs = aStatement.executeQuery(query);
-        while (rs.next()) {
-            aAdmin.setFKDepartment(rs.getInt(1));
-        }
-        ConcreteDepartment aDepart = new ConcreteDepartment();
-        query = "select * from Department where idDepartment = '" + aAdmin.getFKDepartment() + "'";
-        rs = aStatement.executeQuery(query);
-        
-        while (rs.next()) {
-            aDepart.setIdDepartment(rs.getInt(1));
-            aDepart.setDescription(rs.getString(2));
-        }
+    public boolean setOfferTrainingByOrganizationByPrimaryKey(String description, int primaryKeyOrg) throws SQLException, ClassNotFoundException, IOException{
+        ConcreteOrganization aOrga = getInformationForOrganizationByPrimaryKey(primaryKeyOrg);
+        aConnection = DBConnection.connect();
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
+        pcInsertTraining.setString("trainingDescription", description);
+        pcInsertTraining.setInt("pkOrganization", aOrga.getIdOrganization());
+        pcInsertTraining.setInt("pkProfessor", aOrga.getFK_Professor());
+        ProfessorDBOperation profDBOperation = new ProfessorDBOperation();
+        ConcreteProfessor aProf = profDBOperation.getInformationForProfessorByPrimaryKey(aOrga.getFK_Professor());
+        pcInsertTraining.setInt("pkDepartment", aProf.getFKDepartment());
+        boolean result = pcInsertTraining.execute();
+        pcInsertTraining.close();
         aConnection.close();
-        return aDepart;
+     
+        return result;
     }
     
-    public ConcreteOrganization getInformationForOrganizationByPrimaryKey(int primaryKey) throws SQLException{
-        ConcreteOrganization aOrga  = new ConcreteOrganization();
-        Statement aStatement = aConnection.createStatement();
-        String query = "select * from Organization where idOrganization = '" + primaryKey + "'";
-        ResultSet rs = aStatement.executeQuery(query);
-        while (rs.next()) {
-            aOrga.setIdOrganization(rs.getInt(1));
-            aOrga.setCompanyName(rs.getString(2));
-        }
+    public boolean setOfferTrainingByOrganizationByFK_Account(String description, int fkAccountOrga) throws SQLException, ClassNotFoundException, IOException{
+        ConcreteOrganization aOrga = getInformationForOrganizationByFK_Account(fkAccountOrga);
+        aConnection = DBConnection.connect();
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
+        pcInsertTraining.setString("trainingDescription", description);
+        pcInsertTraining.setInt("pkOrganization", aOrga.getIdOrganization());
+        pcInsertTraining.setInt("pkProfessor", aOrga.getFK_Professor());
+        ProfessorDBOperation profDBOperation = new ProfessorDBOperation();
+        ConcreteProfessor aProf = profDBOperation.getInformationForProfessorByPrimaryKey(aOrga.getFK_Professor());
+        pcInsertTraining.setInt("pkDepartment", aProf.getFKDepartment());
+        boolean result = pcInsertTraining.execute();
+        pcInsertTraining.close();
         aConnection.close();
-        return aOrga;
+     
+        return result;
     }
     
-    public ConcreteOrganization getInformationForOrganizationByFK_Account(int FKAccount) throws SQLException{
-        ConcreteOrganization aOrga  = new ConcreteOrganization();
-        Statement aStatement = aConnection.createStatement();
-        String query = "select * from Organization where FK_Account = '" + FKAccount + "'";
-        ResultSet rs = aStatement.executeQuery(query);
+    public ArrayList<ConcreteOfferTraining> getOfferTrainingByProfessorByFK_Account(int FKAccount) throws SQLException, ClassNotFoundException, IOException{
+        ConcreteOrganization aOrga = getInformationForOrganizationByFK_Account(FKAccount);
+        aConnection = DBConnection.connect();
+        ArrayList<ConcreteOfferTraining> arrayOfferTraining = new ArrayList<ConcreteOfferTraining>();
+        CallableStatement pcSelectTraining = aConnection.prepareCall("{call getOfferTrainingByPrimaryKeyToTheProfessor(?)}");        
+        pcSelectTraining.setInt("pkOrganization",aOrga.getIdOrganization());
+        ResultSet rs = pcSelectTraining.executeQuery();
         while (rs.next()) {
-            aOrga.setIdOrganization(rs.getInt(1));
-            aOrga.setCompanyName(rs.getString(2));
+            ConcreteOfferTraining aTrain = new ConcreteOfferTraining();
+            aTrain.setidOfferTraining(rs.getInt(1));
+            aTrain.setDescription(rs.getString(2));
+            aTrain.setFKProfessor(rs.getInt(4));
+            aTrain.setFKDepartment(rs.getInt(5));
+            arrayOfferTraining.add(aTrain);
         }
+        pcSelectTraining.close();
         aConnection.close();
-        return aOrga;
+        return arrayOfferTraining;    
     }
-    
-    /*public void setAssociateProfAtTheOrganization(int primaryKeyProf, int primaryKeyOrga) throws SQLException{
-        ConcreteProfessor aProf = this.getInformationForProfessorByPrimaryKey(primaryKeyProf);
-        ConcreteOrganization aOrga = this.getInformationForOrganizationByPrimaryKey(primaryKeyProf);
-        
-    }*/
 }
+    

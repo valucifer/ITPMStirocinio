@@ -345,6 +345,20 @@ END
 DELIMITER $$
 
 
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainingByPrimaryKeyToTheOrganization`( in pkOrganization INT )
+BEGIN
+
+SELECT * FROM OfferTraining WHERE FK_Organization = pkOrganization;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationForPrimaryKey`( in pKeyOrganization INT )
 BEGIN
 
