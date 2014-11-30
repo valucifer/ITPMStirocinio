@@ -75,17 +75,18 @@ public class ProfessorDBOperation {
         ConcreteProfessor aProf = getInformationForProfessorByPrimaryKey(primaryKeyProf);
         ConcreteDepartment aDepa = new ConcreteDepartment();
         aConnection = DBConnection.connect();
-        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?)}");        
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
         CallableStatement pcSelectDepa = aConnection.prepareCall("{call getDepartment(?)}");      
         pcSelectDepa.setInt("pkDepartment",aProf.getFKDepartment());
         ResultSet rs = pcSelectDepa.executeQuery();
         while (rs.next()) {
             aDepa.setIdDepartment(rs.getInt(1));
+            out.println(aDepa.getIdDepartment());
         }
         pcInsertTraining.setString("trainingDescription", description);
-        pcInsertTraining.setInt("FK_Department", aDepa.getIdDepartment());
+        pcInsertTraining.setInt("pkDepartment", aDepa.getIdDepartment());
         pcInsertTraining.setString("pkOrganization",null);
-        pcInsertTraining.setInt("professor", aProf.getIdProfessor());
+        pcInsertTraining.setInt("pkprofessor", aProf.getIdProfessor());
         int result = pcInsertTraining.executeUpdate();
         pcInsertTraining.close();
         pcSelectDepa.close();
@@ -98,11 +99,11 @@ public class ProfessorDBOperation {
     public boolean setOfferTrainingByProfessorByFK_Account(String description, int FKAccount) throws SQLException, ClassNotFoundException, IOException{
         ConcreteProfessor aProf = getInformationForProfessorByFK_Account(FKAccount);
         aConnection = DBConnection.connect();
-        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?)}");        
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
         pcInsertTraining.setString("trainingDescription", description);
-        pcInsertTraining.setString("FK_Organization",null);
-        pcInsertTraining.setInt("FK_Professor", aProf.getIdProfessor());
-        pcInsertTraining.setInt("FK_Department", aProf.getFKDepartment());
+        pcInsertTraining.setInt("pkOrganization",aProf.getFKDepartment());
+        pcInsertTraining.setInt("pkProfessor", aProf.getIdProfessor());
+        pcInsertTraining.setInt("pkDepartment", aProf.getFKDepartment());
         int result = pcInsertTraining.executeUpdate();
         pcInsertTraining.close();
         aConnection.close();
