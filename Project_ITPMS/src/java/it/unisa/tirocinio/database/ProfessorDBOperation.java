@@ -75,7 +75,7 @@ public class ProfessorDBOperation {
         ConcreteProfessor aProf = getInformationForProfessorByPrimaryKey(primaryKeyProf);
         ConcreteDepartment aDepa = new ConcreteDepartment();
         aConnection = DBConnection.connect();
-        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");        
         CallableStatement pcSelectDepa = aConnection.prepareCall("{call getDepartment(?)}");      
         pcSelectDepa.setInt("pkDepartment",aProf.getFKDepartment());
         ResultSet rs = pcSelectDepa.executeQuery();
@@ -84,9 +84,8 @@ public class ProfessorDBOperation {
             out.println(aDepa.getIdDepartment());
         }
         pcInsertTraining.setString("trainingDescription", description);
-        pcInsertTraining.setInt("pkDepartment", aDepa.getIdDepartment());
-        pcInsertTraining.setString("pkOrganization",null);
-        pcInsertTraining.setInt("pkprofessor", aProf.getIdProfessor());
+        pcInsertTraining.setInt("FK_Professor", aProf.getIdProfessor());
+        pcInsertTraining.setInt("FK_Department", aProf.getFKDepartment());
         int result = pcInsertTraining.executeUpdate();
         pcInsertTraining.close();
         pcSelectDepa.close();
@@ -99,15 +98,14 @@ public class ProfessorDBOperation {
     public boolean setOfferTrainingByProfessorByFK_Account(String description, int FKAccount) throws SQLException, ClassNotFoundException, IOException{
         ConcreteProfessor aProf = getInformationForProfessorByFK_Account(FKAccount);
         aConnection = DBConnection.connect();
-        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");        
         pcInsertTraining.setString("trainingDescription", description);
-        pcInsertTraining.setInt("pkOrganization",aProf.getFKDepartment());
-        pcInsertTraining.setInt("pkProfessor", aProf.getIdProfessor());
-        pcInsertTraining.setInt("pkDepartment", aProf.getFKDepartment());
-        int result = pcInsertTraining.executeUpdate();
+        pcInsertTraining.setInt("FK_Professor", aProf.getIdProfessor());
+        pcInsertTraining.setInt("FK_Department", aProf.getFKDepartment());
+        boolean result = pcInsertTraining.execute();
         pcInsertTraining.close();
         aConnection.close();
-        if (result == 1 )
+        if (result)
             return true;
         return false;
     }
