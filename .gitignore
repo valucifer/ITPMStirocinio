@@ -28,3 +28,7 @@ Project_ITPMS/build/web/tirocinio/professore/gestioneTirocinio&PlacementProfesso
 Project_ITPMS/dist/ServerWeb.war
 
 Project_ITPMS/build/web/WEB-INF/lib/javaee-web-api-7.0.jar
+
+Project_ITPMS/nbproject/project.properties
+
+*.properties
