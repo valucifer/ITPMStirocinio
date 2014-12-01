@@ -6,6 +6,7 @@
 package it.unisa.tirocinio.servlet;
 
 import it.unisa.integrazione.manager.concrete.ConcreteStudent;
+import it.unisa.integrazione.manager.concrete.ConcreteStudentStatus;
 import it.unisa.tirocinio.database.StudentDBOperation;
 import it.unisa.tirocinio.database.StudentTrainingDBOperation;
 import java.io.IOException;
@@ -46,9 +47,9 @@ public class GetStudentTrainingStatus extends HttpServlet {
             StudentDBOperation aStudentDBOperation = new StudentDBOperation();
             //get student informations by idAccount (table:Account)
             ConcreteStudent aStudent = aStudentDBOperation.getInformationbyFK_Account(Integer.parseInt(request.getParameter("idAccount")));
-            String[] trainingStatusResult = aTrainingDBOperation.getStudentTrainingStatus(Integer.parseInt(aStudent.getPrimaryKey()));
-            message.put("status", trainingStatusResult[0]);
-            message.put("description", trainingStatusResult[1]);
+            ConcreteStudentStatus trainingStatusResult = aTrainingDBOperation.getStudentTrainingStatus(Integer.parseInt(aStudent.getPrimaryKey()));
+            message.put("status", 0);
+            message.put("description", trainingStatusResult.getDescription());
             out.println(message.toString());
         } finally {
             out.close();

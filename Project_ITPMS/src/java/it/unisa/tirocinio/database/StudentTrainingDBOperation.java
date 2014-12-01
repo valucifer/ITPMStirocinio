@@ -6,9 +6,11 @@
 package it.unisa.tirocinio.database;
 
 import it.unisa.integrazione.database.DBConnection;
+import it.unisa.integrazione.manager.concrete.ConcreteStudentStatus;
 import java.io.IOException;
 import java.sql.CallableStatement;
 import java.sql.Connection;
+import java.sql.ResultSet;
 import java.sql.SQLException;
 
 /**
@@ -60,17 +62,20 @@ public class StudentTrainingDBOperation {
      * @throws SQLException
      * @throws IOException
      */
-    public String[] getStudentTrainingStatus( int pkStudentStatus ) throws ClassNotFoundException, SQLException, IOException{
+    public ConcreteStudentStatus getStudentTrainingStatus( int pkStudentStatus ) throws ClassNotFoundException, SQLException, IOException{
         String[] trainingStatus = new String[2];
         aConnection = DBConnection.connect();
         CallableStatement pcTrainingStatus = aConnection.prepareCall("{call getStudentTrainingStatus(?)}");
         pcTrainingStatus.setInt("pkStudentStatus", pkStudentStatus);
-        pcTrainingStatus.execute();
+        ResultSet rs = pcTrainingStatus.executeQuery();
+        ConcreteStudentStatus aConcreteStudentStatus = new ConcreteStudentStatus();
+        while(rs.next()){
+           aConcreteStudentStatus.setPrimaryKey(rs.getInt(1));
+           aConcreteStudentStatus.setDescription(rs.getString(2));
+        }
         pcTrainingStatus.close();
-        trainingStatus[0] = String.valueOf(pcTrainingStatus.getInt(1));
-        trainingStatus[1] = pcTrainingStatus.getString(2);
         aConnection.close();
-        return trainingStatus;
+        return aConcreteStudentStatus;
     }
     
 }

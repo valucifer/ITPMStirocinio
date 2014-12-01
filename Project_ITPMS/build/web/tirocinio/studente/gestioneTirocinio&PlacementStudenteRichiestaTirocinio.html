@@ -45,7 +45,7 @@
                $.get("http://localhost:8080/ServerWeb/GetStudentTrainingStatus",{idAccount:localStorage.getItem("primaryKey")}).done(function(e){
                 alert("Done with result "+e);
             }).fail(function(e){
-                alert("Fail with error "+e);
+                alert("Fail with error "+JSON.stringify(e));
             });
 			
 			//quì ci vanno gli ID delle funzionalità che verranno messe all interno del menù laterale...basta copiare una riga e incollarla,

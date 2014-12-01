@@ -14,25 +14,15 @@ import it.unisa.integrazione.manager.interfaces.*;
  */
 public class ConcreteStudentStatus implements StudentStatus{
     
-    private Student IDstudentStatus;
+    private int IDstudentStatus;
     private String description;
     
-    public ConcreteStudentStatus(Student IDstudentStatus, String description){
+    public ConcreteStudentStatus(int IDstudentStatus, String description){
         this.IDstudentStatus=IDstudentStatus;
         this.description=description;
     }
     
     public ConcreteStudentStatus(){
-    }
-
-    @Override
-    public Student getPrimaryKey() {
-       return this.IDstudentStatus;
-    }
-    
-    @Override
-    public void setPrimaryKey(Student primaryKey) { 
-        this.IDstudentStatus=primaryKey;
     }
 
     /**
@@ -49,21 +39,16 @@ public class ConcreteStudentStatus implements StudentStatus{
         this.description = description;
     }
 
-    /**
-     * @return the IDstudentStatus
-     */
-    public Student getIDstudentStatus() {
-        return IDstudentStatus;
-    }
-
-    /**
-     * @param IDstudentStatus the IDstudentStatus to set
-     */
-    public void setIDstudentStatus(Student IDstudentStatus) {
-        this.IDstudentStatus = IDstudentStatus;
-    }
-
     public String toString(){
         return ("IDstudentStatus: \n"+IDstudentStatus+"Description: \n"+description);
+    }
+    @Override
+    public int getPrimaryKey() {
+        return this.IDstudentStatus;
+    }
+
+    @Override
+    public void setPrimaryKey(int primaryKey) {
+        this.IDstudentStatus = primaryKey;
     }
 }
