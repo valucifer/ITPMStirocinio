@@ -42,10 +42,8 @@ public class InsertTrainingByOrganizationServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            //String description = request.getParameter("descriptionTraining");
-            //int primaryKey = Integer.parseInt(request.getParameter("primaryKey"));
-            String description = "ollelle";
-            int primaryKey = 1;//Integer.parseInt(request.getParameter("primaryKey"));
+            String description = request.getParameter("descriptionTraining");
+            int primaryKey = Integer.parseInt(request.getParameter("primaryKey"));
             OrganizationDBOperation organization = new OrganizationDBOperation();
             if(organization.setOfferTrainingByOrganizationByFK_Account(description, primaryKey)){
                 message.put("status", 1);

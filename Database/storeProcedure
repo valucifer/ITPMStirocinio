@@ -335,7 +335,7 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainingByPrimaryKeyToTheProfessor`( in pkProfessor INT )
 BEGIN
 
-SELECT * FROM OfferTraining WHERE FK_Professor = pkProfessor;
+SELECT * FROM OfferTraining WHERE FK_Professor = pkProfessor ORDER BY idOfferTraining DESC;
 
 END
 
@@ -374,7 +374,7 @@ END
 DELIMITER $$
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationForfk_aCCOUNT`( in fkOrganization INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationForFK_Account`( in fkOrganization INT )
 BEGIN
 
 SELECT * FROM Organization WHERE fkOrganization = fkOrganization;
