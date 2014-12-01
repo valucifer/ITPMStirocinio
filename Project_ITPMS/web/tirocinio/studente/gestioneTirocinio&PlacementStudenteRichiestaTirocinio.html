@@ -42,7 +42,7 @@
                 
 			});
             
-               $.get("http://localhost:8080/gestioneTirocinio/GetStudentTrainingStatus",{idAccount:localStorage.getItem("primaryKey")}).done(function(e){
+               $.get("http://localhost:8080/ServerWeb/GetStudentTrainingStatus",{idAccount:localStorage.getItem("primaryKey")}).done(function(e){
                 alert("Done with result "+e);
             }).fail(function(e){
                 alert("Fail with error "+e);
@@ -262,7 +262,7 @@
                         formdata.append("cvfile", cvFile);
                         formdata.append("examsfile", examsFile);
                         $.ajax({
-                          url: 'http://localhost:8080/Project_ITPMS/UploadInformationFilesServlet',
+                          url: 'http://localhost:8080/ServerWeb/UploadInformationFilesServlet',
                           data: formdata,
                           processData: false,
                           contentType: false,

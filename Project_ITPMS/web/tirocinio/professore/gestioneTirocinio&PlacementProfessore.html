@@ -95,7 +95,7 @@
 					
 				$("#listTrainingProfessore").append(stringToAppend_tmp);
 			}*/
-			$.get("http://localhost:8080/Project_ITPMS/SelectTrainingByProfessorServlet",{primaryKey:localStorage.getItem("primaryKey")}).done(function(e){
+			$.get("http://localhost:8080/ServerWeb/SelectTrainingByProfessorServlet",{primaryKey:localStorage.getItem("primaryKey")}).done(function(e){
 				var parsed = jQuery.parseJSON(e);
 				if(parsed.status==1){
 					/*$("#messageTrainingControl").attr("class","alert alert-success");
@@ -443,7 +443,7 @@
 					var description = $("#descriptionTrainingProfessore").val();
 					var pKey = localStorage.getItem("primaryKey");
 					$("#messageTrainingControl").html('<center><i class="fa fa-spin fa-2x fa-circle-o-notch" style="font-size:2em;color:#38548f;"></i></center>');
-					$.get("http://localhost:8080/Project_ITPMS/InsertTrainingByProfessorServlet",{descriptionTraining:description,primaryKey:pKey}).done(function(e){
+					$.get("http://localhost:8080/ServerWeb/InsertTrainingByProfessorServlet",{descriptionTraining:description,primaryKey:pKey}).done(function(e){
 						var parsed = jQuery.parseJSON(e);
 						if(parsed.status==1){
 							$("#messageTrainingControl").attr("class","alert alert-success");
