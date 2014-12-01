@@ -75,23 +75,39 @@ public class ProfessorDBOperation {
     
     public boolean setOfferTrainingByProfessorByPrimaryKey(String description, int primaryKeyProf) throws SQLException, ClassNotFoundException, IOException{
         ConcreteProfessor aProf = getInformationForProfessorByPrimaryKey(primaryKeyProf);
+        ConcreteDepartment department = new ConcreteDepartment();
         aConnection = DBConnection.connect();
-        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");        
-        pcInsertTraining.setString("trainingDescription", description);
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");    
+        CallableStatement pcSelectDepartment = aConnection.prepareCall("(call getDepartment(?))");
+        pcSelectDepartment.setInt("pkDepartment",aProf.getFKDepartment());
+        ResultSet rs = pcSelectDepartment.executeQuery();
+        while(rs.next()){
+            department.setIdDepartment(rs.getInt(1));
+            department.setDescription(rs.getString(2));
+        }
+        pcInsertTraining.setString("trainingDescription",department.getDescription()+" - "+description);
         pcInsertTraining.setInt("FK_Professor", aProf.getIdProfessor());
         pcInsertTraining.setInt("FK_Department", aProf.getFKDepartment());
         boolean result = pcInsertTraining.execute();
         pcInsertTraining.close();
         aConnection.close();
        
-        return result;
+        return !result;
     }
     
     public boolean setOfferTrainingByProfessorByFK_Account(String description, int FKAccount) throws SQLException, ClassNotFoundException, IOException{
         ConcreteProfessor aProf = getInformationForProfessorByFK_Account(FKAccount);
+        ConcreteDepartment department = new ConcreteDepartment();
         aConnection = DBConnection.connect();
-        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");        
-        pcInsertTraining.setString("trainingDescription", description);
+        CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");    
+        CallableStatement pcSelectDepartment = aConnection.prepareCall("(call getDepartment(?))");
+        pcSelectDepartment.setInt("pkDepartment",aProf.getFKDepartment());
+        ResultSet rs = pcSelectDepartment.executeQuery();
+        while(rs.next()){
+            department.setIdDepartment(rs.getInt(1));
+            department.setDescription(rs.getString(2));
+        }
+        pcInsertTraining.setString("trainingDescription",department.getDescription()+" - "+description);
         pcInsertTraining.setInt("FK_Professor", aProf.getIdProfessor());
         pcInsertTraining.setInt("FK_Department", aProf.getFKDepartment());
         boolean result = pcInsertTraining.execute();
