@@ -88,7 +88,7 @@ public class OrganizationDBOperation {
         pcInsertTraining.close();
         aConnection.close();
      
-        return result;
+        return !result;
     }
     
     public boolean setOfferTrainingByOrganizationByFK_Account(String description, int fkAccountOrga) throws SQLException, ClassNotFoundException, IOException{
@@ -105,7 +105,7 @@ public class OrganizationDBOperation {
         pcInsertTraining.close();
         aConnection.close();
      
-        return result;
+        return !result;
     }
     
     public ArrayList<ConcreteOfferTraining> getOfferTrainingByProfessorByFK_Account(int FKAccount) throws SQLException, ClassNotFoundException, IOException{
