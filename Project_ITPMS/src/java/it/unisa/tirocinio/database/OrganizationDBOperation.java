@@ -78,11 +78,13 @@ public class OrganizationDBOperation {
         ConcreteOrganization aOrga = getInformationForOrganizationByPrimaryKey(primaryKeyOrg);
         aConnection = DBConnection.connect();
         CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
-        pcInsertTraining.setString("trainingDescription", description);
         pcInsertTraining.setInt("pkOrganization", aOrga.getIdOrganization());
         pcInsertTraining.setInt("pkProfessor", aOrga.getFK_Professor());
+       
         ProfessorDBOperation profDBOperation = new ProfessorDBOperation();
         ConcreteProfessor aProf = profDBOperation.getInformationForProfessorByPrimaryKey(aOrga.getFK_Professor());
+        
+        pcInsertTraining.setString("trainingDescription", aOrga.getCompanyName()+" - "+description);
         pcInsertTraining.setInt("pkDepartment", aProf.getFKDepartment());
         boolean result = pcInsertTraining.execute();
         pcInsertTraining.close();
@@ -95,11 +97,13 @@ public class OrganizationDBOperation {
         ConcreteOrganization aOrga = getInformationForOrganizationByFK_Account(fkAccountOrga);
         aConnection = DBConnection.connect();
         CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertOuterTraining(?,?,?,?)}");        
-        pcInsertTraining.setString("trainingDescription", description);
         pcInsertTraining.setInt("pkOrganization", aOrga.getIdOrganization());
         pcInsertTraining.setInt("pkProfessor", aOrga.getFK_Professor());
+       
         ProfessorDBOperation profDBOperation = new ProfessorDBOperation();
         ConcreteProfessor aProf = profDBOperation.getInformationForProfessorByPrimaryKey(aOrga.getFK_Professor());
+        
+        pcInsertTraining.setString("trainingDescription", aOrga.getCompanyName()+" - "+description);
         pcInsertTraining.setInt("pkDepartment", aProf.getFKDepartment());
         boolean result = pcInsertTraining.execute();
         pcInsertTraining.close();
