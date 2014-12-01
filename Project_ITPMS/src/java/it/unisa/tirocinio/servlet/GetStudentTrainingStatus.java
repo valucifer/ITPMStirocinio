@@ -39,6 +39,7 @@ public class GetStudentTrainingStatus extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException, SQLException, ClassNotFoundException, JSONException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
             StudentTrainingDBOperation aTrainingDBOperation = new StudentTrainingDBOperation();

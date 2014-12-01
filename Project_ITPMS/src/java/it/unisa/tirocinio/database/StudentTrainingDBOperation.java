@@ -27,7 +27,7 @@ public class StudentTrainingDBOperation {
         aConnection = DBConnection.connect();
         CallableStatement pcInsert = aConnection.prepareCall("{call getStudentInformation(?)}");
         pcInsert.setString("studentSerialNumber", studentSerialNumber);
-        pcInsert.setInt("FK_IDstundetInformation", idStudentInformation);
+        pcInsert.setInt("FK_IDstudentInformation", idStudentInformation);
         pcInsert.execute();
         pcInsert.close();
         aConnection.close();
