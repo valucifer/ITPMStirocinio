@@ -78,7 +78,7 @@ public class ProfessorDBOperation {
         ConcreteDepartment department = new ConcreteDepartment();
         aConnection = DBConnection.connect();
         CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");    
-        CallableStatement pcSelectDepartment = aConnection.prepareCall("(call getDepartment(?))");
+        CallableStatement pcSelectDepartment = aConnection.prepareCall("{call getDepartment(?)}");
         pcSelectDepartment.setInt("pkDepartment",aProf.getFKDepartment());
         ResultSet rs = pcSelectDepartment.executeQuery();
         while(rs.next()){
@@ -100,7 +100,7 @@ public class ProfessorDBOperation {
         ConcreteDepartment department = new ConcreteDepartment();
         aConnection = DBConnection.connect();
         CallableStatement pcInsertTraining = aConnection.prepareCall("{call insertInnerTraining(?,?,?)}");    
-        CallableStatement pcSelectDepartment = aConnection.prepareCall("(call getDepartment(?))");
+        CallableStatement pcSelectDepartment = aConnection.prepareCall("{call getDepartment(?)}");
         pcSelectDepartment.setInt("pkDepartment",aProf.getFKDepartment());
         ResultSet rs = pcSelectDepartment.executeQuery();
         while(rs.next()){
