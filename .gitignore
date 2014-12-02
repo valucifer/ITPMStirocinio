@@ -6,6 +6,7 @@ Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/servlet/GetStudentTra
 Project_ITPMS/nbproject/private/private.properties
 
 Project_ITPMS/nbproject/project.properties
+<<<<<<< Updated upstream
 Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/database/StudentTrainingDBOperation.class
 Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/servlet/GetStudentTrainingStatus.class
 Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/database/StudentTrainingDBOperation.class
@@ -37,3 +38,27 @@ Project_ITPMS/nbproject/project.properties
 /Project_ITPMS/build/
 /Project_ITPMS/dist/
 >>>>>>> FETCH_HEAD
+=======
+
+Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/database/StudentTrainingDBOperation.class
+
+Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/servlet/GetStudentTrainingStatus.class
+
+Project_ITPMS/nbproject/private/private.properties
+
+Project_ITPMS/nbproject/project.properties
+>>>>>>> Stashed changes
+
+Project_ITPMS/nbproject/private/private.properties
+
+Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/servlet/GetStudentTrainingStatus.class
+
+Project_ITPMS/build/web/WEB-INF/classes/it/unisa/tirocinio/database/StudentTrainingDBOperation.class
+
+Project_ITPMS/nbproject/project.properties
+
+Project_ITPMS/nbproject/private/private.properties
+
+Project_ITPMS/nbproject/private/private.properties
+
+Project_ITPMS/nbproject/private/private.properties
