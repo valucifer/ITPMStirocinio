@@ -1,0 +1,41 @@
+ --- STUDENTE ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ --- PROFESSORE ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ ---ORGANIZZAZIONE ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ --- AMMINISTRATORE ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ --- GENERICO ---
