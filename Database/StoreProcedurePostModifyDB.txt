@@ -1,33 +1,175 @@
  --- STUDENTE ---
  
- 
- 
- 
- 
- 
- 
- 
- 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentAttendece
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingStudents`()
+BEGIN
+
+SELECT id_pending_acceptance,date_request,fk_student from pending_acceptance;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentInformation
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation`(in primaryKey int)
+BEGIN
+
+SELECT id_student_information,curriculum_vitae_path,accademic_transcript_path from student_information where id_student_information = primaryKey;
+
+END
+
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentTrainingStatus` ( in pkStudentStatus INT )
+BEGIN
+
+SELECT id_student_status,description FROM student_status WHERE id_student_status = pkStudentStatus;
+
+END
+
+
  --- PROFESSORE ---
  
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getProfessorInformationByPrimaryKey` ( in pkProfessor INT )
+BEGIN
+
+SELECT id_professor,position,office_phone,office_hours,office_email,fk_account,fk_natural_person,fk_department FROM professor WHERE id_professor = pkProfessor;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getProfessorInformationByFK_Account` ( in pkFKAccount INT )
+BEGIN
+
+SELECT id_professor,position,office_phone,office_hours,office_email,fk_account,fk_natural_person,fk_department FROM professor WHERE fk_account = pkFKAccount;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_Professor INT, in FK_Department INT )
+BEGIN
+
+INSERT INTO offer_training (description, fk_professor, fk_department) values (trainingDescription, FK_Professor, FK_Department);
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainingByPrimaryKeyToTheProfessor`( in pkProfessor INT )
+BEGIN
+
+SELECT * FROM offer_training WHERE fk_professor = pkProfessor ORDER BY id_offer_training DESC;
+
+END
+
  
+ --- ORGANIZZAZIONE ---
  
- 
- 
- 
- 
- 
- 
- ---ORGANIZZAZIONE ---
- 
- 
- 
- 
- 
- 
- 
- 
- 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getOrganizationForPrimaryKey
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationByPrimaryKey`( in pKeyOrganization INT )
+BEGIN
+
+SELECT * FROM organization WHERE id_organization = pKeyOrganization;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getOrganizationForFK_Account
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationByFK_Account`( in fkOrganization INT )
+BEGIN
+
+SELECT * FROM organization WHERE fk_account = fkOrganization;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in pkOrganization INT, in pkProfessor INT, in pkDepartment INT)
+BEGIN
+
+INSERT INTO offer_training (description, fk_organization, fk_professor, fk_department) values (trainingDescription, pkOrganization, pkProfessor, pkDepartment);
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOrganization` ( in account BIGINT, in naturalPerson INT, in professor INT, in companyName VARCHAR(45), in city VARCHAR(45), in phone VARCHAR(45), in email VARCHAR(45) )
+BEGIN
+
+INSERT INTO organization ( company_name, city, address, phone, email, fk_account, fk_natural_person, fk_professor) values (companyName, city, address, phone, email, account, naturalPerson, professor);
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainingByPrimaryKeyToTheOrganization`( in pkOrganization INT )
+BEGIN
+
+SELECT * FROM offer_training WHERE fk_organization = pkOrganization;
+
+END
+
  --- AMMINISTRATORE ---
  
  
@@ -38,4 +180,190 @@
  
  
  
- --- GENERICO ---
+ --- TRAINING ---
+ 
+ -- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRejectedTrainingMessage`(in primaryKey int)
+BEGIN
+select * from rejected_training_message where id_rejected_training_message =primaryKey;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `requestStartTraining`(IN  studentNumber VARCHAR(45), IN FK_IDstudentInformation int)
+BEGIN
+declare pathCVCheck int;
+declare pathATCheck int;
+set pathCVCheck = checkCVExistence(FK_IDstudentInformation);
+set pathATCheck = checkATExistence(FK_IDstudentInformation);
+
+if pathCVCheck = false 
+	then SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'CV not inserted.';
+	else if pathATCheck =false
+		THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Accademic Transcript not inserted.';
+	else 
+		insert into pending_acceptance values (current_date,studentNumber)  ;
+		
+END if;
+END if;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `setRejectedTrainingMessage`(in message longtext,in serialNumber varchar(45))
+BEGIN
+insert into rejected_training_message values (message,serialNumber);
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteRejectedTrainingMessage` ( in pkRejectedTraining INT )
+BEGIN
+
+DELETE FROM rejected_training_message WHERE id_rejected_training_message = pkRejectedTraining;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `storeUploadFile`(in CVPath Varchar(45), in ATPath Varchar(45), in serialNumber Varchar(45) )
+BEGIN
+
+DECLARE pathCV VARCHAR(45);
+DECLARE pathAT VARCHAR(45);
+DECLARE lastID int;
+DECLARE foundSet INT default false;
+DECLARE FK_studentInformation INT;
+-- Cursore for check if the FK of student status is setting or not
+DECLARE selectCur CURSOR FOR SELECT fk_id_student_information FROM student WHERE student.student_number = serialNumber AND fk_id_student_information != '' ;
+DECLARE CONTINUE HANDLER FOR NOT FOUND SET foundSet = true; 
+open selectCur;
+fetch selectCur into FK_studentInformation;
+if foundSet=false
+	then
+	UPDATE student_information Set curriculum_vitae_path = CVPath , accademic_transcript_path = ATPath WHERE id_student_information = FK_studentInformation;
+else if foundSet=true
+	then
+	INSERT INTO student_information  (curriculum_vitae_path, accademic_transcript_path) values (CVPath,ATPath);
+	SET lastID = LAST_INSERT_ID();
+	UPDATE student SET fk_id_student_information = lastID WHERE student.student_number = serialNumber;
+	
+END if;
+END if;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteOfferTraining` ( in pkTraining INT )
+BEGIN
+
+DELETE FROM offer_training WHERE id_offer_training = pkTraining;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainings` ( in department INT )
+BEGIN
+
+IF department IS null
+	then SELECT * FROM offer_training;
+else SELECT * FROM offer_training WHERE fk_department = department;
+
+END IF;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex insertClaimTraining
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrainingRequest` ( in description LONGTEXT, in title VARCHAR(45), in professor INT, in PK_Organization INT )
+BEGIN
+
+DECLARE lastId INT;
+
+if PK_Organization IS NULL
+then INSERT INTO training_request (description, title, fk_training_status, fk_professor) values (description, title, professor);
+SET lastId = LAST_INSERT_ID();
+SELECT * FROM training_request WHERE id_training_request = lastId;
+else INSERT INTO training_request (description, title, fk_training_status, fk_professor, fk_organization)  values (description, title, professor, PK_Organization);
+SET lastId = LAST_INSERT_ID();
+SELECT * FROM training_request WHERE id_training_request = lastId;
+end if;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex modifyClaimStatus
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modifyTrainingStatus` ( in pkTrainingRequest INT, in newStatus INT )
+BEGIN
+
+UPDATE training_request SET fk_training_status = newStatus WHERE id_training_request = pkTrainingRequest;
+
+END
+
+--- DIPARTIMENTO ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getDepartment` ( in pkDepartment INT )
+BEGIN
+
+SELECT * FROM department WHERE id_department = pkDepartment;
+
+END
+
+
+
+
+
+
+
+
+
+
+
+
+
