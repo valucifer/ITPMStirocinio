@@ -16,37 +16,29 @@ public final class Organization {
     private String city = null;
     private String address = null;
     private String phone = null;
-    private String training = null;
     private String email = null;
-    private String CF = null;
+    private Person personCF = null;
+    private Account accountEmail = null;
     
     public Organization(){}
     
-    public Organization(String VATNumber, String companyName, String city, String address, String phone, String trainining, String email, String CF){
+    public Organization(String VATNumber, String companyName, String city, String address, String phone, String email, Account accountEmail, Person personCF){
         setVATNumber(VATNumber);
         setCompanyName(companyName);
         setCity(city);
         setAddress(address);
         setPhone(phone);
-        setTraining(training);
-        setAccount(email);
-        setPerson(CF);
+        setEmail(email);
+        setAccount(accountEmail);
+        setPerson(personCF);
     }
 
     public String getEmail() {
         return email;
     }
 
-    public String getCF() {
-        return CF;
-    }
-
     public void setEmail(String email) {
         this.email = email;
-    }
-
-    public void setCF(String CF) {
-        this.CF = CF;
     }
     
     public String getCompanyName() {
@@ -64,17 +56,13 @@ public final class Organization {
     public String getPhone() {
         return phone;
     }
-
-    public String getTraining() {
-        return training;
+    
+    public Account getAccount() {
+        return accountEmail;
     }
 
-    public String getAccount() {
-        return email;
-    }
-
-    public String getPerson() {
-        return CF;
+    public Person getPerson() {
+        return personCF;
     }
 
     public void setCompanyName(String companyName) {
@@ -92,17 +80,13 @@ public final class Organization {
     public void setPhone(String phone) {
         this.phone = phone;
     }
-
-    public void setTraining(String training) {
-        this.training = training;
+    
+    public void setAccount(Account accountEmail) {
+        this.accountEmail = accountEmail;
     }
 
-    public void setAccount(String email) {
-        this.email = email;
-    }
-
-    public void setPerson(String CF) {
-        this.CF = CF;
+    public void setPerson(Person personCF) {
+        this.personCF = personCF;
     }
 
     public String getVATNumber() {

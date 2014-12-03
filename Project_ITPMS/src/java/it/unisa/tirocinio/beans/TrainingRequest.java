@@ -14,18 +14,18 @@ public final class TrainingRequest {
     private int idTrainingRequest;
     private String description = null;
     private String title = null;
-    private int fkTrainingStatus;
-    private int fkProfessor;
-    private int fkOrganization;
+    private TrainingStatus trainingStatus;
+    private Person professor;
+    private Organization organizationVATNumber;
     
     public TrainingRequest(){}
     
-    public TrainingRequest(String description, String title, int fkTrainingStatus, int fkProfessor, int fkOrganization){
+    public TrainingRequest(String description, String title, TrainingStatus trainingStatus, Person professor, Organization organizationVATNumber){
         setDescription(description);
         setTitle(title);
-        setFkTrainingStatus(fkTrainingStatus);
-        setFkProfessor(fkProfessor);
-        setFkOrganization(fkOrganization);
+        setTrainingStatus(trainingStatus);
+        setProfessor(professor);
+        setOrganizationVATNumber(organizationVATNumber);
     }
 
     public int getIdTrainingRequest() {
@@ -40,18 +40,6 @@ public final class TrainingRequest {
         return title;
     }
 
-    public int getFkTrainingStatus() {
-        return fkTrainingStatus;
-    }
-
-    public int getFkProfessor() {
-        return fkProfessor;
-    }
-
-    public int getFkOrganization() {
-        return fkOrganization;
-    }
-
     public void setIdTrainingRequest(int idTrainingRequest) {
         this.idTrainingRequest = idTrainingRequest;
     }
@@ -64,16 +52,28 @@ public final class TrainingRequest {
         this.title = title;
     }
 
-    public void setFkTrainingStatus(int fkTrainingStatus) {
-        this.fkTrainingStatus = fkTrainingStatus;
+    public TrainingStatus getTrainingStatus() {
+        return trainingStatus;
     }
 
-    public void setFkProfessor(int fkProfessor) {
-        this.fkProfessor = fkProfessor;
+    public Person getProfessor() {
+        return professor;
     }
 
-    public void setFkOrganization(int fkOrganization) {
-        this.fkOrganization = fkOrganization;
+    public Organization getOrganizationVATNumber() {
+        return organizationVATNumber;
+    }
+
+    public void setTrainingStatus(TrainingStatus trainingStatus) {
+        this.trainingStatus = trainingStatus;
+    }
+
+    public void setProfessor(Person professor) {
+        this.professor = professor;
+    }
+
+    public void setOrganizationVATNumber(Organization organizationVATNumber) {
+        this.organizationVATNumber = organizationVATNumber;
     }
     
 }

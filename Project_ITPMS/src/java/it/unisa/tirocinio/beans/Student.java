@@ -17,25 +17,25 @@ public final class Student {
     private String coverLetter = null;
     private Date yearsEnrollment = null;
     private int cycle;
-    private String fkAccountEmail = null;
-    private String fkPersonCF = null;
-    private int fkDepartmentAbbreviation;
-    private int fkStudentStatus;
-    private int fkTrainingRequest;
-    private int fkStudentInformation;
+    private Account accountEmail = null;
+    private Person personFiscalCode = null;
+    private Department departmentAbbreviation;
+    private StudentStatus studentStatus;
+    private TrainingRequest trainingRequest;
+    private StudentInformation studentInformation;
     
     public Student(){}
     
-    public Student(String coverLetter, Date yearsEnrollment, int cycle, String fkAccountEmail, String fkPersonCF, int fkDepartment, int fkStudentStatus, int fkTrainingRequest, int fkStudentInformation){
+    public Student(String coverLetter, Date yearsEnrollment, int cycle, Account accountEmail, Person personFiscalCode, Department departmentAbbreviation, StudentStatus studentStatus, TrainingRequest trainingRequest, StudentInformation studentInformation){
         setCoverLetter(coverLetter);
         setYearsEnrollment(yearsEnrollment);
         setCycle(cycle);
-        setFkAccountEmail(fkAccountEmail);
-        setFkDepartmentAbbreviation(fkDepartmentAbbreviation);
-        setFkPersonCF(fkPersonCF);
-        setFkStudentStatus(fkStudentStatus);
-        setFkTrainingRequest(fkTrainingRequest);
-        setFkStudentInformation(fkStudentInformation);
+        setAccountEmail(accountEmail);
+        setDepartmentAbbreviation(departmentAbbreviation);
+        setPersonFiscalCode(personFiscalCode);
+        setStudentStatus(studentStatus);
+        setTrainingRequest(trainingRequest);
+        setStudentInformation(studentInformation);
     }
 
     public String getSerialNumber() {
@@ -54,30 +54,6 @@ public final class Student {
         return cycle;
     }
 
-    public String getFkAccountEmail() {
-        return fkAccountEmail;
-    }
-
-    public String getFkPersonCF() {
-        return fkPersonCF;
-    }
-
-    public int getFkDepartmentAbbreviation() {
-        return fkDepartmentAbbreviation;
-    }
-
-    public int getFkStudentStatus() {
-        return fkStudentStatus;
-    }
-
-    public int getFkTrainingRequest() {
-        return fkTrainingRequest;
-    }
-
-    public int getFkStudentInformation() {
-        return fkStudentInformation;
-    }
-
     public void setSerialNumber(String serialNumber) {
         this.serialNumber = serialNumber;
     }
@@ -94,29 +70,52 @@ public final class Student {
         this.cycle = cycle;
     }
 
-    public void setFkAccountEmail(String fkAccountEmail) {
-        this.fkAccountEmail = fkAccountEmail;
+    public Account getAccountEmail() {
+        return accountEmail;
     }
 
-    public void setFkPersonCF(String fkPersonCF) {
-        this.fkPersonCF = fkPersonCF;
+    public Person getPersonFiscalCode() {
+        return personFiscalCode;
     }
 
-    public void setFkDepartmentAbbreviation(int fkDepartmentAbbreviation) {
-        this.fkDepartmentAbbreviation = fkDepartmentAbbreviation;
+    public Department getDepartmentAbbreviation() {
+        return departmentAbbreviation;
     }
 
-    public void setFkStudentStatus(int fkStudentStatus) {
-        this.fkStudentStatus = fkStudentStatus;
+    public StudentStatus getStudentStatus() {
+        return studentStatus;
     }
 
-    public void setFkTrainingRequest(int fkTrainingRequest) {
-        this.fkTrainingRequest = fkTrainingRequest;
+    public TrainingRequest getTrainingRequest() {
+        return trainingRequest;
     }
 
-    public void setFkStudentInformation(int fkStudentInformation) {
-        this.fkStudentInformation = fkStudentInformation;
+    public StudentInformation getStudentInformation() {
+        return studentInformation;
     }
-    
+
+    public void setAccountEmail(Account accountEmail) {
+        this.accountEmail = accountEmail;
+    }
+
+    public void setPersonFiscalCode(Person personFiscalCode) {
+        this.personFiscalCode = personFiscalCode;
+    }
+
+    public void setDepartmentAbbreviation(Department departmentAbbreviation) {
+        this.departmentAbbreviation = departmentAbbreviation;
+    }
+
+    public void setStudentStatus(StudentStatus studentStatus) {
+        this.studentStatus = studentStatus;
+    }
+
+    public void setTrainingRequest(TrainingRequest trainingRequest) {
+        this.trainingRequest = trainingRequest;
+    }
+
+    public void setStudentInformation(StudentInformation studentInformation) {
+        this.studentInformation = studentInformation;
+    }
     
 }

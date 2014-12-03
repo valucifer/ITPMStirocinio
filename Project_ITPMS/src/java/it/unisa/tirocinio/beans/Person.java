@@ -11,40 +11,52 @@ package it.unisa.tirocinio.beans;
  */
 public final class Person {
     
-    private String CF = null;
+    private String fiscalCode = null;
     private String name = null;
-    private String lastName = null;
+    private String surname = null;
     private String phone = null;
     private String city = null;
     private String address = null;
     private String zipCode = null;
     private String gender = null;
     private String citizenship = null;
+    private String webPage = null;
+    private String university = null;
+    private String role = null;
+    private String matricula = null;
+    private Account accountEmail = null;
+    private Department departmentAbbreviation = null;
     
     public Person(){}
     
-    public Person(String CF, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String cityzenship){
-        setCF(CF);
+    public Person(String CF, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula){
+        setFiscalCode(CF);
         setName(name);
-        setLastName(lastName);
+        setSurname(lastName);
         setPhone(phone);
         setCity(city);
         setAddress(address);
         setZipCode(zipCode);
         setGender(gender);
         setCitizenship(citizenship);
+        setAccountEmail(accountEmail);
+        setDepartmentAbbreviation(departmentAbbreviation);
+        setWebPage(webPage);
+        setUniversity(university);
+        setRole(role);
+        setMatricula(matricula);
     }
 
-    public String getCF() {
-        return CF;
+    public String getFiscalCode() {
+        return fiscalCode;
     }
 
     public String getName() {
         return name;
     }
 
-    public String getLastName() {
-        return lastName;
+    public String getSurname() {
+        return surname;
     }
 
     public String getPhone() {
@@ -71,16 +83,16 @@ public final class Person {
         return citizenship;
     }
 
-    public void setCF(String CF) {
-        this.CF = CF;
+    public void setFiscalCode(String fiscalCode) {
+        this.fiscalCode = fiscalCode;
     }
 
     public void setName(String name) {
         this.name = name;
     }
 
-    public void setLastName(String lastName) {
-        this.lastName = lastName;
+    public void setSurname(String surname) {
+        this.surname = surname;
     }
 
     public void setPhone(String phone) {
@@ -106,4 +118,53 @@ public final class Person {
     public void setCitizenship(String citizenship) {
         this.citizenship = citizenship;
     }
+
+    public String getWebPage() {
+        return webPage;
+    }
+
+    public String getUniversity() {
+        return university;
+    }
+
+    public String getRole() {
+        return role;
+    }
+
+    public String getMatricula() {
+        return matricula;
+    }
+
+    public void setWebPage(String webPage) {
+        this.webPage = webPage;
+    }
+
+    public void setUniversity(String university) {
+        this.university = university;
+    }
+
+    public void setRole(String role) {
+        this.role = role;
+    }
+
+    public void setMatricula(String matricula) {
+        this.matricula = matricula;
+    }
+
+    public Account getAccountEmail() {
+        return accountEmail;
+    }
+
+    public Department getDepartmentAbbreviation() {
+        return departmentAbbreviation;
+    }
+
+    public void setAccountEmail(Account accountEmail) {
+        this.accountEmail = accountEmail;
+    }
+
+    public void setDepartmentAbbreviation(Department departmentAbbreviation) {
+        this.departmentAbbreviation = departmentAbbreviation;
+    }
+    
 }

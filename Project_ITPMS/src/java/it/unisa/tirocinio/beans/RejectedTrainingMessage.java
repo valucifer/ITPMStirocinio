@@ -13,12 +13,12 @@ public final class RejectedTrainingMessage {
  
     private int idRejectedTraingMessage;
     private String message = null;
-    private String serialNumber = null;
+    private Account accountEmail = null;
     
     public RejectedTrainingMessage(){}  
-    public RejectedTrainingMessage( String description, String serialNumber ){
+    public RejectedTrainingMessage( String description, Account accountEmail ){
         setDescription(description);
-        setSerialNumber(serialNumber);
+        setSerialNumber(accountEmail);
     }  
 
     public int getIdRejectedTraingMessage() {
@@ -33,12 +33,12 @@ public final class RejectedTrainingMessage {
         return message;
     }
 
-    public String getSerialNumber() {
-        return serialNumber;
+    public Account getSerialNumber() {
+        return accountEmail;
     }
 
-    public void setSerialNumber(String serialNumber) {
-        this.serialNumber = serialNumber;
+    public void setSerialNumber(Account accountEmail) {
+        this.accountEmail = accountEmail;
     }
 
     public void setDescription(String description) {

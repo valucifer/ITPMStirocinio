@@ -13,16 +13,16 @@ public final class Staff {
     
     private int idStaff;
     private String phone = null;
-    private String email = null;
-    private String CF = null;
-    private String departmentAbbreviation = null;
+    private Account accountEmail = null;
+    private Person personFiscalCode = null;
+    private Department departmentAbbreviation = null;
     
     public Staff(){}
     
-    public Staff(String phone, String email, String CF, String departmentAbbreviation){
+    public Staff(String phone, Account accountEmail, Person personFiscalCode, Department departmentAbbreviation){
         setPhone(phone);
-        setEmail(email);
-        setCF(CF);
+        setEmail(accountEmail);
+        setCF(personFiscalCode);
         setDepartmentAbbreviation(departmentAbbreviation);
     }
 
@@ -34,15 +34,15 @@ public final class Staff {
         return phone;
     }
 
-    public String getEmail() {
-        return email;
+    public Account getEmail() {
+        return accountEmail;
     }
 
-    public String getCF() {
-        return CF;
+    public Person getCF() {
+        return personFiscalCode;
     }
 
-    public String getDepartmentAbbreviation() {
+    public Department getDepartmentAbbreviation() {
         return departmentAbbreviation;
     }
 
@@ -54,15 +54,15 @@ public final class Staff {
         this.phone = phone;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setEmail(Account accountEmail) {
+        this.accountEmail = accountEmail;
     }
 
-    public void setCF(String CF) {
-        this.CF = CF;
+    public void setCF(Person CF) {
+        this.personFiscalCode = CF;
     }
 
-    public void setDepartmentAbbreviation(String departmentAbbreviation) {
+    public void setDepartmentAbbreviation(Department departmentAbbreviation) {
         this.departmentAbbreviation = departmentAbbreviation;
     }
 

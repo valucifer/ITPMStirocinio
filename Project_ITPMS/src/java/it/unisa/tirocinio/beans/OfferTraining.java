@@ -14,12 +14,12 @@ public final class OfferTraining {
     private int idOfferTraining;
     private String description;
     private Organization organization = null;
-    private Professor professor = null;
+    private Person professor = null;
     private Department department = null;
     
     public OfferTraining(){}
     
-    public OfferTraining(String description, Organization organization, Professor professor, Department department){
+    public OfferTraining(String description, Organization organization, Person professor, Department department){
         setDescription(description);
         setOrganization(organization);
         setProfessor(professor);
@@ -50,7 +50,7 @@ public final class OfferTraining {
         return organization;
     }
     
-     public void setProfessor(Professor professor) {
+     public void setProfessor(Person professor) {
         this.professor = professor;
     }
 
@@ -58,7 +58,7 @@ public final class OfferTraining {
         this.department = department;
     }
 
-    public Professor getProfessor() {
+    public Person getProfessor() {
         return professor;
     }
 

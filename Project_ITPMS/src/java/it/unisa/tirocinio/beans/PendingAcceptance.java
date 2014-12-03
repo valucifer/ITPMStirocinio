@@ -15,13 +15,13 @@ public final class PendingAcceptance {
     
     private int idPendingAcceptance;
     private Date requestDate;
-    private String fkStudentMail = null;
+    private Account accountStudentMail = null;
     
     public PendingAcceptance(){}
     
-    public PendingAcceptance( Date requestDate, String fkStudentMail ){
+    public PendingAcceptance( Date requestDate, Account accountStudentMail ){
         setRequestDate(requestDate);
-        setFkStudentMail(fkStudentMail);
+        setAccountStudentMail(accountStudentMail);
     }
 
     public int getIdPendingAcceptance() {
@@ -32,8 +32,8 @@ public final class PendingAcceptance {
         return requestDate;
     }
 
-    public String getFkStudentMail() {
-        return fkStudentMail;
+    public Account getAccountStudentMail() {
+        return accountStudentMail;
     }
 
     public void setIdPendingAcceptance(int idPendingAcceptance) {
@@ -44,8 +44,8 @@ public final class PendingAcceptance {
         this.requestDate = requestDate;
     }
 
-    public void setFkStudentMail(String fkStudentMail) {
-        this.fkStudentMail = fkStudentMail;
+    public void setAccountStudentMail(Account accountStudentMail) {
+        this.accountStudentMail = accountStudentMail;
     }
     
 }
