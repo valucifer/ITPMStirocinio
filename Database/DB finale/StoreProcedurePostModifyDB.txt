@@ -1,0 +1,192 @@
+--- ACCOUNT ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAccountInformation`( in pkAccount VARCHAR(100) )
+BEGIN
+
+SELECT * FROM Account WHERE email = pkAccount;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAccounts`()
+BEGIN
+
+SELECT * FROM Account;
+
+END
+
+--- PERMISSION ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note:
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPermission`( in pkPermission INT )
+BEGIN
+
+SELECT * FROM permission WHERE id_permission = pkPermission;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note:
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllPermissions`()
+BEGIN
+
+SELECT * FROM permission;
+
+END
+
+--- PERSON ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentAttendece
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonInformation`( in personFC VARCHAR(45) )
+BEGIN
+
+SELECT * FROM Person WHERE fiscal_code = personFC;
+
+END
+
+ --- STUDENTE ---
+ 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentInformation
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation`(in pkInformation int)
+BEGIN
+
+SELECT * FROM student_information WHERE id_student_information = pkInformation;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentInformation
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllStudentInformation`()
+BEGIN
+
+SELECT * FROM student_information;
+
+END
+
+ --- PROFESSORE ---
+ 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getProfessorInformationByPrimaryKey` ( in pkProfessor INT )
+BEGIN
+
+SELECT id_professor,position,office_phone,office_hours,office_email,fk_account,fk_natural_person,fk_department FROM professor WHERE id_professor = pkProfessor;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getProfessorInformationByFK_Account` ( in pkFKAccount INT )
+BEGIN
+
+SELECT id_professor,position,office_phone,office_hours,office_email,fk_account,fk_natural_person,fk_department FROM professor WHERE fk_account = pkFKAccount;
+
+END
+
+
+ --- AMMINISTRATORE ---
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ 
+ --- TRAINING ---
+
+
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex insertClaimTraining
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrainingRequest` ( in description LONGTEXT, in title VARCHAR(45), in professor INT, in PK_Organization INT )
+BEGIN
+
+DECLARE lastId INT;
+
+if PK_Organization IS NULL
+then INSERT INTO training_request (description, title, fk_training_status, fk_professor) values (description, title, professor);
+SET lastId = LAST_INSERT_ID();
+SELECT * FROM training_request WHERE id_training_request = lastId;
+else INSERT INTO training_request (description, title, fk_training_status, fk_professor, fk_organization)  values (description, title, professor, PK_Organization);
+SET lastId = LAST_INSERT_ID();
+SELECT * FROM training_request WHERE id_training_request = lastId;
+end if;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex modifyClaimStatus
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `modifyTrainingStatus` ( in pkTrainingRequest INT, in newStatus INT )
+BEGIN
+
+UPDATE training_request SET fk_training_status = newStatus WHERE id_training_request = pkTrainingRequest;
+
+END
+
+--- DIPARTIMENTO ---
+
+
+
+
+
+
+
+
+
+
+
+
+
