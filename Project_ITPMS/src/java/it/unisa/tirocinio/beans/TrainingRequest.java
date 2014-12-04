@@ -14,18 +14,21 @@ public final class TrainingRequest {
     private int idTrainingRequest;
     private String description = null;
     private String title = null;
-    private TrainingStatus trainingStatus;
-    private Person professor;
-    private Organization organizationVATNumber;
+    private TrainingStatus trainingStatus = null;
+    private Person personSSN = null;
+    private Organization organizationVATNumber = null;
+    private StudentInformation studentSSN = null;
     
     public TrainingRequest(){}
     
-    public TrainingRequest(String description, String title, TrainingStatus trainingStatus, Person professor, Organization organizationVATNumber){
+    public TrainingRequest(int idTrainingRequest, String description, String title, TrainingStatus trainingStatus, Person professor, Organization organizationVATNumber, StudentInformation studentSSN){
+        setIdTrainingRequest(idTrainingRequest);
         setDescription(description);
         setTitle(title);
         setTrainingStatus(trainingStatus);
-        setProfessor(professor);
+        setPersonSSN(professor);
         setOrganizationVATNumber(organizationVATNumber);
+        setStudentSSN(studentSSN);
     }
 
     public int getIdTrainingRequest() {
@@ -56,8 +59,8 @@ public final class TrainingRequest {
         return trainingStatus;
     }
 
-    public Person getProfessor() {
-        return professor;
+    public Person getPersonSSN() {
+        return personSSN;
     }
 
     public Organization getOrganizationVATNumber() {
@@ -68,12 +71,20 @@ public final class TrainingRequest {
         this.trainingStatus = trainingStatus;
     }
 
-    public void setProfessor(Person professor) {
-        this.professor = professor;
+    public void setPersonSSN(Person personSSN) {
+        this.personSSN = personSSN;
     }
 
     public void setOrganizationVATNumber(Organization organizationVATNumber) {
         this.organizationVATNumber = organizationVATNumber;
+    }
+
+    public StudentInformation getStudentSSN() {
+        return studentSSN;
+    }
+
+    public void setStudentSSN(StudentInformation studentSSN) {
+        this.studentSSN = studentSSN;
     }
     
 }

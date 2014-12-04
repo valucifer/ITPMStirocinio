@@ -9,20 +9,21 @@ package it.unisa.tirocinio.beans;
  *
  * @author johneisenheim
  */
-public final class OfferTraining {
+public final class TrainingOffer {
    
     private int idOfferTraining;
     private String description;
     private Organization organization = null;
-    private Person professor = null;
+    private Person personSSN = null;
     private Department department = null;
     
-    public OfferTraining(){}
+    public TrainingOffer(){}
     
-    public OfferTraining(String description, Organization organization, Person professor, Department department){
+    public TrainingOffer(int idOfferTraining, String description, Organization organization, Person personSSN, Department department){
+        setIdOfferTraining(idOfferTraining);
         setDescription(description);
         setOrganization(organization);
-        setProfessor(professor);
+        setPersonSSN(personSSN);
         setDepartment(department);
     }
 
@@ -50,16 +51,16 @@ public final class OfferTraining {
         return organization;
     }
     
-     public void setProfessor(Person professor) {
-        this.professor = professor;
+     public void setPersonSSN(Person personSSN) {
+        this.personSSN = personSSN;
     }
 
     public void setDepartment(Department department) {
         this.department = department;
     }
 
-    public Person getProfessor() {
-        return professor;
+    public Person getPersonSSN() {
+        return personSSN;
     }
 
     public Department getDepartment() {

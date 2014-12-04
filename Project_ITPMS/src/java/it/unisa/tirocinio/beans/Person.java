@@ -11,7 +11,7 @@ package it.unisa.tirocinio.beans;
  */
 public final class Person {
     
-    private String fiscalCode = null;
+    private String SSN = null;
     private String name = null;
     private String surname = null;
     private String phone = null;
@@ -22,15 +22,16 @@ public final class Person {
     private String citizenship = null;
     private String webPage = null;
     private String university = null;
-    private String role = null;
+    private String position = null;
     private String matricula = null;
     private Account accountEmail = null;
+    private Cycle cycle = null;
     private Department departmentAbbreviation = null;
     
     public Person(){}
     
-    public Person(String CF, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula){
-        setFiscalCode(CF);
+    public Person(String SSN, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula, Cycle cycle){
+        setSSN(SSN);
         setName(name);
         setSurname(lastName);
         setPhone(phone);
@@ -43,12 +44,13 @@ public final class Person {
         setDepartmentAbbreviation(departmentAbbreviation);
         setWebPage(webPage);
         setUniversity(university);
-        setRole(role);
+        setPosition(role);
         setMatricula(matricula);
+        setCycle(cycle);
     }
 
-    public String getFiscalCode() {
-        return fiscalCode;
+    public String getSSN() {
+        return SSN;
     }
 
     public String getName() {
@@ -83,8 +85,8 @@ public final class Person {
         return citizenship;
     }
 
-    public void setFiscalCode(String fiscalCode) {
-        this.fiscalCode = fiscalCode;
+    public void setSSN(String SSN) {
+        this.SSN = SSN;
     }
 
     public void setName(String name) {
@@ -127,8 +129,8 @@ public final class Person {
         return university;
     }
 
-    public String getRole() {
-        return role;
+    public String getPosition() {
+        return position;
     }
 
     public String getMatricula() {
@@ -143,8 +145,8 @@ public final class Person {
         this.university = university;
     }
 
-    public void setRole(String role) {
-        this.role = role;
+    public void setPosition(String position) {
+        this.position = position;
     }
 
     public void setMatricula(String matricula) {
@@ -166,5 +168,13 @@ public final class Person {
     public void setDepartmentAbbreviation(Department departmentAbbreviation) {
         this.departmentAbbreviation = departmentAbbreviation;
     }
-    
+
+    public Cycle getCycle() {
+        return cycle;
+    }
+
+    public void setCycle(Cycle cycle) {
+        this.cycle = cycle;
+    }
+   
 }

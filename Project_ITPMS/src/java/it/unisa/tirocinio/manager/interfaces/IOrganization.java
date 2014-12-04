@@ -6,6 +6,7 @@
 package it.unisa.tirocinio.manager.interfaces;
 
 import it.unisa.tirocinio.beans.Organization;
+import it.unisa.tirocinio.beans.Person;
 import java.util.ArrayList;
 
 /**
@@ -18,7 +19,10 @@ public interface IOrganization {
     public boolean deleteOrganization( String VATNumber );
     public boolean updateOrganization( Organization organization );
     public Organization readOrganization( String VATNumber );
-    public ArrayList<Organization> searchOrganizationByVATNumber( String VATNumber );
+    public Person getProfessorOrganization( String VATNumber );
+    public Person getExternalTutor( String VATNumber );
+    public Organization getOrganizationByAccount( String accountEmail );
+    public ArrayList<Organization> getOwnOrganizations( String professorSSN ); 
     public ArrayList<Organization> getAllOrganizations();
     
 }

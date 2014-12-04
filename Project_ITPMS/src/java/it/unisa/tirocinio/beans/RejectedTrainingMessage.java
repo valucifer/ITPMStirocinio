@@ -12,13 +12,14 @@ package it.unisa.tirocinio.beans;
 public final class RejectedTrainingMessage {
  
     private int idRejectedTraingMessage;
-    private String message = null;
-    private Account accountEmail = null;
+    private String description = null;
+    private Person personSSN = null;
     
     public RejectedTrainingMessage(){}  
-    public RejectedTrainingMessage( String description, Account accountEmail ){
+    public RejectedTrainingMessage( int idRejectedTraingMessage, String description, Person personSSN ){
+        setIdRejectedTraingMessage(idRejectedTraingMessage);
         setDescription(description);
-        setSerialNumber(accountEmail);
+        setPersonSSN(personSSN);
     }  
 
     public int getIdRejectedTraingMessage() {
@@ -30,19 +31,19 @@ public final class RejectedTrainingMessage {
     }
     
     public String getDescription() {
-        return message;
+        return description;
     }
 
-    public Account getSerialNumber() {
-        return accountEmail;
+    public Person getPersonSSN() {
+        return personSSN;
     }
 
-    public void setSerialNumber(Account accountEmail) {
-        this.accountEmail = accountEmail;
+    public void setPersonSSN(Person personSSN) {
+        this.personSSN = personSSN;
     }
 
     public void setDescription(String description) {
-        this.message = description;
+        this.description = description;
     }
     
 }

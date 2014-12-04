@@ -16,7 +16,8 @@ public final class StudentStatus {
 
     public StudentStatus() {}
     
-    public StudentStatus( String description ) {
+    public StudentStatus( int idStudentStatus, String description ) {
+        setIdStudentStatus(idStudentStatus);
         setDescription(description);
     }
 

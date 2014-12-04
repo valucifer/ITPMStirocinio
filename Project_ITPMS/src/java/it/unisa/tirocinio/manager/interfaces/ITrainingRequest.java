@@ -20,9 +20,9 @@ public interface ITrainingRequest {
     public boolean updateTrainingRequest( TrainingRequest aTrainingRequest );
     
     public TrainingRequest readTrainingRequest( String VATNumber );
-    public ArrayList<TrainingRequest> searchTrainingRequestById( int idTraininngReques );
+    public ArrayList<TrainingRequest> searchTrainingRequestById( int idTraininngRequest );
     public ArrayList<TrainingRequest> getAllTrainingRequests();
     public boolean changeTrainingStatus( TrainingStatus aStatus );
-    public boolean isInternship();
-    
+    public boolean isInternship( int idTrainingStatus );
+    public ArrayList<TrainingRequest> getAllInternships();
 }

@@ -5,17 +5,16 @@
  */
 package it.unisa.tirocinio.manager.interfaces;
 
-import it.unisa.tirocinio.beans.TrainingStatus;
+import it.unisa.tirocinio.beans.Department;
 import java.util.ArrayList;
 
 /**
  *
  * @author johneisenheim
  */
-public interface ITrainingStatus {
-    
-    public boolean createTrainingStatus( TrainingStatus aStatus );
-    public ArrayList<TrainingStatus> getAllTrainingsStatus();
-    public TrainingStatus readTrainingStatus( int idTrainingStatus );
+public interface IDepartment {
+   
+    public Department readDepartment( String department );
+    public ArrayList<Department> getAllDepartments();
     
 }

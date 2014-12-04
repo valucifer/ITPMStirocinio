@@ -14,15 +14,15 @@ public final class Account {
     private String email = null;
     private String password = null;
     private String typeOfAccount = null;
-    private Permissions permissions = null;
+    private int active;
     
     public Account(){}
     
-    public Account(String email, String password, String typeOfAccount, Permissions permissions){
+    public Account(String email, String password, String typeOfAccount, int active){
         setEmail(email);
         setPassword(password);
         setTypeOfAccount(typeOfAccount);
-        setPermissions(permissions);
+        setActive(active);
     }
 
     public void setEmail(String email) {
@@ -49,12 +49,13 @@ public final class Account {
         return typeOfAccount;
     }
 
-    public Permissions getPermissions() {
-        return permissions;
+    public void setActive(int active) {
+        this.active = active;
     }
 
-    public void setPermissions(Permissions permissions) {
-        this.permissions = permissions;
+    public int getActive() {
+        return active;
     }
+    
     
 }

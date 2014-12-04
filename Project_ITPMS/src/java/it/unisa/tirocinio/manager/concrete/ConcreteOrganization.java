@@ -6,6 +6,7 @@
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Organization;
+import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IOrganization;
 import java.sql.CallableStatement;
@@ -38,19 +39,21 @@ public class ConcreteOrganization implements IOrganization{
         try {
             if( organization == null )
                 throw new NullPointerException("Organization is null!");
-            aCallableStatement = connector.prepareCall("{call insertOrganization(?,?,?,?,?,?,?,?,?,?)}");       
-            aCallableStatement.setString("vat_number",organization.getVATNumber());
-            aCallableStatement.setString("company_name",organization.getCompanyName());
+            
+            aCallableStatement = connector.prepareCall("{call insertOrganization(?,?,?,?,?,?,?,?,?)}");       
+            aCallableStatement.setString("vatNumber",organization.getVATNumber());
+            aCallableStatement.setString("companyName",organization.getCompanyName());
             aCallableStatement.setString("city",organization.getCity());
             aCallableStatement.setString("address",organization.getAddress());
             aCallableStatement.setString("phone",organization.getPhone());
             aCallableStatement.setString("email",organization.getEmail());
-            aCallableStatement.setString("phone",organization.getEmail());
-            //Mancano le chiavi esterne!
-            ResultSet rs = aCallableStatement.executeQuery();
-            aCallableStatement.close();
+            aCallableStatement.setString("personSSN",organization.getProfessor().getSSN());
+            aCallableStatement.setString("accountEmail",organization.getAccount().getEmail());
+            aCallableStatement.setString("tutorSSN",organization.getExternalTutor().getSSN());
+            boolean toReturn = aCallableStatement.execute();
             connector.close();
-            return rs.getFetchSize() > 0;
+            
+            return toReturn;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
@@ -59,32 +62,192 @@ public class ConcreteOrganization implements IOrganization{
 
     @Override
     public boolean deleteOrganization(String VATNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            aCallableStatement = connector.prepareCall("{call deleteOrganization(?)}");       
+            aCallableStatement.setString("vatNumber",VATNumber);
+            boolean toReturn = aCallableStatement.execute();
+            connector.close();
+            
+            return toReturn;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     @Override
-    public boolean updateOrganization(it.unisa.tirocinio.beans.Organization organization) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public boolean updateOrganization(Organization organization) {
+        try {
+            if( organization == null )
+                throw new NullPointerException("Organization is null!");
+            
+            aCallableStatement = connector.prepareCall("{call updateOrganization(?,?,?,?,?,?,?,?,?)}");       
+            aCallableStatement.setString("vatNumber",organization.getVATNumber());
+            aCallableStatement.setString("companyName",organization.getCompanyName());
+            aCallableStatement.setString("city",organization.getCity());
+            aCallableStatement.setString("address",organization.getAddress());
+            aCallableStatement.setString("phone",organization.getPhone());
+            aCallableStatement.setString("email",organization.getEmail());
+            aCallableStatement.setString("personSSN",organization.getProfessor().getSSN());
+            aCallableStatement.setString("accountEmail",organization.getAccount().getEmail());
+            aCallableStatement.setString("tutorSSN",organization.getExternalTutor().getSSN());
+            boolean toReturn = aCallableStatement.execute();
+            aCallableStatement.close();
+            connector.close();
+            
+            return toReturn;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     @Override
     public Organization readOrganization(String VATNumber) {
-        Organization toReturn = new Organization();
-        
-        return toReturn;
+        Organization anOrganization = new Organization();
+        ConcreteAccount anAccount = ConcreteAccount.getInstance();
+        ConcretePerson aProfessor = ConcretePerson.getInstance();
+        ConcretePerson aTutor = ConcretePerson.getInstance();
+        try {
+            aCallableStatement = connector.prepareCall("{call getOrganizationByPrimaryKey(?)}");
+            aCallableStatement.setString("vatNumber",VATNumber);
+            ResultSet rs = aCallableStatement.executeQuery();
+            if ( rs.getFetchSize() == 0 )
+                return null;
+            while( rs.next() ){
+                anOrganization.setVATNumber(rs.getString("vat_number"));
+                anOrganization.setCompanyName(rs.getString("company_name"));
+                anOrganization.setCity(rs.getString("city"));
+                anOrganization.setAddress(rs.getString("address"));
+                anOrganization.setPhone(rs.getString("phone"));
+                anOrganization.setEmail(rs.getString("email"));
+                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+            }
+            rs.close();
+            return anOrganization;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @Override
-    public ArrayList<it.unisa.tirocinio.beans.Organization> searchOrganizationByVATNumber(String VATNumber) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public ArrayList<it.unisa.tirocinio.beans.Organization> getAllOrganizations() {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+    public ArrayList<Organization> getAllOrganizations() {
+        ArrayList<Organization> organizations = new ArrayList<Organization>();
+        Organization anOrganization = null;
+        try {
+           ConcreteAccount anAccount = ConcreteAccount.getInstance();
+           ConcretePerson aProfessor = ConcretePerson.getInstance();
+           ConcretePerson aTutor = ConcretePerson.getInstance();
+           aCallableStatement = connector.prepareCall("{call getAllOrganizations()}");
+           ResultSet rs = aCallableStatement.executeQuery();
+           if ( rs.getFetchSize() == 0 )
+               return null;
+           while( rs.next() ){
+               anOrganization = new Organization();
+               anOrganization.setVATNumber(rs.getString("vat_number"));
+               anOrganization.setCompanyName(rs.getString("company_name"));
+               anOrganization.setCity(rs.getString("city"));
+               anOrganization.setAddress(rs.getString("address"));
+               anOrganization.setPhone(rs.getString("phone"));
+               anOrganization.setEmail(rs.getString("email"));
+               anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
+               anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
+               anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+               organizations.add(anOrganization);
+           }
+           rs.close();
+           return organizations;
+           
+       } catch (SQLException ex) {
+           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+           return null;
+       }
     }
     
-    public ConcreteOrganization getInstance(){
+    @Override
+    public ArrayList<Organization> getOwnOrganizations(String professorSSN) {
+        
+        ArrayList<Organization> organizations = new ArrayList<Organization>();
+        Organization anOrganization = null;
+        try {
+           ConcreteAccount anAccount = ConcreteAccount.getInstance();
+           ConcretePerson aProfessor = ConcretePerson.getInstance();
+           ConcretePerson aTutor = ConcretePerson.getInstance();
+           aCallableStatement = connector.prepareCall("{call getOwnOrganizations(?)}");
+           aCallableStatement.setString("professorSSN",professorSSN);
+           ResultSet rs = aCallableStatement.executeQuery();
+           if ( rs.getFetchSize() == 0 )
+               return null;
+           while( rs.next() ){
+               anOrganization = new Organization();
+               anOrganization.setVATNumber(rs.getString("vat_number"));
+               anOrganization.setCompanyName(rs.getString("company_name"));
+               anOrganization.setCity(rs.getString("city"));
+               anOrganization.setAddress(rs.getString("address"));
+               anOrganization.setPhone(rs.getString("phone"));
+               anOrganization.setEmail(rs.getString("email"));
+               anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
+               anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
+               anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+               organizations.add(anOrganization);
+           }
+           rs.close();
+           return organizations;
+           
+       } catch (SQLException ex) {
+           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+           return null;
+       }
+    }
+    
+    @Override
+    public Person getProfessorOrganization(String VATNumber) {
+        Organization anOrganization = this.readOrganization(VATNumber);
+        return anOrganization.getProfessor();
+    }
+
+    @Override
+    public Person getExternalTutor(String VATNumber) {
+        Organization anOrganization = this.readOrganization(VATNumber);
+        return anOrganization.getExternalTutor();
+    }
+
+    @Override
+    public Organization getOrganizationByAccount(String accountEmail) {
+        Organization anOrganization = new Organization();
+        ConcreteAccount anAccount = ConcreteAccount.getInstance();
+        ConcretePerson aProfessor = ConcretePerson.getInstance();
+        ConcretePerson aTutor = ConcretePerson.getInstance();
+        try {
+            aCallableStatement = connector.prepareCall("{call getOrganizationByAccount(?)}");
+            aCallableStatement.setString("fkAccount",accountEmail);
+            ResultSet rs = aCallableStatement.executeQuery();
+            if ( rs.getFetchSize() == 0 )
+                return null;
+            while( rs.next() ){
+                anOrganization.setVATNumber(rs.getString("vat_number"));
+                anOrganization.setCompanyName(rs.getString("company_name"));
+                anOrganization.setCity(rs.getString("city"));
+                anOrganization.setAddress(rs.getString("address"));
+                anOrganization.setPhone(rs.getString("phone"));
+                anOrganization.setEmail(rs.getString("email"));
+                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+            }
+            rs.close();
+            return anOrganization;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    public static ConcreteOrganization getInstance(){
         return instance;
     }
     

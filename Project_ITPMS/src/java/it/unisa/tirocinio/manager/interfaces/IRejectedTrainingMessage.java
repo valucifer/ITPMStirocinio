@@ -15,9 +15,8 @@ import java.util.ArrayList;
 public interface IRejectedTrainingMessage {
     
     public boolean createRejectedTrainingMessage( RejectedTrainingMessage aRejectedTrainingMessage );
-    public boolean updateRejectedTrainingMessage( RejectedTrainingMessage aRejectedTrainingMessage );
+    public boolean deleteOrganization( int idRejectedTrainingMessage );
     public RejectedTrainingMessage readTrainingMessage( int idRejectedTraingMessage );
-    
     public ArrayList<RejectedTrainingMessage> getAllTrainingMessages();
     
 }

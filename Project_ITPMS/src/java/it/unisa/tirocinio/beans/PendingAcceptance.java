@@ -5,7 +5,7 @@
  */
 package it.unisa.tirocinio.beans;
 
-import sun.util.calendar.LocalGregorianCalendar.Date;
+import java.sql.Date;
 
 /**
  *
@@ -15,13 +15,14 @@ public final class PendingAcceptance {
     
     private int idPendingAcceptance;
     private Date requestDate;
-    private Account accountStudentMail = null;
+    private Person personSSN = null;
     
     public PendingAcceptance(){}
     
-    public PendingAcceptance( Date requestDate, Account accountStudentMail ){
+    public PendingAcceptance( int idPendingAcceptance, Date requestDate, Person personSSN ){
+        setIdPendingAcceptance(idPendingAcceptance);
         setRequestDate(requestDate);
-        setAccountStudentMail(accountStudentMail);
+        setPersonSSN(personSSN);
     }
 
     public int getIdPendingAcceptance() {
@@ -32,8 +33,8 @@ public final class PendingAcceptance {
         return requestDate;
     }
 
-    public Account getAccountStudentMail() {
-        return accountStudentMail;
+    public Person getPersonSSN() {
+        return personSSN;
     }
 
     public void setIdPendingAcceptance(int idPendingAcceptance) {
@@ -44,8 +45,8 @@ public final class PendingAcceptance {
         this.requestDate = requestDate;
     }
 
-    public void setAccountStudentMail(Account accountStudentMail) {
-        this.accountStudentMail = accountStudentMail;
+    public void setPersonSSN(Person personSSN) {
+        this.personSSN = personSSN;
     }
     
 }

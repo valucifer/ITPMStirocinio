@@ -317,6 +317,16 @@ END IF;
 END IF;
 END
 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation` ( in ssn VARCHAR(50) )
+BEGIN
+SELECT * FROM student_information WHERE SSN = ssn;
+END
+
 
 --- ORGANIZATION ---
  
@@ -385,7 +395,72 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteOrganization` ( in vatNumber INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteOrganization` ( in vatNumber VARCHAR(16) )
 BEGIN
 DELETE FROM organization WHERE vat_number = vatNumber;
+END
+
+—- TRAINING REQUEST ——
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrainingRequest` ( in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT(11), in FK_Person VARCHAR(16), in FK_Organization VARCHAR(11), in FK_StudentInformationSSN VARCHAR(16) )
+BEGIN
+INSERT INTO training_offer (description, title, fk_training_status, fk_person, fk_organization, fk_student_information_ssn) VALUES (trainingDescription, title, FK_TrainingStatus, FK_Person, FK_Organization, FK_StudentInformationSSN);
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getOrganizationForPrimaryKey
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getTrainingRequest`( in idTrainingRequest INT(11) )
+BEGIN
+SELECT * FROM training_request WHERE id_training_request = idTrainingRequest;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllTrainingRequests`()
+BEGIN
+SELECT * FROM training_request;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getOrganizationForPrimaryKey
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getTrainingRequestById`( in idTrainingRequest INT(11) )
+BEGIN
+SELECT * FROM training_request WHERE id_training_request = idTrainingRequest;
+END
+
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOwnTrainingRequests`( in vatNumber VARCHAR(16) )
+BEGIN
+SELECT * FROM training_request WHERE vat_number = vatNumber;
+END
+
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ho controllato che nella where clause si mette IS NULL, non = NULL
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInternships`()
+BEGIN
+SELECT * FROM training_request WHERE vat_number IS NULL;
 END

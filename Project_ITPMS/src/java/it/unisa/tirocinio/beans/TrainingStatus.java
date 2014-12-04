@@ -16,7 +16,8 @@ public final class TrainingStatus {
     
     public TrainingStatus(){}
     
-    public TrainingStatus( String description ){
+    public TrainingStatus( int idTrainingStatus, String description ){
+        setIdTrainingStatus(idTrainingStatus);
         setDescription(description);
     }
 
@@ -35,6 +36,5 @@ public final class TrainingStatus {
     public void setDescription(String description) {
         this.description = description;
     }
-    
 
 }

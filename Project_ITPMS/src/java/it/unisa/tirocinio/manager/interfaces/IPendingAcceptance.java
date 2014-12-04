@@ -5,17 +5,16 @@
  */
 package it.unisa.tirocinio.manager.interfaces;
 
-import it.unisa.tirocinio.beans.TrainingStatus;
+import it.unisa.tirocinio.beans.PendingAcceptance;
 import java.util.ArrayList;
 
 /**
  *
  * @author johneisenheim
  */
-public interface ITrainingStatus {
+public interface IPendingAcceptance {
     
-    public boolean createTrainingStatus( TrainingStatus aStatus );
-    public ArrayList<TrainingStatus> getAllTrainingsStatus();
-    public TrainingStatus readTrainingStatus( int idTrainingStatus );
+    public PendingAcceptance readStudentInPendingAcceptance( int idPendingAcceptance );
+    public ArrayList<PendingAcceptance> getAllStudentsInPendingAcceptance();
     
 }
