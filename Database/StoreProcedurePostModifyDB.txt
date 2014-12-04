@@ -1,3 +1,74 @@
+--- ACCOUNT ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAccountInformation`( in pkAccount VARCHAR(100) )
+BEGIN
+
+SELECT * FROM Account WHERE email = pkAccount;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllAccounts`()
+BEGIN
+
+SELECT * FROM Account;
+
+END
+
+--- PERMISSION ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note:
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPermission`( in pkPermission INT )
+BEGIN
+
+SELECT * FROM permission WHERE id_permission = pkPermission;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note:
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllPermissions`()
+BEGIN
+
+SELECT * FROM permission;
+
+END
+
+--- PERSON ---
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentAttendece
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonInformation`( in personFC VARCHAR(45) )
+BEGIN
+
+SELECT * FROM Person WHERE fiscal_code = personFC;
+
+END
+
  --- STUDENTE ---
  
 -- --------------------------------------------------------------------------------
@@ -19,10 +90,23 @@ END
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation`(in primaryKey int)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation`(in pkInformation int)
 BEGIN
 
-SELECT id_student_information,curriculum_vitae_path,accademic_transcript_path from student_information where id_student_information = primaryKey;
+SELECT * FROM student_information WHERE id_student_information = pkInformation;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentInformation
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllStudentInformation`()
+BEGIN
+
+SELECT * FROM student_information;
 
 END
 
@@ -37,7 +121,21 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentTrainingStatus` ( in pkStudentStatus INT )
 BEGIN
 
-SELECT id_student_status,description FROM student_status WHERE id_student_status = pkStudentStatus;
+SELECT * FROM student_status WHERE id_student_status = pkStudentStatus;
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllStudentTrainingStatus` ()
+BEGIN
+
+SELECT * FROM student_status;
 
 END
 
@@ -78,10 +176,10 @@ END
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_Professor INT, in FK_Department INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_PersonFC VARCHAR(45), in FK_Department INT )
 BEGIN
 
-INSERT INTO offer_training (description, fk_professor, fk_department) values (trainingDescription, FK_Professor, FK_Department);
+INSERT INTO offer_training (description, fk_professor, fk_department) values (trainingDescription, FK_PersonFC, FK_Department);
 
 END
 
@@ -109,10 +207,10 @@ END
 DELIMITER $$
 
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationByPrimaryKey`( in pKeyOrganization INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOrganizationByPrimaryKey`( in pkOrganization VARCHAR(45) )
 BEGIN
 
-SELECT * FROM organization WHERE id_organization = pKeyOrganization;
+SELECT * FROM organization WHERE vat_number = pkOrganization;
 
 END
 
@@ -132,27 +230,54 @@ END
 
 -- --------------------------------------------------------------------------------
 -- Routine DDL
--- Note: comments before and after the routine body will not be stored by the server
+-- Note: 
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in pkOrganization INT, in pkProfessor INT, in pkDepartment INT)
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllOrganizations`()
 BEGIN
 
-INSERT INTO offer_training (description, fk_organization, fk_professor, fk_department) values (trainingDescription, pkOrganization, pkProfessor, pkDepartment);
+SELECT * FROM organization;
 
 END
 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateOrganization` ( in vatNumber VARCHAR(45), in companyName VARCHAR(45), in city VARCHAR(45), in address VARCHAR(45), in phone VARCHAR(45), in email VARCHAR(100), in fiscalCode VARCHAR(45), in accountEmail VARCHAR(100) )
+BEGIN
+
+UPDATE organization SET company_name = companyName, city = city, address = address, phone = phone, email = email, account_email = accountEmail, person_fiscal_code = fiscalCode WHERE vat_number = vatNumber;
+
+END
 -- --------------------------------------------------------------------------------
 -- Routine DDL
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOrganization` ( in account BIGINT, in naturalPerson INT, in professor INT, in companyName VARCHAR(45), in city VARCHAR(45), in phone VARCHAR(45), in email VARCHAR(45) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in pkOrganization INT, in pkPersonFC VARCHAR(45), in pkDepartment INT)
 BEGIN
 
-INSERT INTO organization ( company_name, city, address, phone, email, fk_account, fk_natural_person, fk_professor) values (companyName, city, address, phone, email, account, naturalPerson, professor);
+INSERT INTO offer_training (description, fk_organization, fk_professor, fk_department) values (trainingDescription, pkOrganization, pkPersonFC, pkDepartment);
+
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: ready3.0
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOrganization` ( in vatNumber VARCHAR(45), in companyName VARCHAR(45), in city VARCHAR(45), in address VARCHAR(45), in phone VARCHAR(45), in email VARCHAR(100), in fiscalCode VARCHAR(45), in accountEmail VARCHAR(100) )
+BEGIN
+
+INSERT INTO organization ( vat_number, company_name, city, address, phone, email, account_email, person_fiscal_code) values (vatNumber, companyName, city, address, phone, email, accountEmail, fiscalCode);
 
 END
 
@@ -169,6 +294,23 @@ BEGIN
 SELECT * FROM offer_training WHERE fk_organization = pkOrganization;
 
 END
+
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOfferTrainingByPrimaryKeyToTheOrganization`( in pkOrganization INT )
+BEGIN
+
+SELECT * FROM offer_training WHERE fk_organization = pkOrganization;
+
+END
+
+
 
  --- AMMINISTRATORE ---
  
