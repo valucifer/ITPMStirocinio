@@ -1,3 +1,13 @@
-change request
+Buonasera,
 
-training_request => id... autoincrement
+ho riscontrato diversi problemi sul database i quali, spero, vengano presi in considerazione:
+
+   1) Nella tabella organization, la chiave primaria deve essere modificata in " vat_number VARCHAR(16) ";
+   2) Nella tabella organization, il nome del campo companyName deve essere company_name;
+   3) Nella tabella training_status, la chiave primaria id_training_status deve essere auto_increment;
+   4) La tabella offer_training deve chiamarsi training_offer, la chiave id_offer_training deve essere cambiata in id_training_offer;
+   5) Nella tabella  training_offer, la chiave primaria id_training_offer deve essere auto_increment;
+   6) Nella tabella pending_acceptance, la chiava id_pending_acceptance deve essere auto_increment;
+   7) Nella tabella training_request, la chiave primaria deve essere auto_increment;
+   8) Le chiavi esterne fk_organization dovranno essere VARCHAR(16);
+   

@@ -234,7 +234,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingStudents`( in pkPersonSSN INT )
 BEGIN
-SELECT * from pending_acceptance where SSN = ;
+SELECT * from pending_acceptance where SSN = pkPersonSSN;
 END
 
 		--- STUDENT INFORMATION ---
