@@ -107,7 +107,7 @@ public class ConcreteStudentInformation implements IStudentInformation{
         try {
            ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
            ConcretePerson aPerson = ConcretePerson.getInstance();
-           aCallableStatement = connector.prepareCall("{call getAllOrganizations()}");
+           aCallableStatement = connector.prepareCall("{call getAllStudentInformation()}");
            ResultSet rs = aCallableStatement.executeQuery();
            if ( rs.getFetchSize() == 0 )
                return null;

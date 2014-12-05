@@ -34,25 +34,10 @@ public class ConcreteAccount implements IAccount{
     }
 
     @Override
-    public boolean createAccount(Account account) {
-        throw new UnsupportedOperationException("API Integrazione."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean deleteAccount(String email) {
-        throw new UnsupportedOperationException("API Integrazione."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean updateAccount(Account account) {
-        throw new UnsupportedOperationException("API Integrazione."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
     public Account readAccount(String email) {
         try {
             Account anAccount = new Account();
-            aCallableStatement = connector.prepareCall("{call getAccountInformation(?)}");
+            aCallableStatement = connector.prepareCall("{call getAccount(?)}");
             aCallableStatement.setString("pkAccount",email);
             ResultSet rs = aCallableStatement.executeQuery();
             if ( rs.getFetchSize() == 0 )
@@ -61,14 +46,14 @@ public class ConcreteAccount implements IAccount{
                 anAccount.setEmail(rs.getString("email"));
                 anAccount.setPassword(rs.getString("password"));
                 anAccount.setTypeOfAccount(rs.getString("type_of_account"));
-                anAccount.setPermissions(permissions.readPermission(rs.getInt("id_permission")));
+                anAccount.setActive(rs.getInt("active"));
             }
             rs.close();
             return anAccount;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return null;
     }
 
     @Override
@@ -76,7 +61,6 @@ public class ConcreteAccount implements IAccount{
         ArrayList<Account> accounts = new ArrayList<Account>();
         Account anAccount = null;
         try {
-            ConcretePermission permissions = ConcretePermission.getInstance();
             aCallableStatement = connector.prepareCall("{call getAllAccounts()}");
             ResultSet rs = aCallableStatement.executeQuery();
             if ( rs.getFetchSize() == 0 )
@@ -86,7 +70,7 @@ public class ConcreteAccount implements IAccount{
                 anAccount.setEmail(rs.getString("email"));
                 anAccount.setPassword(rs.getString("password"));
                 anAccount.setTypeOfAccount(rs.getString("type_of_account"));
-                anAccount.setPermissions(permissions.readPermission(rs.getInt("id_permissions")));
+                anAccount.setActive(rs.getInt("active"));
                 accounts.add(anAccount);
             }
             rs.close();
@@ -94,12 +78,33 @@ public class ConcreteAccount implements IAccount{
            
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+           return null;
        }
-       return null;
+       
     }
     
     public static ConcreteAccount getInstance(){
         return instance;
+    }
+
+    @Override
+    public String getTypeOfAccount(String email) {
+        try {
+            String aTypeOfAccount = null;
+            aCallableStatement = connector.prepareCall("{call getTypeOfAccount(?)}");
+            aCallableStatement.setString("pkAccount",email);
+            ResultSet rs = aCallableStatement.executeQuery();
+            if ( rs.getFetchSize() == 0 )
+                return null;
+            while( rs.next() ){
+                aTypeOfAccount = rs.getString("typeOfAccount");
+            }
+            rs.close();
+            return aTypeOfAccount;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
 }

@@ -19,10 +19,13 @@ public interface ITrainingRequest {
     public boolean deleteTrainingRequest( int idTraininngRequest );
     public boolean updateTrainingRequest( TrainingRequest aTrainingRequest );
     
-    public TrainingRequest readTrainingRequest( String VATNumber );
-    public ArrayList<TrainingRequest> searchTrainingRequestById( int idTraininngRequest );
+    public TrainingRequest readTrainingRequest( int aTrainingRequest );
+    public ArrayList<TrainingRequest> readTrainingRequestByOrganization( String VATNumber );
+    public ArrayList<TrainingRequest> readTrainingRequestByProfessor( String SSN );
+    public TrainingRequest readTrainingRequestByStudent(String SSN);
+    
     public ArrayList<TrainingRequest> getAllTrainingRequests();
-    public boolean changeTrainingStatus( TrainingStatus aStatus );
-    public boolean isInternship( int idTrainingStatus );
+    public boolean changeTrainingStatus( int idTrainingRequest, TrainingStatus aStatus );
+    public boolean isInternship( int idTrainingRequest );
     public ArrayList<TrainingRequest> getAllInternships();
 }

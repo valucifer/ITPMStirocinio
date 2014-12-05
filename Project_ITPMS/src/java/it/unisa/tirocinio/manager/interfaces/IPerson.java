@@ -15,10 +15,17 @@ import java.util.ArrayList;
  */
 public interface IPerson {
     
-    public boolean createPerson( Person person );
-    public boolean deletePerson( String fiscalCode );
-    public boolean updatePerson( Person person );
-    public Person readPerson( String fiscalCode );
+    public Person readPerson( String SSN );
+    public Person readPersonForAccount( String email );
     public ArrayList<Person> getAllPeople();
+    public String getTypeOfAccountPerson ( String email );
+    public boolean isAStudent(String email);
+    public boolean isAProfessor(String email);
+    public boolean isAnOrganization(String email);
+    public boolean isAnAdministrator(String email);
+    public Person getProfessor (String email);
+    public Person getStudent (String email);
+    public Person getOrganization (String email);
+    public Person getAdministrator (String email);
     
 }

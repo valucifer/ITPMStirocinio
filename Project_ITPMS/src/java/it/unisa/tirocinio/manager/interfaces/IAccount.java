@@ -15,10 +15,8 @@ import java.util.ArrayList;
  */
 public interface IAccount {
     
-    public boolean createAccount( Account account );
-    public boolean deleteAccount( String email );
-    public boolean updateAccount( Account account );
     public Account readAccount( String email );
     public ArrayList<Account> getAllAccounts();
-    
+    public String getTypeOfAccount( String email );
+        
 }

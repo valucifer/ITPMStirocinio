@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.beans.TrainingStatus;
 import it.unisa.tirocinio.manager.DBConnector;
@@ -33,13 +34,14 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
     }
-
+    
     @Override
     public boolean createTrainingRequest(TrainingRequest aTrainingRequest) {
-        try {
+         try {
             if( aTrainingRequest == null )
                 throw new NullPointerException("TrainingRequest is null!");
-            aCallableStatement = connector.prepareCall("{call insertTrainingRequest(?,?,?,?,?,?)}");       
+            
+            aCallableStatement = connector.prepareCall("{call insertTrainingRequest(?,?,?,?,?,?,?)}");       
             aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
             aCallableStatement.setString("title",aTrainingRequest.getTitle());
             aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus().getIdTrainingStatus());
@@ -48,6 +50,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN().getStudentSSN().getSSN());
             boolean toReturn = aCallableStatement.execute();
             connector.close();
+            
             return toReturn;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,83 +60,112 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
 
     @Override
     public boolean deleteTrainingRequest(int idTraininngRequest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            aCallableStatement = connector.prepareCall("{call deleteTrainingRequest(?)}");       
+            aCallableStatement.setInt("idTrainingRequest",idTraininngRequest);
+            boolean toReturn = aCallableStatement.execute();
+            connector.close();
+            
+            return toReturn;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
 
     @Override
     public boolean updateTrainingRequest(TrainingRequest aTrainingRequest) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        try {
+            if( aTrainingRequest == null )
+                throw new NullPointerException("TrainingRequest is null!");
+            
+            aCallableStatement = connector.prepareCall("{call updateTrainingRequest(?,?,?,?,?,?,?,?)}");       
+            aCallableStatement.setInt("ID",aTrainingRequest.getIdTrainingRequest());      
+            aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
+            aCallableStatement.setString("title",aTrainingRequest.getTitle());
+            aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus().getIdTrainingStatus());
+            aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN().getSSN());
+            aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber().getVATNumber());
+            aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN().getStudentSSN().getSSN());
+            boolean toReturn = aCallableStatement.execute();
+            connector.close();
+            
+            return toReturn;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
     }
-    
-    /*
-    *Questo metodo dovrebbe prendere tutte le offerte di tirocinio per una determinata azienda. Non 
-    *dovrebbe ritornare un arrayList?
-    */
+
     @Override
-    public TrainingRequest readTrainingRequest(String VATNumber) {
-        TrainingRequest aTrainingRequest = new TrainingRequest();
+    public TrainingRequest readTrainingRequest(int aTrainingRequest) {
+        TrainingRequest aTraining = new TrainingRequest();
         ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
-        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+        
         try {
-            aCallableStatement = connector.prepareCall("{call getOwnTrainingRequests(?)}");
-            aCallableStatement.setString("vatNumber",VATNumber);
+            aCallableStatement = connector.prepareCall("{call getTrainingRequest(?)}");
+            aCallableStatement.setInt("idTrainingRequest",aTrainingRequest);
             ResultSet rs = aCallableStatement.executeQuery();
             if ( rs.getFetchSize() == 0 )
                 return null;
             while( rs.next() ){
-                aTrainingRequest.setDescription(rs.getString("description"));
-                aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
-                aTrainingRequest.setTitle(rs.getString("title"));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
-                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTraining.setIdTrainingRequest(rs.getInt("id_training_request"));
+                
+                aTraining.setDescription(rs.getString("description"));
+                aTraining.setDescription(rs.getString("title"));
+                
+                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
             }
             rs.close();
-            return aTrainingRequest;
+            return aTraining;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
         }
     }
-    /*
-    *Questo metodo dovrebbe prendere tutte le offerte di tirocinio per un determinato id. Visto
-    *che l'id è chiave primaria, non dovrebbe ritornare un singolo oggetto TrainingRequest?
-    */
+
     @Override
-    public ArrayList<TrainingRequest> searchTrainingRequestById(int idTraininngRequest) {
+    public ArrayList<TrainingRequest> readTrainingRequestByOrganization(String VATNumber) {
         ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
         TrainingRequest aTrainingRequest = null;
         try {
             ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
             ConcretePerson aPerson = ConcretePerson.getInstance();
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-            aCallableStatement = connector.prepareCall("{call getTrainingRequest(?)}");
-            aCallableStatement.setInt("idTrainingRequest",idTraininngRequest);
+            
+            aCallableStatement = connector.prepareCall("{call getOwnTrainingRequests(?)}");
+            aCallableStatement.setString("vatNumber", VATNumber);
             ResultSet rs = aCallableStatement.executeQuery();
             if ( rs.getFetchSize() == 0 )
                 return null;
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
-                aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
-                aTrainingRequest.setTitle(rs.getString("title"));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
+                aTrainingRequest.setDescription(rs.getString("description"));
+                aTrainingRequest.setDescription(rs.getString("title"));
+                
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
             return trainingRequests;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
 
     @Override
@@ -143,49 +175,78 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         try {
             ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
             ConcretePerson aPerson = ConcretePerson.getInstance();
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+            
             aCallableStatement = connector.prepareCall("{call getAllTrainingRequests()}");
             ResultSet rs = aCallableStatement.executeQuery();
             if ( rs.getFetchSize() == 0 )
                 return null;
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
-                aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
-                aTrainingRequest.setTitle(rs.getString("title"));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
+                aTrainingRequest.setDescription(rs.getString("description"));
+                aTrainingRequest.setDescription(rs.getString("title"));
+                
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
             return trainingRequests;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }
-    }
 
-    @Override
-    public boolean changeTrainingStatus(TrainingStatus aStatus) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
-    @Override
-    public boolean isInternship(int idTrainingStatus) {
-        ArrayList<TrainingRequest> trainings = this.searchTrainingRequestById(idTrainingStatus);
-        for (TrainingRequest training : trainings) {
-            if (training.getOrganizationVATNumber() == null) {
-                return true;
-            }
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
         }
-        return false;
     }
-    
-    //Ho aggiunto questo...ci può essere utile! Forse. 
+
+    @Override
+    public boolean changeTrainingStatus(int idTrainingRequest, TrainingStatus aStatus) {
+        try {
+            if( aStatus == null )
+                throw new NullPointerException("Status is null!");
+            
+            aCallableStatement = connector.prepareCall("{call changeTrainingStatus(?,?)}");       
+            aCallableStatement.setInt("ID",idTrainingRequest);      
+            aCallableStatement.setInt("FK_TrainingStatus",aStatus.getIdTrainingStatus());
+            boolean toReturn = aCallableStatement.execute();
+            connector.close();
+            
+            return toReturn;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
+    @Override
+    public boolean isInternship(int idTrainingRequest) {
+        boolean toReturn = true;
+        TrainingRequest aTrainingRequest = null;
+        try {
+            aCallableStatement = connector.prepareCall("{call getIsInternships(?)}");
+            aCallableStatement.setInt("idTrainingRequest", idTrainingRequest);
+            ResultSet rs = aCallableStatement.executeQuery();
+            if ( rs.getFetchSize() == 0 )
+                return false;
+            int counter = 0;
+            while( rs.next() ){
+                toReturn = false;
+                break;
+            }
+            rs.close();
+            return toReturn;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }
+    }
+
     @Override
     public ArrayList<TrainingRequest> getAllInternships() {
         ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
@@ -193,34 +254,108 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         try {
             ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
             ConcretePerson aPerson = ConcretePerson.getInstance();
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-            aCallableStatement = connector.prepareCall("{call getInternships()}");
+            
+            aCallableStatement = connector.prepareCall("{call getAllInternships()}");
             ResultSet rs = aCallableStatement.executeQuery();
             if ( rs.getFetchSize() == 0 )
                 return null;
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
-                aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
-                aTrainingRequest.setTitle(rs.getString("title"));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
+                aTrainingRequest.setDescription(rs.getString("description"));
+                aTrainingRequest.setDescription(rs.getString("title"));
+                
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
             return trainingRequests;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+    
+    @Override
+    public ArrayList<TrainingRequest> readTrainingRequestByProfessor(String SSN) {
+        ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
+        TrainingRequest aTrainingRequest = null;
+        try {
+            ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
+            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+            
+            aCallableStatement = connector.prepareCall("{call getInnerTrainingRequests(?)}");
+            aCallableStatement.setString("SSN", SSN);
+            ResultSet rs = aCallableStatement.executeQuery();
+            if ( rs.getFetchSize() == 0 )
+                return null;
+            while( rs.next() ){
+                aTrainingRequest = new TrainingRequest();
+                aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
+                
+                aTrainingRequest.setDescription(rs.getString("description"));
+                aTrainingRequest.setDescription(rs.getString("title"));
+                
+                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                trainingRequests.add(aTrainingRequest);
+            }
+            rs.close();
+            return trainingRequests;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
+    }
+
+    @Override
+    public TrainingRequest readTrainingRequestByStudent(String SSN) {
+        TrainingRequest aTraining = new TrainingRequest();
+        ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
+        ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+        
+        try {
+            aCallableStatement = connector.prepareCall("{call getStudentInformationTrainingRequests(?)}");
+            aCallableStatement.setString("SSN",SSN);
+            ResultSet rs = aCallableStatement.executeQuery();
+            if ( rs.getFetchSize() == 0 )
+                return null;
+            while( rs.next() ){
+                aTraining.setIdTrainingRequest(rs.getInt("id_training_request"));
+                
+                aTraining.setDescription(rs.getString("description"));
+                aTraining.setDescription(rs.getString("title"));
+                
+                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
+                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
+            }
+            rs.close();
+            return aTraining;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }
     }
     
     public static ConcreteTrainingRequest getInstance(){
         return instance;
     }
-    
+
 }
