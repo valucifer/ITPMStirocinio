@@ -232,7 +232,7 @@ END
 -- Note: Ex getStudentAttendece
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingStudents`( in pkPersonSSN INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingStudent`( in pkPersonSSN INT )
 BEGIN
 SELECT * from pending_acceptance where SSN = pkPersonSSN;
 END
@@ -282,7 +282,7 @@ if pathCVCheck = false
 	else if pathATCheck =false
 		THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Accademic Transcript not inserted.';
 	else 
-		insert into pending_acceptance values (current_date,studentSSN)  ;
+		insert into pending_acceptance (request_data, fk_person) values (current_date,studentSSN)  ;
 END if;
 END if;
 END

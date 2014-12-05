@@ -4,10 +4,10 @@
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `checkATExistence`(studentInformation int) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `checkATExistence`(studentInformation VARCHAR(16)) RETURNS int(11)
 BEGIN
 DECLARE foundSet INT default false;
-declare ATPath varchar (100);
+declare ATPath varchar (200);
 declare selectAT cursor for select accademic_transcript_path from student_information where accademic_transcript_path = '' and SSN = studentInformation;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET foundSet = true;  
 open selectAT;
@@ -21,10 +21,10 @@ END
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` FUNCTION `checkCVExistence`(studentInformation int) RETURNS int(11)
+CREATE DEFINER=`root`@`localhost` FUNCTION `checkCVExistence`(studentInformation varchar(16)) RETURNS int(11)
 BEGIN
 DECLARE foundSet INT default false;
-declare cvPath varchar (100);
+declare cvPath varchar (200);
 declare selectCV cursor for select curriculum_vitae_path from student_information where curriculum_vitae_path = ''  and SSN = studentInformation;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET foundSet = true;  
 open selectCV;
