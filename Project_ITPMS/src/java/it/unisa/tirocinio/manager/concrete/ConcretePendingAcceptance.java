@@ -27,7 +27,6 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
     private CallableStatement aCallableStatement = null;
     
     private ConcretePendingAcceptance(){
-        instance = new ConcretePendingAcceptance();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -41,12 +40,11 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
             aCallableStatement = connector.prepareCall("{call getPendingStudents(?)}");
             aCallableStatement.setInt("pkPersonSSN",idPendingAcceptance);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aStudentInPendingAcceptance.setIdPendingAcceptance(rs.getInt("id_pending_acceptance"));
                 aStudentInPendingAcceptance.setRequestDate(rs.getDate("request_date"));
-                aStudentInPendingAcceptance.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aStudentInPendingAcceptance.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
             }
             rs.close();
             return aStudentInPendingAcceptance;
@@ -64,13 +62,12 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
            ConcretePerson aPerson = ConcretePerson.getInstance();
            aCallableStatement = connector.prepareCall("{call getAllOrganizations()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                aStudentInPendingAcceptance = new PendingAcceptance();
                aStudentInPendingAcceptance.setIdPendingAcceptance(rs.getInt("id_pending_acceptance"));
                aStudentInPendingAcceptance.setRequestDate(rs.getDate("request_date"));
-               aStudentInPendingAcceptance.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aStudentInPendingAcceptance.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                studentsInPendingAcceptance.add(aStudentInPendingAcceptance);
            }
            rs.close();
@@ -83,6 +80,7 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
     }
     
     public static ConcretePendingAcceptance getInstance(){
+        instance = new ConcretePendingAcceptance();
         return instance;
     }
 

@@ -27,7 +27,6 @@ public class ConcreteDepartment implements IDepartment{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteDepartment(){
-        instance = new ConcreteDepartment();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -37,14 +36,13 @@ public class ConcreteDepartment implements IDepartment{
     public Department readDepartment(String department) {
         try {
             Department aDepartment = new Department();
-            aCallableStatement = connector.prepareCall("{call getTrainingStatus(?)}");
+            aCallableStatement = connector.prepareCall("{call getDepartment(?)}");
             aCallableStatement.setString("pkDepartment",department);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aDepartment.setAbbreviation(rs.getString("abbreviation"));
-                aDepartment.setTitle(rs.getString("description"));
+                aDepartment.setTitle(rs.getString("title"));
             }
             rs.close();
             return aDepartment;
@@ -59,14 +57,13 @@ public class ConcreteDepartment implements IDepartment{
          ArrayList<Department> departments = new ArrayList<Department>();
         Department aDepartment = null;
         try {
-           aCallableStatement = connector.prepareCall("{call getAllTrainingStatus()}");
+           aCallableStatement = connector.prepareCall("{call getAllDepartment()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                aDepartment = new Department();
                aDepartment.setAbbreviation(rs.getString("abbreviation"));
-               aDepartment.setTitle(rs.getString("description"));
+               aDepartment.setTitle(rs.getString("title"));
                departments.add(aDepartment);
            }
            rs.close();
@@ -79,6 +76,7 @@ public class ConcreteDepartment implements IDepartment{
     }
     
     public static ConcreteDepartment getInstance(){
+        instance = new ConcreteDepartment();
         return instance;
     }
     

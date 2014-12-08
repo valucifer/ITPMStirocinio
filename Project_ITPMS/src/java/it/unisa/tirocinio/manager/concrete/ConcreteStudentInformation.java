@@ -29,7 +29,6 @@ public class ConcreteStudentInformation implements IStudentInformation{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteStudentInformation(){
-        instance = new ConcreteStudentInformation();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -84,13 +83,12 @@ public class ConcreteStudentInformation implements IStudentInformation{
             aCallableStatement = connector.prepareCall("{call getStudentInformation(?)}");
             aCallableStatement.setString("ssn",studentSSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-                aStudentInformation.setStudentSSN(aPerson.readPerson(rs.getString("SSN")));
-                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
-                aStudentInformation.setATPath(rs.getString("accademic_transcription_path"));
-                aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")));
+                aStudentInformation.setStudentSSN(studentSSN);
+                aStudentInformation.setATPath(rs.getString(1));
+                aStudentInformation.setATPath(rs.getString(2));
+                aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt(4)).getIdStudentStatus());
             }
             rs.close();
             return aStudentInformation;
@@ -109,14 +107,13 @@ public class ConcreteStudentInformation implements IStudentInformation{
            ConcretePerson aPerson = ConcretePerson.getInstance();
            aCallableStatement = connector.prepareCall("{call getAllStudentInformation()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                aStudentInformation = new StudentInformation();
-               aStudentInformation.setStudentSSN(aPerson.readPerson(rs.getString("SSN")));
+               aStudentInformation.setStudentSSN(aPerson.readPerson(rs.getString("SSN")).getSSN());
                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
                aStudentInformation.setATPath(rs.getString("accademic_transcription_path"));
-               aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")));
+               aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
                studentInformations.add(aStudentInformation);
            }
            rs.close();
@@ -129,6 +126,7 @@ public class ConcreteStudentInformation implements IStudentInformation{
     }
     
     public static ConcreteStudentInformation getInstance(){
+        instance = new ConcreteStudentInformation();
         return instance;
     }
 }

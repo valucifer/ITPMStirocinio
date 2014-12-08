@@ -28,7 +28,6 @@ public class ConcreteStudentStatus implements IStudentStatus{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteStudentStatus(){
-        instance = new ConcreteStudentStatus();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -43,7 +42,7 @@ public class ConcreteStudentStatus implements IStudentStatus{
             aCallableStatement = connector.prepareCall("{call insertStudentTrainingStatus(?)}");       
             aCallableStatement.setString("description",aStudentStatus.getDescription());
             boolean toReturn = aCallableStatement.execute();
-            connector.close();
+            //connector.close();
             
             return toReturn;
         } catch (SQLException ex) {
@@ -59,8 +58,7 @@ public class ConcreteStudentStatus implements IStudentStatus{
             aCallableStatement = connector.prepareCall("{call getStudentTrainingStatus(?)}");
             aCallableStatement.setInt("pkStudentStatus",idStudentStatus);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aStudentStatus.setIdStudentStatus(rs.getInt("id_student_status"));
                 aStudentStatus.setDescription(rs.getString("description"));
@@ -80,8 +78,7 @@ public class ConcreteStudentStatus implements IStudentStatus{
         try {
             aCallableStatement = connector.prepareCall("{call getAllStudentTrainingStatus()}");
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aStudentStatus = new StudentStatus();
                 aStudentStatus.setIdStudentStatus(rs.getInt("id_student_status"));
@@ -97,6 +94,7 @@ public class ConcreteStudentStatus implements IStudentStatus{
     }
     
     public static ConcreteStudentStatus getInstance(){
+        instance = new ConcreteStudentStatus();
         return instance;
     }
     

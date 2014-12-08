@@ -13,13 +13,13 @@ public final class TrainingOffer {
    
     private int idOfferTraining;
     private String description;
-    private Organization organization = null;
-    private Person personSSN = null;
-    private Department department = null;
+    private String organization = null;
+    private String personSSN = null;
+    private String department = null;
     
     public TrainingOffer(){}
     
-    public TrainingOffer(int idOfferTraining, String description, Organization organization, Person personSSN, Department department){
+    public TrainingOffer(int idOfferTraining, String description, String organization, String personSSN, String department){
         setIdOfferTraining(idOfferTraining);
         setDescription(description);
         setOrganization(organization);
@@ -30,41 +30,42 @@ public final class TrainingOffer {
     public int getIdOfferTraining() {
         return idOfferTraining;
     }
-    
-    public void setIdOfferTraining(int newId){
-        idOfferTraining = newId;
-    }
-    
-    public void setDescription(String description) {
-        this.description = description;
-    }
 
     public String getDescription() {
         return description;
     }
-    
-    public void setOrganization(Organization organization) {
-        this.organization = organization;
-    }
 
-    public Organization getOrganization() {
+    public String getOrganization() {
         return organization;
     }
-    
-     public void setPersonSSN(Person personSSN) {
-        this.personSSN = personSSN;
-    }
 
-    public void setDepartment(Department department) {
-        this.department = department;
-    }
-
-    public Person getPersonSSN() {
+    public String getPersonSSN() {
         return personSSN;
     }
 
-    public Department getDepartment() {
+    public String getDepartment() {
         return department;
     }
+
+    public void setIdOfferTraining(int idOfferTraining) {
+        this.idOfferTraining = idOfferTraining;
+    }
+
+    public void setDescription(String description) {
+        this.description = description;
+    }
+
+    public void setOrganization(String organization) {
+        this.organization = organization;
+    }
+
+    public void setPersonSSN(String personSSN) {
+        this.personSSN = personSSN;
+    }
+
+    public void setDepartment(String department) {
+        this.department = department;
+    }
+    
     
 }

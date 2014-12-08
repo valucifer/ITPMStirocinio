@@ -27,7 +27,6 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteTrainingStatus(){
-        instance = new ConcreteTrainingStatus();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -41,8 +40,8 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
                 throw new NullPointerException("TrainingStatus is null!");
             aCallableStatement = connector.prepareCall("{call insertTrainingStatus(?)}");       
             aCallableStatement.setString("description",aStatus.getDescription());
-             boolean toReturn = aCallableStatement.execute();
-            connector.close();
+            boolean toReturn = aCallableStatement.execute();
+            //connector.close();
             return toReturn;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
@@ -57,8 +56,7 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
         try {
            aCallableStatement = connector.prepareCall("{call getAllTrainingStatus()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                aTrainingStatus = new TrainingStatus();
                aTrainingStatus.setIdTrainingStatus(rs.getInt("id_training_status"));
@@ -81,8 +79,7 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
             aCallableStatement = connector.prepareCall("{call getTrainingStatus(?)}");
             aCallableStatement.setInt("pkTrainingStatus",idTrainingStatus);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTrainingStatus.setIdTrainingStatus(rs.getInt("id_training_status"));
                 aTrainingStatus.setDescription(rs.getString("description"));
@@ -96,6 +93,7 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
     }
     
     public static ConcreteTrainingStatus getInstance(){
+        instance = new ConcreteTrainingStatus();
         return instance;
     }
 }

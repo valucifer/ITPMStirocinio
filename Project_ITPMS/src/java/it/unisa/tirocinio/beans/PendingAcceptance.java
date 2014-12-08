@@ -15,11 +15,11 @@ public final class PendingAcceptance {
     
     private int idPendingAcceptance;
     private Date requestDate;
-    private Person personSSN = null;
+    private String personSSN = null;
     
     public PendingAcceptance(){}
     
-    public PendingAcceptance( int idPendingAcceptance, Date requestDate, Person personSSN ){
+    public PendingAcceptance( int idPendingAcceptance, Date requestDate, String personSSN ){
         setIdPendingAcceptance(idPendingAcceptance);
         setRequestDate(requestDate);
         setPersonSSN(personSSN);
@@ -33,7 +33,7 @@ public final class PendingAcceptance {
         return requestDate;
     }
 
-    public Person getPersonSSN() {
+    public String getPersonSSN() {
         return personSSN;
     }
 
@@ -45,7 +45,7 @@ public final class PendingAcceptance {
         this.requestDate = requestDate;
     }
 
-    public void setPersonSSN(Person personSSN) {
+    public void setPersonSSN(String personSSN) {
         this.personSSN = personSSN;
     }
     

@@ -24,13 +24,13 @@ public final class Person {
     private String university = null;
     private String position = null;
     private String matricula = null;
-    private Account accountEmail = null;
-    private Cycle cycle = null;
-    private Department departmentAbbreviation = null;
+    private String accountEmail = null;
+    private int cycle;
+    private String departmentAbbreviation = null;
     
     public Person(){}
     
-    public Person(String SSN, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula, Cycle cycle){
+    public Person(String SSN, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String citizenship, String accountEmail, String departmentAbbreviation, String webPage, String university, String role, String matricula, int cycle){
         setSSN(SSN);
         setName(name);
         setSurname(lastName);
@@ -153,27 +153,27 @@ public final class Person {
         this.matricula = matricula;
     }
 
-    public Account getAccountEmail() {
+    public String getAccountEmail() {
         return accountEmail;
     }
 
-    public Department getDepartmentAbbreviation() {
+    public String getDepartmentAbbreviation() {
         return departmentAbbreviation;
     }
 
-    public void setAccountEmail(Account accountEmail) {
+    public void setAccountEmail(String accountEmail) {
         this.accountEmail = accountEmail;
     }
 
-    public void setDepartmentAbbreviation(Department departmentAbbreviation) {
+    public void setDepartmentAbbreviation(String departmentAbbreviation) {
         this.departmentAbbreviation = departmentAbbreviation;
     }
 
-    public Cycle getCycle() {
+    public int getCycle() {
         return cycle;
     }
 
-    public void setCycle(Cycle cycle) {
+    public void setCycle(int cycle) {
         this.cycle = cycle;
     }
    

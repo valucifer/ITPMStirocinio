@@ -11,21 +11,21 @@ package it.unisa.tirocinio.beans;
  */
 public final class StudentInformation {
     
-    private Person studentSSN = null;
+    private String studentSSN = null;
     private String CVPath = null;
     private String ATPath = null;
-    private StudentStatus studentStatus = null;
+    private int studentStatus;
     
     public StudentInformation(){}
     
-    public StudentInformation( Person studentSSN, String CVPath, String ATPath, StudentStatus studentStatus ){
+    public StudentInformation( String studentSSN, String CVPath, String ATPath, int studentStatus ){
         setATPath(ATPath);
         setCVPath(CVPath);
         setStudentSSN(studentSSN);
         setStudentStatus(studentStatus);
     }
 
-    public Person getStudentSSN() {
+    public String getStudentSSN() {
         return studentSSN;
     }
 
@@ -37,11 +37,11 @@ public final class StudentInformation {
         return ATPath;
     }
 
-    public StudentStatus getStudentStatus() {
+    public int getStudentStatus() {
         return studentStatus;
     }
 
-    public void setStudentSSN(Person studentSSN) {
+    public void setStudentSSN(String studentSSN) {
         this.studentSSN = studentSSN;
     }
 
@@ -53,7 +53,7 @@ public final class StudentInformation {
         this.ATPath = ATPath;
     }
 
-    public void setStudentStatus(StudentStatus studentStatus) {
+    public void setStudentStatus(int studentStatus) {
         this.studentStatus = studentStatus;
     }
     

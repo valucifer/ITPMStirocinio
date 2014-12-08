@@ -17,13 +17,13 @@ public final class Organization {
     private String address = null;
     private String phone = null;
     private String email = null;
-    private Person professor = null;
-    private Person externalTutor = null;
-    private Account accountEmail = null;
+    private String professor = null;
+    private String externalTutor = null;
+    private String accountEmail = null;
     
     public Organization(){}
     
-    public Organization(String VATNumber, String companyName, String city, String address, String phone, String email, Account accountEmail, Person professor, Person externalTutor){
+    public Organization(String VATNumber, String companyName, String city, String address, String phone, String email, String accountEmail, String professor, String externalTutor){
         setVATNumber(VATNumber);
         setCompanyName(companyName);
         setCity(city);
@@ -59,7 +59,7 @@ public final class Organization {
         return phone;
     }
     
-    public Account getAccount() {
+    public String getAccount() {
         return accountEmail;
     }
 
@@ -79,7 +79,7 @@ public final class Organization {
         this.phone = phone;
     }
     
-    public void setAccount(Account accountEmail) {
+    public void setAccount(String accountEmail) {
         this.accountEmail = accountEmail;
     }
 
@@ -91,27 +91,27 @@ public final class Organization {
         this.VATNumber = VATNumber;
     }
 
-    public Person getProfessor() {
+    public String getProfessor() {
         return professor;
     }
 
-    public Person getExternalTutor() {
+    public String getExternalTutor() {
         return externalTutor;
     }
 
-    public Account getAccountEmail() {
+    public String getAccountEmail() {
         return accountEmail;
     }
 
-    public void setProfessor(Person professor) {
+    public void setProfessor(String professor) {
         this.professor = professor;
     }
 
-    public void setExternalTutor(Person externalTutor) {
+    public void setExternalTutor(String externalTutor) {
         this.externalTutor = externalTutor;
     }
 
-    public void setAccountEmail(Account accountEmail) {
+    public void setAccountEmail(String accountEmail) {
         this.accountEmail = accountEmail;
     }
     

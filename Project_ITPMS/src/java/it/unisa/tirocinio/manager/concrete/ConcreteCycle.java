@@ -26,7 +26,6 @@ private static ConcreteCycle instance = null;
     private CallableStatement aCallableStatement = null;
     
     private ConcreteCycle(){
-        instance = new ConcreteCycle();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -39,8 +38,7 @@ private static ConcreteCycle instance = null;
             aCallableStatement = connector.prepareCall("{call getCycle(?)}");
             aCallableStatement.setInt("pkCycle",cycleNumber);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+           
             while( rs.next() ){
                 aCycle.setCycleNumber(rs.getInt("cycle_number"));
                 aCycle.setTitle(rs.getString("title"));
@@ -60,8 +58,7 @@ private static ConcreteCycle instance = null;
         try {
             aCallableStatement = connector.prepareCall("{call getAllCycles()}");
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aCycle = new Cycle();
                 aCycle.setCycleNumber(rs.getInt("cycle_number"));
@@ -79,6 +76,7 @@ private static ConcreteCycle instance = null;
     }
     
     public static ConcreteCycle getInstance(){
+        instance = new ConcreteCycle();
         return instance;
     }
     

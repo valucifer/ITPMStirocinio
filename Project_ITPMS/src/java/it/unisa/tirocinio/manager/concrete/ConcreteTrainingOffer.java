@@ -27,7 +27,6 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteTrainingOffer(){
-        instance = new ConcreteTrainingOffer();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -41,8 +40,8 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             
             aCallableStatement = connector.prepareCall("{call insertInnerTraining(?,?,?)}");       
             aCallableStatement.setString("trainingDescription",aTrainingOffer.getDescription());
-            aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN().getSSN());
-            aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment().getAbbreviation());
+            aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
+            aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
             boolean toReturn = aCallableStatement.execute();
             aCallableStatement.close();
             
@@ -62,9 +61,9 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             
             aCallableStatement = connector.prepareCall("{call insertOuterTraining(?,?,?,?)}");       
             aCallableStatement.setString("trainingDescription",aTrainingOffer.getDescription());
-            aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization().getVATNumber());
-            aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN().getSSN());
-            aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment().getAbbreviation());
+            aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization());
+            aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
+            aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
             boolean toReturn = aCallableStatement.execute();
             aCallableStatement.close();
             
@@ -86,9 +85,9 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement = connector.prepareCall("{call updateTrainingOffer(?,?,?,?,?)}");       
             aCallableStatement.setInt("idTrainingOffer",aTrainingOffer.getIdOfferTraining());
             aCallableStatement.setString("description",aTrainingOffer.getDescription());
-            aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization().getVATNumber());
-            aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN().getSSN());
-            aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment().getAbbreviation());
+            aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization());
+            aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
+            aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
             boolean toReturn = aCallableStatement.execute();
             aCallableStatement.close();
             
@@ -110,14 +109,13 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement = connector.prepareCall("{call getTrainingOffer(?)}");
             aCallableStatement.setInt("pkTrainingOffer",idTrainingOffer);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-                    aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
-                    aTrainingOffer.setDescription(rs.getString("description"));
-                    aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")));
-                    aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")));
-                    aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
+                aTrainingOffer.setDescription(rs.getString("description"));
+                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
+                aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
             }
             rs.close();
             return aTrainingOffer;
@@ -137,14 +135,13 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement = connector.prepareCall("{call getInnerTrainingOffer(?)}");
             aCallableStatement.setString("pkProfessor",personSSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-                    aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
-                    aTrainingOffer.setDescription(rs.getString("description"));
-                    aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")));
-                    aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")));
-                    aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
+                aTrainingOffer.setDescription(rs.getString("description"));
+                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
+                aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
             }
             rs.close();
             return aTrainingOffer;
@@ -164,14 +161,13 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement = connector.prepareCall("{call getOuterTrainingOffer(?)}");
             aCallableStatement.setString("pkOrganization",vatNumber);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-                    aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
-                    aTrainingOffer.setDescription(rs.getString("description"));
-                    aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")));
-                    aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")));
-                    aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+                aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
+                aTrainingOffer.setDescription(rs.getString("description"));
+                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
+                aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
             }
             rs.close();
             return aTrainingOffer;
@@ -192,15 +188,14 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
            ConcretePerson aPerson = ConcretePerson.getInstance();
            aCallableStatement = connector.prepareCall("{call getAllTrainingOffers()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                aTrainingOffer = new TrainingOffer();
                aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
                aTrainingOffer.setDescription(rs.getString("description"));
-               aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")));
-               aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")));
-               aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
+               aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+               aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
+               aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                trainingOffers.add(aTrainingOffer);
            }
            rs.close();
@@ -213,6 +208,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
     }
     
     public static ConcreteTrainingOffer getInstance(){
+        instance = new ConcreteTrainingOffer();
         return instance;
     }
 

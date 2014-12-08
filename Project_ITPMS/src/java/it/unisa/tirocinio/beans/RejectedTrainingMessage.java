@@ -13,10 +13,10 @@ public final class RejectedTrainingMessage {
  
     private int idRejectedTraingMessage;
     private String description = null;
-    private Person personSSN = null;
+    private String personSSN = null;
     
     public RejectedTrainingMessage(){}  
-    public RejectedTrainingMessage( int idRejectedTraingMessage, String description, Person personSSN ){
+    public RejectedTrainingMessage( int idRejectedTraingMessage, String description, String personSSN ){
         setIdRejectedTraingMessage(idRejectedTraingMessage);
         setDescription(description);
         setPersonSSN(personSSN);
@@ -34,11 +34,11 @@ public final class RejectedTrainingMessage {
         return description;
     }
 
-    public Person getPersonSSN() {
+    public String getPersonSSN() {
         return personSSN;
     }
 
-    public void setPersonSSN(Person personSSN) {
+    public void setPersonSSN(String personSSN) {
         this.personSSN = personSSN;
     }
 

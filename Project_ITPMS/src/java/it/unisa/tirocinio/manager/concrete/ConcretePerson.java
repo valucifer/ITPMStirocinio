@@ -28,7 +28,6 @@ public class ConcretePerson implements IPerson{
     private CallableStatement aCallableStatement = null;
     
     private ConcretePerson(){
-        instance = new ConcretePerson();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -45,27 +44,27 @@ public class ConcretePerson implements IPerson{
             aCallableStatement = connector.prepareCall("{call getPerson(?)}");
             aCallableStatement.setString("personSSN",SSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-               aPerson.setAccountEmail(anAccount.readAccount(rs.getString("Account_email")));
-               aPerson.setAddress(rs.getString("address"));
-               aPerson.setCitizenship(rs.getString("citizenship"));
-               aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(aCycle.readCycle(rs.getInt("cycle")));
-               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString("Department_abbreviation")));
-               aPerson.setGender(rs.getString("gender"));
-               aPerson.setMatricula(rs.getString("matricula"));
-               aPerson.setName(rs.getString("name"));
-               aPerson.setPhone(rs.getString("phone"));
-               aPerson.setPosition(rs.getString("position"));
-               aPerson.setSSN(rs.getString("SSN"));
-               aPerson.setSurname(rs.getString("surname"));
-               aPerson.setUniversity(rs.getString("university"));
-               aPerson.setWebPage(rs.getString("web_page"));
-               aPerson.setZipCode(rs.getString("zip_code"));
+               aPerson.setAccountEmail(anAccount.readAccount(rs.getString(10)).getEmail());
+               aPerson.setAddress(rs.getString(6));
+               aPerson.setCitizenship(rs.getString(9));
+               aPerson.setCity(rs.getString(5));
+               aPerson.setCycle(aCycle.readCycle(rs.getInt(16)).getCycleNumber());
+               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString(11)).getAbbreviation());
+               aPerson.setGender(rs.getString(8));
+               aPerson.setMatricula(rs.getString(14));
+               aPerson.setName(rs.getString(2));
+               aPerson.setPhone(rs.getString(4));
+               aPerson.setPosition(rs.getString(15));
+               aPerson.setSSN(rs.getString(1));
+               aPerson.setSurname(rs.getString(3));
+               aPerson.setUniversity(rs.getString(13));
+               aPerson.setWebPage(rs.getString(12));
+               aPerson.setZipCode(rs.getString(7));
             }
             rs.close();
+            //connector.close();
             return aPerson;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
@@ -84,26 +83,25 @@ public class ConcretePerson implements IPerson{
            
            aCallableStatement = connector.prepareCall("{call getAllPeople()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                aPerson = new Person();
-               aPerson.setAccountEmail(anAccount.readAccount(rs.getString("Account_email")));
-               aPerson.setAddress(rs.getString("address"));
-               aPerson.setCitizenship(rs.getString("citizenship"));
-               aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(aCycle.readCycle(rs.getInt("cycle")));
-               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString("Department_abbreviation")));
-               aPerson.setGender(rs.getString("gender"));
-               aPerson.setMatricula(rs.getString("matricula"));
-               aPerson.setName(rs.getString("name"));
-               aPerson.setPhone(rs.getString("phone"));
-               aPerson.setPosition(rs.getString("position"));
-               aPerson.setSSN(rs.getString("SSN"));
-               aPerson.setSurname(rs.getString("surname"));
-               aPerson.setUniversity(rs.getString("university"));
-               aPerson.setWebPage(rs.getString("web_page"));
-               aPerson.setZipCode(rs.getString("zip_code"));
+               aPerson.setAccountEmail(anAccount.readAccount(rs.getString(10)).getEmail());
+               aPerson.setAddress(rs.getString(6));
+               aPerson.setCitizenship(rs.getString(9));
+               aPerson.setCity(rs.getString(5));
+               aPerson.setCycle(aCycle.readCycle(rs.getInt(16)).getCycleNumber());
+               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString(11)).getAbbreviation());
+               aPerson.setGender(rs.getString(8));
+               aPerson.setMatricula(rs.getString(14));
+               aPerson.setName(rs.getString(2));
+               aPerson.setPhone(rs.getString(4));
+               aPerson.setPosition(rs.getString(15));
+               aPerson.setSSN(rs.getString(1));
+               aPerson.setSurname(rs.getString(3));
+               aPerson.setUniversity(rs.getString(13));
+               aPerson.setWebPage(rs.getString(12));
+               aPerson.setZipCode(rs.getString(7));
                people.add(aPerson);
            }
            rs.close();
@@ -117,10 +115,8 @@ public class ConcretePerson implements IPerson{
 
     @Override
     public String getTypeOfAccountPerson(String email) {
-        Person aPerson = this.readPerson(email);
-        if(aPerson != null)
-            return aPerson.getAccountEmail().getTypeOfAccount();
-        return null;
+        ConcreteAccount account = ConcreteAccount.getInstance();
+        return account.readAccount(email).getTypeOfAccount();
     }
     
      @Override
@@ -132,7 +128,7 @@ public class ConcretePerson implements IPerson{
         
         String variable = this.getTypeOfAccountPerson(email);
         
-        if(variable.equals(student) || variable.equals(Student) || variable.equals(studente) || variable.equals(Studente))
+        if((variable.equals(student)) || (variable.equals(Student)) || (variable.equals(studente)) || (variable.equals(Studente)))
             return true;
         return false;
     }
@@ -218,25 +214,24 @@ public class ConcretePerson implements IPerson{
             aCallableStatement = connector.prepareCall("{call getPersonForAccount(?)}");
             aCallableStatement.setString("email",email);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-               aPerson.setAccountEmail(anAccount.readAccount(rs.getString("Account_email")));
-               aPerson.setAddress(rs.getString("address"));
-               aPerson.setCitizenship(rs.getString("citizenship"));
-               aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(aCycle.readCycle(rs.getInt("cycle")));
-               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString("Department_abbreviation")));
-               aPerson.setGender(rs.getString("gender"));
-               aPerson.setMatricula(rs.getString("matricula"));
-               aPerson.setName(rs.getString("name"));
-               aPerson.setPhone(rs.getString("phone"));
-               aPerson.setPosition(rs.getString("position"));
-               aPerson.setSSN(rs.getString("SSN"));
-               aPerson.setSurname(rs.getString("surname"));
-               aPerson.setUniversity(rs.getString("university"));
-               aPerson.setWebPage(rs.getString("web_page"));
-               aPerson.setZipCode(rs.getString("zip_code"));
+               aPerson.setAccountEmail(anAccount.readAccount(rs.getString(10)).getEmail());
+               aPerson.setAddress(rs.getString(6));
+               aPerson.setCitizenship(rs.getString(9));
+               aPerson.setCity(rs.getString(5));
+               aPerson.setCycle(aCycle.readCycle(rs.getInt(16)).getCycleNumber());
+               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString(11)).getAbbreviation());
+               aPerson.setGender(rs.getString(8));
+               aPerson.setMatricula(rs.getString(14));
+               aPerson.setName(rs.getString(2));
+               aPerson.setPhone(rs.getString(4));
+               aPerson.setPosition(rs.getString(15));
+               aPerson.setSSN(rs.getString(1));
+               aPerson.setSurname(rs.getString(3));
+               aPerson.setUniversity(rs.getString(13));
+               aPerson.setWebPage(rs.getString(12));
+               aPerson.setZipCode(rs.getString(7));
             }
             rs.close();
             return aPerson;
@@ -246,7 +241,8 @@ public class ConcretePerson implements IPerson{
         }
     }
     
-    public static ConcretePerson getInstance(){
+    public static ConcretePerson getInstance(){        
+        instance = new ConcretePerson();
         return instance;
     }
 

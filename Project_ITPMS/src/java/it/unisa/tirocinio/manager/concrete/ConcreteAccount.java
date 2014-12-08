@@ -27,7 +27,6 @@ public class ConcreteAccount implements IAccount{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteAccount(){
-        instance = new ConcreteAccount();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -40,13 +39,12 @@ public class ConcreteAccount implements IAccount{
             aCallableStatement = connector.prepareCall("{call getAccount(?)}");
             aCallableStatement.setString("pkAccount",email);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
-                anAccount.setEmail(rs.getString("email"));
-                anAccount.setPassword(rs.getString("password"));
-                anAccount.setTypeOfAccount(rs.getString("type_of_account"));
-                anAccount.setActive(rs.getInt("active"));
+                anAccount.setEmail(rs.getString(1));
+                anAccount.setPassword(rs.getString(2));
+                anAccount.setTypeOfAccount(rs.getString(3));
+                anAccount.setActive(rs.getInt(4));
             }
             rs.close();
             return anAccount;
@@ -63,8 +61,7 @@ public class ConcreteAccount implements IAccount{
         try {
             aCallableStatement = connector.prepareCall("{call getAllAccounts()}");
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 anAccount = new Account();
                 anAccount.setEmail(rs.getString("email"));
@@ -84,6 +81,7 @@ public class ConcreteAccount implements IAccount{
     }
     
     public static ConcreteAccount getInstance(){
+        instance = new ConcreteAccount();
         return instance;
     }
 
@@ -94,8 +92,7 @@ public class ConcreteAccount implements IAccount{
             aCallableStatement = connector.prepareCall("{call getTypeOfAccount(?)}");
             aCallableStatement.setString("pkAccount",email);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTypeOfAccount = rs.getString("typeOfAccount");
             }

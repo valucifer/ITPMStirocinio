@@ -15,13 +15,13 @@ public final class TrainingRequest {
     private String description = null;
     private String title = null;
     private TrainingStatus trainingStatus = null;
-    private Person personSSN = null;
-    private Organization organizationVATNumber = null;
-    private StudentInformation studentSSN = null;
+    private String personSSN = null;
+    private String organizationVATNumber = null;
+    private String studentSSN = null;
     
     public TrainingRequest(){}
     
-    public TrainingRequest(int idTrainingRequest, String description, String title, TrainingStatus trainingStatus, Person professor, Organization organizationVATNumber, StudentInformation studentSSN){
+    public TrainingRequest(int idTrainingRequest, String description, String title, TrainingStatus trainingStatus, String professor, String organizationVATNumber, String studentSSN){
         setIdTrainingRequest(idTrainingRequest);
         setDescription(description);
         setTitle(title);
@@ -43,6 +43,22 @@ public final class TrainingRequest {
         return title;
     }
 
+    public TrainingStatus getTrainingStatus() {
+        return trainingStatus;
+    }
+
+    public String getPersonSSN() {
+        return personSSN;
+    }
+
+    public String getOrganizationVATNumber() {
+        return organizationVATNumber;
+    }
+
+    public String getStudentSSN() {
+        return studentSSN;
+    }
+
     public void setIdTrainingRequest(int idTrainingRequest) {
         this.idTrainingRequest = idTrainingRequest;
     }
@@ -55,36 +71,20 @@ public final class TrainingRequest {
         this.title = title;
     }
 
-    public TrainingStatus getTrainingStatus() {
-        return trainingStatus;
-    }
-
-    public Person getPersonSSN() {
-        return personSSN;
-    }
-
-    public Organization getOrganizationVATNumber() {
-        return organizationVATNumber;
-    }
-
     public void setTrainingStatus(TrainingStatus trainingStatus) {
         this.trainingStatus = trainingStatus;
     }
 
-    public void setPersonSSN(Person personSSN) {
+    public void setPersonSSN(String personSSN) {
         this.personSSN = personSSN;
     }
 
-    public void setOrganizationVATNumber(Organization organizationVATNumber) {
+    public void setOrganizationVATNumber(String organizationVATNumber) {
         this.organizationVATNumber = organizationVATNumber;
     }
 
-    public StudentInformation getStudentSSN() {
-        return studentSSN;
-    }
-
-    public void setStudentSSN(StudentInformation studentSSN) {
+    public void setStudentSSN(String studentSSN) {
         this.studentSSN = studentSSN;
     }
-    
+
 }

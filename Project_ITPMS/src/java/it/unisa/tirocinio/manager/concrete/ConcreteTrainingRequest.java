@@ -29,7 +29,6 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteTrainingRequest(){
-        instance = new ConcreteTrainingRequest();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -45,11 +44,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
             aCallableStatement.setString("title",aTrainingRequest.getTitle());
             aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus().getIdTrainingStatus());
-            aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN().getSSN());
-            aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber().getVATNumber());
-            aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN().getStudentSSN().getSSN());
+            aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
+            aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
+            aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
             boolean toReturn = aCallableStatement.execute();
-            connector.close();
+            //connector.close();
             
             return toReturn;
         } catch (SQLException ex) {
@@ -64,7 +63,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call deleteTrainingRequest(?)}");       
             aCallableStatement.setInt("idTrainingRequest",idTraininngRequest);
             boolean toReturn = aCallableStatement.execute();
-            connector.close();
+            //connector.close();
             
             return toReturn;
         } catch (SQLException ex) {
@@ -84,9 +83,9 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
             aCallableStatement.setString("title",aTrainingRequest.getTitle());
             aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus().getIdTrainingStatus());
-            aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN().getSSN());
-            aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber().getVATNumber());
-            aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN().getStudentSSN().getSSN());
+            aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
+            aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
+            aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
             boolean toReturn = aCallableStatement.execute();
             connector.close();
             
@@ -109,17 +108,16 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call getTrainingRequest(?)}");
             aCallableStatement.setInt("idTrainingRequest",aTrainingRequest);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTraining.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTraining.setDescription(rs.getString("description"));
                 aTraining.setDescription(rs.getString("title"));
                 
-                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
-                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
                 aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
                 
             }
@@ -144,8 +142,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call getOwnTrainingRequests(?)}");
             aCallableStatement.setString("vatNumber", VATNumber);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+           
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
@@ -153,10 +150,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setDescription(rs.getString("title"));
                 
-                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
                 aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
@@ -180,8 +178,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             
             aCallableStatement = connector.prepareCall("{call getAllTrainingRequests()}");
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
@@ -189,10 +186,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setDescription(rs.getString("title"));
                 
-                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
                 aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
@@ -214,7 +212,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setInt("ID",idTrainingRequest);      
             aCallableStatement.setInt("FK_TrainingStatus",aStatus.getIdTrainingStatus());
             boolean toReturn = aCallableStatement.execute();
-            connector.close();
+            //connector.close();
             
             return toReturn;
         } catch (SQLException ex) {
@@ -231,8 +229,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call getIsInternships(?)}");
             aCallableStatement.setInt("idTrainingRequest", idTrainingRequest);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return false;
+            
             int counter = 0;
             while( rs.next() ){
                 toReturn = false;
@@ -259,8 +256,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             
             aCallableStatement = connector.prepareCall("{call getAllInternships()}");
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
@@ -268,10 +264,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setDescription(rs.getString("title"));
                 
-                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
                 aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
@@ -296,8 +293,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call getInnerTrainingRequests(?)}");
             aCallableStatement.setString("SSN", SSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTrainingRequest = new TrainingRequest();
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
@@ -305,10 +301,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setDescription(rs.getString("description"));
                 aTrainingRequest.setDescription(rs.getString("title"));
                 
-                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
-                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
                 aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                
                 trainingRequests.add(aTrainingRequest);
             }
             rs.close();
@@ -332,17 +329,16 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call getStudentInformationTrainingRequests(?)}");
             aCallableStatement.setString("SSN",SSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 aTraining.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTraining.setDescription(rs.getString("description"));
                 aTraining.setDescription(rs.getString("title"));
                 
-                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")));
-                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")));
-                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")));//studentInformation
+                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
                 aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
                 
             }
@@ -355,6 +351,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
     }
     
     public static ConcreteTrainingRequest getInstance(){
+        instance = new ConcreteTrainingRequest();
         return instance;
     }
 

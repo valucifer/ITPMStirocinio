@@ -28,7 +28,6 @@ public class ConcreteOrganization implements IOrganization{
     private CallableStatement aCallableStatement = null;
     
     private ConcreteOrganization(){
-        instance = new ConcreteOrganization();
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
@@ -47,11 +46,11 @@ public class ConcreteOrganization implements IOrganization{
             aCallableStatement.setString("address",organization.getAddress());
             aCallableStatement.setString("phone",organization.getPhone());
             aCallableStatement.setString("email",organization.getEmail());
-            aCallableStatement.setString("personSSN",organization.getProfessor().getSSN());
-            aCallableStatement.setString("accountEmail",organization.getAccount().getEmail());
-            aCallableStatement.setString("tutorSSN",organization.getExternalTutor().getSSN());
+            aCallableStatement.setString("personSSN",organization.getProfessor());
+            aCallableStatement.setString("accountEmail",organization.getAccount());
+            aCallableStatement.setString("tutorSSN",organization.getExternalTutor());
             boolean toReturn = aCallableStatement.execute();
-            connector.close();
+           // connector.close();
             
             return toReturn;
         } catch (SQLException ex) {
@@ -88,12 +87,12 @@ public class ConcreteOrganization implements IOrganization{
             aCallableStatement.setString("address",organization.getAddress());
             aCallableStatement.setString("phone",organization.getPhone());
             aCallableStatement.setString("email",organization.getEmail());
-            aCallableStatement.setString("personSSN",organization.getProfessor().getSSN());
-            aCallableStatement.setString("accountEmail",organization.getAccount().getEmail());
-            aCallableStatement.setString("tutorSSN",organization.getExternalTutor().getSSN());
+            aCallableStatement.setString("personSSN",organization.getProfessor());
+            aCallableStatement.setString("accountEmail",organization.getAccount());
+            aCallableStatement.setString("tutorSSN",organization.getExternalTutor());
             boolean toReturn = aCallableStatement.execute();
             aCallableStatement.close();
-            connector.close();
+            //connector.close();
             
             return toReturn;
             
@@ -113,8 +112,7 @@ public class ConcreteOrganization implements IOrganization{
             aCallableStatement = connector.prepareCall("{call getOrganizationByPrimaryKey(?)}");
             aCallableStatement.setString("vatNumber",VATNumber);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 anOrganization.setVATNumber(rs.getString("vat_number"));
                 anOrganization.setCompanyName(rs.getString("company_name"));
@@ -122,9 +120,9 @@ public class ConcreteOrganization implements IOrganization{
                 anOrganization.setAddress(rs.getString("address"));
                 anOrganization.setPhone(rs.getString("phone"));
                 anOrganization.setEmail(rs.getString("email"));
-                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
-                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
-                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
             }
             rs.close();
             return anOrganization;
@@ -144,8 +142,7 @@ public class ConcreteOrganization implements IOrganization{
            ConcretePerson aTutor = ConcretePerson.getInstance();
            aCallableStatement = connector.prepareCall("{call getAllOrganizations()}");
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+           
            while( rs.next() ){
                anOrganization = new Organization();
                anOrganization.setVATNumber(rs.getString("vat_number"));
@@ -154,9 +151,9 @@ public class ConcreteOrganization implements IOrganization{
                anOrganization.setAddress(rs.getString("address"));
                anOrganization.setPhone(rs.getString("phone"));
                anOrganization.setEmail(rs.getString("email"));
-               anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
-               anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
-               anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
                organizations.add(anOrganization);
            }
            rs.close();
@@ -180,8 +177,7 @@ public class ConcreteOrganization implements IOrganization{
            aCallableStatement = connector.prepareCall("{call getOwnOrganizations(?)}");
            aCallableStatement.setString("professorSSN",professorSSN);
            ResultSet rs = aCallableStatement.executeQuery();
-           if ( rs.getFetchSize() == 0 )
-               return null;
+          
            while( rs.next() ){
                anOrganization = new Organization();
                anOrganization.setVATNumber(rs.getString("vat_number"));
@@ -190,9 +186,9 @@ public class ConcreteOrganization implements IOrganization{
                anOrganization.setAddress(rs.getString("address"));
                anOrganization.setPhone(rs.getString("phone"));
                anOrganization.setEmail(rs.getString("email"));
-               anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
-               anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
-               anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
                organizations.add(anOrganization);
            }
            rs.close();
@@ -207,13 +203,15 @@ public class ConcreteOrganization implements IOrganization{
     @Override
     public Person getProfessorOrganization(String VATNumber) {
         Organization anOrganization = this.readOrganization(VATNumber);
-        return anOrganization.getProfessor();
+        ConcretePerson person = ConcretePerson.getInstance();
+        return person.readPerson(anOrganization.getProfessor());
     }
 
     @Override
     public Person getExternalTutor(String VATNumber) {
         Organization anOrganization = this.readOrganization(VATNumber);
-        return anOrganization.getExternalTutor();
+        ConcretePerson person = ConcretePerson.getInstance();
+        return person.readPerson(anOrganization.getExternalTutor());
     }
 
     @Override
@@ -226,8 +224,7 @@ public class ConcreteOrganization implements IOrganization{
             aCallableStatement = connector.prepareCall("{call getOrganizationByAccount(?)}");
             aCallableStatement.setString("fkAccount",accountEmail);
             ResultSet rs = aCallableStatement.executeQuery();
-            if ( rs.getFetchSize() == 0 )
-                return null;
+            
             while( rs.next() ){
                 anOrganization.setVATNumber(rs.getString("vat_number"));
                 anOrganization.setCompanyName(rs.getString("company_name"));
@@ -235,9 +232,9 @@ public class ConcreteOrganization implements IOrganization{
                 anOrganization.setAddress(rs.getString("address"));
                 anOrganization.setPhone(rs.getString("phone"));
                 anOrganization.setEmail(rs.getString("email"));
-                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")));
-                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")));
-                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")));
+                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
             }
             rs.close();
             return anOrganization;
@@ -248,6 +245,7 @@ public class ConcreteOrganization implements IOrganization{
     }
     
     public static ConcreteOrganization getInstance(){
+        instance = new ConcreteOrganization();
         return instance;
     }
     
