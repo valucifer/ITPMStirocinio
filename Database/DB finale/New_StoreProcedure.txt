@@ -152,9 +152,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in FK_Organization VARCHAR(11), in FK_PersonSSN VARCHAR(16), in FK_Department INT)
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in FK_Organization VARCHAR(11), in FK_PersonSSN VARCHAR(16), in FK_Department VARCHAR(50))
 BEGIN
-INSERT INTO training_offer (description, fk_organization, fk_professor, fk_department) VALUES (trainingDescription, FK_Organization, FK_PersonSSN, FK_Department);
+INSERT INTO training_offer (description, fk_organization, fk_person, fk_department) VALUES (trainingDescription, FK_Organization, FK_PersonSSN, FK_Department);
 END
 
 -- --------------------------------------------------------------------------------
@@ -237,30 +237,41 @@ BEGIN
 SELECT * from pending_acceptance where SSN = pkPersonSSN;
 END
 
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `deletePendingAcceptanceByStudent`(in studentSSN VARCHAR(16) )
+BEGIN
+ DELETE FROM pending_acceptance WHERE fk_person = studentSSN;
+END
+
 		--- STUDENT INFORMATION ---
 
 -- --------------------------------------------------------------------------------
 -- Routine DDL
--- Note: Inserimento dei file CV e AT all'interno della tabella StudentInformation con il settaggio
--- 		 dello student_status in attesa. In caso di update, lo stato sarà settato sempre in attesa.
+-- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `storeUploadFile`(in CVPath Varchar(200), in ATPath Varchar(200), in studentSSN Varchar(16) )
 BEGIN
 DECLARE foundSet INT default false;
 DECLARE student_ssn VARCHAR(16);
 -- Cursore for check if the FK of student status is setting or not
-DECLARE selectCur CURSOR FOR SELECT SSN FROM student_information WHERE student_information.SSN = studentSSN;
+DECLARE selectCur CURSOR FOR SELECT SSN FROM student_information WHERE SSN = studentSSN;
 DECLARE CONTINUE HANDLER FOR NOT FOUND SET foundSet = true; 
 open selectCur;
 fetch selectCur into student_ssn;
 if foundSet=false
 	then
-	UPDATE student_information Set curriculum_vitae_path = CVPath , accademic_transcript_path = ATPath WHERE SSN = student_ssn;
+	UPDATE student_information Set curriculum_vitae_path = CVPath , accademic_transcript_path = ATPath, fk_student_status = '2' WHERE SSN = student_ssn;
 	call startTrainingRequest(studentSSN);
 else if foundSet=true
 	then
-	INSERT INTO student_information  (SSN, curriculum_vitae_path, accademic_transcript_path, fk_student_status) values (student_ssn,CVPath,ATPath,'2');
+	INSERT INTO student_information  (SSN, curriculum_vitae_path, accademic_transcript_path, fk_student_status) values (studentSSN,CVPath,ATPath,'2');
 	call startTrainingRequest(studentSSN);
 END if;
 END if;
@@ -271,6 +282,7 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
+
 CREATE DEFINER=`root`@`localhost` PROCEDURE `startTrainingRequest`(in  studentSSN VARCHAR(16))
 BEGIN
 declare pathCVCheck int;
@@ -282,20 +294,22 @@ if pathCVCheck = false
 	else if pathATCheck =false
 		THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Accademic Transcript not inserted.';
 	else 
-		insert into pending_acceptance (request_data, fk_person) values (current_date,studentSSN)  ;
+		insert into pending_acceptance (date_request, fk_person) values (current_date,studentSSN)  ;
 END if;
 END if;
 END
 
 -- --------------------------------------------------------------------------------
 -- Routine DDL
--- Note: 
+-- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `changeStudentStatus`  ( in studentSSN VARCHAR(16), in status INT )
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `changeStudentStatus`( in studentSSN VARCHAR(16), in status INT )
 BEGIN
 DECLARE studentStatus INT;
 DECLARE selectCur CURSOR FOR SELECT fk_student_status FROM student_information WHERE student_information.SSN = studentSSN;
+open selectCur;
 fetch selectCur into studentStatus;
 
 if status != '2'
@@ -489,7 +503,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllInternships`()
 BEGIN
-SELECT * FROM training_request WHERE vat_number IS NULL;
+SELECT * FROM training_request WHERE fk_organization IS NULL;
 END
 
 -- --------------------------------------------------------------------------------
@@ -499,7 +513,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getIsInternships`(in idTrainingRequest INT)
 BEGIN
-SELECT * FROM training_request WHERE vat_number IS NULL AND id_training_request = idTrainingRequest;
+SELECT * FROM training_request WHERE fk_organization IS NULL AND id_training_request = idTrainingRequest;
 END
 
 -- --------------------------------------------------------------------------------

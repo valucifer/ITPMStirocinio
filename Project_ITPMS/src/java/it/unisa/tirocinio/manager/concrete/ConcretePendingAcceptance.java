@@ -34,6 +34,7 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
     
     @Override
     public PendingAcceptance readStudentInPendingAcceptance(int idPendingAcceptance) {
+        initializeConnection();
         PendingAcceptance aStudentInPendingAcceptance = new PendingAcceptance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
         try {
@@ -51,11 +52,19 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<PendingAcceptance> getAllStudentsInPendingAcceptance() {
+        initializeConnection();
         ArrayList<PendingAcceptance> studentsInPendingAcceptance = new ArrayList<PendingAcceptance>();
         PendingAcceptance aStudentInPendingAcceptance = null;
         try {
@@ -76,12 +85,28 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
-    public static ConcretePendingAcceptance getInstance(){
-        instance = new ConcretePendingAcceptance();
+    public static synchronized ConcretePendingAcceptance getInstance(){
+        if(instance == null)
+            instance = new ConcretePendingAcceptance();
         return instance;
     }
 
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

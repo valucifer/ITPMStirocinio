@@ -5,34 +5,26 @@
  */
 package it.unisa.tirocinio.manager.concrete;
 
+import java.util.HashMap;
+import java.util.Map;
+
 /**
  *
  * @author Valentino
  */
 public class ConcreteMessageForServlet {
-    private String message;
-    private Object object;
+    private Map<String, Object> messages = null;
     
-    public ConcreteMessageForServlet(){}
-
-    public ConcreteMessageForServlet(String message) {
-        this.message = message;
+    public ConcreteMessageForServlet(){
+        messages = new HashMap<String, Object>();
     }
 
-    public String getMessage() {
-        return message;
+    public Object getMessage(String key) {
+        return messages.get(key);
     }
 
-    public Object getObject() {
-        return object;
+    public void setMessage(String key, Object value) {
+        messages.put(key, value);
     }
 
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public void setObject(Object object) {
-        this.object = object;
-    }
-     
 }

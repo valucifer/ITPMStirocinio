@@ -48,23 +48,22 @@ public class getStudentTrainingStatus extends HttpServlet {
         ConcretePerson aPerson = ConcretePerson.getInstance();
         String email = "vale" ;//request.getParameter("accountEmail");
         
-        if(aPerson.isAStudent(email)){
-           Person person = aPerson.readPersonForAccount(email);
+        Person person = aPerson.getStudent(email);
             
-           ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-           StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
-           
-           ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-           StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
-            
-            message.setMessage("1");
-            message.setObject(studentStatus.getDescription());
-            session.setAttribute("message", message);
+        ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+        StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
+
+        ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
+        StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
+        
+        if(studentStatus != null){
+            message.setMessage("status",1);
+            message.setMessage("description",studentStatus.getDescription());
+            request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
         }else{
-            
+            message.setMessage("status",0);
         }
-            
-       
+        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

@@ -35,24 +35,31 @@ public class ConcreteStudentStatus implements IStudentStatus{
     
     @Override
     public boolean createStudentStatus(StudentStatus aStudentStatus) {
+        initializeConnection();
         try {
             if( aStudentStatus == null )
                 throw new NullPointerException("StudentStatus is null!");
             
             aCallableStatement = connector.prepareCall("{call insertStudentTrainingStatus(?)}");       
             aCallableStatement.setString("description",aStudentStatus.getDescription());
-            boolean toReturn = aCallableStatement.execute();
-            //connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public StudentStatus readStudentStatus(int idStudentStatus) {
+        initializeConnection();
         try {
             StudentStatus aStudentStatus = new StudentStatus();
             aCallableStatement = connector.prepareCall("{call getStudentTrainingStatus(?)}");
@@ -68,11 +75,19 @@ public class ConcreteStudentStatus implements IStudentStatus{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<StudentStatus> getAllStudentStatus() {
+        initializeConnection();
         ArrayList<StudentStatus> studentStatus = new ArrayList<StudentStatus>();
         StudentStatus aStudentStatus = null;
         try {
@@ -90,12 +105,28 @@ public class ConcreteStudentStatus implements IStudentStatus{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
-    public static ConcreteStudentStatus getInstance(){
-        instance = new ConcreteStudentStatus();
+    public static synchronized ConcreteStudentStatus getInstance(){
+        if(instance == null)
+            instance = new ConcreteStudentStatus();
         return instance;
     }
     
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -34,6 +34,7 @@ public class ConcreteDepartment implements IDepartment{
     
     @Override
     public Department readDepartment(String department) {
+        initializeConnection();
         try {
             Department aDepartment = new Department();
             aCallableStatement = connector.prepareCall("{call getDepartment(?)}");
@@ -49,11 +50,19 @@ public class ConcreteDepartment implements IDepartment{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<Department> getAllDepartments() {
+        initializeConnection();
          ArrayList<Department> departments = new ArrayList<Department>();
         Department aDepartment = null;
         try {
@@ -72,12 +81,29 @@ public class ConcreteDepartment implements IDepartment{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
-    public static ConcreteDepartment getInstance(){
-        instance = new ConcreteDepartment();
+    public static synchronized ConcreteDepartment getInstance(){
+        if(instance == null)
+            instance = new ConcreteDepartment();
         return instance;
+    }
+    
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

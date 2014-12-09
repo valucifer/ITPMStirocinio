@@ -33,6 +33,7 @@ private static ConcreteCycle instance = null;
 
     @Override
     public Cycle readCycle(int cycleNumber) {
+        initializeConnection();
         try {
             Cycle aCycle = new Cycle();
             aCallableStatement = connector.prepareCall("{call getCycle(?)}");
@@ -48,11 +49,19 @@ private static ConcreteCycle instance = null;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<Cycle> getAllCycles() {
+        initializeConnection();
         ArrayList<Cycle> cycles = new ArrayList<Cycle>();
         Cycle aCycle = null;
         try {
@@ -71,13 +80,29 @@ private static ConcreteCycle instance = null;
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
-       
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }       
     }
     
-    public static ConcreteCycle getInstance(){
-        instance = new ConcreteCycle();
+    public static synchronized ConcreteCycle getInstance(){
+        if(instance == null)
+            instance = new ConcreteCycle();
         return instance;
+    }
+    
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
     
 }

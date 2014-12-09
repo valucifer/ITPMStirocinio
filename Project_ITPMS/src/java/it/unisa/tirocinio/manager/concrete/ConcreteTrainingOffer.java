@@ -34,6 +34,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
 
     @Override
     public boolean createInnerTrainingOffer(TrainingOffer aTrainingOffer) {
+        initializeConnection();
         try {
             if( aTrainingOffer == null )
                 throw new NullPointerException("OfferTraining is null!");
@@ -42,19 +43,27 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement.setString("trainingDescription",aTrainingOffer.getDescription());
             aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
             aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
-            boolean toReturn = aCallableStatement.execute();
+            int check = aCallableStatement.executeUpdate();
             aCallableStatement.close();
             
-            return toReturn;
+            return check > 0;
             
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
     @Override
     public boolean createOuterTrainingOffer(TrainingOffer aTrainingOffer) {
+        initializeConnection();
         try {
             if( aTrainingOffer == null )
                 throw new NullPointerException("OfferTraining is null!");
@@ -64,20 +73,28 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization());
             aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
             aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
-            boolean toReturn = aCallableStatement.execute();
+            int check = aCallableStatement.executeUpdate();
             aCallableStatement.close();
             
-            return toReturn;
+            return check > 0;
             
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
 
     @Override
     public boolean updateTrainingOffer(TrainingOffer aTrainingOffer) {
+        initializeConnection();
         try {
             if( aTrainingOffer == null )
                 throw new NullPointerException("OfferTraining is null!");
@@ -88,19 +105,25 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization());
             aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
             aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
-            boolean toReturn = aCallableStatement.execute();
-            aCallableStatement.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
             
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public TrainingOffer readTrainingOffer(int idTrainingOffer) {
+        initializeConnection();
         TrainingOffer aTrainingOffer = new TrainingOffer();
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
@@ -122,11 +145,19 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
     @Override
     public TrainingOffer readInnerTrainingOffer(String personSSN) {
+        initializeConnection();
         TrainingOffer aTrainingOffer = new TrainingOffer();
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
@@ -148,11 +179,19 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public TrainingOffer readOuterTrainingOffer(String vatNumber) {
+        initializeConnection();
         TrainingOffer aTrainingOffer = new TrainingOffer();
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
@@ -174,12 +213,19 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<TrainingOffer> getAllTrainingOffers() {
-    
+        initializeConnection();
         ArrayList<TrainingOffer> trainingOffers = new ArrayList<TrainingOffer>();
         TrainingOffer aTrainingOffer = null;
         try {
@@ -204,12 +250,29 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
-    public static ConcreteTrainingOffer getInstance(){
-        instance = new ConcreteTrainingOffer();
+    public static synchronized ConcreteTrainingOffer getInstance(){
+        if(instance == null)
+            instance = new ConcreteTrainingOffer();
         return instance;
+    }
+    
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
 }

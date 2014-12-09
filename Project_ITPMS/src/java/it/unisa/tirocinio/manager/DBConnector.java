@@ -9,6 +9,7 @@ import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
+import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -23,7 +24,7 @@ import java.util.logging.Logger;
 public class DBConnector {
     
     private static Connection aConnection = null;
-
+    
     public static Connection getConnection(){
         InputStream cfg = null;
         try {

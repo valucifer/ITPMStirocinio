@@ -35,6 +35,7 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
 
     @Override
     public boolean createRejectedTrainingMessage(RejectedTrainingMessage aRejectedTrainingMessage) {
+        initializeConnection();
         try {
             if( aRejectedTrainingMessage == null )
                 throw new NullPointerException("RejectedMessage is null!");
@@ -42,28 +43,39 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
             aCallableStatement = connector.prepareCall("{call insertRejectedTrainingMessage(?,?)}");       
             aCallableStatement.setString("message",aRejectedTrainingMessage.getDescription());
             aCallableStatement.setString("personSSN",aRejectedTrainingMessage.getPersonSSN());
-            boolean toReturn = aCallableStatement.execute();
-            //connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean deleteOrganization(int idRejectedTrainingMessage) {
+        initializeConnection();
         try {
             aCallableStatement = connector.prepareCall("{call deleteRejectedTrainingMessage(?)}");       
             aCallableStatement.setInt("pkRejectedMessage",idRejectedTrainingMessage);
-            boolean toReturn = aCallableStatement.execute();
-            //connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
@@ -74,6 +86,7 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
      */
     @Override
     public RejectedTrainingMessage readTrainingMessage(int idRejectedTraingMessage) {
+        initializeConnection();
         RejectedTrainingMessage aRejectedMessage = new RejectedTrainingMessage();
         ConcretePerson aPerson = ConcretePerson.getInstance();
         try {
@@ -91,12 +104,19 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<RejectedTrainingMessage> getAllTrainingMessages() {
-        
+        initializeConnection();        
         ArrayList<RejectedTrainingMessage> rejectedMessages = new ArrayList<RejectedTrainingMessage>();
         RejectedTrainingMessage aRejectedMessage = null;
         try {
@@ -115,12 +135,28 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
-    public static ConcreteRejectedTrainingMessage getInstance(){
-        instance = new ConcreteRejectedTrainingMessage();
+    public static synchronized ConcreteRejectedTrainingMessage getInstance(){
+        if(instance == null)
+            instance = new ConcreteRejectedTrainingMessage();
         return instance;
     }
     
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

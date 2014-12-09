@@ -36,6 +36,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
     
     @Override
     public boolean createTrainingRequest(TrainingRequest aTrainingRequest) {
+        initializeConnection();
          try {
             if( aTrainingRequest == null )
                 throw new NullPointerException("TrainingRequest is null!");
@@ -47,33 +48,45 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
             aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
             aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
-            boolean toReturn = aCallableStatement.execute();
-            //connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean deleteTrainingRequest(int idTraininngRequest) {
+        initializeConnection();
         try {
             aCallableStatement = connector.prepareCall("{call deleteTrainingRequest(?)}");       
             aCallableStatement.setInt("idTrainingRequest",idTraininngRequest);
-            boolean toReturn = aCallableStatement.execute();
-            //connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean updateTrainingRequest(TrainingRequest aTrainingRequest) {
+        initializeConnection();
         try {
             if( aTrainingRequest == null )
                 throw new NullPointerException("TrainingRequest is null!");
@@ -86,18 +99,24 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
             aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
             aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
-            boolean toReturn = aCallableStatement.execute();
-            connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public TrainingRequest readTrainingRequest(int aTrainingRequest) {
+        initializeConnection();
         TrainingRequest aTraining = new TrainingRequest();
         ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
@@ -126,11 +145,19 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<TrainingRequest> readTrainingRequestByOrganization(String VATNumber) {
+        initializeConnection();
         ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
         TrainingRequest aTrainingRequest = null;
         try {
@@ -163,11 +190,19 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<TrainingRequest> getAllTrainingRequests() {
+        initializeConnection();
         ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
         TrainingRequest aTrainingRequest = null;
         try {
@@ -199,11 +234,19 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean changeTrainingStatus(int idTrainingRequest, TrainingStatus aStatus) {
+        initializeConnection();
         try {
             if( aStatus == null )
                 throw new NullPointerException("Status is null!");
@@ -211,28 +254,32 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement = connector.prepareCall("{call changeTrainingStatus(?,?)}");       
             aCallableStatement.setInt("ID",idTrainingRequest);      
             aCallableStatement.setInt("FK_TrainingStatus",aStatus.getIdTrainingStatus());
-            boolean toReturn = aCallableStatement.execute();
-            //connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean isInternship(int idTrainingRequest) {
-        boolean toReturn = true;
-        TrainingRequest aTrainingRequest = null;
+        initializeConnection();
+        boolean toReturn = false;
         try {
             aCallableStatement = connector.prepareCall("{call getIsInternships(?)}");
             aCallableStatement.setInt("idTrainingRequest", idTrainingRequest);
             ResultSet rs = aCallableStatement.executeQuery();
             
-            int counter = 0;
             while( rs.next() ){
-                toReturn = false;
+                toReturn = true;
                 break;
             }
             rs.close();
@@ -241,11 +288,19 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<TrainingRequest> getAllInternships() {
+        initializeConnection();
         ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
         TrainingRequest aTrainingRequest = null;
         try {
@@ -277,11 +332,19 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
     @Override
     public ArrayList<TrainingRequest> readTrainingRequestByProfessor(String SSN) {
+        initializeConnection();
         ArrayList<TrainingRequest> trainingRequests = new ArrayList<TrainingRequest>();
         TrainingRequest aTrainingRequest = null;
         try {
@@ -314,11 +377,19 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public TrainingRequest readTrainingRequestByStudent(String SSN) {
+        initializeConnection();
         TrainingRequest aTraining = new TrainingRequest();
         ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
@@ -347,12 +418,28 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
-    public static ConcreteTrainingRequest getInstance(){
-        instance = new ConcreteTrainingRequest();
+    public static synchronized ConcreteTrainingRequest getInstance(){
+        if(instance == null)
+            instance = new ConcreteTrainingRequest();
         return instance;
     }
-
+    
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

@@ -32,6 +32,10 @@
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingStatus</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>insertTrainingByOrganizationServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingByOrganizationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticateUserServlet</servlet-name>
         <url-pattern>/AuthenticateUserServlet</url-pattern>
@@ -63,6 +67,10 @@
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertTrainingByOrganizationServlet</servlet-name>
+        <url-pattern>/insertTrainingByOrganizationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

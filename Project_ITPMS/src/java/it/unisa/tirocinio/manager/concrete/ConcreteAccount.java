@@ -34,6 +34,7 @@ public class ConcreteAccount implements IAccount{
 
     @Override
     public Account readAccount(String email) {
+        initializeConnection();
         try {
             Account anAccount = new Account();
             aCallableStatement = connector.prepareCall("{call getAccount(?)}");
@@ -51,11 +52,19 @@ public class ConcreteAccount implements IAccount{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<Account> getAllAccounts() {
+        initializeConnection();
         ArrayList<Account> accounts = new ArrayList<Account>();
         Account anAccount = null;
         try {
@@ -76,17 +85,25 @@ public class ConcreteAccount implements IAccount{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
-       
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }       
     }
     
-    public static ConcreteAccount getInstance(){
-        instance = new ConcreteAccount();
+    public static synchronized ConcreteAccount getInstance(){
+        if(instance == null)
+            instance = new ConcreteAccount();
         return instance;
     }
 
     @Override
     public String getTypeOfAccount(String email) {
+        initializeConnection();
         try {
             String aTypeOfAccount = null;
             aCallableStatement = connector.prepareCall("{call getTypeOfAccount(?)}");
@@ -101,7 +118,22 @@ public class ConcreteAccount implements IAccount{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

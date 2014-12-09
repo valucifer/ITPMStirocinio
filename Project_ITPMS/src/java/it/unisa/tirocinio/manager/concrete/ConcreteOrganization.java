@@ -35,6 +35,7 @@ public class ConcreteOrganization implements IOrganization{
 
     @Override
     public boolean createOrganization(Organization organization) {
+        initializeConnection();
         try {
             if( organization == null )
                 throw new NullPointerException("Organization is null!");
@@ -49,33 +50,45 @@ public class ConcreteOrganization implements IOrganization{
             aCallableStatement.setString("personSSN",organization.getProfessor());
             aCallableStatement.setString("accountEmail",organization.getAccount());
             aCallableStatement.setString("tutorSSN",organization.getExternalTutor());
-            boolean toReturn = aCallableStatement.execute();
-           // connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean deleteOrganization(String VATNumber) {
-        try {
+        initializeConnection();
+       try {
             aCallableStatement = connector.prepareCall("{call deleteOrganization(?)}");       
             aCallableStatement.setString("vatNumber",VATNumber);
-            boolean toReturn = aCallableStatement.execute();
-            connector.close();
-            
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public boolean updateOrganization(Organization organization) {
+        initializeConnection();
         try {
             if( organization == null )
                 throw new NullPointerException("Organization is null!");
@@ -90,20 +103,24 @@ public class ConcreteOrganization implements IOrganization{
             aCallableStatement.setString("personSSN",organization.getProfessor());
             aCallableStatement.setString("accountEmail",organization.getAccount());
             aCallableStatement.setString("tutorSSN",organization.getExternalTutor());
-            boolean toReturn = aCallableStatement.execute();
-            aCallableStatement.close();
-            //connector.close();
-            
-            return toReturn;
-            
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public Organization readOrganization(String VATNumber) {
+        initializeConnection();
         Organization anOrganization = new Organization();
         ConcreteAccount anAccount = ConcreteAccount.getInstance();
         ConcretePerson aProfessor = ConcretePerson.getInstance();
@@ -129,11 +146,19 @@ public class ConcreteOrganization implements IOrganization{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<Organization> getAllOrganizations() {
+        initializeConnection();
         ArrayList<Organization> organizations = new ArrayList<Organization>();
         Organization anOrganization = null;
         try {
@@ -162,12 +187,19 @@ public class ConcreteOrganization implements IOrganization{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @Override
     public ArrayList<Organization> getOwnOrganizations(String professorSSN) {
-        
+        initializeConnection();
         ArrayList<Organization> organizations = new ArrayList<Organization>();
         Organization anOrganization = null;
         try {
@@ -197,7 +229,14 @@ public class ConcreteOrganization implements IOrganization{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @Override
@@ -216,6 +255,7 @@ public class ConcreteOrganization implements IOrganization{
 
     @Override
     public Organization getOrganizationByAccount(String accountEmail) {
+        initializeConnection();
         Organization anOrganization = new Organization();
         ConcreteAccount anAccount = ConcreteAccount.getInstance();
         ConcretePerson aProfessor = ConcretePerson.getInstance();
@@ -241,12 +281,28 @@ public class ConcreteOrganization implements IOrganization{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
-    public static ConcreteOrganization getInstance(){
-        instance = new ConcreteOrganization();
+    public static synchronized ConcreteOrganization getInstance(){
+        if(instance == null)
+            instance = new ConcreteOrganization();
         return instance;
     }
     
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

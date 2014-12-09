@@ -35,6 +35,7 @@ public class ConcretePerson implements IPerson{
 
     @Override
     public Person readPerson(String SSN) {
+        initializeConnection();
         Person aPerson = new Person();
         ConcreteAccount anAccount = ConcreteAccount.getInstance();
         ConcreteCycle aCycle = ConcreteCycle.getInstance();
@@ -64,16 +65,23 @@ public class ConcretePerson implements IPerson{
                aPerson.setZipCode(rs.getString(7));
             }
             rs.close();
-            //connector.close();
             return aPerson;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<Person> getAllPeople() {
+        initializeConnection();
         ArrayList<Person> people = new ArrayList<Person>();
         Person aPerson = null;
         try {
@@ -106,11 +114,17 @@ public class ConcretePerson implements IPerson{
            }
            rs.close();
            return people;
-           
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
 
     @Override
@@ -122,57 +136,41 @@ public class ConcretePerson implements IPerson{
      @Override
     public boolean isAStudent(String email) {
         String student = "student";
-        String Student = "Student";
         String studente = "studente";
-        String Studente = "Studente";
         
         String variable = this.getTypeOfAccountPerson(email);
         
-        if((variable.equals(student)) || (variable.equals(Student)) || (variable.equals(studente)) || (variable.equals(Studente)))
-            return true;
-        return false;
+        return variable.equalsIgnoreCase(student) || variable.equalsIgnoreCase(studente);
     }
 
     @Override
     public boolean isAProfessor(String email) {
         String professor = "professor";
-        String Professor = "Professor";
         String professore = "professore";
-        String Professore = "Professore";
         
         String variable = this.getTypeOfAccountPerson(email);
         
-        if(variable.equals(professor) || variable.equals(Professor) || variable.equals(professore) || variable.equals(Professore))
-            return true;
-        return false;
+        return variable.equalsIgnoreCase(professor) || variable.equalsIgnoreCase(professore);
     }
 
     @Override
     public boolean isAnOrganization(String email) {
         String org = "organization";
-        String Org = "Organization";
         String orga = "organizzazione";
-        String Orga = "Organizzazione";
         
         String variable = this.getTypeOfAccountPerson(email);
         
-        if(variable.equals(org) || variable.equals(Org) || variable.equals(Orga) || variable.equals(orga))
-            return true;
-        return false;
+        return variable.equalsIgnoreCase(org) || variable.equalsIgnoreCase(orga);
     }
 
     @Override
     public boolean isAnAdministrator(String email) {
         String adm = "administrator";
-        String Adm = "Administrator";
         String amm = "amministratore";
-        String Amm = "Amministratore";
         
         String variable = this.getTypeOfAccountPerson(email);
         
-        if(variable.equals(adm) || variable.equals(Adm) || variable.equals(amm) || variable.equals(Amm))
-            return true;
-        return false;
+        return variable.equalsIgnoreCase(adm) || variable.equalsIgnoreCase(amm);
     }
     
     @Override
@@ -184,28 +182,29 @@ public class ConcretePerson implements IPerson{
 
     @Override
     public Person getStudent(String email) {
-    if(this.isAStudent(email))
+        if(this.isAStudent(email))
             return this.readPersonForAccount(email);
         return null;
     }
 
     @Override
     public Person getOrganization(String email) {
-    if(this.isAnOrganization(email))
+        if(this.isAnOrganization(email))
             return this.readPersonForAccount(email);
         return null;
     }
 
     @Override
     public Person getAdministrator(String email) {
-    if(this.isAnAdministrator(email))
+        if(this.isAnAdministrator(email))
             return this.readPersonForAccount(email);
         return null;
     }
     
     @Override
     public Person readPersonForAccount(String email) {
-    Person aPerson = new Person();
+        initializeConnection();
+        Person aPerson = new Person();
         ConcreteAccount anAccount = ConcreteAccount.getInstance();
         ConcreteCycle aCycle = ConcreteCycle.getInstance();
         ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
@@ -238,12 +237,28 @@ public class ConcretePerson implements IPerson{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
     
-    public static ConcretePerson getInstance(){        
-        instance = new ConcretePerson();
+    public static synchronized ConcretePerson getInstance(){ 
+        if(instance == null)
+            instance = new ConcretePerson();
         return instance;
     }
 
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
+    }
 }

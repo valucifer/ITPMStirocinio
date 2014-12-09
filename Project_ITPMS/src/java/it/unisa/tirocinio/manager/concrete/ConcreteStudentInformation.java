@@ -41,18 +41,25 @@ public class ConcreteStudentInformation implements IStudentInformation{
     
     @Override
     public boolean startTrainingRequest(String studentSSN, String CVPath, String ATPath) {
+        initializeConnection();
         try {
             aCallableStatement = connector.prepareCall("{call storeUploadFile(?,?,?)}");
             aCallableStatement.setString("CVPath",CVPath);
             aCallableStatement.setString("ATPath",ATPath);
             aCallableStatement.setString("studentSSN",studentSSN);
-            boolean toReturn = aCallableStatement.execute();
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }
-        
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }        
     }
 
     @Override
@@ -62,20 +69,29 @@ public class ConcreteStudentInformation implements IStudentInformation{
 
     @Override
     public boolean changeStudentStatus(String studentSSN, StudentStatus newStatus) {
+        initializeConnection();
         try {
             aCallableStatement = connector.prepareCall("{call changeStudentStatus(?,?)}");
             aCallableStatement.setString("studentSSN",studentSSN);
             aCallableStatement.setInt("status",newStatus.getIdStudentStatus());
-            boolean toReturn = aCallableStatement.execute();
-            return toReturn;
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public StudentInformation readStudentInformation(String studentSSN) {
+        initializeConnection();
         StudentInformation aStudentInformation = new StudentInformation();
         ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
@@ -95,11 +111,19 @@ public class ConcreteStudentInformation implements IStudentInformation{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
         }
     }
 
     @Override
     public ArrayList<StudentInformation> getAllStudentInformations() {
+        initializeConnection();
         ArrayList<StudentInformation> studentInformations = new ArrayList<StudentInformation>();
         StudentInformation aStudentInformation = null;
         try {
@@ -122,11 +146,28 @@ public class ConcreteStudentInformation implements IStudentInformation{
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
            return null;
-       }
+       }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
-    public static ConcreteStudentInformation getInstance(){
-        instance = new ConcreteStudentInformation();
+    public static synchronized ConcreteStudentInformation getInstance(){
+        if(instance == null)
+            instance = new ConcreteStudentInformation();
         return instance;
+    }
+    
+    private void initializeConnection(){
+        try {
+            if(connector.isClosed())
+                connector = DBConnector.getConnection();
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 }
