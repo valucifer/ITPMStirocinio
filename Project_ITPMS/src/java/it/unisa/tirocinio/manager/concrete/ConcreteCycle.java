@@ -90,13 +90,8 @@ private static ConcreteCycle instance = null;
         }       
     }
     
-<<<<<<< Updated upstream
     public static synchronized ConcreteCycle getInstance(){
         if(instance == null)
-=======
-    public static ConcreteCycle getInstance(){
-        if( instance == null )
->>>>>>> Stashed changes
             instance = new ConcreteCycle();
         return instance;
     }

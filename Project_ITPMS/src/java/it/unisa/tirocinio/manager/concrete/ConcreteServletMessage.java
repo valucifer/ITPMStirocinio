@@ -14,21 +14,21 @@ import java.util.Map;
  */
 public class ConcreteServletMessage {
     
-    private Map<String, String> messages = null;
+    private Map<String, Object> messages = null;
     
     public ConcreteServletMessage(){
-        messages = new HashMap<String, String>();
+        messages = new HashMap<String, Object>();
     }
 
-    public String getMessage(String keyMessage) {
-        return messages.get(keyMessage);
+    public Object getMessage(String key) {
+        return messages.get(key);
     }
 
-    public void setMessage(String message, String key) {
+    public void setMessage(String key, Object message) {
         messages.put(key, message);
     }
     
-    public Map<String,String> getMessages(){
+    public Map<String,Object> getMessages(){
         return messages;
     }
      

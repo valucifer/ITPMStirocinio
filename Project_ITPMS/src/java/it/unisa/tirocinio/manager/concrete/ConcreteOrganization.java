@@ -291,13 +291,8 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
     
-<<<<<<< Updated upstream
     public static synchronized ConcreteOrganization getInstance(){
         if(instance == null)
-=======
-    public static ConcreteOrganization getInstance(){
-        if( instance == null )
->>>>>>> Stashed changes
             instance = new ConcreteOrganization();
         return instance;
     }

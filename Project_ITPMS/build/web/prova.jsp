@@ -5,5 +5,8 @@
 <!DOCTYPE html>
 <html>
     <body>
+        
+            <p>My salary is: <c:out value="${messages.status}"/><p>
+        
     </body>
 </html>

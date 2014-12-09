@@ -18,7 +18,6 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -49,7 +48,6 @@ public class getStudentTrainingStatus extends HttpServlet {
         
         Person person = aPerson.getStudent(email);
             
-<<<<<<< Updated upstream
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
         StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
 
@@ -57,28 +55,11 @@ public class getStudentTrainingStatus extends HttpServlet {
         StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
         
         if(studentStatus != null){
-            message.setMessage("status",1);
-            message.setMessage("description",studentStatus.getDescription());
-            request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-=======
-           ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-           StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
-           
-           ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-           StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
-           
-           if( studentStatus == null ){
-                aMessage.setMessage("response","1");
-                aMessage.setMessage("description", "C\'è stato un errore di elaborazione dei dati. Riprova, per favore!");
-           }else{
-                aMessage.setMessage("response","1");
-                aMessage.setMessage("description", studentStatus.getDescription());
-           }
-           request.getRequestDispatcher("/WEB-INF/prova.jsp").forward(request, response);
-            //session.setAttribute("message", message);
->>>>>>> Stashed changes
+            aMessage.setMessage("status",1);
+            aMessage.setMessage("description",studentStatus.getDescription());
+            request.getRequestDispatcher("/WEB-INF/prova.jsp").forward(request, response);
         }else{
-            message.setMessage("status",0);
+            aMessage.setMessage("status",0);
         }
         
     }

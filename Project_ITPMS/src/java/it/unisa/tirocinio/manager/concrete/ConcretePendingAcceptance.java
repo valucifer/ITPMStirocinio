@@ -94,14 +94,9 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
             }
         }
     }
-    
-<<<<<<< Updated upstream
+   
     public static synchronized ConcretePendingAcceptance getInstance(){
         if(instance == null)
-=======
-    public static ConcretePendingAcceptance getInstance(){
-        if( instance == null )
->>>>>>> Stashed changes
             instance = new ConcretePendingAcceptance();
         return instance;
     }

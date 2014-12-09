@@ -114,13 +114,8 @@ public class ConcreteStudentStatus implements IStudentStatus{
         }
     }
     
-<<<<<<< Updated upstream
     public static synchronized ConcreteStudentStatus getInstance(){
         if(instance == null)
-=======
-    public static ConcreteStudentStatus getInstance(){
-        if( instance == null )
->>>>>>> Stashed changes
             instance = new ConcreteStudentStatus();
         return instance;
     }

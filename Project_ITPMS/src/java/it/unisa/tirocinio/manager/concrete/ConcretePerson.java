@@ -139,11 +139,7 @@ public class ConcretePerson implements IPerson{
         
         String variable = this.getTypeOfAccountPerson(email);
         
-<<<<<<< Updated upstream
         return variable.equalsIgnoreCase(student) || variable.equalsIgnoreCase(studente);
-=======
-        return (variable.equals(student)) || (variable.equals(Student)) || (variable.equals(studente)) || (variable.equals(Studente));
->>>>>>> Stashed changes
     }
 
     @Override
@@ -152,12 +148,8 @@ public class ConcretePerson implements IPerson{
         String professore = "professore";
         
         String variable = this.getTypeOfAccountPerson(email);
-        
-<<<<<<< Updated upstream
+
         return variable.equalsIgnoreCase(professor) || variable.equalsIgnoreCase(professore);
-=======
-        return variable.equals(professor) || variable.equals(Professor) || variable.equals(professore) || variable.equals(Professore);
->>>>>>> Stashed changes
     }
 
     @Override
@@ -167,11 +159,7 @@ public class ConcretePerson implements IPerson{
         
         String variable = this.getTypeOfAccountPerson(email);
         
-<<<<<<< Updated upstream
         return variable.equalsIgnoreCase(org) || variable.equalsIgnoreCase(orga);
-=======
-        return variable.equals(org) || variable.equals(Org) || variable.equals(Orga) || variable.equals(orga);
->>>>>>> Stashed changes
     }
 
     @Override
@@ -180,12 +168,7 @@ public class ConcretePerson implements IPerson{
         String amm = "amministratore";
         
         String variable = this.getTypeOfAccountPerson(email);
-        
-<<<<<<< Updated upstream
         return variable.equalsIgnoreCase(adm) || variable.equalsIgnoreCase(amm);
-=======
-        return variable.equalsIgnoreCase(adm)||variable.equalsIgnoreCase(amm);//variable.equals(adm) || variable.equals(Adm) || variable.equals(amm) || variable.equals(Amm);
->>>>>>> Stashed changes
     }
     
     @Override
@@ -262,13 +245,8 @@ public class ConcretePerson implements IPerson{
         }
     }
     
-<<<<<<< Updated upstream
     public static synchronized ConcretePerson getInstance(){ 
         if(instance == null)
-=======
-    public static ConcretePerson getInstance(){
-        if( instance == null )
->>>>>>> Stashed changes
             instance = new ConcretePerson();
         return instance;
     }

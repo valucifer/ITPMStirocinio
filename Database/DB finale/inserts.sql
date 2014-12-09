@@ -1,7 +1,7 @@
-INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('0', 'Rifiutato');
-INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('1', 'Accettato');
-INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('2', 'In attesa');
-INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('3', 'Non inviato');
+INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('1', 'Rifiutato');
+INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('2', 'Accettato');
+INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('3', 'In attesa');
+INSERT INTO `db_distra`.`student_status` (`id_student_status`, `description`) VALUES ('4', 'Non inviato');
 
 
 -- account--

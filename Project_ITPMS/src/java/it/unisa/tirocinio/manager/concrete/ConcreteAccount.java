@@ -95,13 +95,8 @@ public class ConcreteAccount implements IAccount{
         }       
     }
     
-<<<<<<< Updated upstream
     public static synchronized ConcreteAccount getInstance(){
         if(instance == null)
-=======
-    public static ConcreteAccount getInstance(){
-        if( instance == null )
->>>>>>> Stashed changes
             instance = new ConcreteAccount();
         return instance;
     }
