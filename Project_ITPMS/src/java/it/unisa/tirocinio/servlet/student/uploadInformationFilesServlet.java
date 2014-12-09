@@ -5,6 +5,8 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
+import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.File;
 import java.io.IOException;
@@ -45,7 +47,7 @@ public class uploadInformationFilesServlet extends HttpServlet {
         fileSeparator = System.getProperty("file.separator");
         String userHome = System.getProperty("user.home");
         filePath = userHome+fileSeparator+"PlatformDocuments";
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        
         File directoryCheck = new File(filePath);
         if( !directoryCheck.exists() ){
             directoryCheck.mkdir();
@@ -64,14 +66,15 @@ public class uploadInformationFilesServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin","*");
         PrintWriter out = response.getWriter();
         try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Access-Control-Allow-Origin","*");
+            String primaryKey = "vale";//request.getParameter("primaryKey");
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getStudent(primaryKey);
             out = response.getWriter();
+            
             isMultipart = ServletFileUpload.isMultipartContent(request);
-            StudentDBOperation getSerialNumberObj = new StudentDBOperation();
-            ConcreteStudent aStudent = null;
             String serialNumber = null;
             DiskFileItemFactory factory = new DiskFileItemFactory();
             ServletFileUpload upload = new ServletFileUpload(factory);
@@ -79,6 +82,7 @@ public class uploadInformationFilesServlet extends HttpServlet {
             Iterator i = fileItems.iterator();
             File fileToStore = null;
             String studentSubfolderPath = filePath;
+            
             while ( i.hasNext () ) {
                 FileItem fi = (FileItem)i.next();
                 if ( !fi.isFormField () ){
@@ -95,14 +99,16 @@ public class uploadInformationFilesServlet extends HttpServlet {
                 }else{
                     //out.println("It's not formfield");
                     //out.println(fi.getString());
-                    aStudent = getSerialNumberObj.getSerialNumberbyFK_Account(Integer.parseInt(fi.getString()));
-                    serialNumber = reverseSerialNumber(aStudent.getPrimaryKey());
+                    serialNumber = reverseSerialNumber(person.getMatricula());
                     studentSubfolderPath += fileSeparator+serialNumber;
                     new File(studentSubfolderPath).mkdir();
                 } 
             }
-            message.put("status", 1);
-            out.print(message.toString());
+            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+            message.setMessage("status", 1);
+            out.println(message.getMessage("status"));
+        } catch (Exception ex) {
+            Logger.getLogger(uploadInformationFilesServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }
