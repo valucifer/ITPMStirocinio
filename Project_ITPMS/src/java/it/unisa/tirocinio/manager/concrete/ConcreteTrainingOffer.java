@@ -156,9 +156,10 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
     }
     
     @Override
-    public TrainingOffer readInnerTrainingOffer(String personSSN) {
+    public ArrayList<TrainingOffer> readInnerTrainingOffer(String personSSN) {
         initializeConnection();
-        TrainingOffer aTrainingOffer = new TrainingOffer();
+        ArrayList<TrainingOffer> allTraining = new ArrayList<TrainingOffer>();
+        TrainingOffer aTrainingOffer = null;
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
         ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
@@ -168,14 +169,16 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
+                aTrainingOffer = new TrainingOffer();
                 aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
                 aTrainingOffer.setDescription(rs.getString("description"));
                 aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
                 aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                allTraining.add(aTrainingOffer);
             }
             rs.close();
-            return aTrainingOffer;
+            return allTraining;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
@@ -190,9 +193,10 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
     }
 
     @Override
-    public TrainingOffer readOuterTrainingOffer(String vatNumber) {
+    public ArrayList<TrainingOffer> readOuterTrainingOffer(String vatNumber) {
         initializeConnection();
-        TrainingOffer aTrainingOffer = new TrainingOffer();
+        ArrayList<TrainingOffer> allTraining = new ArrayList<TrainingOffer>();
+        TrainingOffer aTrainingOffer = null;
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
         ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
@@ -202,14 +206,16 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
+                aTrainingOffer = new TrainingOffer();
                 aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
                 aTrainingOffer.setDescription(rs.getString("description"));
                 aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
                 aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                allTraining.add(aTrainingOffer);
             }
             rs.close();
-            return aTrainingOffer;
+            return allTraining;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
