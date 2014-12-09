@@ -5,8 +5,14 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
+import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.beans.TrainingOffer;
+import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -30,18 +36,24 @@ public class selectTrainingByProfessorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\" \"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet selectTrainingByProfessorServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet selectTrainingByProfessorServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String primaryKey = "delucia"; //request.getParameter("primaryKey"));
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getProfessor(primaryKey);
+            
+            ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
+            ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readInnerTrainingOffer(person.getSSN());
+            
+            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+            if(trainingOffer == null){
+                message.setMessage("status", 0);
+            }else{
+                message.setMessage("status", 1);
+                message.setMessage("Object", trainingOffer);
+                out.println("message "+message.getMessage("status"));
+            }
         } finally {
             out.close();
         }
