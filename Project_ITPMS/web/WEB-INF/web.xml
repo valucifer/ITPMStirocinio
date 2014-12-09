@@ -41,10 +41,6 @@
         <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingByProfessorServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>selectTrainingByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.selectTrainingByProfessorServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>studentAttDetailsServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.studentAttDetailsServlet</servlet-class>
     </servlet>
@@ -91,10 +87,6 @@
     <servlet-mapping>
         <servlet-name>insertTrainingByProfessorServlet</servlet-name>
         <url-pattern>/insertTrainingByProfessorServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>selectTrainingByProfessorServlet</servlet-name>
-        <url-pattern>/selectTrainingByProfessorServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>studentAttDetailsServlet</servlet-name>
