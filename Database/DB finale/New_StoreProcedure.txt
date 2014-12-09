@@ -80,6 +80,16 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getRejectedTrainingMessageBySSN`(in ssn VARCHAR(16))
+BEGIN
+SELECT * FROM rejected_training_message WHERE fk_person = ssn;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getAllRejectedTrainingMessage`(in pkRejectedTrainingMessage INT)
 BEGIN
 SELECT * FROM rejected_training_message;
@@ -90,9 +100,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertRejectedTrainingMessage`(in message LONGTEXT,in personSSN VARCHAR(45))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertRejectedTrainingMessage`(in message LONGTEXT,in personSSN VARCHAR(16))
 BEGIN
-INSERT INTO rejected_training_message VALUES (message,serialNumber);
+INSERT INTO rejected_training_message (description,fk_person) VALUES (message,personSSN);
 END
 
 -- --------------------------------------------------------------------------------

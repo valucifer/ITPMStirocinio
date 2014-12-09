@@ -159,4 +159,34 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
             Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public RejectedTrainingMessage readTrainingMessage(String ssn) {
+        initializeConnection();
+        RejectedTrainingMessage aRejectedMessage = new RejectedTrainingMessage();
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        try {
+            aCallableStatement = connector.prepareCall("{call getRejectedTrainingMessageBySSN(?)}");
+            aCallableStatement.setString("ssn",ssn);
+            ResultSet rs = aCallableStatement.executeQuery();
+            
+            while( rs.next() ){
+                aRejectedMessage.setDescription(rs.getString("description"));
+                aRejectedMessage.setIdRejectedTraingMessage(rs.getInt("id_rejected_training_message"));
+                aRejectedMessage.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+            }
+            rs.close();
+            return aRejectedMessage;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }
