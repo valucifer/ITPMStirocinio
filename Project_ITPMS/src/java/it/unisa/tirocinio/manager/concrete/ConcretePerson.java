@@ -5,7 +5,6 @@
  */
 package it.unisa.tirocinio.manager.concrete;
 
-import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IPerson;
@@ -149,7 +148,7 @@ public class ConcretePerson implements IPerson{
         String professore = "professore";
         
         String variable = this.getTypeOfAccountPerson(email);
-        
+
         return variable.equalsIgnoreCase(professor) || variable.equalsIgnoreCase(professore);
     }
 
@@ -169,7 +168,6 @@ public class ConcretePerson implements IPerson{
         String amm = "amministratore";
         
         String variable = this.getTypeOfAccountPerson(email);
-        
         return variable.equalsIgnoreCase(adm) || variable.equalsIgnoreCase(amm);
     }
     

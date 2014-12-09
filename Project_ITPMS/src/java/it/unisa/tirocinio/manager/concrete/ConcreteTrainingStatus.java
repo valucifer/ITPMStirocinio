@@ -113,7 +113,7 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
             }
         }
     }
-    
+
     public static synchronized ConcreteTrainingStatus getInstance(){
         if(instance == null)
             instance = new ConcreteTrainingStatus();

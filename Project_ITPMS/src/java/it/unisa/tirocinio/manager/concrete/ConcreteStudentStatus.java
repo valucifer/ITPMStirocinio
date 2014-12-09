@@ -65,7 +65,6 @@ public class ConcreteStudentStatus implements IStudentStatus{
             aCallableStatement = connector.prepareCall("{call getStudentTrainingStatus(?)}");
             aCallableStatement.setInt("pkStudentStatus",idStudentStatus);
             ResultSet rs = aCallableStatement.executeQuery();
-            
             while( rs.next() ){
                 aStudentStatus.setIdStudentStatus(rs.getInt("id_student_status"));
                 aStudentStatus.setDescription(rs.getString("description"));

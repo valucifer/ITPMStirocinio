@@ -268,7 +268,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             }
         }
     }
-    
+
     public static synchronized ConcreteTrainingOffer getInstance(){
         if(instance == null)
             instance = new ConcreteTrainingOffer();
