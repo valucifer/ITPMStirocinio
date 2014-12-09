@@ -41,14 +41,14 @@ public final class prova_jsp extends org.apache.jasper.runtime.HttpJspBase
       _jspx_out = out;
       _jspx_resourceInjector = (org.glassfish.jsp.api.ResourceInjector) application.getAttribute("com.sun.appserv.jsp.resource.injector");
 
-      out.write("\r\n");
-      out.write("\r\n");
-      out.write("<html>\r\n");
-      out.write("<body>\r\n");
+      out.write("\n");
+      out.write("\n");
+      out.write("<html>\n");
+      out.write("<body>\n");
       out.write("\t");
       out.print(  System.out.println("ciao") );
-      out.write("\r\n");
-      out.write("</body>\r\n");
+      out.write("\n");
+      out.write("</body>\n");
       out.write("</html>");
     } catch (Throwable t) {
       if (!(t instanceof SkipPageException)){
