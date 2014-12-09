@@ -6,6 +6,7 @@ Project_ITPMS/nbproject/private/private.properties
 Project_ITPMS/nbproject/private/private.xml
 
 Project_ITPMS/nbproject/project.properties
+<<<<<<< HEAD
 
 Project_ITPMS/nbproject/private/private.xml
 
@@ -14,3 +15,6 @@ Project_ITPMS/nbproject/private/private.properties
 Project_ITPMS/build/web/gfv3ee6.dpf
 
 Project_ITPMS/build/web/WEB-INF/sun-web.xml
+=======
+Project_ITPMS/nbproject/private/private.xml
+>>>>>>> FETCH_HEAD
