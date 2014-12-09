@@ -56,6 +56,10 @@
         <servlet-name>uploadInformationForModuleFilesServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.uploadInformationForModuleFilesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>changeProfessorForTrainingOrganizationServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.changeProfessorForTrainingOrganizationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticateUserServlet</servlet-name>
         <url-pattern>/AuthenticateUserServlet</url-pattern>
@@ -111,6 +115,10 @@
     <servlet-mapping>
         <servlet-name>uploadInformationForModuleFilesServlet</servlet-name>
         <url-pattern>/uploadInformationForModuleFilesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeProfessorForTrainingOrganizationServlet</servlet-name>
+        <url-pattern>/changeProfessorForTrainingOrganizationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
