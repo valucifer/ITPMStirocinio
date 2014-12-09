@@ -65,7 +65,6 @@ public class ConcreteStudentStatus implements IStudentStatus{
             aCallableStatement = connector.prepareCall("{call getStudentTrainingStatus(?)}");
             aCallableStatement.setInt("pkStudentStatus",idStudentStatus);
             ResultSet rs = aCallableStatement.executeQuery();
-            
             while( rs.next() ){
                 aStudentStatus.setIdStudentStatus(rs.getInt("id_student_status"));
                 aStudentStatus.setDescription(rs.getString("description"));
@@ -115,8 +114,13 @@ public class ConcreteStudentStatus implements IStudentStatus{
         }
     }
     
+<<<<<<< Updated upstream
     public static synchronized ConcreteStudentStatus getInstance(){
         if(instance == null)
+=======
+    public static ConcreteStudentStatus getInstance(){
+        if( instance == null )
+>>>>>>> Stashed changes
             instance = new ConcreteStudentStatus();
         return instance;
     }

@@ -428,8 +428,13 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
     
+<<<<<<< Updated upstream
     public static synchronized ConcreteTrainingRequest getInstance(){
         if(instance == null)
+=======
+    public static ConcreteTrainingRequest getInstance(){
+        if( instance == null )
+>>>>>>> Stashed changes
             instance = new ConcreteTrainingRequest();
         return instance;
     }

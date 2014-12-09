@@ -114,8 +114,13 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
         }
     }
     
+<<<<<<< Updated upstream
     public static synchronized ConcreteTrainingStatus getInstance(){
         if(instance == null)
+=======
+    public static ConcreteTrainingStatus getInstance(){
+        if( instance == null )
+>>>>>>> Stashed changes
             instance = new ConcreteTrainingStatus();
         return instance;
     }

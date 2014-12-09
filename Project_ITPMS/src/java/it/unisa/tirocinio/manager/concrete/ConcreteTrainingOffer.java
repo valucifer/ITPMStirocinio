@@ -260,8 +260,13 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
     
+<<<<<<< Updated upstream
     public static synchronized ConcreteTrainingOffer getInstance(){
         if(instance == null)
+=======
+    public static ConcreteTrainingOffer getInstance(){
+        if( instance == null )
+>>>>>>> Stashed changes
             instance = new ConcreteTrainingOffer();
         return instance;
     }

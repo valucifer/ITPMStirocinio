@@ -5,17 +5,15 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.integrazione.manager.concrete.ConcreteStudent;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.StudentStatus;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
+import it.unisa.tirocinio.manager.concrete.ConcreteServletMessage;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentStatus;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -42,14 +40,16 @@ public class getStudentTrainingStatus extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        HttpSession session = request.getSession();
+        ConcreteServletMessage aMessage = new ConcreteServletMessage();
+        request.setAttribute("messages", aMessage);
+        //HttpSession session = request.getSession();
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
         String email = "vale" ;//request.getParameter("accountEmail");
         
         Person person = aPerson.getStudent(email);
             
+<<<<<<< Updated upstream
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
         StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
 
@@ -60,6 +60,23 @@ public class getStudentTrainingStatus extends HttpServlet {
             message.setMessage("status",1);
             message.setMessage("description",studentStatus.getDescription());
             request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
+=======
+           ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+           StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
+           
+           ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
+           StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
+           
+           if( studentStatus == null ){
+                aMessage.setMessage("response","1");
+                aMessage.setMessage("description", "C\'è stato un errore di elaborazione dei dati. Riprova, per favore!");
+           }else{
+                aMessage.setMessage("response","1");
+                aMessage.setMessage("description", studentStatus.getDescription());
+           }
+           request.getRequestDispatcher("/WEB-INF/prova.jsp").forward(request, response);
+            //session.setAttribute("message", message);
+>>>>>>> Stashed changes
         }else{
             message.setMessage("status",0);
         }

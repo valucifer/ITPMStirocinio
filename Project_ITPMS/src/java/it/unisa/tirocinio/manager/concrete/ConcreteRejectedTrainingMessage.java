@@ -145,8 +145,13 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         }
     }
     
+<<<<<<< Updated upstream
     public static synchronized ConcreteRejectedTrainingMessage getInstance(){
         if(instance == null)
+=======
+    public static ConcreteRejectedTrainingMessage getInstance(){
+        if( instance == null )
+>>>>>>> Stashed changes
             instance = new ConcreteRejectedTrainingMessage();
         return instance;
     }

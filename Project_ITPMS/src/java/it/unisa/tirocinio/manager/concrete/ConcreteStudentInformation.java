@@ -156,8 +156,13 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
     
+<<<<<<< Updated upstream
     public static synchronized ConcreteStudentInformation getInstance(){
         if(instance == null)
+=======
+    public static ConcreteStudentInformation getInstance(){
+        if( instance == null )
+>>>>>>> Stashed changes
             instance = new ConcreteStudentInformation();
         return instance;
     }
