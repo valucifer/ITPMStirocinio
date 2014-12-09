@@ -94,7 +94,7 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
             }
         }
     }
-   
+    
     public static synchronized ConcretePendingAcceptance getInstance(){
         if(instance == null)
             instance = new ConcretePendingAcceptance();

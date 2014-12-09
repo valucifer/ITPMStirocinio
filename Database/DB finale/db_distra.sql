@@ -72,7 +72,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`person` (
   `position` VARCHAR(50) NOT NULL,
   `cycle` INT(11) NOT NULL,
   PRIMARY KEY (`SSN`),
-  INDEX `fk_cycle` (`cycle` ASC),
+  UNIQUE INDEX `fk_cycle` (`cycle` ASC),
   INDEX `fk_Person_Account_idx` (`Account_email` ASC),
   INDEX `fk_Person_Department1_idx` (`Department_abbreviation` ASC),
   CONSTRAINT `person_ibfk_1`

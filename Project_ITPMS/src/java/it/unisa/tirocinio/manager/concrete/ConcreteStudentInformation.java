@@ -136,7 +136,7 @@ public class ConcreteStudentInformation implements IStudentInformation{
                aStudentInformation = new StudentInformation();
                aStudentInformation.setStudentSSN(aPerson.readPerson(rs.getString("SSN")).getSSN());
                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
-               aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
+               aStudentInformation.setATPath(rs.getString("accademic_transcription_path"));
                aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
                studentInformations.add(aStudentInformation);
            }

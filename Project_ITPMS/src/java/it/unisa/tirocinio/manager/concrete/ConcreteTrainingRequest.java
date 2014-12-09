@@ -4,6 +4,8 @@
  * and open the template in the editor.
  */
 package it.unisa.tirocinio.manager.concrete;
+
+import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.beans.TrainingStatus;
 import it.unisa.tirocinio.manager.DBConnector;
