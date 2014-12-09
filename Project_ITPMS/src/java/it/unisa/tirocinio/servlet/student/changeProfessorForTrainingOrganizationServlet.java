@@ -40,7 +40,7 @@ public class changeProfessorForTrainingOrganizationServlet extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String professorEmail = "nello"; //request.getParameter("professorEmail");
+            String professorEmail = "delucia"; //request.getParameter("professorEmail");
             String organizationVAT = "1"; //request.getParameter("organizationVAT");
             
             ConcretePerson aPerson = ConcretePerson.getInstance();
