@@ -36,7 +36,30 @@ public class ConcreteStudentInformation implements IStudentInformation{
 
     @Override
     public boolean updateStudentInformation(StudentInformation aStudentInformation) {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
+        initializeConnection();
+        try {
+            if( aStudentInformation == null )
+                throw new NullPointerException("OfferTraining is null!");
+            
+            aCallableStatement = connector.prepareCall("{call updateStudentInformation(?,?,?,?)}");       
+            aCallableStatement.setString("ssn",aStudentInformation.getStudentSSN());
+            aCallableStatement.setString("CV",aStudentInformation.getCVPath());
+            aCallableStatement.setString("AT",aStudentInformation.getATPath());
+            aCallableStatement.setInt("fk_student_status",aStudentInformation.getStudentStatus());
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
     }
     
     @Override

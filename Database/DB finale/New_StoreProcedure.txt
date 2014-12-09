@@ -299,6 +299,7 @@ END if;
 END if;
 END
 
+
 -- --------------------------------------------------------------------------------
 -- Routine DDL
 -- Note: comments before and after the routine body will not be stored by the server
@@ -330,6 +331,16 @@ DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation` ( in ssn VARCHAR(16) )
 BEGIN
 SELECT * FROM student_information WHERE SSN = ssn;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateStudentInformation`  ( in ssn VARCHAR(16), in CV VARCHAR(200), in AT VARCHAR(200), in fk_student_status INT )
+BEGIN
+UPDATE student_information SET curriculum_vitae_path = CV, accademic_transcript_path = AT, fk_student_status = fk_student_status WHERE SSN = ssn;
 END
 
 -- --------------------------------------------------------------------------------

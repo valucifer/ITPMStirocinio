@@ -61,8 +61,8 @@
         <servlet-class>it.unisa.tirocinio.servlet.student.changeProfessorForTrainingOrganizationServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>getStudentStatus</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentStatus</servlet-class>
+        <servlet-name>acceptStudentForTraining</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.acceptStudentForTraining</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticateUserServlet</servlet-name>
@@ -125,8 +125,8 @@
         <url-pattern>/changeProfessorForTrainingOrganizationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>getStudentStatus</servlet-name>
-        <url-pattern>/getStudentStatus</url-pattern>
+        <servlet-name>acceptStudentForTraining</servlet-name>
+        <url-pattern>/acceptStudentForTraining</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

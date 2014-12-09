@@ -5,18 +5,22 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
+import it.unisa.tirocinio.beans.StudentInformation;
+import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
+import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Valentino
  */
-public class getStudentStatus extends HttpServlet {
+public class acceptStudentForTraining extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -30,10 +34,24 @@ public class getStudentStatus extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
+        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        HttpSession session = request.getSession();
         try {
             /* TODO output your page here. You may use following sample code. */
+            String studentSSN = "vvv"; //request.getParameter("studentSSN");
             
+            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+            StudentInformation studentInformation = aStudentInformation.readStudentInformation(studentSSN);
+            
+            studentInformation.setStudentStatus(2);
+            
+            if(aStudentInformation.updateStudentInformation(studentInformation)){
+                message.setMessage("status", 1);
+            }else{
+                 message.setMessage("status", 0);
+            }
         } finally {
             out.close();
         }
