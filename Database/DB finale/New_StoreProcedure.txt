@@ -132,7 +132,7 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_PersonSSN VARCHAR(45), in FK_Department INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_PersonSSN VARCHAR(45), in FK_Department VARCHAR(50) )
 BEGIN
 INSERT INTO training_offer (description, fk_person, fk_department) values (trainingDescription, FK_PersonSSN, FK_Department);
 END
@@ -142,9 +142,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getInnerTrainingOffer`( in pkProfessor INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInnerTrainingOffer`( in pkProfessor VARCHAR(16) )
 BEGIN
-SELECT * FROM training_offer WHERE fk_professor = pkProfessor ORDER BY id_training_offer DESC;
+SELECT * FROM training_offer WHERE fk_person = pkProfessor ORDER BY id_training_offer DESC;
 END
 
 -- --------------------------------------------------------------------------------
