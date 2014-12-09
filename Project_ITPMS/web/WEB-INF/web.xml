@@ -48,6 +48,10 @@
         <servlet-name>uploadInformationFilesServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.uploadInformationFilesServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>selectTrainingByProfessorServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.selectTrainingByProfessorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticateUserServlet</servlet-name>
         <url-pattern>/AuthenticateUserServlet</url-pattern>
@@ -95,6 +99,10 @@
     <servlet-mapping>
         <servlet-name>uploadInformationFilesServlet</servlet-name>
         <url-pattern>/uploadInformationFilesServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>selectTrainingByProfessorServlet</servlet-name>
+        <url-pattern>/selectTrainingByProfessorServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
