@@ -14,7 +14,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`account` (
   `email` VARCHAR(100) NOT NULL COMMENT 'Nome con il quale l\'utente viene riconosciuto da un',
   `password` VARCHAR(45) NOT NULL,
   `typeOfAccount` VARCHAR(45) NOT NULL,
-  `active` TINYINT(1) NOT NULL,
+  `active` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
@@ -72,7 +72,6 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`person` (
   `position` VARCHAR(50) NOT NULL,
   `cycle` INT(11) NOT NULL,
   PRIMARY KEY (`SSN`),
-  UNIQUE INDEX `fk_cycle` (`cycle` ASC),
   INDEX `fk_Person_Account_idx` (`Account_email` ASC),
   INDEX `fk_Person_Department1_idx` (`Department_abbreviation` ASC),
   CONSTRAINT `person_ibfk_1`
@@ -600,8 +599,8 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`organization` (
   `address` VARCHAR(45) NULL DEFAULT NULL,
   `phone` VARCHAR(45) NULL DEFAULT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `fk_account` VARCHAR(100) NOT NULL,
-  `fk_externaltutor` VARCHAR(16) NULL DEFAULT NULL,
+  `fk_account` VARCHAR(100) NULL,
+  `fk_externaltutor` VARCHAR(16) NOT NULL,
   `fk_professor` VARCHAR(16) NOT NULL,
   PRIMARY KEY (`id_organization`),
   INDEX `fk_acc` (`fk_account` ASC),
@@ -666,18 +665,20 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `db_distra`.`pending_acceptance` ;
 
 CREATE TABLE IF NOT EXISTS `db_distra`.`pending_acceptance` (
-  `id_pending_acceptance` INT(11) NOT NULL AUTO_INCREMENT,
-  `date_request` DATE NULL DEFAULT NULL,
-  `fk_person` VARCHAR(16) NOT NULL,
+  `id_pending_acceptance` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'weqdas',
+  `date_request` DATE NULL DEFAULT NULL COMMENT 'dfsdf',
+  `fk_person` VARCHAR(16) NOT NULL COMMENT 'sadaas',
   PRIMARY KEY (`id_pending_acceptance`),
   INDEX `fk_StudentAttendence_Student1_idx` (`fk_person` ASC),
+  UNIQUE INDEX `fk_person_UNIQUE` (`fk_person` ASC),
   CONSTRAINT `fk_StudentAttendence_Student1`
     FOREIGN KEY (`fk_person`)
     REFERENCES `db_distra`.`person` (`SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'dsadfasfsa';
 
 
 -- -----------------------------------------------------
@@ -765,6 +766,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`rejected_training_message` (
   `fk_person` VARCHAR(16) NOT NULL,
   PRIMARY KEY (`id_rejected_training_message`),
   INDEX `fk_RejectedTrainingMessage_Student1_idx` (`fk_person` ASC),
+  UNIQUE INDEX `fk_person_UNIQUE` (`fk_person` ASC),
   CONSTRAINT `rejected_training_message_ibfk_1`
     FOREIGN KEY (`fk_person`)
     REFERENCES `db_distra`.`person` (`SSN`)

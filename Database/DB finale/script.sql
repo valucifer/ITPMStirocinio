@@ -2,386 +2,7 @@ SET @OLD_UNIQUE_CHECKS=@@UNIQUE_CHECKS, UNIQUE_CHECKS=0;
 SET @OLD_FOREIGN_KEY_CHECKS=@@FOREIGN_KEY_CHECKS, FOREIGN_KEY_CHECKS=0;
 SET @OLD_SQL_MODE=@@SQL_MODE, SQL_MODE='TRADITIONAL,ALLOW_INVALID_DATES';
 
-DROP SCHEMA IF EXISTS `db_integrazione` ;
-CREATE SCHEMA IF NOT EXISTS `db_integrazione` DEFAULT CHARACTER SET utf8 ;
-DROP SCHEMA IF EXISTS `db_distra` ;
 CREATE SCHEMA IF NOT EXISTS `db_distra` DEFAULT CHARACTER SET utf8 ;
-USE `db_integrazione` ;
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Permissions`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Permissions` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Permissions` (
-  `idPermissions` INT NOT NULL,
-  `description` VARCHAR(45) NULL DEFAULT NULL,
-  `class` VARCHAR(45) NULL DEFAULT NULL,
-  PRIMARY KEY (`idPermissions`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Account`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Account` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Account` (
-  `email` VARCHAR(100) NOT NULL COMMENT 'Nome con il quale l\'utente viene riconosciuto da un',
-  `password` VARCHAR(45) NOT NULL,
-  `typeOfAccount` VARCHAR(45) NULL DEFAULT NULL,
-  `Permissions_idPermissions` INT NOT NULL,
-  PRIMARY KEY (`email`, `Permissions_idPermissions`),
-  INDEX `fk_Account_Permissions_idx` (`Permissions_idPermissions` ASC),
-  CONSTRAINT `fk_Account_Permissions`
-    FOREIGN KEY (`Permissions_idPermissions`)
-    REFERENCES `db_integrazione`.`Permissions` (`idPermissions`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB
-COMMENT = 'Tabella adibita alla gestione dei dati principali per l\'aces /* comment truncated */ /*so al sistema*/';
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Department`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Department` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Department` (
-  `abbreviation` VARCHAR(50) NOT NULL,
-  `title` VARCHAR(50) NULL DEFAULT NULL,
-  `url_moodle` VARCHAR(1000) NULL,
-  `token` VARCHAR(200) NULL,
-  PRIMARY KEY (`abbreviation`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Person`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Person` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Person` (
-  `fiscal_code` INT NOT NULL,
-  `name` VARCHAR(45) NULL DEFAULT NULL,
-  `surname` VARCHAR(45) NULL DEFAULT NULL,
-  `phone` VARCHAR(45) NULL DEFAULT NULL,
-  `city` VARCHAR(45) NULL DEFAULT NULL,
-  `address` VARCHAR(45) NULL DEFAULT NULL,
-  `zip_code` VARCHAR(45) NULL DEFAULT NULL,
-  `gender` CHAR NULL DEFAULT NULL,
-  `citizenship` VARCHAR(45) NULL DEFAULT NULL,
-  `email` VARCHAR(45) NULL,
-  PRIMARY KEY (`fiscal_code`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Professor`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Professor` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Professor` (
-  `idProfessor` INT NOT NULL,
-  `position` VARCHAR(45) NULL DEFAULT NULL,
-  `phone` VARCHAR(45) NULL DEFAULT NULL,
-  `office_hours` VARCHAR(45) NULL DEFAULT NULL,
-  `Account_email` VARCHAR(100) NOT NULL,
-  `Person_fiscal_code` INT NOT NULL,
-  `Department_abbreviation` VARCHAR(50) NOT NULL,
-  `profile_link` VARCHAR(500) NULL,
-  PRIMARY KEY (`idProfessor`, `Account_email`, `Person_fiscal_code`, `Department_abbreviation`),
-  INDEX `fk_Professor_Account1_idx` (`Account_email` ASC),
-  INDEX `fk_Professor_Person1_idx` (`Person_fiscal_code` ASC),
-  INDEX `fk_Professor_Department1_idx` (`Department_abbreviation` ASC),
-  CONSTRAINT `fk_Professor_Account1`
-    FOREIGN KEY (`Account_email`)
-    REFERENCES `db_integrazione`.`Account` (`email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Professor_Person1`
-    FOREIGN KEY (`Person_fiscal_code`)
-    REFERENCES `db_integrazione`.`Person` (`fiscal_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Professor_Department1`
-    FOREIGN KEY (`Department_abbreviation`)
-    REFERENCES `db_integrazione`.`Department` (`abbreviation`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Organization`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Organization` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Organization` (
-  `id_organization` INT NOT NULL,
-  `company_name` VARCHAR(45) NULL DEFAULT NULL,
-  `city` VARCHAR(45) NULL DEFAULT NULL,
-  `address` VARCHAR(45) NULL DEFAULT NULL,
-  `phone` VARCHAR(45) NULL DEFAULT NULL,
-  `training` LONGTEXT NULL DEFAULT NULL,
-  `Account_email` VARCHAR(100) NOT NULL,
-  `Person_fiscal_code` INT NOT NULL,
-  `email` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_organization`, `Account_email`, `Person_fiscal_code`),
-  INDEX `fk_Organization_Account1_idx` (`Account_email` ASC),
-  INDEX `fk_Organization_Person1_idx` (`Person_fiscal_code` ASC),
-  CONSTRAINT `fk_Organization_Account1`
-    FOREIGN KEY (`Account_email`)
-    REFERENCES `db_integrazione`.`Account` (`email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Organization_Person1`
-    FOREIGN KEY (`Person_fiscal_code`)
-    REFERENCES `db_integrazione`.`Person` (`fiscal_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`student_status`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`student_status` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`student_status` (
-  `id_student_status` INT NOT NULL,
-  `description` VARCHAR(45) NOT NULL,
-  PRIMARY KEY (`id_student_status`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`student_information`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`student_information` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`student_information` (
-  `id_student_information` INT NOT NULL,
-  `curriculum_vitae_path` VARCHAR(200) NULL,
-  `accademic_transcript_path` VARCHAR(200) NULL,
-  PRIMARY KEY (`id_student_information`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`training_status`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`training_status` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`training_status` (
-  `id_training_status` INT NOT NULL,
-  `description` VARCHAR(45) NULL,
-  PRIMARY KEY (`id_training_status`))
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`trainig_request`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`trainig_request` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`trainig_request` (
-  `id_trainig_request` INT NOT NULL,
-  `description` LONGTEXT NULL,
-  `title` VARCHAR(45) NULL,
-  `fk_training_status` INT NOT NULL,
-  `fk_professor` VARCHAR(100) NOT NULL,
-  `fk_organization` INT NOT NULL,
-  PRIMARY KEY (`id_trainig_request`, `fk_training_status`, `fk_professor`, `fk_organization`),
-  INDEX `fk_trainig_request_training_status1_idx` (`fk_training_status` ASC),
-  INDEX `fk_trainig_request_Professor1_idx` (`fk_professor` ASC),
-  INDEX `fk_trainig_request_Organization1_idx` (`fk_organization` ASC),
-  CONSTRAINT `fk_trainig_request_training_status1`
-    FOREIGN KEY (`fk_training_status`)
-    REFERENCES `db_integrazione`.`training_status` (`id_training_status`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT `fk_trainig_request_Professor1`
-    FOREIGN KEY (`fk_professor`)
-    REFERENCES `db_integrazione`.`Professor` (`Account_email`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT,
-  CONSTRAINT `fk_trainig_request_Organization1`
-    FOREIGN KEY (`fk_organization`)
-    REFERENCES `db_integrazione`.`Organization` (`id_organization`)
-    ON DELETE RESTRICT
-    ON UPDATE RESTRICT)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Student`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Student` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Student` (
-  `serial_number` VARCHAR(45) NOT NULL,
-  `Account_email` VARCHAR(100) NOT NULL,
-  `Person_fiscal_code` INT NOT NULL,
-  `Department_abbreviation` VARCHAR(50) NOT NULL,
-  `fk_student_status` INT NULL,
-  `fk_student_information` INT NULL,
-  `fk_trainig_request` INT NOT NULL,
-  `cover_letter` LONGTEXT NULL,
-  `cicle` INT NOT NULL,
-  PRIMARY KEY (`serial_number`, `Account_email`, `Person_fiscal_code`, `Department_abbreviation`, `fk_student_status`, `fk_student_information`, `fk_trainig_request`),
-  INDEX `fk_Student_Account1_idx` (`Account_email` ASC),
-  INDEX `fk_Student_Person1_idx` (`Person_fiscal_code` ASC),
-  INDEX `fk_Student_Department1_idx` (`Department_abbreviation` ASC),
-  INDEX `fk_Student_student_status1_idx` (`fk_student_status` ASC),
-  INDEX `fk_Student_student_information1_idx` (`fk_student_information` ASC),
-  INDEX `fk_Student_trainig_request1_idx` (`fk_trainig_request` ASC),
-  CONSTRAINT `fk_Student_Account1`
-    FOREIGN KEY (`Account_email`)
-    REFERENCES `db_integrazione`.`Account` (`email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Student_Person1`
-    FOREIGN KEY (`Person_fiscal_code`)
-    REFERENCES `db_integrazione`.`Person` (`fiscal_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Student_Department1`
-    FOREIGN KEY (`Department_abbreviation`)
-    REFERENCES `db_integrazione`.`Department` (`abbreviation`)
-    ON DELETE RESTRICT
-    ON UPDATE SET NULL,
-  CONSTRAINT `fk_Student_student_status1`
-    FOREIGN KEY (`fk_student_status`)
-    REFERENCES `db_integrazione`.`student_status` (`id_student_status`)
-    ON DELETE CASCADE
-    ON UPDATE SET NULL,
-  CONSTRAINT `fk_Student_student_information1`
-    FOREIGN KEY (`fk_student_information`)
-    REFERENCES `db_integrazione`.`student_information` (`id_student_information`)
-    ON DELETE CASCADE
-    ON UPDATE SET NULL,
-  CONSTRAINT `fk_Student_trainig_request1`
-    FOREIGN KEY (`fk_trainig_request`)
-    REFERENCES `db_integrazione`.`trainig_request` (`id_trainig_request`)
-    ON DELETE CASCADE
-    ON UPDATE SET NULL)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`Staff`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`Staff` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`Staff` (
-  `id_staff` INT NOT NULL,
-  `phone` VARCHAR(45) NULL DEFAULT NULL,
-  `Account_email` VARCHAR(100) NOT NULL,
-  `Person_fiscal_code` INT NOT NULL,
-  `Department_abbreviation` VARCHAR(50) NOT NULL,
-  PRIMARY KEY (`id_staff`, `Account_email`, `Person_fiscal_code`, `Department_abbreviation`),
-  INDEX `fk_Staff_Account1_idx` (`Account_email` ASC),
-  INDEX `fk_Staff_Person1_idx` (`Person_fiscal_code` ASC),
-  INDEX `fk_Staff_Department1_idx` (`Department_abbreviation` ASC),
-  CONSTRAINT `fk_Staff_Account1`
-    FOREIGN KEY (`Account_email`)
-    REFERENCES `db_integrazione`.`Account` (`email`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Staff_Person1`
-    FOREIGN KEY (`Person_fiscal_code`)
-    REFERENCES `db_integrazione`.`Person` (`fiscal_code`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_Staff_Department1`
-    FOREIGN KEY (`Department_abbreviation`)
-    REFERENCES `db_integrazione`.`Department` (`abbreviation`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`pending_acceptance`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`pending_acceptance` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`pending_acceptance` (
-  `id_pending_acceptance` INT NOT NULL,
-  `request_date` VARCHAR(45) NULL,
-  `fk_Account_email` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id_pending_acceptance`, `fk_Account_email`),
-  INDEX `fk_pending_acceptance_Student1_idx` (`fk_Account_email` ASC),
-  CONSTRAINT `fk_pending_acceptance_Student1`
-    FOREIGN KEY (`fk_Account_email`)
-    REFERENCES `db_integrazione`.`Student` (`Account_email`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`rejected_training_message`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`rejected_training_message` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`rejected_training_message` (
-  `id_rejected_training_message` INT NOT NULL,
-  `message` LONGTEXT NULL,
-  `fk_account` VARCHAR(100) NOT NULL,
-  PRIMARY KEY (`id_rejected_training_message`, `fk_account`),
-  INDEX `fk_rejected_training_message_Student1_idx` (`fk_account` ASC),
-  CONSTRAINT `fk_rejected_training_message_Student1`
-    FOREIGN KEY (`fk_account`)
-    REFERENCES `db_integrazione`.`Student` (`Account_email`)
-    ON DELETE SET NULL
-    ON UPDATE SET NULL)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`offert_training`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`offert_training` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`offert_training` (
-  `id_offert_training` INT NOT NULL,
-  `description` VARCHAR(45) NULL,
-  `fk_organization` INT NULL,
-  `fk_professor` VARCHAR(100) NOT NULL,
-  `fk_department` VARCHAR(50) NULL,
-  PRIMARY KEY (`id_offert_training`, `fk_organization`, `fk_professor`, `fk_department`),
-  INDEX `fk_offert_training_Organization1_idx` (`fk_organization` ASC),
-  INDEX `fk_offert_training_Professor1_idx` (`fk_professor` ASC),
-  INDEX `fk_offert_training_Department1_idx` (`fk_department` ASC),
-  CONSTRAINT `fk_offert_training_Organization1`
-    FOREIGN KEY (`fk_organization`)
-    REFERENCES `db_integrazione`.`Organization` (`id_organization`)
-    ON DELETE NO ACTION
-    ON UPDATE NO ACTION,
-  CONSTRAINT `fk_offert_training_Professor1`
-    FOREIGN KEY (`fk_professor`)
-    REFERENCES `db_integrazione`.`Professor` (`Account_email`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE,
-  CONSTRAINT `fk_offert_training_Department1`
-    FOREIGN KEY (`fk_department`)
-    REFERENCES `db_integrazione`.`Department` (`abbreviation`)
-    ON DELETE CASCADE
-    ON UPDATE CASCADE)
-ENGINE = InnoDB;
-
-
--- -----------------------------------------------------
--- Table `db_integrazione`.`timestamps`
--- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_integrazione`.`timestamps` ;
-
-CREATE TABLE IF NOT EXISTS `db_integrazione`.`timestamps` (
-  `create_time` TIMESTAMP NULL DEFAULT CURRENT_TIMESTAMP,
-  `update_time` TIMESTAMP NULL);
-
 USE `db_distra` ;
 
 -- -----------------------------------------------------
@@ -393,11 +14,11 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`account` (
   `email` VARCHAR(100) NOT NULL COMMENT 'Nome con il quale l\'utente viene riconosciuto da un',
   `password` VARCHAR(45) NOT NULL,
   `typeOfAccount` VARCHAR(45) NOT NULL,
-  `active` TINYINT(1) NOT NULL,
+  `active` TINYINT(1) NOT NULL DEFAULT 1,
   PRIMARY KEY (`email`))
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8
-COMMENT = 'Tabella adibita alla gestione dei dati principali per l\'aces /* comment truncated */ /*so al sistema*/';
+COMMENT = 'Tabella adibita alla gestione dei dati principali per l\'aces /* comment truncated */ /* /* comment truncated */ /*so al sistema*/*/';
 
 
 -- -----------------------------------------------------
@@ -451,7 +72,6 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`person` (
   `position` VARCHAR(50) NOT NULL,
   `cycle` INT(11) NOT NULL,
   PRIMARY KEY (`SSN`),
-  UNIQUE INDEX `fk_cycle` (`cycle` ASC),
   INDEX `fk_Person_Account_idx` (`Account_email` ASC),
   INDEX `fk_Person_Department1_idx` (`Department_abbreviation` ASC),
   CONSTRAINT `person_ibfk_1`
@@ -979,8 +599,8 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`organization` (
   `address` VARCHAR(45) NULL DEFAULT NULL,
   `phone` VARCHAR(45) NULL DEFAULT NULL,
   `email` VARCHAR(45) NOT NULL,
-  `fk_account` VARCHAR(100) NOT NULL,
-  `fk_externaltutor` VARCHAR(16) NULL DEFAULT NULL,
+  `fk_account` VARCHAR(100) NULL,
+  `fk_externaltutor` VARCHAR(16) NOT NULL,
   `fk_professor` VARCHAR(16) NOT NULL,
   PRIMARY KEY (`id_organization`),
   INDEX `fk_acc` (`fk_account` ASC),
@@ -1045,18 +665,20 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `db_distra`.`pending_acceptance` ;
 
 CREATE TABLE IF NOT EXISTS `db_distra`.`pending_acceptance` (
-  `id_pending_acceptance` INT(11) NOT NULL AUTO_INCREMENT,
-  `date_request` DATE NULL DEFAULT NULL,
-  `fk_person` VARCHAR(16) NOT NULL,
+  `id_pending_acceptance` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'weqdas',
+  `date_request` DATE NULL DEFAULT NULL COMMENT 'dfsdf',
+  `fk_person` VARCHAR(16) NOT NULL COMMENT 'sadaas',
   PRIMARY KEY (`id_pending_acceptance`),
   INDEX `fk_StudentAttendence_Student1_idx` (`fk_person` ASC),
+  UNIQUE INDEX `fk_person_UNIQUE` (`fk_person` ASC),
   CONSTRAINT `fk_StudentAttendence_Student1`
     FOREIGN KEY (`fk_person`)
     REFERENCES `db_distra`.`person` (`SSN`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
-DEFAULT CHARACTER SET = utf8;
+DEFAULT CHARACTER SET = utf8
+COMMENT = 'dsadfasfsa';
 
 
 -- -----------------------------------------------------
@@ -1144,6 +766,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`rejected_training_message` (
   `fk_person` VARCHAR(16) NOT NULL,
   PRIMARY KEY (`id_rejected_training_message`),
   INDEX `fk_RejectedTrainingMessage_Student1_idx` (`fk_person` ASC),
+  UNIQUE INDEX `fk_person_UNIQUE` (`fk_person` ASC),
   CONSTRAINT `rejected_training_message_ibfk_1`
     FOREIGN KEY (`fk_person`)
     REFERENCES `db_distra`.`person` (`SSN`)
