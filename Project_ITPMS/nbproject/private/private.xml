@@ -3,8 +3,9 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
-            <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/student/getStudentTrainingStatus.java</file>
-            <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/student/insertTrainingByOrganizationServlet.java</file>
+            <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/UploadInformationForModuleFilesServlet.java</file>
+            <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/student/uploadInformationForModuleFilesServlet.java</file>
+            <file>file:/C:/Users/Valentino/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/student/uploadInformationFilesServlet.java</file>
         </group>
     </open-files>
 </project-private>
