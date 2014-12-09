@@ -68,7 +68,8 @@ public class insertTrainingByOrganizationServlet extends HttpServlet {
             if(toReturn){
                 message.setMessage("status", 1);
                 request.setAttribute("message", message);
-                request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
+                //request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
+                out.println("message "+message.getMessage("status"));
             }else{
                 message.setMessage("status", 0);
             }

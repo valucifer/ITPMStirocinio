@@ -5,9 +5,14 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
+import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -34,10 +39,21 @@ public class studentAttDetailsServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            
         try {
             /* TODO output your page here. You may use following sample code. */
+            String primaryKey = "vale";//request.getParameter("primaryKey");
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getStudent(primaryKey);
             
+            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+            ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
+            if(studentInformation == null){
+                message.setMessage("status", 0);
+            }else{
+                message.setMessage("status", 1);
+                message.setMessage("Object", studentInformation);
+                out.println("message "+message.getMessage("status"));
+            }
         } finally {
             out.close();
         }

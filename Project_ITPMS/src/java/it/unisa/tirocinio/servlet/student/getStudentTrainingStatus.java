@@ -60,6 +60,7 @@ public class getStudentTrainingStatus extends HttpServlet {
             message.setMessage("status",1);
             message.setMessage("description",studentStatus.getDescription());
             //request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
+            out.println("message "+message.getMessage("status"));
         }else{
             message.setMessage("status",0);
         }
