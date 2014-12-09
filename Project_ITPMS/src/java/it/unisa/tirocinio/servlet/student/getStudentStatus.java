@@ -5,28 +5,18 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.integrazione.manager.concrete.ConcreteStudent;
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.StudentInformation;
-import it.unisa.tirocinio.beans.StudentStatus;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcreteStudentStatus;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Valentino
  */
-public class getStudentTrainingStatus extends HttpServlet {
+public class getStudentStatus extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -40,31 +30,13 @@ public class getStudentTrainingStatus extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        HttpSession session = request.getSession();
-        
-        ConcretePerson aPerson = ConcretePerson.getInstance();
-        String email = "vale" ;//request.getParameter("accountEmail");
-        
-        Person person = aPerson.getStudent(email);
+        try {
+            /* TODO output your page here. You may use following sample code. */
             
-        ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
-
-        ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-        StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
-        
-        if(studentStatus != null){
-            message.setMessage("status",1);
-            message.setMessage("description",studentStatus.getDescription());
-            //request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-            out.println("message "+message.getMessage("status"));
-        }else{
-            message.setMessage("status",0);
+        } finally {
+            out.close();
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
