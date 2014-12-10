@@ -8,6 +8,7 @@ package it.unisa.tirocinio.servlet.student;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,13 +42,13 @@ public class uploadInformationFilesServlet extends HttpServlet {
     private boolean isMultipart;
     private String filePath;
     private String fileSeparator = null;
-    
+    private ConcreteMessageForServlet message = null;
 
     public void init() {
         fileSeparator = System.getProperty("file.separator");
         String userHome = System.getProperty("user.home");
         filePath = userHome+fileSeparator+"PlatformDocuments";
-        
+        message = new ConcreteMessageForServlet();
         File directoryCheck = new File(filePath);
         if( !directoryCheck.exists() ){
             directoryCheck.mkdir();
@@ -69,10 +70,17 @@ public class uploadInformationFilesServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin","*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = "vale";//request.getParameter("primaryKey");
+            String primaryKey = "a.saulino@studenti.unisa.it";//request.getParameter("primaryKey");
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getStudent(primaryKey);
+            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             out = response.getWriter();
+            
+            String studentSubfolderPath = filePath+fileSeparator+reverseSerialNumber(person.getMatricula());
+            File subfolderFile = new File(studentSubfolderPath);
+            if( !subfolderFile.exists() ){
+                subfolderFile.mkdir();
+            }
             
             isMultipart = ServletFileUpload.isMultipartContent(request);
             String serialNumber = null;
@@ -81,34 +89,42 @@ public class uploadInformationFilesServlet extends HttpServlet {
             List fileItems = upload.parseRequest(request);
             Iterator i = fileItems.iterator();
             File fileToStore = null;
-            String studentSubfolderPath = filePath;
+            String CVPath = "", ATPath = "";
             
             while ( i.hasNext () ) {
+               
                 FileItem fi = (FileItem)i.next();
                 if ( !fi.isFormField () ){
                     // Get the uploaded file parameters
                     String fieldName = fi.getFieldName();
                     String fileName = fi.getName();
-                    if( fieldName.equals("cvfile")){
+                    if( fieldName.equals("cv")){
                         fileToStore = new File(studentSubfolderPath+fileSeparator+"CV.pdf");
-                    }else if( fieldName.equals("examsfile")){
+                        CVPath = fileToStore.getAbsolutePath();
+                    }else if( fieldName.equals("doc")){
                         fileToStore = new File(studentSubfolderPath+fileSeparator+"ES.pdf");
+                        ATPath = fileToStore.getAbsolutePath();
                     }
                     fi.write( fileToStore ) ;
+                    
                    // out.println("Uploaded Filename: " + fieldName + "<br>");
                 }else{
                     //out.println("It's not formfield");
                     //out.println(fi.getString());
-                    serialNumber = reverseSerialNumber(person.getMatricula());
-                    studentSubfolderPath += fileSeparator+serialNumber;
-                    new File(studentSubfolderPath).mkdir();
+                    
                 } 
+               
             }
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+            
             message.setMessage("status", 1);
-            out.println(message.getMessage("status"));
+            if( aStudentInformation.startTrainingRequest(person.getSSN(), CVPath, ATPath) )
+                message.setMessage("status", 1);
+            else message.setMessage("status", 0);
+            request.setAttribute("message",message);
         } catch (Exception ex) {
             Logger.getLogger(uploadInformationFilesServlet.class.getName()).log(Level.SEVERE, null, ex);
+            message.setMessage("status", -1);
+            request.setAttribute("message",message);
         } finally {
             out.close();
         }

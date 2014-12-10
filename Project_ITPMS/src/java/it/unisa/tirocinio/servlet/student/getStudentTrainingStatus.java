@@ -16,6 +16,8 @@ import it.unisa.tirocinio.manager.concrete.ConcreteStudentStatus;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
+import javax.servlet.RequestDispatcher;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -43,10 +45,13 @@ public class getStudentTrainingStatus extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        HttpSession session = request.getSession();
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
+<<<<<<< Updated upstream
         String email = "vale" ;//request.getParameter("accountEmail");
+=======
+        String email = "a.saulino@studenti.unisa.it" ;//request.getParameter("accountEmail");
+>>>>>>> Stashed changes
         
         Person person = aPerson.getStudent(email);
             
@@ -59,8 +64,9 @@ public class getStudentTrainingStatus extends HttpServlet {
         if(studentStatus != null){
             message.setMessage("status",1);
             message.setMessage("description",studentStatus.getDescription());
-            //request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-            out.println("message "+message.getMessage("status"));
+            message.setMessage("idStudentStatus",studentStatus.getIdStudentStatus());
+            request.setAttribute("message",message);
+            //out.println("message "+message.getMessage("status"));
         }else{
             message.setMessage("status",0);
         }
