@@ -281,7 +281,7 @@ if foundSet=false
 	call startTrainingRequest(studentSSN);
 else if foundSet=true
 	then
-	INSERT INTO student_information  (SSN, curriculum_vitae_path, accademic_transcript_path, fk_student_status) values (studentSSN,CVPath,ATPath,'2');
+	INSERT INTO student_information  (SSN, curriculum_vitae_path, accademic_transcript_path, fk_student_status) values (studentSSN,CVPath,ATPath,'3');
 	call startTrainingRequest(studentSSN);
 END if;
 END if;
@@ -323,9 +323,9 @@ DECLARE selectCur CURSOR FOR SELECT fk_student_status FROM student_information W
 open selectCur;
 fetch selectCur into studentStatus;
 
-if status != '2'
+if status != '3'
 	then
-	if studentStatus = 2
+	if studentStatus = '3'
 		then
 		UPDATE student_information SET fk_student_status = status WHERE SSN = studentSSN;
 		call deletePendingAcceptanceByStudent(studentSSN);
