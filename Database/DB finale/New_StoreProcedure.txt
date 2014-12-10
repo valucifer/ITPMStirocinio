@@ -444,7 +444,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrainingRequest` ( in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT, in FK_Person VARCHAR(16), in FK_Organization VARCHAR(11), in FK_StudentInformationSSN VARCHAR(16) )
 BEGIN
-INSERT INTO training_request (description, title, fk_training_status, fk_person, fk_organization, fk_student_information_ssn) VALUES (trainingDescription, title, FK_TrainingStatus, FK_Person, FK_Organization, FK_StudentInformationSSN);
+INSERT INTO training_request (description, title, fk_training_status, fk_person, fk_organization, student_information_ssn) VALUES (trainingDescription, title, FK_TrainingStatus, FK_Person, FK_Organization, FK_StudentInformationSSN);
 END
 
 -- --------------------------------------------------------------------------------
@@ -494,7 +494,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getOwnTrainingRequests`( in vatNumber VARCHAR(16) )
 BEGIN
-SELECT * FROM training_request WHERE vat_number = vatNumber;
+SELECT * FROM training_request WHERE fk_organization = vatNumber;
 END
 
 -- --------------------------------------------------------------------------------

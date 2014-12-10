@@ -14,14 +14,14 @@ public final class TrainingRequest {
     private int idTrainingRequest;
     private String description = null;
     private String title = null;
-    private TrainingStatus trainingStatus = null;
+    private int trainingStatus;
     private String personSSN = null;
     private String organizationVATNumber = null;
     private String studentSSN = null;
     
     public TrainingRequest(){}
     
-    public TrainingRequest(int idTrainingRequest, String description, String title, TrainingStatus trainingStatus, String professor, String organizationVATNumber, String studentSSN){
+    public TrainingRequest(int idTrainingRequest, String description, String title, int trainingStatus, String professor, String organizationVATNumber, String studentSSN){
         setIdTrainingRequest(idTrainingRequest);
         setDescription(description);
         setTitle(title);
@@ -43,7 +43,7 @@ public final class TrainingRequest {
         return title;
     }
 
-    public TrainingStatus getTrainingStatus() {
+    public int getTrainingStatus() {
         return trainingStatus;
     }
 
@@ -71,7 +71,7 @@ public final class TrainingRequest {
         this.title = title;
     }
 
-    public void setTrainingStatus(TrainingStatus trainingStatus) {
+    public void setTrainingStatus(int trainingStatus) {
         this.trainingStatus = trainingStatus;
     }
 

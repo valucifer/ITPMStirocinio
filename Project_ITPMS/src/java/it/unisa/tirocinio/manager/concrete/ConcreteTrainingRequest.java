@@ -41,10 +41,10 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             if( aTrainingRequest == null )
                 throw new NullPointerException("TrainingRequest is null!");
             
-            aCallableStatement = connector.prepareCall("{call insertTrainingRequest(?,?,?,?,?,?,?)}");       
+            aCallableStatement = connector.prepareCall("{call insertTrainingRequest(?,?,?,?,?,?)}");       
             aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
             aCallableStatement.setString("title",aTrainingRequest.getTitle());
-            aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus().getIdTrainingStatus());
+            aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus());
             aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
             aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
             aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
@@ -95,7 +95,7 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             aCallableStatement.setInt("ID",aTrainingRequest.getIdTrainingRequest());      
             aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
             aCallableStatement.setString("title",aTrainingRequest.getTitle());
-            aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus().getIdTrainingStatus());
+            aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus());
             aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
             aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
             aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
@@ -132,12 +132,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTraining.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTraining.setDescription(rs.getString("description"));
-                aTraining.setDescription(rs.getString("title"));
+                aTraining.setTitle(rs.getString("title"));
                 
                 aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                 aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
                 
             }
             rs.close();
@@ -175,12 +175,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTrainingRequest.setDescription(rs.getString("description"));
-                aTrainingRequest.setDescription(rs.getString("title"));
+                aTrainingRequest.setTitle(rs.getString("title"));
                 
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                 aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
                 
                 trainingRequests.add(aTrainingRequest);
             }
@@ -219,12 +219,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTrainingRequest.setDescription(rs.getString("description"));
-                aTrainingRequest.setDescription(rs.getString("title"));
+                aTrainingRequest.setTitle(rs.getString("title"));
                 
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                 aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
                 
                 trainingRequests.add(aTrainingRequest);
             }
@@ -317,12 +317,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTrainingRequest.setDescription(rs.getString("description"));
-                aTrainingRequest.setDescription(rs.getString("title"));
+                aTrainingRequest.setTitle(rs.getString("title"));
                 
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                 aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
                 
                 trainingRequests.add(aTrainingRequest);
             }
@@ -362,12 +362,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTrainingRequest.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTrainingRequest.setDescription(rs.getString("description"));
-                aTrainingRequest.setDescription(rs.getString("title"));
+                aTrainingRequest.setTitle(rs.getString("title"));
                 
                 aTrainingRequest.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingRequest.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                 aTrainingRequest.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                aTrainingRequest.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
                 
                 trainingRequests.add(aTrainingRequest);
             }
@@ -405,12 +405,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTraining.setIdTrainingRequest(rs.getInt("id_training_request"));
                 
                 aTraining.setDescription(rs.getString("description"));
-                aTraining.setDescription(rs.getString("title"));
+                aTraining.setTitle(rs.getString("title"));
                 
                 aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
                 aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")));
+                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
                 
             }
             rs.close();

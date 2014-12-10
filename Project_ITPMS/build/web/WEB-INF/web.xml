@@ -68,6 +68,38 @@
         <servlet-name>rejectStudentForTraining</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.rejectStudentForTraining</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewAllTrainingOffer</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllTrainingOffer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>selectTrainingByOrganization</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.selectTrainingByOrganization</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>insertTrainingRequestServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingRequestServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewDetailsForTraininfOfferServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewDetailsForTraininfOfferServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewAllProfessor</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllProfessor</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewAllOrganizationServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllOrganizationServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewTrainingRequestForProfessorServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewTrainingRequestForProfessorServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewTrainingRequestForOrganizationSevlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>AuthenticateUserServlet</servlet-name>
         <url-pattern>/AuthenticateUserServlet</url-pattern>
@@ -135,6 +167,38 @@
     <servlet-mapping>
         <servlet-name>rejectStudentForTraining</servlet-name>
         <url-pattern>/rejectStudentForTraining</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewAllTrainingOffer</servlet-name>
+        <url-pattern>/viewAllTrainingOffer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>selectTrainingByOrganization</servlet-name>
+        <url-pattern>/selectTrainingByOrganization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertTrainingRequestServlet</servlet-name>
+        <url-pattern>/insertTrainingRequestServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewDetailsForTraininfOfferServlet</servlet-name>
+        <url-pattern>/viewDetailsForTraininfOfferServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewAllProfessor</servlet-name>
+        <url-pattern>/viewAllProfessor</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewAllOrganizationServlet</servlet-name>
+        <url-pattern>/viewAllOrganizationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewTrainingRequestForProfessorServlet</servlet-name>
+        <url-pattern>/viewTrainingRequestForProfessorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
+        <url-pattern>/viewTrainingRequestForOrganizationSevlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
