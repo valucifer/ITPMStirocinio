@@ -72,7 +72,8 @@
                         jQuery(document).ready(function ($) {
                             tpFunction.createAcceptStudentPanel('#panelBody');
                             tpFunction.populateTable('#tableNewsTrainingOrganization','#tableContainer',${path});
-                        });
+                            
+});
                     </script>
                 </c:when>
                 <c:otherwise>

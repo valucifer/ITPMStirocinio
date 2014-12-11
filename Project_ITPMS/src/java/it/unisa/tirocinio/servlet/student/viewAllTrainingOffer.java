@@ -56,8 +56,10 @@ public class viewAllTrainingOffer extends HttpServlet {
                 JSONArray array = new JSONArray();
                 for( TrainingOffer offer: trainingOffer ){
                     JSONObject jsonTmp = new JSONObject();
-                    jsonTmp.put("department", offer.getDepartment());
+                    jsonTmp.put("professor", offer.getPersonSSN());
                     jsonTmp.put("organization", offer.getOrganization());
+                    jsonTmp.put("description", offer.getDescription());
+                    jsonTmp.put("contacts", offer.getContact());
                     array.put(jsonTmp);
                 }
                 jsonObject.put("status", 1);
