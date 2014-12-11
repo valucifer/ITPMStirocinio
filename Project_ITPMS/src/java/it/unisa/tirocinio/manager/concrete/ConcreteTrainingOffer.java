@@ -160,9 +160,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         initializeConnection();
         ArrayList<TrainingOffer> allTraining = new ArrayList<TrainingOffer>();
         TrainingOffer aTrainingOffer = null;
+        
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         ConcretePerson aPerson = ConcretePerson.getInstance();
         ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
+        
         try {
             aCallableStatement = connector.prepareCall("{call getInnerTrainingOffer(?)}");
             aCallableStatement.setString("pkProfessor",personSSN);
@@ -172,10 +174,14 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 aTrainingOffer = new TrainingOffer();
                 aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
                 aTrainingOffer.setDescription(rs.getString("description"));
-                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getCompanyName());
                 aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
-                aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                String tmp = "";
+                       tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
+                       tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
+                aTrainingOffer.setPersonSSN(tmp);
                 allTraining.add(aTrainingOffer);
+                
             }
             rs.close();
             return allTraining;
@@ -209,9 +215,12 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 aTrainingOffer = new TrainingOffer();
                 aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
                 aTrainingOffer.setDescription(rs.getString("description"));
-                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
+                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getCompanyName());
                 aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
-                aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                String tmp = "";
+                       tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
+                       tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
+                aTrainingOffer.setPersonSSN(tmp);
                 allTraining.add(aTrainingOffer);
             }
             rs.close();
@@ -232,7 +241,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
     @Override
     public ArrayList<TrainingOffer> getAllTrainingOffers() {
         initializeConnection();
-        ArrayList<TrainingOffer> trainingOffers = new ArrayList<TrainingOffer>();
+        ArrayList<TrainingOffer> allTraining = new ArrayList<TrainingOffer>();
         TrainingOffer aTrainingOffer = null;
         try {
            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
@@ -242,16 +251,19 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
            ResultSet rs = aCallableStatement.executeQuery();
            
            while( rs.next() ){
-               aTrainingOffer = new TrainingOffer();
-               aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
-               aTrainingOffer.setDescription(rs.getString("description"));
-               aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
-               aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
-               aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
-               trainingOffers.add(aTrainingOffer);
+                aTrainingOffer = new TrainingOffer();
+                aTrainingOffer.setIdOfferTraining(rs.getInt("id_training_offer"));
+                aTrainingOffer.setDescription(rs.getString("description"));
+                aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getCompanyName());
+                aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
+                String tmp = "";
+                       tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
+                       tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
+                aTrainingOffer.setPersonSSN(tmp);
+                allTraining.add(aTrainingOffer);
            }
            rs.close();
-           return trainingOffers;
+           return allTraining;
            
        } catch (SQLException ex) {
            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
