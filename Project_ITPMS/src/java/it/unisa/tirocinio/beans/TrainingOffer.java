@@ -16,15 +16,25 @@ public final class TrainingOffer {
     private String organization = null;
     private String personSSN = null;
     private String department = null;
+    private String contact = null;
     
     public TrainingOffer(){}
     
-    public TrainingOffer(int idOfferTraining, String description, String organization, String personSSN, String department){
+    public TrainingOffer(int idOfferTraining,String contact, String description, String organization, String personSSN, String department){
         setIdOfferTraining(idOfferTraining);
         setDescription(description);
         setOrganization(organization);
         setPersonSSN(personSSN);
         setDepartment(department);
+        setContact(contact);
+    }
+
+    public void setContact(String contact) {
+        this.contact = contact;
+    }
+
+    public String getContact() {
+        return contact;
     }
 
     public int getIdOfferTraining() {

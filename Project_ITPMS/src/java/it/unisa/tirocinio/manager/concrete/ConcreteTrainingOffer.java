@@ -43,6 +43,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             aCallableStatement.setString("trainingDescription",aTrainingOffer.getDescription());
             aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
             aCallableStatement.setString("FK_Department",aTrainingOffer.getDepartment());
+            
             int check = aCallableStatement.executeUpdate();
             aCallableStatement.close();
             
@@ -139,6 +140,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
                 aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
                 aTrainingOffer.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aTrainingOffer.setContact(anOrganization.readOrganization(rs.getString("fk_organization")).getEmail());
             }
             rs.close();
             return aTrainingOffer;
@@ -179,7 +181,9 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 String tmp = "";
                        tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
                        tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
-                aTrainingOffer.setPersonSSN(tmp);
+                aTrainingOffer.setPersonSSN(tmp);   
+                aTrainingOffer.setContact(anOrganization.readOrganization(rs.getString("fk_organization")).getEmail());
+            
                 allTraining.add(aTrainingOffer);
                 
             }
@@ -221,6 +225,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                        tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
                        tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
                 aTrainingOffer.setPersonSSN(tmp);
+                aTrainingOffer.setContact(anOrganization.readOrganization(rs.getString("fk_organization")).getEmail());
                 allTraining.add(aTrainingOffer);
             }
             rs.close();
@@ -260,6 +265,8 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                        tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
                        tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
                 aTrainingOffer.setPersonSSN(tmp);
+                aTrainingOffer.setContact(anOrganization.readOrganization(rs.getString("fk_organization")).getEmail());
+            
                 allTraining.add(aTrainingOffer);
            }
            rs.close();
