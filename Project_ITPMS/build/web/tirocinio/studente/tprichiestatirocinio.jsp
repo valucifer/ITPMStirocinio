@@ -3,6 +3,7 @@
 <%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
+
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -40,7 +41,6 @@
                 $('form').validatr();
             });
         </script>
-
         <jsp:include page="/getStudentTrainingStatus" />
         <c:set var="statusMessage" value="${requestScope.message }"></c:set>
         <%
@@ -63,30 +63,14 @@
                     </script>
                 </c:when>
                 <c:when test="${idStudentStatus == 2}">
+                  
                     <script>
+                        <%
+                            pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
+                        %>
                         jQuery(document).ready(function ($) {
-                            <jsp:include page="/viewAllTrainingOffer" />
-                            <c:set var="tableContents" value="${requestScope.message }"></c:set>
-                            <%
-                                ConcreteMessageForServlet tableMessage = (ConcreteMessageForServlet) pageContext.getAttribute("tableContents");
-                                ArrayList<TrainingOffer> organizations = (ArrayList<TrainingOffer>) tableMessage.getMessage("Object");
-                                int tableContentRequestStatus = (Integer) tableMessage.getMessage("status");
-                                pageContext.setAttribute("status", tableContentRequestStatus);
-                                pageContext.setAttribute("Object", organizations);
-                                pageContext.setAttribute("tableLength", organizations.size());
-                                String tmp = "";
-                                for ( TrainingOffer org: organizations ){
-                                    tmp += "<td>"+org.getOrganization()+"</td>"+"<td>"+org.getPersonSSN()+"</td>"+"<td>"+org.getDescription()+"</td>";
-                                }
-                                pageContext.setAttribute("tmp", tmp);
-                            %>
                             tpFunction.createAcceptStudentPanel('#panelBody');
-                            tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer', ${tmp});
-                            $("#tableNewsTrainingOrganization").dataTable({
-                                aLengthMenu: [
-                                    [5, 10, 20, -1], [5, 10, 20, "Tutti"]
-                                ]
-                            });
+                            tpFunction.populateTable('#tableNewsTrainingOrganization','#tableContainer',${path});
                         });
                     </script>
                 </c:when>

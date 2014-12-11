@@ -22,10 +22,21 @@ tpFunction = {
         $(panelID).empty();
         $(panelID).append("<center><h2>La tua richiesta è stata <strong>accettata</strong>!</h2><br><h4>Puoi ora procedere a reperire le informazioni dei referenti responsabili del tirocinio.</h4></center>");
     },
-    populateTable: function(idTable, tableContainer, tmp){
-        $(idTable).append('<thead><tr><th>Nome Azienda</th><th>Professore Associato</th><th>Descrizione</th></tr></thead>');
-        $(idTable).append(tmp);
-        $(tableContainer).attr("hidden",false);
+    populateTable: function(idTable, tableContainer, path){
+        $.ajax({
+            url:path+'/viewAllTrainingOffer',
+            dataType:'json',
+            type:'POST',
+            success:function(e){
+                $(idTable).append('<thead><tr><th>Nome Azienda</th><th>Professore Associato</th><th>Descrizione</th></tr></thead>');
+                //$(idTable).append(tmp);
+                $(tableContainer).attr("hidden",false);
+            },
+            error:function(e){
+                alert(JSON.stringify(e));
+            }
+        });
+       
         
     }
 };

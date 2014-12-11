@@ -11,17 +11,24 @@ import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
+@WebServlet(name = "viewAllTrainingOffer", urlPatterns = {"/viewAllTrainingOffer"})
 public class viewAllTrainingOffer extends HttpServlet {
-
+    private final JSONObject jsonObject = new JSONObject();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,7 +39,7 @@ public class viewAllTrainingOffer extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JSONException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
@@ -41,11 +48,22 @@ public class viewAllTrainingOffer extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
             ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.getAllTrainingOffers();
-            if(trainingOffer == null)
-                message.setMessage("status", 0);
-            else{
-                message.setMessage("status", 1);
-                message.setMessage("Object", trainingOffer);
+            if(trainingOffer == null){
+                jsonObject.put("status", 0);
+                response.getWriter().write(jsonObject.toString());
+            }else{
+              
+                JSONArray array = new JSONArray();
+                for( TrainingOffer offer: trainingOffer ){
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("department", offer.getDepartment());
+                    jsonTmp.put("organization", offer.getOrganization());
+                    array.put(jsonTmp);
+                }
+                jsonObject.put("status", 1);
+                jsonObject.put("message", array);
+                response.getWriter().write(jsonObject.toString());
+                //request.setAttribute("trainingMessage",message);
                 //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
         } finally {
@@ -65,7 +83,11 @@ public class viewAllTrainingOffer extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(viewAllTrainingOffer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -79,7 +101,11 @@ public class viewAllTrainingOffer extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(viewAllTrainingOffer.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
