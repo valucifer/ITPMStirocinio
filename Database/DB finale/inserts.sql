@@ -22,9 +22,9 @@ INSERT INTO `db_distra`.`cycle` (`cycle_number`, `title`) VALUES ('2', 'Magistal
 INSERT INTO `db_distra`.`department` (`abbreviation`) VALUES ('MIT');
 
 --person--
-INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('CB89', 'Carlos', 'Borges', 'M', 'c.borges1@studenti.unisa.it', 'MIT', 'Università di Salerno', '05122200011', '2');
-INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('VV89', 'Valentino', 'Vivone', 'M', 'v.vivone@studenti.unisa.it', 'MIT', 'Università di Salerno', '05122200012', '2');
-INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('AS', 'Aniello', 'Saulino', 'M', 'a.saulino@studenti.unisa.it', 'MIT', 'Università di Salerno', '05122200013', '2');
-INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('ADL', 'Andera', 'De Lucia', 'M', 'a.deluica@professori.unisa.it', 'MIT', 'Università di Salerno', '05122200014', '2');
+INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('CB89', 'Carlos', 'Borges', 'M', 'c.borges1@studenti.unisa.it', 'MIT', 'Università di Salerno', '0512200011', '2');
+INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('VV89', 'Valentino', 'Vivone', 'M', 'v.vivone@studenti.unisa.it', 'MIT', 'Università di Salerno', '0512200012', '2');
+INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('AS', 'Aniello', 'Saulino', 'M', 'a.saulino@studenti.unisa.it', 'MIT', 'Università di Salerno', '0512200013', '2');
+INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('ADL', 'Andera', 'De Lucia', 'M', 'a.deluica@professori.unisa.it', 'MIT', 'Università di Salerno', '0512200014', '2');
 INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `cycle`) VALUES ('PP', 'Pippo', 'Paperino', 'M', 'staff@staff.unisa.it', 'MIT', 'Università di Salerno', '2');
 

@@ -69,7 +69,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`person` (
   `web_page` VARCHAR(300) NULL DEFAULT NULL,
   `university` VARCHAR(200) NULL DEFAULT NULL,
   `matricula` VARCHAR(10) NULL DEFAULT NULL,
-  `position` VARCHAR(50) NOT NULL,
+  `position` VARCHAR(50) NULL,
   `cycle` INT(11) NOT NULL,
   PRIMARY KEY (`SSN`),
   INDEX `fk_Person_Account_idx` (`Account_email` ASC),
@@ -593,8 +593,8 @@ DEFAULT CHARACTER SET = utf8;
 DROP TABLE IF EXISTS `db_distra`.`organization` ;
 
 CREATE TABLE IF NOT EXISTS `db_distra`.`organization` (
-  `id_organization` INT(11) NOT NULL,
-  `companyName` VARCHAR(45) NOT NULL,
+  `vat_number` VARCHAR(16) NOT NULL,
+  `company_name` VARCHAR(45) NOT NULL,
   `city` VARCHAR(45) NULL DEFAULT NULL,
   `address` VARCHAR(45) NULL DEFAULT NULL,
   `phone` VARCHAR(45) NULL DEFAULT NULL,
@@ -602,7 +602,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`organization` (
   `fk_account` VARCHAR(100) NULL,
   `fk_externaltutor` VARCHAR(16) NOT NULL,
   `fk_professor` VARCHAR(16) NOT NULL,
-  PRIMARY KEY (`id_organization`),
+  PRIMARY KEY (`vat_number`),
   INDEX `fk_acc` (`fk_account` ASC),
   INDEX `fk_tutor` (`fk_externaltutor` ASC),
   INDEX `fk_prof` (`fk_professor` ASC),
@@ -626,23 +626,23 @@ DEFAULT CHARACTER SET = utf8;
 
 
 -- -----------------------------------------------------
--- Table `db_distra`.`offer_training`
+-- Table `db_distra`.`training_offer`
 -- -----------------------------------------------------
-DROP TABLE IF EXISTS `db_distra`.`offer_training` ;
+DROP TABLE IF EXISTS `db_distra`.`training_offer` ;
 
-CREATE TABLE IF NOT EXISTS `db_distra`.`offer_training` (
-  `id_offer_training` INT(11) NOT NULL AUTO_INCREMENT,
+CREATE TABLE IF NOT EXISTS `db_distra`.`training_offer` (
+  `id_training_offer` INT(11) NOT NULL AUTO_INCREMENT,
   `description` LONGTEXT NULL DEFAULT NULL,
-  `fk_organization` INT(11) NULL DEFAULT NULL,
+  `fk_organization` VARCHAR(16) NULL DEFAULT NULL,
   `fk_person` VARCHAR(16) NOT NULL,
   `fk_department` VARCHAR(50) NULL DEFAULT NULL,
-  PRIMARY KEY (`id_offer_training`),
+  PRIMARY KEY (`id_training_offer`),
   INDEX `fk_OfferTraining_Organization1_idx` (`fk_organization` ASC),
   INDEX `fk_OfferTraining_Professor1_idx` (`fk_person` ASC),
   INDEX `fk_OfferTraining_Department1_idx` (`fk_department` ASC),
   CONSTRAINT `fk_OfferTraining_Organization1`
     FOREIGN KEY (`fk_organization`)
-    REFERENCES `db_distra`.`organization` (`id_organization`)
+    REFERENCES `db_distra`.`organization` (`vat_number`)
     ON DELETE NO ACTION
     ON UPDATE NO ACTION,
   CONSTRAINT `fk_OfferTraining_Professor1`
@@ -901,7 +901,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`training_request` (
   `title` VARCHAR(45) NULL DEFAULT NULL,
   `fk_training_status` INT(11) NOT NULL,
   `fk_person` VARCHAR(16) NOT NULL,
-  `fk_organization` INT(11) NULL DEFAULT NULL,
+  `fk_organization` VARCHAR(16) NULL DEFAULT NULL,
   `student_information_SSN` VARCHAR(16) NOT NULL,
   PRIMARY KEY (`id_training_request`, `student_information_SSN`),
   INDEX `fk_ClaimTraining_ClaimStatus1_idx` (`fk_training_status` ASC),
@@ -910,7 +910,7 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`training_request` (
   INDEX `fk_training_request_student_information1_idx` (`student_information_SSN` ASC),
   CONSTRAINT `training_request_ibfk_2`
     FOREIGN KEY (`fk_organization`)
-    REFERENCES `db_distra`.`organization` (`id_organization`)
+    REFERENCES `db_distra`.`organization` (`vat_number`)
     ON DELETE CASCADE
     ON UPDATE CASCADE,
   CONSTRAINT `fk_ClaimTraining_ClaimStatus1`
