@@ -58,6 +58,7 @@
                 <c:when test="${idStudentStatus == 3}">
                     <script>
                         jQuery(document).ready(function ($) {
+                            $("ID_modulistica_0").empty();
                             tpFunction.createPendingStudentPanel('#panelBody');
                         });
                     </script>
@@ -74,6 +75,13 @@
                         });
                     </script>
                 </c:when>
+                <c:otherwise>
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("ID_modulistica_0").empty();
+                        });
+                    </script>
+                </c:otherwise>
             </c:choose>
         </c:if>
 
