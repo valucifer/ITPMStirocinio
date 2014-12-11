@@ -7,12 +7,14 @@ package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
+import it.unisa.tirocinio.manager.concrete.ConcreteDepartment;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -22,6 +24,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Valentino
  */
+@WebServlet(name = "insertTrainingByProfessorServlet", urlPatterns = {"/insertTrainingByProfessorServlet"})
 public class insertTrainingByProfessorServlet extends HttpServlet {
 
     /**
@@ -41,7 +44,7 @@ public class insertTrainingByProfessorServlet extends HttpServlet {
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = "pippo ppp palmieri";//request.getParameter("description");
+            String description = request.getParameter("description");
             String primaryKey = "delucia";//request.getParameter("primaryKey");
             HttpSession session = request.getSession();
              
@@ -52,18 +55,20 @@ public class insertTrainingByProfessorServlet extends HttpServlet {
             TrainingOffer trainingOffer = new TrainingOffer();
             
             trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-            trainingOffer.setDescription(description);
+            trainingOffer.setDescription(person.getDepartmentAbbreviation()+" - "+description);
             trainingOffer.setPersonSSN(person.getSSN());
             
             boolean toReturn = aTrainingOffer.createInnerTrainingOffer(trainingOffer);
             if(toReturn){
                 message.setMessage("status", 1);
-                request.setAttribute("message", message);
-                out.println("message "+toReturn);
+                //out.println("message "+toReturn);
                // request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
             }else{
                 message.setMessage("status", 0);
             }
+            request.setAttribute("message",message);
+            response.sendRedirect(request.getContextPath()+"/tirocinio/professore/tpprofessore.jsp");
+            
         } finally {
             out.close();
         }

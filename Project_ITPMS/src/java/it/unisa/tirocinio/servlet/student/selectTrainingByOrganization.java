@@ -15,17 +15,26 @@ import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-public class selectTrainingByOrganization extends HttpServlet {
 
+@WebServlet(name = "selectTrainingByOrganization", urlPatterns = {"/selectTrainingByOrganization"})
+public class selectTrainingByOrganization extends HttpServlet {
+    private final JSONObject jsonObject = new JSONObject();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -49,13 +58,27 @@ public class selectTrainingByOrganization extends HttpServlet {
             ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readOuterTrainingOffer(organization.getVATNumber());
             
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+            
             if(trainingOffer == null){
-                message.setMessage("status", 0);
+                jsonObject.put("status", 0);
+                response.getWriter().write(jsonObject.toString());
             }else{
-                message.setMessage("status", 1);
-                message.setMessage("Object", trainingOffer);
-                out.println("message "+trainingOffer.get(0).getDescription());
+              
+                JSONArray array = new JSONArray();
+                for( TrainingOffer offer: trainingOffer ){
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("description", offer.getDescription());
+                    jsonTmp.put("id", offer.getIdOfferTraining());
+                    array.put(jsonTmp);
+                }
+                jsonObject.put("status", 1);
+                jsonObject.put("message", array);
+                response.getWriter().write(jsonObject.toString());
+                //request.setAttribute("trainingMessage",message);
+                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
+        } catch (JSONException ex) {
+            Logger.getLogger(selectTrainingByOrganization.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

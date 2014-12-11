@@ -16,6 +16,7 @@ import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -25,6 +26,8 @@ import javax.servlet.http.HttpSession;
  *
  * @author Valentino
  */
+@WebServlet(name = "insertTrainingByOrganizationServlet", urlPatterns = {"/insertTrainingByOrganizationServlet"})
+
 public class insertTrainingByOrganizationServlet extends HttpServlet {
 
     /**
@@ -46,7 +49,7 @@ public class insertTrainingByOrganizationServlet extends HttpServlet {
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = "pippo ppp palmieri";//request.getParameter("description");
+            String description = request.getParameter("description");
             String primaryKey = "ibm";//request.getParameter("primaryKey");
             HttpSession session = request.getSession();
                         
@@ -60,19 +63,20 @@ public class insertTrainingByOrganizationServlet extends HttpServlet {
             TrainingOffer trainingOffer = new TrainingOffer();
             
             trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-            trainingOffer.setDescription(description);
+            trainingOffer.setDescription(organization.getCompanyName()+" - "+description);
             trainingOffer.setOrganization(organization.getVATNumber());
             trainingOffer.setPersonSSN(person.getSSN());
             
             boolean toReturn = aTrainingOffer.createOuterTrainingOffer(trainingOffer);
+            
             if(toReturn){
                 message.setMessage("status", 1);
-                request.setAttribute("message", message);
-                //request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-                out.println("message "+message.getMessage("status"));
             }else{
                 message.setMessage("status", 0);
             }
+            request.setAttribute("message",message);
+            response.sendRedirect(request.getContextPath()+"/tirocinio/organizzazione/tporganizzazione.jsp");
+            
         } finally {
             out.close();
         }

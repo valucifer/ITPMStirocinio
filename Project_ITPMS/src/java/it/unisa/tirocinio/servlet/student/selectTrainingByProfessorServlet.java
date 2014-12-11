@@ -13,17 +13,26 @@ import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-public class selectTrainingByProfessorServlet extends HttpServlet {
+@WebServlet(name = "selectTrainingByProfessorServlet", urlPatterns = {"/selectTrainingByProfessorServlet"})
 
+public class selectTrainingByProfessorServlet extends HttpServlet {
+    
+    private final JSONObject jsonObject = new JSONObject();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -35,6 +44,7 @@ public class selectTrainingByProfessorServlet extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
@@ -47,13 +57,27 @@ public class selectTrainingByProfessorServlet extends HttpServlet {
             ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readInnerTrainingOffer(person.getSSN());
             
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+            
             if(trainingOffer == null){
-                message.setMessage("status", 0);
+                jsonObject.put("status", 0);
+                response.getWriter().write(jsonObject.toString());
             }else{
-                message.setMessage("status", 1);
-                message.setMessage("Object", trainingOffer);
-                out.println("message "+message.getMessage("status"));
+              
+                JSONArray array = new JSONArray();
+                for( TrainingOffer offer: trainingOffer ){
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("description", offer.getDescription());
+                    jsonTmp.put("id", offer.getIdOfferTraining());
+                    array.put(jsonTmp);
+                }
+                jsonObject.put("status", 1);
+                jsonObject.put("message", array);
+                response.getWriter().write(jsonObject.toString());
+                //request.setAttribute("trainingMessage",message);
+                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
+        } catch (JSONException ex) {
+            Logger.getLogger(selectTrainingByProfessorServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

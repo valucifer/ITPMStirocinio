@@ -154,7 +154,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getInnerTrainingOffer`( in pkProfessor INT )
 BEGIN
-SELECT * FROM training_offer WHERE fk_professor = pkProfessor ORDER BY id_training_offer DESC;
+SELECT * FROM training_offer WHERE fk_person = pkProfessor ORDER BY id_training_offer DESC;
 END
 
 -- --------------------------------------------------------------------------------
@@ -174,7 +174,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `getOuterTrainingOffer`( in pkOrganization INT )
 BEGIN
-SELECT * FROM training_offer WHERE fk_organization = pkOrganization;
+SELECT * FROM training_offer WHERE fk_organization = pkOrganization ORDER BY id_training_offer DESC;
 END
 
 -- --------------------------------------------------------------------------------
