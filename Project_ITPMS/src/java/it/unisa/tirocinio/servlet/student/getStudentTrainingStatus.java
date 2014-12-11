@@ -47,7 +47,7 @@ public class getStudentTrainingStatus extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
-        String email = "a.saulino@studenti.unisa.it" ;//request.getParameter("accountEmail");
+        String email = "vale" ;//request.getParameter("accountEmail");
 
         
         Person person = aPerson.getStudent(email);
