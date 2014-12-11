@@ -124,10 +124,12 @@ public class ConcreteStudentInformation implements IStudentInformation{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
-                aStudentInformation.setStudentSSN(studentSSN);
-                aStudentInformation.setATPath(rs.getString(1));
-                aStudentInformation.setATPath(rs.getString(2));
-                aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt(4)).getIdStudentStatus());
+                Person person = aPerson.readPerson(rs.getString("SSN"));
+                aStudentInformation.setStudentSSN(person.getName()+" "+person.getSurname());
+                aStudentInformation.setMatricula(person.getMatricula());
+                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
+                aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
+                aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
             }
             rs.close();
             return aStudentInformation;
@@ -156,12 +158,14 @@ public class ConcreteStudentInformation implements IStudentInformation{
            ResultSet rs = aCallableStatement.executeQuery();
            
            while( rs.next() ){
-               aStudentInformation = new StudentInformation();
-               aStudentInformation.setStudentSSN(aPerson.readPerson(rs.getString("SSN")).getSSN());
-               aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
-               aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
-               aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
-               studentInformations.add(aStudentInformation);
+                Person person = aPerson.readPerson(rs.getString("SSN"));
+                aStudentInformation.setStudentSSN(person.getName()+" "+person.getSurname());
+                aStudentInformation.setMatricula(person.getMatricula());
+                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
+                aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
+                aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
+                
+                studentInformations.add(aStudentInformation);
            }
            rs.close();
            return studentInformations;

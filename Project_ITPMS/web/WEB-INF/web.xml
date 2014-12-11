@@ -1,6 +1,5 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
-    
     <servlet>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingStatus</servlet-class>
@@ -73,6 +72,10 @@
         <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.viewTrainingRequestForOrganizationSevlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getStudentInformation</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentInformation</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -144,6 +147,10 @@
     <servlet-mapping>
         <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
         <url-pattern>/viewTrainingRequestForOrganizationSevlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getStudentInformation</servlet-name>
+        <url-pattern>/getStudentInformation</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
