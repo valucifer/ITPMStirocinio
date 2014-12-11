@@ -17,6 +17,7 @@ import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -121,6 +122,9 @@ public class uploadInformationFilesServlet extends HttpServlet {
                 message.setMessage("status", 1);
             else message.setMessage("status", 0);
             request.setAttribute("message",message);
+            response.sendRedirect(request.getContextPath()+"/tirocinio/studente/tprichiestatirocinio.jsp");
+            //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/tirocinio/studente/tprichiestatirocinio.jsp");
+            //dispatcher.forward(request,response);
         } catch (Exception ex) {
             Logger.getLogger(uploadInformationFilesServlet.class.getName()).log(Level.SEVERE, null, ex);
             message.setMessage("status", -1);

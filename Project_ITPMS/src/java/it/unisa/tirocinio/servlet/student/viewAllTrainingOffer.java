@@ -5,8 +5,6 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
@@ -48,7 +46,7 @@ public class viewAllTrainingOffer extends HttpServlet {
             else{
                 message.setMessage("status", 1);
                 message.setMessage("Object", trainingOffer);
-                out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
+                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
         } finally {
             out.close();
