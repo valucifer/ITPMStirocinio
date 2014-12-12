@@ -142,7 +142,7 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_PersonSSN VARCHAR(45), in FK_Department INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertInnerTraining` ( in trainingDescription LONGTEXT, in FK_PersonSSN VARCHAR(16), in FK_Department VARCHAR(50) )
 BEGIN
 INSERT INTO training_offer (description, fk_person, fk_department) values (trainingDescription, FK_PersonSSN, FK_Department);
 END
@@ -152,7 +152,7 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getInnerTrainingOffer`( in pkProfessor INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getInnerTrainingOffer`( in pkProfessor VARCHAR(16) )
 BEGIN
 SELECT * FROM training_offer WHERE fk_person = pkProfessor ORDER BY id_training_offer DESC;
 END
@@ -162,7 +162,7 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in FK_Organization VARCHAR(11), in FK_PersonSSN VARCHAR(16), in FK_Department VARCHAR(50))
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertOuterTraining` ( in trainingDescription LONGTEXT, in FK_Organization VARCHAR(16), in FK_PersonSSN VARCHAR(16), in FK_Department VARCHAR(50))
 BEGIN
 INSERT INTO training_offer (description, fk_organization, fk_person, fk_department) VALUES (trainingDescription, FK_Organization, FK_PersonSSN, FK_Department);
 END
@@ -172,7 +172,7 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getOuterTrainingOffer`( in pkOrganization INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getOuterTrainingOffer`( in pkOrganization varchar(16) )
 BEGIN
 SELECT * FROM training_offer WHERE fk_organization = pkOrganization ORDER BY id_training_offer DESC;
 END
@@ -193,7 +193,7 @@ END
 -- --------------------------------------------------------------------------------
 DELIMITER $$
 
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrainingOffer`( in idTrainingOffer INT, in description LONGTEXT, in FK_Organization VARCHAR(11), in FK_PersonSSN VARCHAR(16), in FK_Department VARCHAR(50) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrainingOffer`( in idTrainingOffer INT, in description LONGTEXT, in FK_Organization VARCHAR(16), in FK_PersonSSN VARCHAR(16), in FK_Department VARCHAR(50) )
 BEGIN
 if FK_Organization is null
 	then
@@ -242,7 +242,7 @@ END
 -- Note: Ex getStudentAttendece
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingStudent`( in pkPersonSSN INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPendingStudent`( in pkPersonSSN VARCHAR(16) )
 BEGIN
 SELECT * from pending_acceptance where SSN = pkPersonSSN;
 END
@@ -402,7 +402,7 @@ END
 DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `updateOrganization`  ( in vatNumber VARCHAR(16), in companyName VARCHAR(45), in city VARCHAR(45), in address VARCHAR(45), in phone VARCHAR(45), in email VARCHAR(100), in personSSN VARCHAR(16), in accountEmail VARCHAR(100), in tutorSSN VARCHAR(16) )
 BEGIN
-UPDATE organization SET company_name = companyName, city = city, address = address, phone = phone, email = email, fk_account = accountEmail, fk_professor = personSSN, fk_external_tutor = tutorSSN WHERE vat_number = vatNumber;
+UPDATE organization SET company_name = company_name, city = city, address = address, phone = phone, email = email, fk_account = accountEmail, fk_professor = personSSN, fk_external_tutor = tutorSSN WHERE vat_number = vatNumber;
 END
 
 -- --------------------------------------------------------------------------------
@@ -442,9 +442,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrainingRequest` ( in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT, in FK_Person VARCHAR(16), in FK_Organization VARCHAR(11), in FK_StudentInformationSSN VARCHAR(16) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertTrainingRequest` ( in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT, in FK_Person VARCHAR(16), in FK_Organization VARCHAR(16), in FK_StudentInformationSSN VARCHAR(16) )
 BEGIN
-INSERT INTO training_request (description, title, fk_training_status, fk_person, fk_organization, student_information_ssn) VALUES (trainingDescription, title, FK_TrainingStatus, FK_Person, FK_Organization, FK_StudentInformationSSN);
+INSERT INTO training_request (description, title, fk_training_status, fk_person, fk_organization, student_information_SSN) VALUES (trainingDescription, title, FK_TrainingStatus, FK_Person, FK_Organization, FK_StudentInformationSSN);
 END
 
 -- --------------------------------------------------------------------------------
@@ -462,9 +462,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrainingRequest` ( in ID INT, in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT, in FK_Person VARCHAR(16), in FK_Organization VARCHAR(11), in FK_StudentInformationSSN VARCHAR(16) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrainingRequest` ( in ID INT, in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT, in FK_Person VARCHAR(16), in FK_Organization VARCHAR(16), in FK_StudentInformationSSN VARCHAR(16) )
 BEGIN
-UPDATE training_request SET description = trainingDescription, title = title, fk_training_status = FK_TrainingStatus, fk_person = FK_Person, fk_organization = FK_Organization, student_information = FK_StudentInformationSSN WHERE id_training_request = ID;
+UPDATE training_request SET description = trainingDescription, title = title, fk_training_status = FK_TrainingStatus, fk_person = FK_Person, fk_organization = FK_Organization, student_information_SSN = FK_StudentInformationSSN WHERE id_training_request = ID;
 END
 
 -- --------------------------------------------------------------------------------
