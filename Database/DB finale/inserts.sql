@@ -21,6 +21,11 @@ INSERT INTO `db_distra`.`cycle` (`cycle_number`, `title`) VALUES ('2', 'Magistal
 --department--
 INSERT INTO `db_distra`.`department` (`abbreviation`) VALUES ('MIT');
 
+--TRAINING STATUS--
+INSERT INTO `db_distra`.`training_status` (`description`) VALUES ('iniziato');
+INSERT INTO `db_distra`.`training_status` (`description`) VALUES ('pre-completamento');
+INSERT INTO `db_distra`.`training_status` (`description`) VALUES ('completo');
+
 --person--
 INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('CB89', 'Carlos', 'Borges', 'M', 'c.borges1@studenti.unisa.it', 'MIT', 'Università di Salerno', '0512200011', '2');
 INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('VV89', 'Valentino', 'Vivone', 'M', 'v.vivone@studenti.unisa.it', 'MIT', 'Università di Salerno', '0512200012', '2');
