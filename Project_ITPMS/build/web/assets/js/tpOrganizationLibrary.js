@@ -50,5 +50,17 @@ tpOrganizationFunction = {
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 
         });
+    },
+    updateTraining: function (idTraining, description, path) {
+        $.get(path+"/deleteTrainingOfferByOrganizationServlet",{idModify:idTraining, description:description}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                alert("Il tirocinio è stato modificato!");
+            }else{
+                alert("Il tirocinio non è stato modificato in quanto si sono verificati dei problemi!");          
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
     }
 };		

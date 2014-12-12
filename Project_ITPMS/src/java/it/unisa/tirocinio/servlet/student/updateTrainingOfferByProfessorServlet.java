@@ -27,9 +27,9 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-@WebServlet(name = "updateTrainingOfferByOrganizationServlet", urlPatterns = {"/updateTrainingOfferByOrganizationServlet"})
+@WebServlet(name = "updateTrainingOfferByProfessorServlet", urlPatterns = {"/updateTrainingOfferByProfessorServlet"})
 
-public class updateTrainingOfferByOrganizationServlet extends HttpServlet {
+public class updateTrainingOfferByProfessorServlet extends HttpServlet {
     private final JSONObject jsonObject = new JSONObject();
     
     /**
@@ -57,11 +57,8 @@ public class updateTrainingOfferByOrganizationServlet extends HttpServlet {
             
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
             TrainingOffer trainingOffer = aTrainingOffer.readTrainingOffer(idModify);
-            
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(trainingOffer.getOrganization());
                 
-            trainingOffer.setDescription(organization.getCompanyName()+" - "+description);
+            trainingOffer.setDescription(trainingOffer.getDepartment()+" - "+description);
             
             boolean toReturn = aTrainingOffer.updateTrainingOffer(trainingOffer);
             
@@ -73,7 +70,7 @@ public class updateTrainingOfferByOrganizationServlet extends HttpServlet {
                 jsonObject.put("status",0);
             }
             request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/organizzazione/tporganizzazione.jsp");
+            response.sendRedirect(request.getContextPath()+"/tirocinio/professore/tpprofessore.jsp");
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(deleteTrainingOfferByOrganizationServlet.class.getName()).log(Level.SEVERE, null, ex);

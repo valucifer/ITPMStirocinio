@@ -5,10 +5,7 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -27,9 +24,9 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-@WebServlet(name = "updateTrainingOfferByOrganizationServlet", urlPatterns = {"/updateTrainingOfferByOrganizationServlet"})
+@WebServlet(name = "deleteTrainingOfferByProfessorServlet", urlPatterns = {"/deleteTrainingOfferByProfessorServlet"})
 
-public class updateTrainingOfferByOrganizationServlet extends HttpServlet {
+public class deleteTrainingOfferByProfessorServlet extends HttpServlet {
     private final JSONObject jsonObject = new JSONObject();
     
     /**
@@ -51,29 +48,23 @@ public class updateTrainingOfferByOrganizationServlet extends HttpServlet {
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            int idModify = Integer.parseInt(request.getParameter("idModify"));
-            String description = request.getParameter("description");
+            int idRemove = Integer.parseInt(request.getParameter("idRemove"));
             HttpSession session = request.getSession();
             
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            TrainingOffer trainingOffer = aTrainingOffer.readTrainingOffer(idModify);
             
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(trainingOffer.getOrganization());
-                
-            trainingOffer.setDescription(organization.getCompanyName()+" - "+description);
-            
-            boolean toReturn = aTrainingOffer.updateTrainingOffer(trainingOffer);
+            boolean toReturn = aTrainingOffer.deleteTrainingOffer(idRemove);
             
             if(toReturn){
-                message.setMessage("status", 1);
+                //message.setMessage("status", 1);
                 jsonObject.put("status",1);
             }else{
-                message.setMessage("status", 0);
+                //message.setMessage("status", 0);
                 jsonObject.put("status",0);
             }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/organizzazione/tporganizzazione.jsp");
+            //request.setAttribute("message",message);
+            //response.sendRedirect(request.getContextPath()+"/tirocinio/organizzazione/tpprofessore.jsp");
+            
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(deleteTrainingOfferByOrganizationServlet.class.getName()).log(Level.SEVERE, null, ex);

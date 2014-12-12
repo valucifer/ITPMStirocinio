@@ -84,6 +84,14 @@
         <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingOfferByOrganizationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>updateTrainingOfferByProfessorServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingOfferByProfessorServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.deleteTrainingOfferByProfessorServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -167,6 +175,14 @@
     <servlet-mapping>
         <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
         <url-pattern>/updateTrainingOfferByOrganizationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>updateTrainingOfferByProfessorServlet</servlet-name>
+        <url-pattern>/updateTrainingOfferByProfessorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
+        <url-pattern>/deleteTrainingOfferByProfessorServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

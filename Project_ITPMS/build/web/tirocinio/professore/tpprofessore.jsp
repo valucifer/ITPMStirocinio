@@ -40,6 +40,17 @@
             pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
         %>
         <script>
+            function modifyTrainingToDatabase(idModify){
+                $("#descriptionTrainingForModify").attr("placeholder",$('#paragraphDescriptionListTraining_'+idModify).text());
+                $("#idForModifyTrainingProfessor").attr("value",idModify);
+                jQuery('#modalGestioneTirocinioANDPlacementProfessore').modal('show', {backdrop: 'static'});
+            }
+            function removeTrainingToDatabase(idRemove){
+                if(confirm("Sei sicuro di voler eliminare questo tirocinio?")){
+                    tpProfessorFunction.deleteTraining(idRemove,${path });
+                    setTimeout(function(){ location.reload(); }, 1000);
+                }
+            }
             jQuery(document).ready(function ($) {
                 tpProfessorFunction.appendTraining('#listTrainingProfessore',${path });
             });
@@ -293,24 +304,27 @@
 				<div class="modal-header">
 					<center><h4 class="modal-title">Modifica il Tirocinio.</h4></center>
 				</div>
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-12">
-							<div class="form-group">
-								<label for="descriptionTrainingForModify" class="col-sm-3 control-label">Descrizione del Tirocinio</label>
-								<div class="col-sm-9">
-									<textarea id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250"></textarea>
-								</div>
-							</div>	
-						</div>
-					</div>
-				</div>
-				<div class="modal-footer">
-					<center>
-						<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-						<button type="button" id="modifyDataForTrainingIntoDatabase" class="btn btn-orange">Modifica</button>
-					</center>
-				</div>
+                                <form role="form" class="form-horizontal" action="/ServerWeb/updateTrainingOfferByProfessorServlet" method="POST">
+                                    <div class="modal-body">
+                                            <div class="row">
+                                                    <div class="col-md-12">
+                                                            <div class="form-group">
+                                                                    <label for="descriptionTrainingForModify" class="col-sm-3 control-label">Descrizione del Tirocinio</label>
+                                                                    <div class="col-sm-9">
+                                                                            <input type="hidden" name="idModify" id="idForModifyTrainingProfessor">
+                                                                            <textarea required name="description" id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250"></textarea>
+                                                                    </div>
+                                                            </div>	
+                                                    </div>
+                                            </div>
+                                    </div>
+                                    <div class="modal-footer">
+                                            <center>
+                                                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+                                                    <button type="submit" id="modifyDataForTrainingIntoDatabase" class="btn btn-orange">Modifica</button>
+                                            </center>
+                                    </div>
+                                </form>
 			</div>
 		</div>
 	</div>
