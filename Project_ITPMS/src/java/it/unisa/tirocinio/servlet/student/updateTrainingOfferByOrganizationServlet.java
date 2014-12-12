@@ -5,27 +5,18 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.TrainingOffer;
-import it.unisa.tirocinio.manager.concrete.ConcreteDepartment;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Valentino
  */
-@WebServlet(name = "insertTrainingByProfessorServlet", urlPatterns = {"/insertTrainingByProfessorServlet"})
-public class insertTrainingByProfessorServlet extends HttpServlet {
+public class updateTrainingOfferByOrganizationServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -39,36 +30,18 @@ public class insertTrainingByProfessorServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = request.getParameter("description");
-            String primaryKey = "a.deluica@professori.unisa.it";//request.getParameter("primaryKey");
-            HttpSession session = request.getSession();
-             
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getProfessor(primaryKey);
-            
-            ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            TrainingOffer trainingOffer = new TrainingOffer();
-            
-            trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-            trainingOffer.setDescription(person.getDepartmentAbbreviation()+" - "+description);
-            trainingOffer.setPersonSSN(person.getSSN());
-            
-            boolean toReturn = aTrainingOffer.createInnerTrainingOffer(trainingOffer);
-            if(toReturn){
-                message.setMessage("status", 1);
-                //out.println("message "+toReturn);
-               // request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-            }else{
-                message.setMessage("status", 0);
-            }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/professore/tpprofessore.jsp");
-            
+            out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\" \"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet updateTrainingOfferByOrganizationServlet</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet updateTrainingOfferByOrganizationServlet at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         } finally {
             out.close();
         }

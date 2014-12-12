@@ -50,7 +50,7 @@ public class insertTrainingByOrganizationServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
             String description = request.getParameter("description");
-            String primaryKey = "ibm";//request.getParameter("primaryKey");
+            String primaryKey = "moderna@azienda.unisa.it";//request.getParameter("primaryKey");
             HttpSession session = request.getSession();
                         
             ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();

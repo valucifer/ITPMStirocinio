@@ -5,28 +5,30 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.TrainingOffer;
-import it.unisa.tirocinio.manager.concrete.ConcreteDepartment;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-@WebServlet(name = "insertTrainingByProfessorServlet", urlPatterns = {"/insertTrainingByProfessorServlet"})
-public class insertTrainingByProfessorServlet extends HttpServlet {
+@WebServlet(name = "deleteTrainingOfferByOrganizationServlet", urlPatterns = {"/deleteTrainingOfferByOrganizationServlet"})
 
+public class deleteTrainingOfferByOrganizationServlet extends HttpServlet {
+    private final JSONObject jsonObject = new JSONObject();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,35 +42,32 @@ public class insertTrainingByProfessorServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        
         PrintWriter out = response.getWriter();
+        
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = request.getParameter("description");
-            String primaryKey = "a.deluica@professori.unisa.it";//request.getParameter("primaryKey");
+            int idRemove = Integer.parseInt(request.getParameter("idRemove"));
             HttpSession session = request.getSession();
-             
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getProfessor(primaryKey);
             
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            TrainingOffer trainingOffer = new TrainingOffer();
             
-            trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-            trainingOffer.setDescription(person.getDepartmentAbbreviation()+" - "+description);
-            trainingOffer.setPersonSSN(person.getSSN());
+            boolean toReturn = aTrainingOffer.deleteTrainingOffer(idRemove);
             
-            boolean toReturn = aTrainingOffer.createInnerTrainingOffer(trainingOffer);
             if(toReturn){
-                message.setMessage("status", 1);
-                //out.println("message "+toReturn);
-               // request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
+                //message.setMessage("status", 1);
+                jsonObject.put("status",1);
             }else{
-                message.setMessage("status", 0);
+                //message.setMessage("status", 0);
+                jsonObject.put("status",0);
             }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/professore/tpprofessore.jsp");
+            //request.setAttribute("message",message);
+            //response.sendRedirect(request.getContextPath()+"/tirocinio/organizzazione/tporganizzazione.jsp");
             
+            response.getWriter().write(jsonObject.toString());
+        } catch (JSONException ex) {
+            Logger.getLogger(deleteTrainingOfferByOrganizationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

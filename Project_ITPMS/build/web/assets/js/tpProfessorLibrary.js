@@ -31,10 +31,10 @@ tpProfessorFunction = {
                         $(idPanel).append(stringToAppend_tmp);
                     }
                 }else{
-                        $(idPanel).append("<center><strong>I dati non sono stati caricati correttamente.</strong></center>");
+                        $(idPanel).append("<center><strong>I dati non sono stati caricati correttamente o non sono presenti nel database.</strong></center>");
                 }
             },error: function (e) {
-                alert(JSON.stringify(e));
+                $(idPanel).append("<center><strong>I dati non sono stati caricati correttamente.</strong></center>");
             }
         });
         

@@ -33,3 +33,29 @@ INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_e
 INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `matricula`, `cycle`) VALUES ('ADL', 'Andera', 'De Lucia', 'M', 'a.deluica@professori.unisa.it', 'MIT', 'Università di Salerno', '0512200014', '2');
 INSERT INTO `db_distra`.`person` (`SSN`, `name`, `surname`, `gender`, `Account_email`, `Department_abbreviation`, `university`, `cycle`) VALUES ('PP', 'Pippo', 'Paperino', 'M', 'staff@staff.unisa.it', 'MIT', 'Università di Salerno', '2');
 
+--Organization--
+INSERT INTO `db_distra`.`organization` (`vat_number`, `company_name`, `email`, `fk_account`, `fk_professor`) VALUES ('14saa', 'moderna2000', 'moderna@gmail.com', 'moderna@azienda.unisa.it', 'ADL');
+
+--Update database--
+ALTER TABLE `db_distra`.`organization` 
+DROP FOREIGN KEY `fk_tutor`;
+ALTER TABLE `db_distra`.`organization` 
+CHANGE COLUMN `fk_externaltutor` `fk_externaltutor` VARCHAR(16) NULL ;
+ALTER TABLE `db_distra`.`organization` 
+ADD CONSTRAINT `fk_tutor`
+  FOREIGN KEY (`fk_externaltutor`)
+  REFERENCES `db_distra`.`person` (`SSN`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+
+ALTER TABLE `db_distra`.`organization` 
+DROP FOREIGN KEY `fk_tutor`;
+ALTER TABLE `db_distra`.`organization` 
+CHANGE COLUMN `fk_externaltutor` `fk_external_tutor` VARCHAR(16) NULL DEFAULT NULL ;
+ALTER TABLE `db_distra`.`organization` 
+ADD CONSTRAINT `fk_tutor`
+  FOREIGN KEY (`fk_external_tutor`)
+  REFERENCES `db_distra`.`person` (`SSN`)
+  ON DELETE NO ACTION
+  ON UPDATE NO ACTION;
+

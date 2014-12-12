@@ -300,4 +300,30 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
 
+    @Override
+    public boolean deleteTrainingOffer(int idTrainingOffer) {
+        initializeConnection();
+        try {
+            
+            aCallableStatement = connector.prepareCall("{call deleteTrainingOffer(?)}");       
+            aCallableStatement.setInt("pkTraining",idTrainingOffer);
+            
+            int check = aCallableStatement.executeUpdate();
+            aCallableStatement.close();
+            
+            return check > 0;
+            
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+
 }

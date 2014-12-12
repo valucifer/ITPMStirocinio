@@ -31,12 +31,24 @@ tpOrganizationFunction = {
                         $(idPanel).append(stringToAppend_tmp);
                     }
                 }else{
-                        $(idPanel).append("<center><strong>I dati non sono stati caricati correttamente.</strong></center>");
+                        $(idPanel).append("<center><strong>I dati non sono stati caricati correttamente o non sono presenti nel database.</strong></center>");
                 }
             },error: function (e) {
-                alert(JSON.stringify(e));
+                $(idPanel).append("<center><strong>I dati non sono stati caricati correttamente.</strong></center>");
             }
         });
         
+    },
+    deleteTraining: function (idTraining, path) {
+        $.get(path+"/deleteTrainingOfferByOrganizationServlet",{idRemove:idTraining}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                alert("Il tirocinio è stato eliminato!");
+            }else{
+                alert("Il tirocinio non è stato eliminato in quanto si sono verificati dei problemi!");          
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
     }
 };		

@@ -40,6 +40,17 @@
             pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
         %>
         <script>
+            function modifyTrainingToDatabase(idModify){
+                $("#descriptionTrainingForModify").attr("placeholder",$('#paragraphDescriptionListTraining_'+idModify).text());
+                $("#descriptionTrainingForModify").val($('#paragraphDescriptionListTraining_'+idModify).text());
+                jQuery('#modalGestioneTirocinioANDPlacementOrganizzazione').modal('show', {backdrop: 'static'});
+            }
+            function removeTrainingToDatabase(idRemove){
+                if(confirm("Sei sicuro di voler eliminare questo tirocinio?")){
+                    tpOrganizationFunction.deleteTraining(idRemove,${path });
+                    setTimeout(function(){ location.reload(); }, 1000);
+                }
+            }
             jQuery(document).ready(function ($) {
                 tpOrganizationFunction.appendTraining('#listTrainingOrganizzazione',${path });
             });

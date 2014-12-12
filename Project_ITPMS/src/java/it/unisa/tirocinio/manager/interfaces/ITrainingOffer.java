@@ -17,6 +17,8 @@ public interface ITrainingOffer {
     public boolean createInnerTrainingOffer( TrainingOffer aTrainingOffer );
     public boolean createOuterTrainingOffer( TrainingOffer aTrainingOffer );
     public boolean updateTrainingOffer( TrainingOffer aTrainingOffer );
+    public boolean deleteTrainingOffer( int idTrainingOffer );
+    
     public TrainingOffer readTrainingOffer( int idTrainingOffer );
     public ArrayList<TrainingOffer> readInnerTrainingOffer( String personSSN );
     public ArrayList<TrainingOffer> readOuterTrainingOffer( String vatNumber );

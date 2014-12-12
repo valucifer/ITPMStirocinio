@@ -49,7 +49,7 @@ public class selectTrainingByProfessorServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = "delucia"; //request.getParameter("primaryKey"));
+            String primaryKey = "a.deluica@professori.unisa.it"; //request.getParameter("primaryKey"));
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getProfessor(primaryKey);
             
@@ -60,7 +60,6 @@ public class selectTrainingByProfessorServlet extends HttpServlet {
             
             if(trainingOffer == null){
                 jsonObject.put("status", 0);
-                response.getWriter().write(jsonObject.toString());
             }else{
               
                 JSONArray array = new JSONArray();
@@ -72,10 +71,10 @@ public class selectTrainingByProfessorServlet extends HttpServlet {
                 }
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);
-                response.getWriter().write(jsonObject.toString());
                 //request.setAttribute("trainingMessage",message);
                 //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
+            response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(selectTrainingByProfessorServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
