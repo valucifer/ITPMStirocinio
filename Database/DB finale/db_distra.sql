@@ -666,7 +666,7 @@ DROP TABLE IF EXISTS `db_distra`.`pending_acceptance` ;
 
 CREATE TABLE IF NOT EXISTS `db_distra`.`pending_acceptance` (
   `id_pending_acceptance` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'weqdas',
-  `date_request` DATE NULL DEFAULT NULL COMMENT 'dfsdf',
+  `request_date` DATE NULL DEFAULT NULL COMMENT 'dfsdf',
   `fk_person` VARCHAR(16) NOT NULL COMMENT 'sadaas',
   PRIMARY KEY (`id_pending_acceptance`),
   INDEX `fk_StudentAttendence_Student1_idx` (`fk_person` ASC),

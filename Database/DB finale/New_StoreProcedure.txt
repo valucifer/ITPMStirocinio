@@ -304,7 +304,7 @@ if pathCVCheck = false
 	else if pathATCheck =false
 		THEN SIGNAL SQLSTATE '45000' SET MESSAGE_TEXT = 'Accademic Transcript not inserted.';
 	else 
-		insert into pending_acceptance (date_request, fk_person) values (current_date,studentSSN)  ;
+		insert into pending_acceptance (request_date, fk_person) values (current_date,studentSSN)  ;
 END if;
 END if;
 END
