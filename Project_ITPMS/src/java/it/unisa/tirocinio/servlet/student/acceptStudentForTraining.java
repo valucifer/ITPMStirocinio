@@ -5,23 +5,29 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
+import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
 public class acceptStudentForTraining extends HttpServlet {
-
+    private final JSONObject jsonObject = new JSONObject();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -32,7 +38,7 @@ public class acceptStudentForTraining extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, JSONException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
@@ -40,18 +46,21 @@ public class acceptStudentForTraining extends HttpServlet {
         HttpSession session = request.getSession();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String studentSSN = "vvv"; //request.getParameter("studentSSN");
+            String studentMatricula = request.getParameter("matricula");
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getPersonToMatricula(studentMatricula);
             
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-            StudentInformation studentInformation = aStudentInformation.readStudentInformation(studentSSN);
+            StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
             
             studentInformation.setStudentStatus(2);
             
             if(aStudentInformation.updateStudentInformation(studentInformation)){
-                message.setMessage("status", 1);
+                jsonObject.put("status", 1);
             }else{
-                 message.setMessage("status", 0);
+                 jsonObject.put("status", 0);
             }
+            response.getWriter().write(jsonObject.toString());
         } finally {
             out.close();
         }
@@ -69,7 +78,11 @@ public class acceptStudentForTraining extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(acceptStudentForTraining.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -83,7 +96,11 @@ public class acceptStudentForTraining extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (JSONException ex) {
+            Logger.getLogger(acceptStudentForTraining.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

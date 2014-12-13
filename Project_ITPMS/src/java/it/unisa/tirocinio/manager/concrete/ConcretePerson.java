@@ -261,4 +261,50 @@ public class ConcretePerson implements IPerson{
             Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
     }
+
+    @Override
+    public Person getPersonToMatricula(String matricula) {
+        initializeConnection();
+        Person aPerson = new Person();
+        ConcreteAccount anAccount = ConcreteAccount.getInstance();
+        ConcreteCycle aCycle = ConcreteCycle.getInstance();
+        ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
+        
+        try {
+            aCallableStatement = connector.prepareCall("{call getPersonForMatricula(?)}");
+            aCallableStatement.setString("matricula",matricula);
+            ResultSet rs = aCallableStatement.executeQuery();
+            
+            while( rs.next() ){
+               aPerson.setAccountEmail(anAccount.readAccount(rs.getString(10)).getEmail());
+               aPerson.setAddress(rs.getString(6));
+               aPerson.setCitizenship(rs.getString(9));
+               aPerson.setCity(rs.getString(5));
+               aPerson.setCycle(aCycle.readCycle(rs.getInt(16)).getCycleNumber());
+               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString(11)).getAbbreviation());
+               aPerson.setGender(rs.getString(8));
+               aPerson.setMatricula(rs.getString(14));
+               aPerson.setName(rs.getString(2));
+               aPerson.setPhone(rs.getString(4));
+               aPerson.setPosition(rs.getString(15));
+               aPerson.setSSN(rs.getString(1));
+               aPerson.setSurname(rs.getString(3));
+               aPerson.setUniversity(rs.getString(13));
+               aPerson.setWebPage(rs.getString(12));
+               aPerson.setZipCode(rs.getString(7));
+            }
+            rs.close();
+            return aPerson;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 }

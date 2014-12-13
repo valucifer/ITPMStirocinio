@@ -27,5 +27,6 @@ public interface IPerson {
     public Person getStudent (String email);
     public Person getOrganization (String email);
     public Person getAdministrator (String email);
+    public Person getPersonToMatricula(String matricula);
     
 }

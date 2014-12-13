@@ -612,7 +612,17 @@ CREATE DEFINER=`root`@`localhost` PROCEDURE `getPerson`( in personSSN VARCHAR(16
 BEGIN
 SELECT * FROM person WHERE SSN = personSSN;
 END
-	
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: Ex getStudentAttendece
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonForMatricula`( in matricula VARCHAR(10) )
+BEGIN
+SELECT * FROM person WHERE matricula = matricula;
+END
+
 -- --------------------------------------------------------------------------------
 -- Routine DDL
 -- Note: Ex getStudentAttendece

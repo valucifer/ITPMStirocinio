@@ -40,7 +40,7 @@
             pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
         %>
         <script>
-            function rejectTrainingRequest(count){
+            function rejectTrainingRequest(count, email){
                 if($("#cvDocumentError").is(":checked")){
                         $("#cvDocumentError").click();
                 }
@@ -51,19 +51,19 @@
                         $("#cfuNotFoundError").click();
                 }
                 $("#textareaDescriptionError").val("");
-                $("#serialNumberModalForReject").val(myArrayForModalMenu[count]);
-                $("#nameANDsurnameModalForReject").val(myArrayForModalMenu[count]);
+                $("#serialNumberModalForReject").val(count);
+                $("#nameANDsurnameModalForReject").val(email);
                 jQuery('#modalGestioneTirocinioANDPlacementAmministratore').modal('show', {backdrop: 'static'});
             }
 
-            function acceptTrainingRequest(idRequest){
-                $("#changeRequestTrainingForComplete_"+idRequest).html("");
-                $("#changeRequestTrainingForComplete_"+idRequest).html("<button id='complete_"+idRequest+"' class='btn btn-sm btn-icon btn-blue' onClick=completeTrainingRequest("+idRequest+")>Concluso</button>");
-                localStorage.setItem("completo_"+idRequest,idRequest);
+            function acceptTrainingRequest(idRequest, email){
+                tpAdminFunction.acceptStudentForTraining(idRequest, ${path });
+                setTimeout(function(){ location.reload(); }, 1000);
             }
-            function completeTrainingRequest(idComplete){
-                alert(idComplete+" è completo");
+            function completeTrainingRequest(idComplete, email){
+                alert(idComplete+" "+email+" è completo");
             }
+    
             jQuery(document).ready(function ($) {
                 tpAdminFunction.appendStudentInformation('#tableNotifications',${path });
             });
@@ -320,7 +320,7 @@
 						<div class="col-md-6">
 							
 							<div class="form-group">
-								<label for="nameANDsurnameModalForReject" class="control-label">Credenziali</label>
+								<label for="nameANDsurnameModalForReject" class="control-label">Email dello studente</label>
 								
 								<input type="text" id="nameANDsurnameModalForReject" class="form-control" disabled>
 							</div>	

@@ -127,7 +127,7 @@ public class ConcreteStudentInformation implements IStudentInformation{
                 Person person = aPerson.readPerson(rs.getString("SSN"));
                 aStudentInformation.setStudentSSN(person.getName()+" "+person.getSurname());
                 aStudentInformation.setMatricula(person.getMatricula());
-                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
+                aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
                 aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
                 aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
             }
@@ -158,13 +158,14 @@ public class ConcreteStudentInformation implements IStudentInformation{
            ResultSet rs = aCallableStatement.executeQuery();
            
            while( rs.next() ){
+                aStudentInformation = new StudentInformation();
                 Person person = aPerson.readPerson(rs.getString("SSN"));
                 aStudentInformation.setStudentSSN(person.getName()+" "+person.getSurname());
                 aStudentInformation.setMatricula(person.getMatricula());
-                aStudentInformation.setATPath(rs.getString("curriculum_vitae_path"));
+                aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
                 aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
                 aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
-                
+                aStudentInformation.setEmailStudent(person.getAccountEmail());
                 studentInformations.add(aStudentInformation);
            }
            rs.close();

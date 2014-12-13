@@ -16,15 +16,25 @@ public final class StudentInformation {
     private String ATPath = null;
     private int studentStatus;
     private String matricula = null;
+    private String emailStudent = null;
     
     public StudentInformation(){}
+
+    public String getEmailStudent() {
+        return emailStudent;
+    }
+
+    public void setEmailStudent(String emailStudent) {
+        this.emailStudent = emailStudent;
+    }
     
-    public StudentInformation( String matricula, String studentSSN, String CVPath, String ATPath, int studentStatus ){
+    public StudentInformation(String emailStudent, String matricula, String studentSSN, String CVPath, String ATPath, int studentStatus ){
         setATPath(ATPath);
         setCVPath(CVPath);
         setStudentSSN(studentSSN);
         setStudentStatus(studentStatus);
         setMatricula(matricula);
+        setEmailStudent(emailStudent);
     }
 
     public void setMatricula(String matricula) {

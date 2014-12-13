@@ -75,8 +75,8 @@ public class selectTrainingByOrganization extends HttpServlet {
                 //request.setAttribute("trainingMessage",message);
                 //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
                 
-                response.getWriter().write(jsonObject.toString());
             }
+            response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(selectTrainingByOrganization.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

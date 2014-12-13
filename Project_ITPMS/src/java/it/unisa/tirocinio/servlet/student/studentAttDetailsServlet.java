@@ -47,12 +47,8 @@ public class studentAttDetailsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String primaryKey = "staff@staff.unisa.it";//request.getParameter("primaryKey");
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getAdministrator(primaryKey);
             
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
@@ -60,14 +56,16 @@ public class studentAttDetailsServlet extends HttpServlet {
             if(studentInformation == null){
                 jsonObject.put("status", 0);
             }else{
-             JSONArray array = new JSONArray();
+                JSONArray array = new JSONArray();
                 for( StudentInformation stuInf: studentInformation ){
                     JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("idStudent",stuInf.getMatricula());
                     jsonTmp.put("matricula", stuInf.getMatricula());
                     jsonTmp.put("credenziali", stuInf.getStudentSSN());
                     jsonTmp.put("statusStudent", stuInf.getStudentStatus());
                     jsonTmp.put("curriculum", stuInf.getCVPath());
                     jsonTmp.put("libretto", stuInf.getATPath());
+                    jsonTmp.put("emailStudent", stuInf.getEmailStudent());
                     
                     array.put(jsonTmp);
                 }
@@ -76,6 +74,7 @@ public class studentAttDetailsServlet extends HttpServlet {
                 //request.setAttribute("trainingMessage",message);
                 //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
+            response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(studentAttDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
