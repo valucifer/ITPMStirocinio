@@ -13,17 +13,26 @@ import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-public class studentAttDetailsServlet extends HttpServlet {
+@WebServlet(name = "studentAttDetailsServlet", urlPatterns = {"/studentAttDetailsServlet"})
 
+public class studentAttDetailsServlet extends HttpServlet {
+    private final JSONObject jsonObject = new JSONObject();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,19 +50,34 @@ public class studentAttDetailsServlet extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String primaryKey = "vale";//request.getParameter("primaryKey");
+            String primaryKey = "staff@staff.unisa.it";//request.getParameter("primaryKey");
             ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getStudent(primaryKey);
+            Person person = aPerson.getAdministrator(primaryKey);
             
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
+            
             if(studentInformation == null){
-                message.setMessage("status", 0);
+                jsonObject.put("status", 0);
             }else{
-                message.setMessage("status", 1);
-                message.setMessage("Object", studentInformation);
-                out.println("message "+message.getMessage("status"));
+             JSONArray array = new JSONArray();
+                for( StudentInformation stuInf: studentInformation ){
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("matricula", stuInf.getMatricula());
+                    jsonTmp.put("credenziali", stuInf.getStudentSSN());
+                    jsonTmp.put("statusStudent", stuInf.getStudentStatus());
+                    jsonTmp.put("curriculum", stuInf.getCVPath());
+                    jsonTmp.put("libretto", stuInf.getATPath());
+                    
+                    array.put(jsonTmp);
+                }
+                jsonObject.put("status", 1);
+                jsonObject.put("message", array);
+                //request.setAttribute("trainingMessage",message);
+                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
+        } catch (JSONException ex) {
+            Logger.getLogger(studentAttDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }
