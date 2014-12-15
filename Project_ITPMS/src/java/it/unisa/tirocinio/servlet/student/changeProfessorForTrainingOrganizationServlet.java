@@ -13,6 +13,7 @@ import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -21,6 +22,8 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Valentino
  */
+@WebServlet(name = "changeProfessorForTrainingOrganizationServlet", urlPatterns = {"/changeProfessorForTrainingOrganizationServlet"})
+
 public class changeProfessorForTrainingOrganizationServlet extends HttpServlet {
 
     /**
@@ -40,31 +43,26 @@ public class changeProfessorForTrainingOrganizationServlet extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String professorEmail = "delucia"; //request.getParameter("professorEmail");
-            String organizationVAT = "1"; //request.getParameter("organizationVAT");
+            String professorSSN = request.getParameter("professorSSN");
+            String organizationVAT = request.getParameter("organizationVAT");
             
             ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getProfessor(professorEmail);
+            Person person = aPerson.readPerson(professorSSN);
             
-            if(aPerson.isAProfessor(person.getAccountEmail())){            
-                ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-                Organization organization = anOrganization.readOrganization(organizationVAT);
+            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+            Organization organization = anOrganization.readOrganization(organizationVAT);
 
-                organization.setProfessor(person.getSSN());
+            organization.setProfessor(person.getSSN());
 
-                boolean toReturn = anOrganization.updateOrganization(organization);
+            boolean toReturn = anOrganization.updateOrganization(organization);
 
-                if(toReturn){
-                    message.setMessage("status", 1);
-                    request.setAttribute("message", message);
-                    //request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-                    out.println("message "+message.getMessage("status"));
-                }else{
-                    message.setMessage("status", 0);
-                }
+            if(toReturn){
+                message.setMessage("status", 1);
             }else{
-                 message.setMessage("status", 0);
+                message.setMessage("status", 0);
             }
+            request.setAttribute("message",message);
+            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
         } finally {
             out.close();
         }

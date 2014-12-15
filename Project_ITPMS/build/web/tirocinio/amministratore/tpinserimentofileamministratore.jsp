@@ -29,8 +29,8 @@
 
 
 	<script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpAdministratorLibrary.js"></script>
-        <script src="../../assets/js/validatr.js"></script>
+	<script src="../../assets/js/tpAdministratorLibrary.js"></script>
+	<script src="../../assets/js/validatr.js"></script>
         
         <script>
             jQuery(document).ready(function ($) {

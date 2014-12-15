@@ -176,9 +176,9 @@ public class ConcreteOrganization implements IOrganization{
                anOrganization.setAddress(rs.getString("address"));
                anOrganization.setPhone(rs.getString("phone"));
                anOrganization.setEmail(rs.getString("email"));
-                anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
-                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
-                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
+               anOrganization.setAccount(rs.getString("fk_account"));
+               anOrganization.setProfessor(rs.getString("fk_professor"));
+               anOrganization.setExternalTutor(rs.getString("fk_external_tutor"));
                organizations.add(anOrganization);
            }
            rs.close();

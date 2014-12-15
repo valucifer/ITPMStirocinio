@@ -13,17 +13,22 @@ import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
 public class viewAllOrganizationServlet extends HttpServlet {
-
+    private final JSONObject jsonObject = new JSONObject();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,11 +50,24 @@ public class viewAllOrganizationServlet extends HttpServlet {
             ArrayList<Organization> organization = anOrganization.getAllOrganizations();
             
             if(organization == null){
-                message.setMessage("status", 0);
+                jsonObject.put("status", 0);
             }else{
-                message.setMessage("status", 1);
-                message.setMessage("Object", organization);
+                JSONArray array = new JSONArray();
+                for( Organization orga: organization ){
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("companyName", orga.getCompanyName());
+                    jsonTmp.put("vatNumber", orga.getVATNumber());
+                    array.put(jsonTmp);
+                }
+                jsonObject.put("status", 1);
+                jsonObject.put("message", array);
+                //request.setAttribute("trainingMessage",message);
+                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
+                
             }
+            response.getWriter().write(jsonObject.toString());
+        } catch (JSONException ex) {
+            Logger.getLogger(viewAllOrganizationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

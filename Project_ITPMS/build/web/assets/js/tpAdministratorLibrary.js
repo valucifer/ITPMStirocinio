@@ -60,5 +60,43 @@ tpAdminFunction = {
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 
         });
+    },
+    appendOrgANDProfessor: function (idComboOrg, idComboProf, path) {
+        $.get(path+"/viewAllOrganizationServlet",{}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                $(idComboOrg).empty();
+                $(idComboOrg).append("<option value='none'>---Select---</option>");
+                var array = parsed.message;
+                for(var i = 0; i < array.length; i++){
+                    var stringToAppend_tmp = "";
+                    stringToAppend_tmp = "<option value='"+array[i].vatNumber+"'>"+array[i].companyName;
+                    stringToAppend_tmp += "</option>";
+                    $(idComboOrg).append(stringToAppend_tmp);
+                }
+            }else{
+                 $(idComboOrg).append("<option value='null'>Dati non caricati</option>");       
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
+        $.get(path+"/viewAllProfessor",{}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                $(idComboProf).empty();
+                $(idComboProf).append("<option value='none'>---Select---</option>");
+                var array = parsed.message;
+                for(var i = 0; i < array.length; i++){
+                    var stringToAppend_tmp = "";
+                    stringToAppend_tmp = "<option value='"+array[i].SSNProf+"'>"+array[i].NameANDSurname;
+                    stringToAppend_tmp += "</option>";
+                    $(idComboProf).append(stringToAppend_tmp);
+                }
+            }else{
+                 $(idComboProf).append("<option value='null'>Dati non caricati</option>");       
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
     }
 };		

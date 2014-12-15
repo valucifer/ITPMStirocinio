@@ -37,9 +37,6 @@ public class ConcretePerson implements IPerson{
     public Person readPerson(String SSN) {
         initializeConnection();
         Person aPerson = new Person();
-        ConcreteAccount anAccount = ConcreteAccount.getInstance();
-        ConcreteCycle aCycle = ConcreteCycle.getInstance();
-        ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
         
         try {
             aCallableStatement = connector.prepareCall("{call getPerson(?)}");
@@ -47,12 +44,12 @@ public class ConcretePerson implements IPerson{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
-               aPerson.setAccountEmail(anAccount.readAccount(rs.getString("Account_email")).getEmail());
+               aPerson.setAccountEmail(rs.getString("Account_email"));
                aPerson.setAddress(rs.getString("address"));
                aPerson.setCitizenship(rs.getString("citizenship"));
                aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(aCycle.readCycle(rs.getInt("cycle")).getCycleNumber());
-               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString("Department_abbreviation")).getAbbreviation());
+               aPerson.setCycle(rs.getInt("cycle"));
+               aPerson.setDepartmentAbbreviation(rs.getString("Department_abbreviation"));
                aPerson.setGender(rs.getString("gender"));
                aPerson.setMatricula(rs.getString("matricula"));
                aPerson.setName(rs.getString("name"));
@@ -85,21 +82,17 @@ public class ConcretePerson implements IPerson{
         ArrayList<Person> people = new ArrayList<Person>();
         Person aPerson = null;
         try {
-           ConcreteAccount anAccount = ConcreteAccount.getInstance();
-           ConcreteCycle aCycle = ConcreteCycle.getInstance();
-           ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
-           
            aCallableStatement = connector.prepareCall("{call getAllPeople()}");
            ResultSet rs = aCallableStatement.executeQuery();
            
            while( rs.next() ){
                aPerson = new Person();
-               aPerson.setAccountEmail(anAccount.readAccount(rs.getString("Account_email")).getEmail());
+               aPerson.setAccountEmail(rs.getString("Account_email"));
                aPerson.setAddress(rs.getString("address"));
                aPerson.setCitizenship(rs.getString("citizenship"));
                aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(aCycle.readCycle(rs.getInt("cycle")).getCycleNumber());
-               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString("Department_abbreviation")).getAbbreviation());
+               aPerson.setCycle(rs.getInt("cycle"));
+               aPerson.setDepartmentAbbreviation(rs.getString("Department_abbreviation"));
                aPerson.setGender(rs.getString("gender"));
                aPerson.setMatricula(rs.getString("matricula"));
                aPerson.setName(rs.getString("name"));

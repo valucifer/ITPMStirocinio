@@ -11,16 +11,22 @@ import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
 public class viewAllProfessor extends HttpServlet {
+    private final JSONObject jsonObject = new JSONObject();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -50,15 +56,25 @@ public class viewAllProfessor extends HttpServlet {
                 }
             }
             
-            if(allProfessor.size() == 0){
-                message.setMessage("status", 0);
-                message.setMessage("description","Non ci sono professori");
+            if(allProfessor == null){
+                jsonObject.put("status", 0);
             }else{
-                message.setMessage("status", 1);
-                message.setMessage("Object", allProfessor);
-                for(int i = 0; i < allProfessor.size(); i++)
-                    out.println(allProfessor.get(i).getName());
+                JSONArray array = new JSONArray();
+                for( Person prof: allProfessor ){
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("NameANDSurname", prof.getName()+" "+prof.getSurname());
+                    jsonTmp.put("SSNProf", prof.getSSN());
+                    array.put(jsonTmp);
+                }
+                jsonObject.put("status", 1);
+                jsonObject.put("message", array);
+                //request.setAttribute("trainingMessage",message);
+                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
+                
             }
+            response.getWriter().write(jsonObject.toString());
+        } catch (JSONException ex) {
+            Logger.getLogger(viewAllProfessor.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }
