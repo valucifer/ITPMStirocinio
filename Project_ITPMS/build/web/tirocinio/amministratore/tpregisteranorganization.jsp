@@ -164,31 +164,25 @@
 					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 					<li>
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html">
+						<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Offerta Tirocinio</span>
 						</a>
 					</li>
-					<li id="inserimentoModuli">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreInserimentoFile.html">
+					<li>
+						<a href="../../tirocinio/amministratore/tpinserimentofileamministratore.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Inserimento Moduli</span>
 						</a>
 					</li>
-					<li id="correlazioneTirocinio">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreAssociazioneTirocinioProfessore.html">
-							<i class="linecons-cog"></i>
-							<span class="title">Correlazione Tirocinio</span>
-						</a>
-					</li>
-					<li id="correlazioneTirocinio">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreAssociazioneTirocinioProfessore.html">
+					<li>
+						<a href="../../tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Associa Professore</span>
 						</a>
 					</li>
-					<li id="correlazioneTirocinio" class="opened active">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreAssociazioneTirocinioProfessore.html">
+					<li class="opened active">
+						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Registra Azienda</span>
 						</a>
@@ -251,13 +245,13 @@
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="phone">Telefono Azienda</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control" id="phone" name="phone" required>
+										<input type="text" class="form-control" id="phone" name="phone" required placeholder="xxxx/xxxxxxxxx">
 									</div>
 								</div>
 								<div class="form-group">
 									<label class="col-sm-3 control-label" for="email">Email Azienda</label>
 									<div class="col-sm-9">
-										<input type="text" class="form-control" id="email" name="email" required>
+										<input type="text" class="form-control" id="email" name="email" required placeholder="xxxxxx@xxxxxxx.xxx">
 									</div>
 								</div>
 								<script>
@@ -342,87 +336,6 @@
 		
 	</div>
 	
-	<div class="modal fade" id="modalGestioneTirocinioANDPlacementAmministratore">
-		<div class="modal-dialog">
-			<div class="modal-content">
-				
-				<div class="modal-header">
-					<center><h4 class="modal-title">Rifiutare la domanda di tirocinio.</h4></center>
-				</div>
-				
-				<div class="modal-body">
-				
-					<div class="row">
-						<div class="col-md-6">
-							
-							<div class="form-group">
-								<label for="serialNumberModalForReject" class="control-label">Matricola</label>
-								
-								<input type="text" id="serialNumberModalForReject" class="form-control" disabled>
-							</div>	
-							
-						</div>
-						
-						<div class="col-md-6">
-							
-							<div class="form-group">
-								<label for="nameANDsurnameModalForReject" class="control-label">Nominativo</label>
-								
-								<input type="text" id="nameANDsurnameModalForReject" class="form-control" disabled>
-							</div>	
-						
-						</div>
-					</div>
-				
-					<div class="row">
-						<div class="col-lg-6">
-							<div class="xe-widget xe-todo-list">
-								<div class="xe-header">
-									<center><h4 class="title"><strong>Errori</strong> riscontrati.</h4></center>
-								</div>
-								<div class="xe-body">
-									<ul class="list-unstyled">
-										<li>
-											<label>
-												<input type="checkbox" id="cvDocumentError"class="cbr"/>
-												<span>CV</span>
-											</label>
-										</li>
-										<li>
-											<label>
-												<input type="checkbox" id="esDocumentError" class="cbr"/>
-												<span>Esami Svolti</span>
-											</label>
-										</li>
-										<li>
-											<label>
-												<input type="checkbox" id="cfuNotFoundError" class="cbr" />
-												<span>CFU mancanti</span>
-											</label>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="form-group no-margin">
-								<label for="textareaDescriptionError" class="control-label">Descrizione errore:</label>
-								<textarea class="form-control autogrow" id="textareaDescriptionError"></textarea>
-							</div>	
-						</div>
-					</div>
-				</div>
-				
-				<div class="modal-footer">
-					<center>
-						<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-						<button type="button" id="mandalo" class="btn btn-info">Save changes</button>
-					</center>
-				</div>
-			</div>
-		</div>
-	</div>
-
 	<div class="page-loading-overlay">
 		<div class="loader-2"></div>
 	</div>

@@ -1,7 +1,7 @@
 <%@page import="it.unisa.tirocinio.beans.TrainingOffer"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
-<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -26,25 +26,25 @@
 	<link rel="stylesheet" href="../../assets/css/xenon-skins.css">
 	<link rel="stylesheet" href="../../assets/css/custom.css">
 
+	
 	<script src="../../assets/js/jquery-1.11.1.min.js"></script>
 	<script src="../../assets/js/tpAdministratorLibrary.js"></script>
 	<script src="../../assets/js/validatr.js"></script>
-     
-        <script>
-            jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });
-        </script>
-        <%
-            pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
-        %>
+	
+	<script>
+		jQuery(document).ready(function ($) {
+			$('form').validatr();
+		});
+	</script>
+	<%
+		pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
+	%>
 
-        <script>
-            jQuery(document).ready(function ($) {
-                tpAdminFunction.appendOrgANDProfessor('#comboboxOrganization','#comboboxProfessor',${path});
-            });
-        </script>
-
+	<script>
+		jQuery(document).ready(function ($) {
+			tpAdminFunction.appendAll('#comboboxOrganization','#comboboxProfessor','#comboboxStudent',${path});
+		});
+	</script>
 </head>
 <body class="page-body">
 
@@ -175,16 +175,22 @@
 							<span class="title">Inserimento Moduli</span>
 						</a>
 					</li>
-					<li class="opened active">
-						<a href="#">
+					<li>
+						<a href="../../tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Associa Professore</span>
 						</a>
 					</li>
 					<li>
-						<a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Registra Azienda</span>
+						</a>
+					</li>
+					<li class="opened active">
+						<a href="#">
+							<i class="linecons-cog"></i>
+							<span class="title">Aggiungi Tirocinio</span>
 						</a>
 					</li>
 				</ul>
@@ -209,34 +215,55 @@
 					});
 				});
 			</script>
-					
-						
-						
+			
 			<div class="row">
-				<div class="panel panel-default">
-					<div class="panel-heading">
-						<h3 class="panel-title">Modulo Associazione Professore - Azienda</h3>
-					</div>
-					<div class="panel-body">
-						<div class="form-group">
-							<form action="/ServerWeb/changeProfessorForTrainingOrganizationServlet" method="POST" role="form" class="form-horizontal">
-								<label class="col-sm-2 control-label" >Organizzazioni: </label>
-								<div class="col-sm-10">
-									<select name="organizationVAT" id="comboboxOrganization" class="form-control">
-									</select>
+				<div class="col-sm-12">
+					<div class="panel panel-default">
+						<div class="panel-heading">
+							<h3 class="panel-title">Registrazione Nuovi Tirocini</h3>
+						</div>
+						<div class="panel-body">
+							<form role="form" class="form-horizontal" action="/ServerWeb/insertTrainingRequestServlet" method="POST">
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="titleTraining">Titolo Tirocinio</label>
+									<div class="col-sm-9">
+										<input required type="text" class="form-control" name="titleTraining" id="titleTraining">
+									</div>
 								</div>
-								<br><br><br>
-								<label class="col-sm-2 control-label" >Professori</label>
-								<div class="col-sm-10">
-									<select name="professorSSN" id="comboboxProfessor" class="form-control">
-									</select>
-								</div><br><br><br>
-								<div id="moduleControl" align="center"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="descriptionTraining">Descrizione Tirocinio</label>
+									<div class="col-sm-9">
+										<input required type="text" class="form-control" name="descriptionTraining" id="descriptionTraining">
+									</div>
+								</div>
+								<div class="form-group-separator"></div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="professorSSN">Professore</label>
+									<div class="col-sm-9">
+										<select name="professorSSN" id="comboboxProfessor" class="form-control" required>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="organizationVAT">Organizzazione</label>
+									<div class="col-sm-9">
+										<select name="organizationVAT" id="comboboxOrganization" class="form-control" required>
+										</select>
+									</div>
+								</div>
+								<div class="form-group">
+									<label class="col-sm-3 control-label" for="studentSSN">Studente</label>
+									<div class="col-sm-9">
+										<select name="studentSSN" id="comboboxStudent" class="form-control" required>
+										</select>
+									</div>
+								</div>
+								<div class="form-group-separator"></div>
 								<div class="row">
 									<center>
-										<button type="submit" class="btn btn-orange fileinput-button" id="sendModules">
+										<button type="submit" class="btn btn-blue fileinput-button">
 											<i class="fa-arrow-up"></i>
-											<span>Cambia Associazione</span>
+											<span>Inserisci Tirocinio</span>
 											<!-- The file input field used as target for the file upload widget -->
 										</button>    
 									</center>
@@ -244,8 +271,10 @@
 							</form>
 						</div>
 					</div>
+					
 				</div>
 			</div>
+			
 			<!-- Main Footer -->
 			<!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
 			<!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
@@ -308,4 +337,4 @@
 	<script src="../../assets/js/xenon-custom.js"></script>
 
 </body>
-</html>
+</html> 

@@ -159,21 +159,27 @@
 					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 					<li>
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html">
+						<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Offerta Tirocinio</span>
 						</a>
 					</li>
-					<li id="inserimentoModuli" class="opened active">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreInserimentoFile.html">
+					<li class="opened active">
+						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Inserimento Moduli</span>
 						</a>
 					</li>
-					<li id="correlazioneTirocinio">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreAssociazioneTirocinioProfessore.html">
+					<li>
+						<a href="../../tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
 							<i class="linecons-cog"></i>
-							<span class="title">Correlazione Tirocinio</span>
+							<span class="title">Associa Professore</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Registra Azienda</span>
 						</a>
 					</li>
 				</ul>

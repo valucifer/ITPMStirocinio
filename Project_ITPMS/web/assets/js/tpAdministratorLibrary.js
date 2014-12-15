@@ -17,16 +17,13 @@ tpAdminFunction = {
                     for(var i = 0; i < array.length; i++){
                         var stringToAppend_tmp = "";
                         stringToAppend_tmp = "<tr><td>"+array[i].matricula+"</td><td>"+array[i].credenziali;
-                        stringToAppend_tmp += "</td><td><a href='"+array[i].curriculum;
+                        stringToAppend_tmp += "</td><td>";
+                        stringToAppend_tmp += "<button onClick='functionDownload("+array[i].curriculum+")' class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
                         
-                        stringToAppend_tmp += "' target='_blank'>";
-                        stringToAppend_tmp += "<button class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "</td><td>";
+                        stringToAppend_tmp += "<button onClick='functionDownload("+array[i].libretto+")' class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
                         
-                        stringToAppend_tmp += "</a></td><td><a href='"+array[i].libretto;                   
-                        stringToAppend_tmp += "' target='_blank'>";
-                        stringToAppend_tmp += "<button class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
-                        
-                        stringToAppend_tmp += "</a></td><td>";
+                        stringToAppend_tmp += "</td><td>";
                                            
                         if(array[i].statusStudent != 2){   
                             stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_'+array[i].idStudent+'"><button class="btn btn-sm btn-icon btn-secondary" onClick=acceptTrainingRequest("'+array[i].idStudent+'","'+array[i].emailStudent+'")>Accetta</button>';
@@ -112,6 +109,48 @@ tpAdminFunction = {
                     stringToAppend_tmp += "</option>";
                     $(idComboProf).append(stringToAppend_tmp);
                 }
+            }else{
+                 $(idComboProf).append("<option value='null'>Dati non caricati</option>");       
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
+    },
+    appendAll: function (idComboOrga, idComboProf, idComboStud, path){
+        $.get(path+"/viewAllStudentProfANDOrganizationServlet",{}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                $(idComboProf).empty();
+                $(idComboOrga).empty();
+                $(idComboStud).empty();
+                
+                $(idComboOrga).append("<option value='none'>---Select---</option>");
+                var array = parsed.organization;
+                for(var i = 0; i < array.length; i++){
+                    var stringToAppend_tmp = "";
+                    stringToAppend_tmp = "<option value='"+array[i].vatNumber+"'>"+array[i].companyNa;
+                    stringToAppend_tmp += "</option>";
+                    $(idComboOrga).append(stringToAppend_tmp);
+                }
+                
+                $(idComboProf).append("<option value='none'>---Select---</option>");
+                var array = parsed.professor;
+                for(var i = 0; i < array.length; i++){
+                    var stringToAppend_tmp = "";
+                    stringToAppend_tmp = "<option value='"+array[i].SSN+"'>"+array[i].credential;
+                    stringToAppend_tmp += "</option>";
+                    $(idComboProf).append(stringToAppend_tmp);
+                }
+                
+                $(idComboStud).append("<option value='none'>---Select---</option>");
+                var array = parsed.student;
+                for(var i = 0; i < array.length; i++){
+                    var stringToAppend_tmp = "";
+                    stringToAppend_tmp = "<option value='"+array[i].SSNStudent+"'>"+array[i].credentialStudent;
+                    stringToAppend_tmp += "</option>";
+                    $(idComboStud).append(stringToAppend_tmp);
+                }
+                
             }else{
                  $(idComboProf).append("<option value='null'>Dati non caricati</option>");       
             }

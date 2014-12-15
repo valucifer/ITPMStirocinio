@@ -164,27 +164,27 @@
 					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 					<li>
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html">
+						<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Offerta Tirocinio</span>
 						</a>
 					</li>
-					<li id="inserimentoModuli">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreInserimentoFile.html">
+					<li>
+						<a href="../../tirocinio/amministratore/tpinserimentofileamministratore.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Inserimento Moduli</span>
 						</a>
 					</li>
-					<li id="correlazioneTirocinio">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreAssociazioneTirocinioProfessore.html">
-							<i class="linecons-cog"></i>
-							<span class="title">Correlazione Tirocinio</span>
-						</a>
-					</li>
-					<li id="correlazioneTirocinio" class="opened active">
-						<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreAssociazioneTirocinioProfessore.html">
+					<li class="opened active">
+						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Associa Professore</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Registra Azienda</span>
 						</a>
 					</li>
 				</ul>
@@ -220,13 +220,13 @@
 					<div class="panel-body">
 						<div class="form-group">
 							<form action="/ServerWeb/changeProfessorForTrainingOrganizationServlet" method="POST" role="form" class="form-horizontal">
-								<label class="col-sm-2 control-label" for="examsCarriedOut">Organizzazioni: </label>
+								<label class="col-sm-2 control-label" >Organizzazioni: </label>
 								<div class="col-sm-10">
 									<select name="organizationVAT" id="comboboxOrganization" class="form-control">
 									</select>
 								</div>
 								<br><br><br>
-								<label class="col-sm-2 control-label" for="examsCarriedOut">Professori</label>
+								<label class="col-sm-2 control-label" >Professori</label>
 								<div class="col-sm-10">
 									<select name="professorSSN" id="comboboxProfessor" class="form-control">
 									</select>

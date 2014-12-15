@@ -7,24 +7,28 @@ package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.TrainingRequest;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-public class insertTrainingRequestServlet extends HttpServlet {
-
+public class viewAllStudentProfANDOrganizationServlet extends HttpServlet {
+    private final JSONObject jsonObject = new JSONObject();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,42 +42,54 @@ public class insertTrainingRequestServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String title = request.getParameter("titleTraining");
-            String description = request.getParameter("descriptionTraining");
-            String professor = request.getParameter("professorSSN");
-            String student = request.getParameter("studentSSN");
-            String organiz = request.getParameter("organizationVAT");
-            
-            ConcretePerson aStudent = ConcretePerson.getInstance();
-            Person studentSSN = aStudent.readPerson(student);
-            
-            ConcretePerson aProfessor = ConcretePerson.getInstance();
-            Person professorSSN = aProfessor.readPerson(professor);
-            
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(organiz);
+            ArrayList<Organization> organization = anOrganization.getAllOrganizations();
             
-            ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-            TrainingRequest trainingRequest = new TrainingRequest();
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            ArrayList<Person> student = aPerson.getAllPeople();
             
-            trainingRequest.setDescription(description);
-            trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
-            trainingRequest.setPersonSSN(professorSSN.getSSN());
-            trainingRequest.setStudentSSN(studentSSN.getSSN());
-            trainingRequest.setTitle(title);
-            trainingRequest.setTrainingStatus(1);
+            JSONArray arrayOrganization = new JSONArray();
+            JSONArray arrayProfessor = new JSONArray();
+            JSONArray arrayPerson = new JSONArray();
             
-            if(aTrainingRequest.createTrainingRequest(trainingRequest))
-                message.setMessage("status", 1);
-            else
-                message.setMessage("status", 0);
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
+            for( Organization orga: organization ){
+                JSONObject jsonTmpOrg = new JSONObject();
+                
+                jsonTmpOrg.put("vatNumber", orga.getVATNumber());
+                jsonTmpOrg.put("companyNa", orga.getCompanyName());
+                arrayOrganization.put(jsonTmpOrg);
+                
+            }
             
+            for(Person pers: student){
+                JSONObject jsonTmpPro = new JSONObject();
+                if(aPerson.isAProfessor(pers.getAccountEmail())){
+                    jsonTmpPro.put("credential", pers.getName()+" "+pers.getSurname());
+                    jsonTmpPro.put("SSN",pers.getSSN());
+                    arrayProfessor.put(jsonTmpPro);
+                }  
+            }
+            
+            for( Person stud: student ){
+                JSONObject jsonTmpStu = new JSONObject();
+                if(aPerson.isAStudent(stud.getAccountEmail())){
+                    jsonTmpStu.put("credentialStudent", stud.getName()+" "+stud.getSurname());
+                    jsonTmpStu.put("SSNStudent",stud.getSSN());
+                    arrayPerson.put(jsonTmpStu);
+                }
+            }
+            
+            jsonObject.put("status", 1);
+            jsonObject.put("organization", arrayOrganization);
+            jsonObject.put("professor", arrayProfessor);
+            jsonObject.put("student", arrayPerson);
+            
+            response.getWriter().write(jsonObject.toString());
+        } catch (JSONException ex) {
+            Logger.getLogger(viewAllStudentProfANDOrganizationServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

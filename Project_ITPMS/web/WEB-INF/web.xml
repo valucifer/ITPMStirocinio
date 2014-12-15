@@ -100,6 +100,10 @@
         <servlet-name>insertNewOrganizationServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.insertNewOrganizationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllStudentProfANDOrganizationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -199,6 +203,10 @@
     <servlet-mapping>
         <servlet-name>insertNewOrganizationServlet</servlet-name>
         <url-pattern>/insertNewOrganizationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
+        <url-pattern>/viewAllStudentProfANDOrganizationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
