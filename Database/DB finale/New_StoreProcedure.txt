@@ -287,7 +287,7 @@ open selectCur;
 fetch selectCur into student_ssn;
 if foundSet=false
 	then
-	UPDATE student_information Set curriculum_vitae_path = CVPath , accademic_transcript_path = ATPath, fk_student_status = '2' WHERE SSN = student_ssn;
+	UPDATE student_information Set curriculum_vitae_path = CVPath , accademic_transcript_path = ATPath, fk_student_status = '3' WHERE SSN = student_ssn;
 	call startTrainingRequest(studentSSN);
 else if foundSet=true
 	then
