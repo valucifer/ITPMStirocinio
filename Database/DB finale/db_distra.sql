@@ -666,7 +666,7 @@ DROP TABLE IF EXISTS `db_distra`.`pending_acceptance` ;
 
 CREATE TABLE IF NOT EXISTS `db_distra`.`pending_acceptance` (
   `id_pending_acceptance` INT(11) NOT NULL AUTO_INCREMENT COMMENT 'weqdas',
-  `request_date` DATE NULL DEFAULT NULL COMMENT 'dfsdf',
+  `date_request` DATE NULL DEFAULT NULL COMMENT 'dfsdf',
   `fk_person` VARCHAR(16) NOT NULL COMMENT 'sadaas',
   PRIMARY KEY (`id_pending_acceptance`),
   INDEX `fk_StudentAttendence_Student1_idx` (`fk_person` ASC),
@@ -824,7 +824,6 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`student_information` (
   `SSN` VARCHAR(16) NOT NULL,
   `fk_student_status` INT(11) NOT NULL,
   PRIMARY KEY (`SSN`),
-  UNIQUE INDEX `fk_status` (`fk_student_status` ASC),
   CONSTRAINT `student_information_ibfk_2`
     FOREIGN KEY (`fk_student_status`)
     REFERENCES `db_distra`.`student_status` (`id_student_status`)
@@ -930,6 +929,103 @@ CREATE TABLE IF NOT EXISTS `db_distra`.`training_request` (
     ON UPDATE NO ACTION)
 ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
+
+
+-- -----------------------------------------------------
+-- Table `db_distra`.`curriculum_vitae`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `db_distra`.`curriculum_vitae` ;
+
+CREATE TABLE IF NOT EXISTS `db_distra`.`curriculum_vitae` (
+  `SSN` VARCHAR(16) NOT NULL,
+  `personal_email` VARCHAR(60) NULL,
+  `date_of_birth` DATE NOT NULL,
+  `mother_tongue` VARCHAR(45) NULL,
+  `skills_and_competences` LONGTEXT NULL,
+  `organizational_skills` LONGTEXT NULL,
+  `technical_skills` LONGTEXT NULL,
+  `artistic_skills` LONGTEXT NULL,
+  `licence` VARCHAR(45) NULL,
+  `other_information` LONGTEXT NULL,
+  PRIMARY KEY (`SSN`),
+  CONSTRAINT `fk_SSN`
+    FOREIGN KEY (`SSN`)
+    REFERENCES `db_distra`.`student_information` (`SSN`)
+    ON DELETE CASCADE
+    ON UPDATE CASCADE)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `db_distra`.`work_experienced`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `db_distra`.`work_experienced` ;
+
+CREATE TABLE IF NOT EXISTS `db_distra`.`work_experienced` (
+  `idwork_experienced` INT NOT NULL AUTO_INCREMENT,
+  `date_from` DATE NOT NULL,
+  `date_to` DATE NULL,
+  `company_name` VARCHAR(45) NOT NULL,
+  `company_adress` VARCHAR(45) NULL,
+  `company_branch` VARCHAR(45) NULL,
+  `job_type` VARCHAR(45) NOT NULL,
+  `task` LONGTEXT NULL,
+  `fk_curriculum_vitae` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`idwork_experienced`, `fk_curriculum_vitae`),
+  INDEX `fk_work_experienced_curriculum_vitae1_idx` (`fk_curriculum_vitae` ASC),
+  CONSTRAINT `fk_work_experienced_curriculum_vitae1`
+    FOREIGN KEY (`fk_curriculum_vitae`)
+    REFERENCES `db_distra`.`curriculum_vitae` (`SSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `db_distra`.`education`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `db_distra`.`education` ;
+
+CREATE TABLE IF NOT EXISTS `db_distra`.`education` (
+  `id_education` INT NOT NULL AUTO_INCREMENT,
+  `date_from` DATE NOT NULL,
+  `date_to` DATE NULL,
+  `teaching_institution_name` VARCHAR(45) NULL,
+  `teaching_institution_type` VARCHAR(45) NULL,
+  `subject_description` VARCHAR(45) NULL COMMENT 'Principale materia di studio e descrizione\n',
+  `qualification_awarded` VARCHAR(45) NULL,
+  `national_level_qualification` VARCHAR(45) NULL,
+  `fk_curriculum_vitae` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`id_education`, `fk_curriculum_vitae`),
+  INDEX `fk_education_curriculum_vitae1_idx` (`fk_curriculum_vitae` ASC),
+  CONSTRAINT `fk_education_curriculum_vitae1`
+    FOREIGN KEY (`fk_curriculum_vitae`)
+    REFERENCES `db_distra`.`curriculum_vitae` (`SSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
+
+
+-- -----------------------------------------------------
+-- Table `db_distra`.`tongue`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `db_distra`.`tongue` ;
+
+CREATE TABLE IF NOT EXISTS `db_distra`.`tongue` (
+  `id_tongue` INT NOT NULL AUTO_INCREMENT,
+  `tongue_name` VARCHAR(45) NULL,
+  `reading_skills` VARCHAR(45) NULL,
+  `writing_skills` VARCHAR(45) NULL,
+  `speak_skills` VARCHAR(45) NULL,
+  `fk_curriculum_vitae` VARCHAR(16) NOT NULL,
+  PRIMARY KEY (`id_tongue`, `fk_curriculum_vitae`),
+  INDEX `fk_tongue_curriculum_vitae1_idx` (`fk_curriculum_vitae` ASC),
+  CONSTRAINT `fk_tongue_curriculum_vitae1`
+    FOREIGN KEY (`fk_curriculum_vitae`)
+    REFERENCES `db_distra`.`curriculum_vitae` (`SSN`)
+    ON DELETE NO ACTION
+    ON UPDATE NO ACTION)
+ENGINE = InnoDB;
 
 
 SET SQL_MODE=@OLD_SQL_MODE;
