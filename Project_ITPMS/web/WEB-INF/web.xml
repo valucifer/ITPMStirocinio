@@ -92,6 +92,10 @@
         <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.deleteTrainingOfferByProfessorServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.sendingErrorsForStudentInformationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -183,6 +187,10 @@
     <servlet-mapping>
         <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
         <url-pattern>/deleteTrainingOfferByProfessorServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
+        <url-pattern>/sendingErrorsForStudentInformationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

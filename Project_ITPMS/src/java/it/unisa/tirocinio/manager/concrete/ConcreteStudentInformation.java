@@ -112,6 +112,38 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
 
+    public StudentInformation readAStudentInformation (String studentSSN){
+        initializeConnection();
+        StudentInformation aStudentInformation = new StudentInformation();
+        ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        try {
+            aCallableStatement = connector.prepareCall("{call getStudentInformation(?)}");
+            aCallableStatement.setString("ss",studentSSN);
+            ResultSet rs = aCallableStatement.executeQuery();
+            
+            while( rs.next() ){
+                Person person = aPerson.readPerson(rs.getString("SSN"));
+                aStudentInformation.setStudentSSN(person.getSSN());
+                aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
+                aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
+                aStudentInformation.setStudentStatus(rs.getInt("fk_student_status"));
+            }
+            rs.close();
+            return aStudentInformation;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     @Override
     public StudentInformation readStudentInformation(String studentSSN) {
         initializeConnection();

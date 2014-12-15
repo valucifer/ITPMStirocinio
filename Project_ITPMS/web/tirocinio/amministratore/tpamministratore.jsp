@@ -41,9 +41,6 @@
         %>
         <script>
             function rejectTrainingRequest(count, email){
-                if($("#cvDocumentError").is(":checked")){
-                        $("#cvDocumentError").click();
-                }
                 if($("#esDocumentError").is(":checked")){
                         $("#esDocumentError").click();
                 }
@@ -52,6 +49,7 @@
                 }
                 $("#textareaDescriptionError").val("");
                 $("#serialNumberModalForReject").val(count);
+                $("#hiddenErroriRiscontrati").attr("value",count);
                 $("#nameANDsurnameModalForReject").val(email);
                 jQuery('#modalGestioneTirocinioANDPlacementAmministratore').modal('show', {backdrop: 'static'});
             }
@@ -299,13 +297,11 @@
 	<div class="modal fade" id="modalGestioneTirocinioANDPlacementAmministratore">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				
-				<div class="modal-header">
+                            <div class="modal-header">
 					<center><h4 class="modal-title">Rifiutare la domanda di tirocinio.</h4></center>
 				</div>
 				
 				<div class="modal-body">
-				
 					<div class="row">
 						<div class="col-md-6">
 							
@@ -327,8 +323,9 @@
 						
 						</div>
 					</div>
-				
-					<div class="row">
+				<form role="form" class="form-horizontal" action="/ServerWeb/sendingErrorsForStudentInformationServlet" method="POST">
+                                    <input type="hidden" name="hiddenErroriRiscontrati" id="hiddenErroriRiscontrati"/>
+                                        <div class="row">
 						<div class="col-lg-6">
 							<div class="xe-widget xe-todo-list">
 								<div class="xe-header">
@@ -338,19 +335,19 @@
 									<ul class="list-unstyled">
 										<li>
 											<label>
-												<input type="checkbox" id="cvDocumentError"class="cbr"/>
-												<span>CV</span>
+												<input name="descriptionCurriculum" value="curriculum errato" type="checkbox" id="cvDocumentError" class="cbr"/>
+												<span>Curriculum</span>
 											</label>
 										</li>
 										<li>
 											<label>
-												<input type="checkbox" id="esDocumentError" class="cbr"/>
-												<span>Esami Svolti</span>
+												<input name="descriptionLibretto" value="libretto errato" type="checkbox" id="esDocumentError" class="cbr"/>
+												<span>Libretto</span>
 											</label>
 										</li>
 										<li>
 											<label>
-												<input type="checkbox" id="cfuNotFoundError" class="cbr" />
+												<input name="descriptionCFUMancanti" value="CFU errati" type="checkbox" id="cfuNotFoundError" class="cbr" />
 												<span>CFU mancanti</span>
 											</label>
 										</li>
@@ -358,34 +355,10 @@
 								</div>
 							</div>
 						</div>
-						<script>
-							jQuery(document).ready(function($){
-								$("#mandalo").click(function(){
-									var stringCVError = "";
-									var stringESError = "";
-									var stringCFUNotFoundError = "";
-									
-									if($("#cvDocumentError").is(":checked")){
-										stringCVError = "CV: Documento errato;";
-									}
-									
-									if($("#esDocumentError").is(":checked")){
-										stringESError = "Esami svolti: Documento errato;";
-									}
-									
-									if($("#cfuNotFoundError").is(":checked")){
-										stringCFUNotFoundError = "CFU mancanti;";
-									}
-									
-									var stringTextareaDescriptionError = $("#textareaDescriptionError").val();
-									alert(stringCFUNotFoundError+" "+stringESError+" "+stringCVError+" "+stringTextareaDescriptionError);	
-								});
-							});
-						</script>
 						<div class="col-lg-6">
 							<div class="form-group no-margin">
 								<label for="textareaDescriptionError" class="control-label">Descrizione errore:</label>
-								<textarea class="form-control" style="resize:none" rows="9" id="textareaDescriptionError"></textarea>
+								<textarea name="descriptionTextArea" class="form-control" style="resize:none" rows="9" id="textareaDescriptionError"></textarea>
 							</div>	
 						</div>
 					</div>
@@ -394,9 +367,10 @@
 				<div class="modal-footer">
 					<center>
 						<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-						<button type="button" id="mandalo" class="btn btn-info">Save changes</button>
+						<button type="submit" id="invio" class="btn btn-info">Invio Errori</button>
 					</center>
 				</div>
+                            </form>
 			</div>
 		</div>
 	</div>

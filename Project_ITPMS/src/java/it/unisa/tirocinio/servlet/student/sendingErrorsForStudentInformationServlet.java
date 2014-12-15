@@ -14,25 +14,21 @@ import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-@WebServlet(name = "acceptStudentForTraining", urlPatterns = {"/acceptStudentForTraining"})
+@WebServlet(name = "sendingErrorsForStudentInformationServlet", urlPatterns = {"/sendingErrorsForStudentInformationServlet"})
 
-public class acceptStudentForTraining extends HttpServlet {
-    private final JSONObject jsonObject = new JSONObject();
+public class sendingErrorsForStudentInformationServlet extends HttpServlet {
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -43,43 +39,60 @@ public class acceptStudentForTraining extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException, JSONException {
+            throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         HttpSession session = request.getSession();
         try {
+            String descriptionCurriculum = null, descriptionLibretto = null, descriptionCFUMancanti = null, descriptionTextArea = null;
             /* TODO output your page here. You may use following sample code. */
-            String studentMatricula = request.getParameter("matricula");
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getPersonToMatricula(studentMatricula);
+            descriptionCurriculum = request.getParameter("descriptionCurriculum");
+            descriptionLibretto = request.getParameter("descriptionLibretto");
+            descriptionCFUMancanti = request.getParameter("descriptionCFUMancanti");
+            descriptionTextArea = request.getParameter("descriptionTextArea");
+            String matriculaStudent = request.getParameter("hiddenErroriRiscontrati");
+            String tmp = "";
+            if(descriptionCurriculum != null)
+                tmp = tmp +" "+descriptionCurriculum+";";
+            if(descriptionLibretto != null)
+                tmp = tmp +" "+descriptionLibretto+";";
+            if(descriptionCFUMancanti != null)
+                tmp = tmp +" "+descriptionCFUMancanti+";";
+            if(descriptionTextArea != null)
+                tmp = tmp +" "+descriptionTextArea+";";
             
+            ConcretePerson aPerson = ConcretePerson.getInstance();  
+            Person person = aPerson.getPersonToMatricula(matriculaStudent);
+            
+            ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
+            RejectedTrainingMessage aMessage = aRejectedMessage.readTrainingMessage(person.getSSN());
+            
+            if(aMessage.getDescription() == null){
+                aMessage = new RejectedTrainingMessage();
+                aMessage.setDescription( tmp );
+                aMessage.setPersonSSN(person.getSSN());
+                aRejectedMessage.createRejectedTrainingMessage(aMessage);                
+            }else{
+                aMessage.setDescription( tmp );
+                aRejectedMessage.updateRejectedTrainingMessage(aMessage);                
+            }
+               
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
             
-            ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readTrainingMessage(person.getSSN());
-            
-            if(aRejectedMessage.getDescription() == null){
-                aRejectedMessage = new RejectedTrainingMessage();
-                aRejectedMessage.setDescription("La tua richiesta è stata accettata!");
-                aRejectedMessage.setPersonSSN(person.getSSN());
-                rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);                
-            }else{
-                aRejectedMessage.setDescription("La tua richiesta è stata accettata!");
-                rejectedMessage.updateRejectedTrainingMessage(aRejectedMessage);                     
-            }
-                    
-            studentInformation.setStudentStatus(2);
-           
+            studentInformation.setStudentStatus(1);
             boolean toReturn = aStudentInformation.updateStudentInformation(studentInformation);
+            
             if(toReturn){
-                jsonObject.put("status", 1);
+                message.setMessage("status", 1);
             }else{
-                jsonObject.put("status", 0);
+                message.setMessage("status", 0);
             }
-            response.getWriter().write(jsonObject.toString());
+            request.setAttribute("message",message);
+            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpamministratore.jsp");
+            
         } finally {
             out.close();
         }
@@ -97,11 +110,7 @@ public class acceptStudentForTraining extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (JSONException ex) {
-            Logger.getLogger(acceptStudentForTraining.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
@@ -115,11 +124,7 @@ public class acceptStudentForTraining extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            processRequest(request, response);
-        } catch (JSONException ex) {
-            Logger.getLogger(acceptStudentForTraining.class.getName()).log(Level.SEVERE, null, ex);
-        }
+        processRequest(request, response);
     }
 
     /**
