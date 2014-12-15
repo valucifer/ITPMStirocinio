@@ -64,9 +64,6 @@ public class uploadInformationForModuleFilesServlet extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             out = response.getWriter();
             isMultipart = ServletFileUpload.isMultipartContent(request);
-            String primaryKey = "carlos"; //request.getParameter("primaryKey");
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getAdministrator(primaryKey);
             
             String serialNumber = null;
             DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -75,32 +72,31 @@ public class uploadInformationForModuleFilesServlet extends HttpServlet {
             Iterator i = fileItems.iterator();
             File fileToStore = null;
             String adminSubfolderPath = filePath;
+            serialNumber = "DISTRA - Module";
+            adminSubfolderPath += fileSeparator+serialNumber;
+            new File(adminSubfolderPath).mkdir();
+
             while ( i.hasNext () ) {
                 FileItem fi = (FileItem)i.next();
+                
                 if ( !fi.isFormField () ){
                     // Get the uploaded file parameters
                     String fieldName = fi.getFieldName();
                     String fileName = fi.getName();
-                    DateFormat dateFormat = new SimpleDateFormat("yyyy");
                     Date date = new Date();
-                    if( fieldName.equals("modulefile")){
-                        fileToStore = new File(adminSubfolderPath+fileSeparator+dateFormat.format(date)+" - Module.pdf");
-                    }else if( fieldName.equals("registerfile")){
-                        fileToStore = new File(adminSubfolderPath+fileSeparator+dateFormat.format(date)+" - Register.pdf");
+                    if( fieldName.equals("tp")){
+                        fileToStore = new File(adminSubfolderPath+fileSeparator+"Module.pdf");
+                    }else if( fieldName.equals("eco")){
+                        fileToStore = new File(adminSubfolderPath+fileSeparator+"Register.pdf");
                     }
                     fi.write( fileToStore ) ;
                    // out.println("Uploaded Filename: " + fieldName + "<br>");
-                }else{
-                    //out.println("It's not formfield");
-                    //out.println(fi.getString());
-                    serialNumber = ""+person.getDepartmentAbbreviation()+" - Module";
-                    adminSubfolderPath += fileSeparator+serialNumber;
-                    new File(adminSubfolderPath).mkdir();
                 }
             }
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
             message.setMessage("status", 1);
-            out.print(message.getMessage("status"));
+            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpinserimentofileamministratore.jsp");
+            
         } catch (Exception ex) {
             Logger.getLogger(uploadInformationForModuleFilesServlet.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
