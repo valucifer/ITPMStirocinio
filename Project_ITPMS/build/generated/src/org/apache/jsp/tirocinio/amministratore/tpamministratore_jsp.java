@@ -105,8 +105,6 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("            }\n");
       out.write("\n");
       out.write("            function acceptTrainingRequest(idRequest, email){\n");
-      out.write("                $(\"#changeRequestTrainingForComplete_\"+idRequest).html(\"\");\n");
-      out.write("                $(\"#changeRequestTrainingForComplete_\"+idRequest).html(\"<button class='btn btn-sm btn-icon btn-blue' onClick=completeTrainingRequest('\"+idRequest+\"','\"+email+\"')>Concluso</button>\");\n");
       out.write("                tpAdminFunction.acceptStudentForTraining(idRequest, ");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write(");\n");

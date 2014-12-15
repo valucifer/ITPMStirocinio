@@ -110,6 +110,16 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateRejectedTrainingMessage`(in message LONGTEXT,in personSSN VARCHAR(16))
+BEGIN
+UPDATE rejected_training_message SET description = message WHERE fk_person = personSSN;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
 CREATE DEFINER=`root`@`localhost` PROCEDURE `deleteRejectedTrainingMessage` ( in pkRejectedTraining INT )
 BEGIN
 DELETE FROM rejected_training_message WHERE id_rejected_training_message = pkRejectedTraining;
@@ -338,9 +348,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation` ( in ssn VARCHAR(16) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getStudentInformation` ( in ss VARCHAR(16) )
 BEGIN
-SELECT * FROM student_information WHERE SSN = ssn;
+SELECT * FROM student_information WHERE SSN = ss;
 END
 
 -- --------------------------------------------------------------------------------
@@ -348,9 +358,9 @@ END
 -- Note: 
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateStudentInformation`  ( in ssn VARCHAR(16), in CV VARCHAR(200), in AT VARCHAR(200), in fk_student_status INT )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateStudentInformation`  ( in ss VARCHAR(16), in CV VARCHAR(200), in AcT VARCHAR(200), in fk_status INT )
 BEGIN
-UPDATE student_information SET curriculum_vitae_path = CV, accademic_transcript_path = AT, fk_student_status = fk_student_status WHERE SSN = ssn;
+UPDATE student_information SET curriculum_vitae_path = CV, accademic_transcript_path = AcT, fk_student_status = fk_status WHERE SSN = ss;
 END
 
 -- --------------------------------------------------------------------------------
@@ -618,9 +628,9 @@ END
 -- Note: Ex getStudentAttendece
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonForMatricula`( in matricula VARCHAR(10) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonForMatricula`( in matric VARCHAR(10) )
 BEGIN
-SELECT * FROM person WHERE matricula = matricula;
+SELECT * FROM person WHERE matricula = matric;
 END
 
 -- --------------------------------------------------------------------------------

@@ -6,9 +6,11 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -46,19 +48,33 @@ public class acceptStudentForTraining extends HttpServlet {
         HttpSession session = request.getSession();
         try {
             /* TODO output your page here. You may use following sample code. */
-            String studentMatricula = request.getParameter("matricula");
+            String studentMatricula = "0512200013";//request.getParameter("matricula");
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getPersonToMatricula(studentMatricula);
             
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
             
-            studentInformation.setStudentStatus(2);
+            ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
+            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readTrainingMessage(person.getSSN());
             
-            if(aStudentInformation.updateStudentInformation(studentInformation)){
+            if(aRejectedMessage == null){
+                aRejectedMessage = new RejectedTrainingMessage();
+                aRejectedMessage.setDescription("La tua richiesta è stata accettata!");
+                aRejectedMessage.setPersonSSN(person.getSSN());
+                rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);                
+            }else{
+                aRejectedMessage.setDescription("La tua richiesta è stata accettata!");
+                rejectedMessage.updateRejectedTrainingMessage(aRejectedMessage);                     
+            }
+                    
+            studentInformation.setStudentStatus(2);
+           
+            boolean toReturn = aStudentInformation.updateStudentInformation(studentInformation);
+            if(toReturn){
                 jsonObject.put("status", 1);
             }else{
-                 jsonObject.put("status", 0);
+                jsonObject.put("status", 0);
             }
             response.getWriter().write(jsonObject.toString());
         } finally {

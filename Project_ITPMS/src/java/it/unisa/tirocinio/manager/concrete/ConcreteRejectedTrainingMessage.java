@@ -57,6 +57,31 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
             }
         }
     }
+    
+    @Override
+    public boolean updateRejectedTrainingMessage( RejectedTrainingMessage aRejectedTrainingMessage ){
+        initializeConnection();
+        try {
+            if( aRejectedTrainingMessage == null )
+                throw new NullPointerException("RejectedMessage is null!");
+            
+            aCallableStatement = connector.prepareCall("{call updateRejectedTrainingMessage(?,?)}");       
+            aCallableStatement.setString("message",aRejectedTrainingMessage.getDescription());
+            aCallableStatement.setString("personSSN",aRejectedTrainingMessage.getPersonSSN());
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
 
     @Override
     public boolean deleteOrganization(int idRejectedTrainingMessage) {
@@ -163,9 +188,9 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
     @Override
     public RejectedTrainingMessage readTrainingMessage(String ssn) {
         initializeConnection();
-        RejectedTrainingMessage aRejectedMessage = new RejectedTrainingMessage();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        RejectedTrainingMessage aRejectedMessage = null;
         try {
+            aRejectedMessage = new RejectedTrainingMessage();
             aCallableStatement = connector.prepareCall("{call getRejectedTrainingMessageBySSN(?)}");
             aCallableStatement.setString("ssn",ssn);
             ResultSet rs = aCallableStatement.executeQuery();
@@ -173,7 +198,7 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
             while( rs.next() ){
                 aRejectedMessage.setDescription(rs.getString("description"));
                 aRejectedMessage.setIdRejectedTraingMessage(rs.getInt("id_rejected_training_message"));
-                aRejectedMessage.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aRejectedMessage.setPersonSSN(ssn);
             }
             rs.close();
             return aRejectedMessage;

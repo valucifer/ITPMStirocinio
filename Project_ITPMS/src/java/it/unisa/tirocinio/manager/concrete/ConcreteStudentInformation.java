@@ -42,10 +42,10 @@ public class ConcreteStudentInformation implements IStudentInformation{
                 throw new NullPointerException("OfferTraining is null!");
             
             aCallableStatement = connector.prepareCall("{call updateStudentInformation(?,?,?,?)}");       
-            aCallableStatement.setString("ssn",aStudentInformation.getStudentSSN());
+            aCallableStatement.setString("ss",aStudentInformation.getStudentSSN());
             aCallableStatement.setString("CV",aStudentInformation.getCVPath());
-            aCallableStatement.setString("AT",aStudentInformation.getATPath());
-            aCallableStatement.setInt("fk_student_status",aStudentInformation.getStudentStatus());
+            aCallableStatement.setString("AcT",aStudentInformation.getATPath());
+            aCallableStatement.setInt("fk_status",aStudentInformation.getStudentStatus());
             int check = aCallableStatement.executeUpdate();
             return check > 0;
             
@@ -120,7 +120,7 @@ public class ConcreteStudentInformation implements IStudentInformation{
         ConcretePerson aPerson = ConcretePerson.getInstance();
         try {
             aCallableStatement = connector.prepareCall("{call getStudentInformation(?)}");
-            aCallableStatement.setString("ssn",studentSSN);
+            aCallableStatement.setString("ss",studentSSN);
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
