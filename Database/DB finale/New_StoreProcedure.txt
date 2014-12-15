@@ -558,6 +558,16 @@ UPDATE training_request SET fk_training_status = FK_TrainingStatus WHERE id_trai
 END
 
 		--- ACCOUNT ---
+		
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertAccount` ( in emailInput VARCHAR(100), in passwordInput VARCHAR(45), in typology VARCHAR(45), in activeInput TINYINT(1) )
+BEGIN
+INSERT INTO account VALUES (emailInput,passwordInput,typology,activeInput);
+END
 
 -- --------------------------------------------------------------------------------
 -- Routine DDL

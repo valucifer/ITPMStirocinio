@@ -31,7 +31,33 @@ public class ConcreteAccount implements IAccount{
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
     }
-
+    
+    public boolean createAccount(Account account){
+        initializeConnection();
+        try {
+            if( account == null )
+                throw new NullPointerException("Account is null!");
+            
+            aCallableStatement = connector.prepareCall("{call insertAccount(?,?,?,?)}");       
+            aCallableStatement.setString("emailInput",account.getEmail());
+            aCallableStatement.setString("passwordInput",account.getPassword());
+            aCallableStatement.setString("typology",account.getTypeOfAccount());
+            aCallableStatement.setInt("activeInput",account.getActive());
+            int check = aCallableStatement.executeUpdate();
+            return check > 0;
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return false;
+        }finally{
+            try {
+                aCallableStatement.close();
+                connector.close();
+            } catch (SQLException ex) {
+                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+            }
+        }
+    }
+    
     @Override
     public Account readAccount(String email) {
         initializeConnection();

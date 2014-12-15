@@ -96,6 +96,10 @@
         <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.sendingErrorsForStudentInformationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>insertNewOrganizationServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertNewOrganizationServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -191,6 +195,10 @@
     <servlet-mapping>
         <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
         <url-pattern>/sendingErrorsForStudentInformationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertNewOrganizationServlet</servlet-name>
+        <url-pattern>/insertNewOrganizationServlet</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
