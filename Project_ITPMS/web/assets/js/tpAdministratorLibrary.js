@@ -5,6 +5,24 @@
  */
 
 tpAdminFunction = {
+    downloadFile: function (idTable, path) {
+        $.ajax({
+            url: path + '/downloadFile',
+            dataType: 'text',
+            type: 'POST',
+            success: function(e){
+                var parsed = jQuery.parseJSON(e);
+                if(parsed.status == 1){
+                    
+                }else{
+                    alert("Il file non può essere scaricato, riprova più tardi!");
+                }
+            },
+            error: function(e){
+                alert("Si sono verificati dei problemi col server!")
+            }
+        });
+    },
     appendStudentInformation: function (idTable, path) {
         $.ajax({
             url: path + '/studentAttDetailsServlet',
@@ -18,10 +36,10 @@ tpAdminFunction = {
                         var stringToAppend_tmp = "";
                         stringToAppend_tmp = "<tr><td>"+array[i].matricula+"</td><td>"+array[i].credenziali;
                         stringToAppend_tmp += "</td><td>";
-                        stringToAppend_tmp += "<button onClick='functionDownload("+array[i].curriculum+")' class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
                         
                         stringToAppend_tmp += "</td><td>";
-                        stringToAppend_tmp += "<button onClick='functionDownload("+array[i].libretto+")' class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
                         
                         stringToAppend_tmp += "</td><td>";
                                            
