@@ -5,23 +5,19 @@
  */
 
 tpAdminFunction = {
-    downloadFile: function (idTable, path) {
-        $.ajax({
-            url: path + '/downloadFile',
-            dataType: 'text',
-            type: 'POST',
-            success: function(e){
-                var parsed = jQuery.parseJSON(e);
-                if(parsed.status == 1){
-                    
-                }else{
-                    alert("Il file non può essere scaricato, riprova più tardi!");
-                }
+    downloadFile: function (matri, typo, path) {
+        jQuery.ajax({
+            url: path+"/downloadFile" ,
+            type: "POST",
+            data: { matricula : matri, typology:typo},
+            success: function(data) {       
+                alert(JSON.stringify(data));
+                window.location.href = data;
             },
-            error: function(e){
-                alert("Si sono verificati dei problemi col server!")
-            }
-        });
+          error: function(jqXHR, textStatus, errorThrown) {
+              alert('Error ' + textStatus);
+          }
+      });
     },
     appendStudentInformation: function (idTable, path) {
         $.ajax({
@@ -36,10 +32,10 @@ tpAdminFunction = {
                         var stringToAppend_tmp = "";
                         stringToAppend_tmp = "<tr><td>"+array[i].matricula+"</td><td>"+array[i].credenziali;
                         stringToAppend_tmp += "</td><td>";
-                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"','CV') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
                         
                         stringToAppend_tmp += "</td><td>";
-                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"','ES') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
                         
                         stringToAppend_tmp += "</td><td>";
                                            

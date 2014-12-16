@@ -104,6 +104,10 @@
         <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.viewAllStudentProfANDOrganizationServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>downloadFile</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.downloadFile</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -207,6 +211,10 @@
     <servlet-mapping>
         <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
         <url-pattern>/viewAllStudentProfANDOrganizationServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>downloadFile</servlet-name>
+        <url-pattern>/downloadFile</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

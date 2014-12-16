@@ -40,18 +40,8 @@
             pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
         %>
         <script>
-            function functionDownload(idStudent, path) {
-                /*var xhr = new XMLHttpRequest(); 
-                xhr.open('GET', url, true); 
-                xhr.responseType = "blob";
-                xhr.onreadystatechange = function () { 
-                    if (xhr.readyState == 4) {
-                        xhr.response;
-                    }
-                };
-                xhr.send(null);*/
-                //alert(idStudent);
-                tpAdminFunction.downloadFile(idStudent,path)
+            function functionDownload(idStudent, typology) {
+                tpAdminFunction.downloadFile(idStudent,typology,${path });
             }
             
             function rejectTrainingRequest(count, email){

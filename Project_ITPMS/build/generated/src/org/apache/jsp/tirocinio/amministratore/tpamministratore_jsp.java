@@ -88,17 +88,10 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
         
       out.write("\n");
       out.write("        <script>\n");
-      out.write("            function functionDownload(url) {\n");
-      out.write("                /*var xhr = new XMLHttpRequest(); \n");
-      out.write("                xhr.open('GET', url, true); \n");
-      out.write("                xhr.responseType = \"blob\";\n");
-      out.write("                xhr.onreadystatechange = function () { \n");
-      out.write("                    if (xhr.readyState == 4) {\n");
-      out.write("                        xhr.response;\n");
-      out.write("                    }\n");
-      out.write("                };\n");
-      out.write("                xhr.send(null);*/\n");
-      out.write("                alert(url);\n");
+      out.write("            function functionDownload(idStudent, typology) {\n");
+      out.write("                tpAdminFunction.downloadFile(idStudent,typology,");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write(");\n");
       out.write("            }\n");
       out.write("            \n");
       out.write("            function rejectTrainingRequest(count, email){\n");
