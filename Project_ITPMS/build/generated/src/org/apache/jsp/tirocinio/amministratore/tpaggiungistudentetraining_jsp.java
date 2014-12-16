@@ -144,7 +144,7 @@ public final class tpaggiungistudentetraining_jsp extends org.apache.jasper.runt
       out.write("\t\t\t\t\t</a>\n");
       out.write("\t\t\t\t</li>\n");
       out.write("\t\t\t\t<li class=\"opened active\">\n");
-      out.write("\t\t\t\t\t<a href=\"../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html\">\n");
+      out.write("\t\t\t\t\t<a href=\"../../tirocinio/amministratore/tpamministratore.jsp\">\n");
       out.write("\t\t\t\t\t\t<i class=\"linecons-megaphone\"></i>\n");
       out.write("\t\t\t\t\t\t<span class=\"title\">Gestione Tirocinio</span>\n");
       out.write("\t\t\t\t\t</a>\n");

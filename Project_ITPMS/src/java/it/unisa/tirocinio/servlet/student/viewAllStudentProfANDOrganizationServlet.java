@@ -7,8 +7,12 @@ package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.beans.StudentInformation;
+import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
+import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -46,8 +50,6 @@ public class viewAllStudentProfANDOrganizationServlet extends HttpServlet {
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            ArrayList<Organization> organization = anOrganization.getAllOrganizations();
-            
             ConcretePerson aPerson = ConcretePerson.getInstance();
             ArrayList<Person> student = aPerson.getAllPeople();
             
@@ -55,30 +57,39 @@ public class viewAllStudentProfANDOrganizationServlet extends HttpServlet {
             JSONArray arrayProfessor = new JSONArray();
             JSONArray arrayPerson = new JSONArray();
             
-            for( Organization orga: organization ){
-                JSONObject jsonTmpOrg = new JSONObject();
-                
-                jsonTmpOrg.put("vatNumber", orga.getVATNumber());
-                jsonTmpOrg.put("companyNa", orga.getCompanyName());
-                arrayOrganization.put(jsonTmpOrg);
-                
-            }
-            
             for(Person pers: student){
                 JSONObject jsonTmpPro = new JSONObject();
                 if(aPerson.isAProfessor(pers.getAccountEmail())){
                     jsonTmpPro.put("credential", pers.getName()+" "+pers.getSurname());
                     jsonTmpPro.put("SSN",pers.getSSN());
                     arrayProfessor.put(jsonTmpPro);
+                    
+                    ArrayList<Organization> organization = anOrganization.getOwnOrganizations(pers.getSSN());
+                    
+                    for( Organization orga: organization){
+                        JSONObject jsonTmpOrg = new JSONObject();
+
+                        jsonTmpOrg.put("vatNumber", orga.getVATNumber());
+                        jsonTmpOrg.put("companyNa", orga.getCompanyName());
+                        arrayOrganization.put(jsonTmpOrg);
+                    }
                 }  
             }
             
             for( Person stud: student ){
-                JSONObject jsonTmpStu = new JSONObject();
                 if(aPerson.isAStudent(stud.getAccountEmail())){
-                    jsonTmpStu.put("credentialStudent", stud.getName()+" "+stud.getSurname());
-                    jsonTmpStu.put("SSNStudent",stud.getSSN());
-                    arrayPerson.put(jsonTmpStu);
+                    ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+                    StudentInformation studentInformation = aStudentInformation.readAStudentInformation(stud.getSSN());
+                    
+                    ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
+                    TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSSN());
+                    
+                    if((studentInformation.getStudentStatus() == 2)&&(trainingRequest.getStudentSSN()==null)){
+                        JSONObject jsonTmpStu = new JSONObject();
+                        jsonTmpStu.put("credentialStudent", stud.getName()+" "+stud.getSurname());
+                        jsonTmpStu.put("SSNStudent",stud.getSSN());
+                        arrayPerson.put(jsonTmpStu);
+                    }
                 }
             }
             

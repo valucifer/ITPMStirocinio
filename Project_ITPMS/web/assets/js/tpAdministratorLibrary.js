@@ -124,7 +124,7 @@ tpAdminFunction = {
                 $(idComboOrga).empty();
                 $(idComboStud).empty();
                 
-                $(idComboOrga).append("<option value='none'>---Select---</option>");
+                $(idComboOrga).append("<option value>---Select---</option>");
                 var array = parsed.organization;
                 for(var i = 0; i < array.length; i++){
                     var stringToAppend_tmp = "";
@@ -133,7 +133,7 @@ tpAdminFunction = {
                     $(idComboOrga).append(stringToAppend_tmp);
                 }
                 
-                $(idComboProf).append("<option value='none'>---Select---</option>");
+                $(idComboProf).append("<option value>---Select---</option>");
                 var array = parsed.professor;
                 for(var i = 0; i < array.length; i++){
                     var stringToAppend_tmp = "";
@@ -142,17 +142,20 @@ tpAdminFunction = {
                     $(idComboProf).append(stringToAppend_tmp);
                 }
                 
-                $(idComboStud).append("<option value='none'>---Select---</option>");
+                $(idComboStud).append("<option value>---Select---</option>");
                 var array = parsed.student;
                 for(var i = 0; i < array.length; i++){
                     var stringToAppend_tmp = "";
                     stringToAppend_tmp = "<option value='"+array[i].SSNStudent+"'>"+array[i].credentialStudent;
+                    
                     stringToAppend_tmp += "</option>";
                     $(idComboStud).append(stringToAppend_tmp);
                 }
                 
             }else{
-                 $(idComboProf).append("<option value='null'>Dati non caricati</option>");       
+                 $(idComboProf).append("<option value='null'>Dati non caricati</option>");  
+                 $(idComboOrga).append("<option value='null'>Dati non caricati</option>");  
+                 $(idComboStud).append("<option value='null'>Dati non caricati</option>");       
             }
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 

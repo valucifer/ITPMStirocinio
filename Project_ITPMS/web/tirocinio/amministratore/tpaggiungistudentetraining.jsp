@@ -94,7 +94,7 @@
 					</a>
 				</li>
 				<li class="opened active">
-					<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html">
+					<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 						<i class="linecons-megaphone"></i>
 						<span class="title">Gestione Tirocinio</span>
 					</a>

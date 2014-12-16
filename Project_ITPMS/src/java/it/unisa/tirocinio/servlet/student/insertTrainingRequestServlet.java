@@ -58,19 +58,23 @@ public class insertTrainingRequestServlet extends HttpServlet {
             Organization organization = anOrganization.readOrganization(organiz);
             
             ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-            TrainingRequest trainingRequest = new TrainingRequest();
+            TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(student);
             
-            trainingRequest.setDescription(description);
-            trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
-            trainingRequest.setPersonSSN(professorSSN.getSSN());
-            trainingRequest.setStudentSSN(studentSSN.getSSN());
-            trainingRequest.setTitle(title);
-            trainingRequest.setTrainingStatus(1);
+            if(trainingRequest.getStudentSSN() == null){
+                trainingRequest = new TrainingRequest();
+                trainingRequest.setDescription(description);
+                trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
+                trainingRequest.setPersonSSN(professorSSN.getSSN());
+                trainingRequest.setStudentSSN(studentSSN.getSSN());
+                trainingRequest.setTitle(title);
+                trainingRequest.setTrainingStatus(1);
+            }
             
-            if(aTrainingRequest.createTrainingRequest(trainingRequest))
+            if(aTrainingRequest.createTrainingRequest(trainingRequest)){
                 message.setMessage("status", 1);
-            else
+            }else
                 message.setMessage("status", 0);
+            
             request.setAttribute("message",message);
             response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
             
