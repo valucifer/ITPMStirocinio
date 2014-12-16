@@ -71,7 +71,7 @@ public class uploadInformationFilesServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin","*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = "v.vivone@studenti.unisa.it";//request.getParameter("primaryKey");
+            String primaryKey = "c.borges1@studenti.unisa.it";//request.getParameter("primaryKey");
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getStudent(primaryKey);
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();

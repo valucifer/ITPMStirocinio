@@ -472,9 +472,9 @@ END
 -- Note: comments before and after the routine body will not be stored by the server
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrainingRequest` ( in ID INT, in trainingDescription LONGTEXT, in title VARCHAR(45), in FK_TrainingStatus INT, in FK_Person VARCHAR(16), in FK_Organization VARCHAR(16), in FK_StudentInformationSSN VARCHAR(16) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `updateTrainingRequest` ( in ID INT, in trainingDescription LONGTEXT, in titl VARCHAR(45), in FK_TrainingStatus INT, in FK_Perso VARCHAR(16), in FK_Organizatio VARCHAR(16), in FK_StudentInformationSSN VARCHAR(16) )
 BEGIN
-UPDATE training_request SET description = trainingDescription, title = title, fk_training_status = FK_TrainingStatus, fk_person = FK_Person, fk_organization = FK_Organization, student_information_SSN = FK_StudentInformationSSN WHERE id_training_request = ID;
+UPDATE training_request SET description = trainingDescription, title = titl, fk_training_status = FK_TrainingStatus, fk_person = FK_Perso, fk_organization = FK_Organizatio, student_information_SSN = FK_StudentInformationSSN WHERE id_training_request = ID;
 END
 
 -- --------------------------------------------------------------------------------

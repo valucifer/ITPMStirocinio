@@ -62,8 +62,9 @@
                 tpAdminFunction.acceptStudentForTraining(idRequest, ${path });
                 setTimeout(function(){ location.reload(); }, 1000);
             }
-            function completeTrainingRequest(idComplete, email){
-                alert(idComplete+" "+email+" è completo");
+            function completeTrainingRequest(idComplete){
+                tpAdminFunction.completeStudentForTraining(idComplete, ${path });
+                setTimeout(function(){ location.reload(); }, 1000);
             }
     
             jQuery(document).ready(function ($) {
@@ -127,7 +128,7 @@
 					</a>
 				</li>
 				<li class="opened active">
-					<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html">
+					<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 						<i class="linecons-megaphone"></i>
 						<span class="title">Gestione Tirocinio</span>
 					</a>
@@ -218,6 +219,12 @@
 						<a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Registra Azienda</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpaggiungistudentetraining.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Aggiungi Tirocinio</span>
 						</a>
 					</li>
 				</ul>

@@ -94,7 +94,7 @@
 					</a>
 				</li>
 				<li class="opened active">
-					<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html">
+					<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 						<i class="linecons-megaphone"></i>
 						<span class="title">Gestione Tirocinio</span>
 					</a>
@@ -185,6 +185,12 @@
 						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Registra Azienda</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpaggiungistudentetraining.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Aggiungi Tirocinio</span>
 						</a>
 					</li>
 				</ul>
@@ -292,7 +298,7 @@
 								<div class="row">
 									<center>
 										<button type="submit" class="btn btn-blue fileinput-button">
-											<i class="fa-arrow-up"></i>
+											<i class="fa-pencil"></i>
 											<span>Registra</span>
 											<!-- The file input field used as target for the file upload widget -->
 										</button>    

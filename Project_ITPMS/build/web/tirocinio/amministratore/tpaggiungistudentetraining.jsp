@@ -182,7 +182,7 @@
 						</a>
 					</li>
 					<li>
-						<a href="#">
+						<a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Registra Azienda</span>
 						</a>
@@ -262,7 +262,7 @@
 								<div class="row">
 									<center>
 										<button type="submit" class="btn btn-blue fileinput-button">
-											<i class="fa-arrow-up"></i>
+											<i class="fa-pencil"></i>
 											<span>Inserisci Tirocinio</span>
 											<!-- The file input field used as target for the file upload widget -->
 										</button>    

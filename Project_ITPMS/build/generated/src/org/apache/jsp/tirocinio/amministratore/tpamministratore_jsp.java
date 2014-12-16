@@ -114,8 +114,11 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write(");\n");
       out.write("                setTimeout(function(){ location.reload(); }, 1000);\n");
       out.write("            }\n");
-      out.write("            function completeTrainingRequest(idComplete, email){\n");
-      out.write("                alert(idComplete+\" \"+email+\" è completo\");\n");
+      out.write("            function completeTrainingRequest(idComplete){\n");
+      out.write("                tpAdminFunction.completeStudentForTraining(idComplete, ");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write(");\n");
+      out.write("                setTimeout(function(){ location.reload(); }, 1000);\n");
       out.write("            }\n");
       out.write("    \n");
       out.write("            jQuery(document).ready(function ($) {\n");
@@ -181,7 +184,7 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t</a>\n");
       out.write("\t\t\t\t</li>\n");
       out.write("\t\t\t\t<li class=\"opened active\">\n");
-      out.write("\t\t\t\t\t<a href=\"../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratore.html\">\n");
+      out.write("\t\t\t\t\t<a href=\"../../tirocinio/amministratore/tpamministratore.jsp\">\n");
       out.write("\t\t\t\t\t\t<i class=\"linecons-megaphone\"></i>\n");
       out.write("\t\t\t\t\t\t<span class=\"title\">Gestione Tirocinio</span>\n");
       out.write("\t\t\t\t\t</a>\n");
@@ -272,6 +275,12 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\t<a href=\"../../tirocinio/amministratore/tpregisteranorganization.jsp\">\n");
       out.write("\t\t\t\t\t\t\t<i class=\"linecons-cog\"></i>\n");
       out.write("\t\t\t\t\t\t\t<span class=\"title\">Registra Azienda</span>\n");
+      out.write("\t\t\t\t\t\t</a>\n");
+      out.write("\t\t\t\t\t</li>\n");
+      out.write("\t\t\t\t\t<li>\n");
+      out.write("\t\t\t\t\t\t<a href=\"../../tirocinio/amministratore/tpaggiungistudentetraining.jsp\">\n");
+      out.write("\t\t\t\t\t\t\t<i class=\"linecons-cog\"></i>\n");
+      out.write("\t\t\t\t\t\t\t<span class=\"title\">Aggiungi Tirocinio</span>\n");
       out.write("\t\t\t\t\t\t</a>\n");
       out.write("\t\t\t\t\t</li>\n");
       out.write("\t\t\t\t</ul>\n");

@@ -6,14 +6,15 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.StudentInformation;
+import it.unisa.tirocinio.beans.RejectedTrainingMessage;
+import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -21,7 +22,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
+import javax.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,11 +30,10 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-@WebServlet(name = "studentAttDetailsServlet", urlPatterns = {"/studentAttDetailsServlet"})
+@WebServlet(name = "completeStudentForTraining", urlPatterns = {"/completeStudentForTraining"})
 
-public class studentAttDetailsServlet extends HttpServlet {
+public class completeStudentForTraining extends HttpServlet {
     private final JSONObject jsonObject = new JSONObject();
-    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,42 +48,44 @@ public class studentAttDetailsServlet extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
+        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        HttpSession session = request.getSession();
         try {
             /* TODO output your page here. You may use following sample code. */
-            
-            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-            ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
+            String studentMatricula = request.getParameter("matricula");
             ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getPersonToMatricula(studentMatricula);
+            
+            ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
+            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readTrainingMessage(person.getSSN());
+            
+            if(aRejectedMessage.getDescription() == null){
+                aRejectedMessage = new RejectedTrainingMessage();
+                aRejectedMessage.setDescription("Il tuo tirocinio è concluso");
+                aRejectedMessage.setPersonSSN(person.getSSN());
+                rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);                
+            }else{
+                aRejectedMessage.setDescription("Il tuo tirocinio è concluso");
+                rejectedMessage.updateRejectedTrainingMessage(aRejectedMessage);                     
+            }
             
             ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
+            TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
             
-            if(studentInformation == null){
-                jsonObject.put("status", 0);
-            }else{
-                JSONArray array = new JSONArray();
-                for( StudentInformation stuInf: studentInformation ){
-                    Person person = aPerson.readPersonForAccount(stuInf.getEmailStudent());
-                    if(aTrainingRequest.readTrainingRequestByStudent(person.getSSN()).getTrainingStatus() != 3){
-                        JSONObject jsonTmp = new JSONObject();
-                        jsonTmp.put("idStudent",stuInf.getMatricula());
-                        jsonTmp.put("matricula", stuInf.getMatricula());
-                        jsonTmp.put("credenziali", stuInf.getStudentSSN());
-                        jsonTmp.put("statusStudent", stuInf.getStudentStatus());
-                        jsonTmp.put("curriculum", stuInf.getCVPath());
-                        jsonTmp.put("libretto", stuInf.getATPath());
-                        jsonTmp.put("emailStudent", stuInf.getEmailStudent());
-
-                        array.put(jsonTmp);
-                    }
-                }
+            out.println(trainingRequest.getStudentSSN());
+            
+            trainingRequest.setTrainingStatus(3);
+            
+            boolean toReturn = aTrainingRequest.updateTrainingRequest(trainingRequest);
+            if(toReturn){
                 jsonObject.put("status", 1);
-                jsonObject.put("message", array);
-                //request.setAttribute("trainingMessage",message);
-                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
+            }else{
+                jsonObject.put("status", 0);
             }
             response.getWriter().write(jsonObject.toString());
+            
         } catch (JSONException ex) {
-            Logger.getLogger(studentAttDetailsServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(completeStudentForTraining.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

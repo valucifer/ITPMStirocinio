@@ -91,13 +91,13 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             if( aTrainingRequest == null )
                 throw new NullPointerException("TrainingRequest is null!");
             
-            aCallableStatement = connector.prepareCall("{call updateTrainingRequest(?,?,?,?,?,?,?,?)}");       
+            aCallableStatement = connector.prepareCall("{call updateTrainingRequest(?,?,?,?,?,?,?)}");       
             aCallableStatement.setInt("ID",aTrainingRequest.getIdTrainingRequest());      
             aCallableStatement.setString("trainingDescription",aTrainingRequest.getDescription());
-            aCallableStatement.setString("title",aTrainingRequest.getTitle());
+            aCallableStatement.setString("titl",aTrainingRequest.getTitle());
             aCallableStatement.setInt("FK_TrainingStatus",aTrainingRequest.getTrainingStatus());
-            aCallableStatement.setString("FK_Person",aTrainingRequest.getPersonSSN());
-            aCallableStatement.setString("FK_Organization",aTrainingRequest.getOrganizationVATNumber());
+            aCallableStatement.setString("FK_Perso",aTrainingRequest.getPersonSSN());
+            aCallableStatement.setString("FK_Organizatio",aTrainingRequest.getOrganizationVATNumber());
             aCallableStatement.setString("FK_StudentInformationSSN",aTrainingRequest.getStudentSSN());
             int check = aCallableStatement.executeUpdate();
             return check > 0;
@@ -407,10 +407,10 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
                 aTraining.setDescription(rs.getString("description"));
                 aTraining.setTitle(rs.getString("title"));
                 
-                aTraining.setOrganizationVATNumber(anOrganization.readOrganization(rs.getString("fk_organization")).getVATNumber());
-                aTraining.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
-                aTraining.setStudentSSN(aStudentInformation.readStudentInformation(rs.getString("student_information_SSN")).getStudentSSN());//studentInformation
-                aTraining.setTrainingStatus(aTrainingStatus.readTrainingStatus(rs.getInt("fk_training_status")).getIdTrainingStatus());
+                aTraining.setOrganizationVATNumber(rs.getString("fk_organization"));
+                aTraining.setPersonSSN(rs.getString("fk_person"));
+                aTraining.setStudentSSN(rs.getString("student_information_SSN"));//studentInformation
+                aTraining.setTrainingStatus(rs.getInt("fk_training_status"));
                 
             }
             rs.close();

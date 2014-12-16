@@ -32,10 +32,10 @@ tpAdminFunction = {
                         var stringToAppend_tmp = "";
                         stringToAppend_tmp = "<tr><td>"+array[i].matricula+"</td><td>"+array[i].credenziali;
                         stringToAppend_tmp += "</td><td>";
-                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"','CV') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"','CV') class='btn btn-info btn-sm'><i class='fa fa-external-link'></i><span> Visualizza</span></button>"; 
                         
                         stringToAppend_tmp += "</td><td>";
-                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"','ES') class='btn btn-info btn-sm'><i class='fa fa-pencil'></i><span> Visualizza</span></button>"; 
+                        stringToAppend_tmp += "<button onClick=functionDownload('"+array[i].idStudent+"','ES') class='btn btn-info btn-sm'><i class='fa fa-external-link'></i><span> Visualizza</span></button>"; 
                         
                         stringToAppend_tmp += "</td><td>";
                                            
@@ -43,7 +43,7 @@ tpAdminFunction = {
                             stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_'+array[i].idStudent+'"><button class="btn btn-sm btn-icon btn-secondary" onClick=acceptTrainingRequest("'+array[i].idStudent+'","'+array[i].emailStudent+'")>Accetta</button>';
                             stringToAppend_tmp += "<button class='btn btn-sm btn-icon btn-red' onClick=rejectTrainingRequest('"+array[i].idStudent+"','"+array[i].emailStudent+"')>Rifiuta</button></span></td></tr>";
                         }else{
-                            stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_'+array[i].idStudent+'"><button class="btn btn-sm btn-icon" onClick=completeTrainingRequest("'+array[i].idStudent+'","'+array[i].emailStudent+'") style="background-color:#38548f; color:white;">Concluso</button></span></td></tr>';
+                            stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_'+array[i].idStudent+'"><button class="btn btn-sm btn-icon" onClick=completeTrainingRequest("'+array[i].idStudent+'") style="background-color:#38548f; color:white;">Concluso</button></span></td></tr>';
                         }
                         $(idTable).append(stringToAppend_tmp);
                     }
@@ -67,6 +67,18 @@ tpAdminFunction = {
                 alert("Lo studente può effettuare il tirocinio!");
             }else{
                 alert("Lo studente non può effettuare il tirocinio!");          
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
+    },
+    completeStudentForTraining: function (idStudent, path) {
+        $.get(path+"/completeStudentForTraining",{matricula:idStudent}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                alert("Lo studente ha concluso il tirocinio!");
+            }else{
+                alert("Lo studente non può concludere il tirocinio!");          
             }
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 
