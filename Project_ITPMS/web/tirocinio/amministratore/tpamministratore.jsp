@@ -64,6 +64,7 @@
             }
             function completeTrainingRequest(idComplete){
                 tpAdminFunction.completeStudentForTraining(idComplete, ${path });
+                alert("Lo studente "+idComplete+" ha concluso il tirocinio!");
                 setTimeout(function(){ location.reload(); }, 1000);
             }
     
@@ -225,6 +226,12 @@
 						<a href="../../tirocinio/amministratore/tpaggiungistudentetraining.jsp">
 							<i class="linecons-cog"></i>
 							<span class="title">Aggiungi Tirocinio</span>
+						</a>
+					</li>
+                                        <li>
+						<a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Visione Tirocini</span>
 						</a>
 					</li>
 				</ul>

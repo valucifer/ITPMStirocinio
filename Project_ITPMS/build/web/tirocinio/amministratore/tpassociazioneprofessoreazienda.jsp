@@ -193,6 +193,12 @@
 							<span class="title">Aggiungi Tirocinio</span>
 						</a>
 					</li>
+                                        <li>
+						<a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Visione Tirocini</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>

@@ -1,4 +1,4 @@
-package org.apache.jsp.tirocinio.organizzazione;
+package org.apache.jsp.tirocinio.professore;
 
 import javax.servlet.*;
 import javax.servlet.http.*;
@@ -7,7 +7,7 @@ import it.unisa.tirocinio.beans.TrainingOffer;
 import java.util.ArrayList;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 
-public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJspBase
+public final class tpprofessore_jsp extends org.apache.jasper.runtime.HttpJspBase
     implements org.apache.jasper.runtime.JspSourceDependent {
 
   private static final JspFactory _jspxFactory = JspFactory.getDefaultFactory();
@@ -73,7 +73,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t<link rel=\"stylesheet\" href=\"../../assets/css/custom.css\">\n");
       out.write("\n");
       out.write("\t<script src=\"../../assets/js/jquery-1.11.1.min.js\"></script>\n");
-      out.write("        <script src=\"../../assets/js/tpOrganizationLibrary.js\"></script>\n");
+      out.write("        <script src=\"../../assets/js/tpProfessorLibrary.js\"></script>\n");
       out.write("        <script src=\"../../assets/js/validatr.js\"></script>\n");
       out.write("        \n");
       out.write("\t<script>\n");
@@ -90,19 +90,19 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("        <script>\n");
       out.write("            function modifyTrainingToDatabase(idModify){\n");
       out.write("                $(\"#descriptionTrainingForModify\").attr(\"placeholder\",$('#paragraphDescriptionListTraining_'+idModify).text());\n");
-      out.write("                $(\"#idForModifyTrainingOrganization\").attr(\"value\",idModify);\n");
-      out.write("                jQuery('#modalGestioneTirocinioANDPlacementOrganizzazione').modal('show', {backdrop: 'static'});\n");
+      out.write("                $(\"#idForModifyTrainingProfessor\").attr(\"value\",idModify);\n");
+      out.write("                jQuery('#modalGestioneTirocinioANDPlacementProfessore').modal('show', {backdrop: 'static'});\n");
       out.write("            }\n");
       out.write("            function removeTrainingToDatabase(idRemove){\n");
       out.write("                if(confirm(\"Sei sicuro di voler eliminare questo tirocinio?\")){\n");
-      out.write("                    tpOrganizationFunction.deleteTraining(idRemove,");
+      out.write("                    tpProfessorFunction.deleteTraining(idRemove,");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write(");\n");
       out.write("                    setTimeout(function(){ location.reload(); }, 1000);\n");
       out.write("                }\n");
       out.write("            }\n");
       out.write("            jQuery(document).ready(function ($) {\n");
-      out.write("                tpOrganizationFunction.appendTraining('#listTrainingOrganizzazione',");
+      out.write("                tpProfessorFunction.appendTraining('#listTrainingProfessore',");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write(");\n");
       out.write("            });\n");
@@ -124,7 +124,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\n");
       out.write("\t\t\t<!-- Navbar Brand -->\n");
       out.write("\t\t\t<div class=\"navbar-brand\">\n");
-      out.write("\t\t\t\t<a href=\"../../offertaFormativa/organizzazione/offertaFormativaOrganizzazione.html\" class=\"logo\">\n");
+      out.write("\t\t\t\t<a href=\"../../offertaFormativa/professore/offertaFormativaProfessore.html\" class=\"logo\">\n");
       out.write("\t\t\t\t\t<img src=\"../../assets/images/mitforsite.png\" width=\"80\" alt=\"\" class=\"hidden-xs\" />\n");
       out.write("\t\t\t\t\t<img src=\"../../assets/images/mitforsitemini.png\" width=\"80\" alt=\"\" class=\"visible-xs\" />\n");
       out.write("\t\t\t\t</a>\n");
@@ -152,7 +152,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\n");
       out.write("\t\t\t<ul class=\"navbar-nav\">\n");
       out.write("\t\t\t\t<li>\n");
-      out.write("\t\t\t\t\t<a href=\"../../offertaFormativa/organizzazione/offertaFormativaOrganizzazione.html\">\n");
+      out.write("\t\t\t\t\t<a href=\"../../offertaFormativa/professore/offertaFormativaProfessore.html\">\n");
       out.write("\t\t\t\t\t\t<i class=\"linecons-desktop\"></i>\n");
       out.write("\t\t\t\t\t\t<span class=\"title\">Offerta Formativa</span>\n");
       out.write("\t\t\t\t\t</a>\n");
@@ -164,7 +164,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t</a>\n");
       out.write("\t\t\t\t</li>\n");
       out.write("\t\t\t\t<li class=\"opened active\">\n");
-      out.write("\t\t\t\t\t<a href=\"../../tirocinio/organizzazione/tporganizzazione.jsp\">\n");
+      out.write("\t\t\t\t\t<a href=\"../../tirocinio/professore/gestioneTirocinio&PlacementProfessore.html\">\n");
       out.write("\t\t\t\t\t\t<i class=\"linecons-megaphone\"></i>\n");
       out.write("\t\t\t\t\t\t<span class=\"title\">Gestione Tirocinio</span>\n");
       out.write("\t\t\t\t\t</a>\n");
@@ -205,7 +205,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\n");
       out.write("\t\t\t\t\t<ul class=\"dropdown-menu user-profile-menu list-unstyled\">\n");
       out.write("\t\t\t\t\t\t<li>\n");
-      out.write("\t\t\t\t\t\t\t<a href=\"../../tirocinio/organizzazione/gestioneTirocinio&PlacementOrganizzazioneProfiloPersonale.html\">\n");
+      out.write("\t\t\t\t\t\t\t<a href=\"../../tirocinio/professore/gestioneTirocinio&PlacementProfessoreProfiloPersonale.html\">\n");
       out.write("\t\t\t\t\t\t\t\t<i class=\"fa-edit\"></i>\n");
       out.write("\t\t\t\t\t\t\t\tProfilo\n");
       out.write("\t\t\t\t\t\t\t</a>\n");
@@ -234,7 +234,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t<!-- add class \"multiple-expanded\" to allow multiple submenus to open -->\n");
       out.write("\t\t\t\t\t<!-- class \"auto-inherit-active-class\" will automatically add \"active\" class for parent elements who are marked already with class \"active\" -->\n");
       out.write("\t\t\t\t\t<li id=\"offertaTirocini\" class=\"opened active\">\n");
-      out.write("\t\t\t\t\t\t<a href=\"../../tirocinio/organizzazione/tporganizzazione.jsp\">\n");
+      out.write("\t\t\t\t\t\t<a href=\"../../tirocinio/professore/gestioneTirocinio&PlacementProfessore.html\">\n");
       out.write("\t\t\t\t\t\t\t<i class=\"linecons-cog\"></i>\n");
       out.write("\t\t\t\t\t\t\t<span class=\"title\">Offerta Tirocinio</span>\n");
       out.write("\t\t\t\t\t\t</a>\n");
@@ -276,12 +276,12 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\t\t</p>\n");
       out.write("\t\t\t\t\t\t\t<br>\n");
       out.write("\t\t\t\t\t\t\t\t\n");
-      out.write("\t\t\t\t\t\t\t<form role=\"form\" class=\"form-horizontal\" action=\"/ServerWeb/insertTrainingByOrganizationServlet\" method=\"POST\">\n");
+      out.write("\t\t\t\t\t\t\t<form role=\"form\" class=\"form-horizontal\" action=\"/ServerWeb/insertTrainingByProfessorServlet\" method=\"POST\">\n");
       out.write("\t\t\t\t\t\t\t\t<div class=\"form-group\">\n");
       out.write("\t\t\t\t\t\t\t\t\t<label class=\"col-sm-2 control-label\" for=\"field-2\">Descrizione del Tirocinio</label>\n");
       out.write("\t\t\t\t\t\t\t\t\t<div class=\"col-sm-10\">\n");
-      out.write("\t\t\t\t\t\t\t\t\t\t<textarea name=\"description\" id=\"descriptionTrainingOrganizzazione\" required class=\"form-control\" rows=\"5\" cols=\"5\" placeholder=\"Descrizione...\" maxlength=\"250\"></textarea>\n");
-      out.write("\t\t\t\t\t\t\t\t\t\t<span id=\"validate_descriptionTrainingOrganizzazione\" style=\"color:#cc3f44\"></span>\n");
+      out.write("\t\t\t\t\t\t\t\t\t\t<textarea name=\"description\" id=\"descriptionTrainingProfessore\" required class=\"form-control\" rows=\"5\" cols=\"5\" placeholder=\"Descrizione...\" maxlength=\"250\"></textarea>\n");
+      out.write("\t\t\t\t\t\t\t\t\t\t<span id=\"validate_descriptionTrainingProfessore\" style=\"color:#cc3f44\"></span>\n");
       out.write("\t\t\t\t\t\t\t\t\t</div>\n");
       out.write("\t\t\t\t\t\t\t\t</div>\n");
       out.write("\t\t\t\t\t\t\t\t\n");
@@ -291,7 +291,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\t\t\t\n");
       out.write("\t\t\t\t\t\t\t\t<div class=\"form-group\">\n");
       out.write("\t\t\t\t\t\t\t\t\t<center>\n");
-      out.write("\t\t\t\t\t\t\t\t\t\t<button type=\"submit\" class=\"btn btn-secondary btn-single\" id=\"addTrainingOrganizzazione\">\n");
+      out.write("\t\t\t\t\t\t\t\t\t\t<button type=\"submit\" class=\"btn btn-secondary btn-single\" id=\"addTrainingProfessore\">\n");
       out.write("\t\t\t\t\t\t\t\t\t\t\t<i class=\"fa-plus\"></i>\n");
       out.write("\t\t\t\t\t\t\t\t\t\t\t<span>Aggiungi Tirocinio</span>\n");
       out.write("\t\t\t\t\t\t\t\t\t\t</button>\n");
@@ -311,7 +311,7 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\t</div>\n");
       out.write("\t\t\t\t\t\t<div class=\"panel-body\">\n");
       out.write("\t\t\t\t\t\t\t<div class=\"col-sm-12\">\n");
-      out.write("\t\t\t\t\t\t\t\t<div id=\"listTrainingOrganizzazione\" class=\"list-group\">\n");
+      out.write("\t\t\t\t\t\t\t\t<div id=\"listTrainingProfessore\" class=\"list-group\">\n");
       out.write("\t\t\t\t\t\t\t\t</div>\n");
       out.write("\t\t\t\t\t\t\t</div>\n");
       out.write("\t\t\t\t\t\t</div>\n");
@@ -350,20 +350,20 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t</div>\n");
       out.write("\t\t\n");
       out.write("\t</div>\n");
-      out.write("\t<div class=\"modal fade\" id=\"modalGestioneTirocinioANDPlacementOrganizzazione\">\n");
+      out.write("\t<div class=\"modal fade\" id=\"modalGestioneTirocinioANDPlacementProfessore\">\n");
       out.write("\t\t<div class=\"modal-dialog\">\n");
       out.write("\t\t\t<div class=\"modal-content\">\n");
       out.write("\t\t\t\t<div class=\"modal-header\">\n");
       out.write("\t\t\t\t\t<center><h4 class=\"modal-title\">Modifica il Tirocinio.</h4></center>\n");
       out.write("\t\t\t\t</div>\n");
-      out.write("                                <form role=\"form\" class=\"form-horizontal\" action=\"/ServerWeb/updateTrainingOfferByOrganizationServlet\" method=\"POST\">\n");
+      out.write("                                <form role=\"form\" class=\"form-horizontal\" action=\"/ServerWeb/updateTrainingOfferByProfessorServlet\" method=\"POST\">\n");
       out.write("                                    <div class=\"modal-body\">\n");
       out.write("                                            <div class=\"row\">\n");
       out.write("                                                    <div class=\"col-md-12\">\n");
       out.write("                                                            <div class=\"form-group\">\n");
       out.write("                                                                    <label for=\"descriptionTrainingForModify\" class=\"col-sm-3 control-label\">Descrizione del Tirocinio</label>\n");
       out.write("                                                                    <div class=\"col-sm-9\">\n");
-      out.write("                                                                            <input type=\"hidden\" name=\"idModify\" id=\"idForModifyTrainingOrganization\">\n");
+      out.write("                                                                            <input type=\"hidden\" name=\"idModify\" id=\"idForModifyTrainingProfessor\">\n");
       out.write("                                                                            <textarea required name=\"description\" id=\"descriptionTrainingForModify\" class=\"form-control\" placeholder=\"\" rows=\"5\" cols=\"5\" maxlength=\"250\"></textarea>\n");
       out.write("                                                                    </div>\n");
       out.write("                                                            </div>\t\n");
@@ -404,10 +404,10 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t}\n");
       out.write("\t\t\n");
       out.write("\t\tfunction checkNotEmptyFields(){\n");
-      out.write("\t\t\tvar tmp2 = emptyControl(\"descriptionTrainingOrganizzazione\");\n");
+      out.write("\t\t\tvar tmp2 = emptyControl(\"descriptionTrainingProfessore\");\n");
       out.write("\t\t\tif(!tmp2) {\n");
-      out.write("\t\t\t\t$(\"#validate_descriptionTrainingOrganizzazione\").html(\"Campo descrizione vuoto\");\n");
-      out.write("\t\t\t\t$(\"#descriptionTrainingOrganizzazione\").attr(\"style\",\"border-color:#cc3f44;\");\n");
+      out.write("\t\t\t\t$(\"#validate_descriptionTrainingProfessore\").html(\"Campo descrizione vuoto\");\n");
+      out.write("\t\t\t\t$(\"#descriptionTrainingProfessore\").attr(\"style\",\"border-color:#cc3f44;\");\n");
       out.write("\t\t\t}\n");
       out.write("\t\t\t\n");
       out.write("\t\t\treturn tmp2;\n");
@@ -415,12 +415,11 @@ public final class tporganizzazione_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\n");
       out.write("\t\tjQuery(document).ready(function($){\n");
       out.write("\t\t\n");
-      out.write("\t\t\t$(\"#descriptionTrainingOrganizzazione\").keyup(function(){\n");
-      out.write("\t\t\t\t$(\"#descriptionTrainingOrganizzazione\").attr(\"style\",\"border-color:#e4e4e4;\");\n");
-      out.write("\t\t\t\t$(\"#validate_descriptionTrainingOrganizzazione\").html(\"\");\n");
+      out.write("\t\t\t$(\"#descriptionTrainingProfessore\").keyup(function(){\n");
+      out.write("\t\t\t\t$(\"#descriptionTrainingProfessore\").attr(\"style\",\"border-color:#e4e4e4;\");\n");
+      out.write("\t\t\t\t$(\"#validate_descriptionTrainingProfessore\").html(\"\");\n");
       out.write("\t\t\t});\n");
       out.write("\t\t\t\n");
-      out.write("\t\t\n");
       out.write("\t\t});\n");
       out.write("\t</script>\n");
       out.write("\t\n");

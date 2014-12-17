@@ -193,6 +193,12 @@
 							<span class="title">Aggiungi Tirocinio</span>
 						</a>
 					</li>
+                                        <li>
+						<a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Visione Tirocini</span>
+						</a>
+					</li>
 				</ul>
 			</div>
 		</div>
@@ -262,6 +268,87 @@
 								</div>
 								<script>
 									jQuery(document).ready(function($){
+                                                                            
+                                                                                $("#phone").focusout(function(e){
+                                                                                   var tmp = $("#phone").val();
+                                                                                   var tmp_split = tmp.split("/");
+                                                                                   var prefix = tmp_split[0];
+                                                                                   var suffix = tmp_split[1];
+                                                                                   var protected = tmp_split[2];
+                                                                                   if(protected == null){
+                                                                                        if(((prefix != null)&&(suffix != null))&&((prefix != "")&&(suffix != ""))){
+                                                                                             if(!(((prefix.length >= 3)&&(prefix.length <= 5))&&((suffix.length >= 6)&&(suffix.length <= 10)))){
+                                                                                                 alert("Attenzione alla formattazione del campo 'TELEFONO'.\nIn particolare:\nil prefisso prevede un min di 3 e un max di 5 numeri,\nil suffisso un min di 6 e un max di 10 numeri.");
+                                                                                                 $("#submit").attr("disabled","disabled");
+                                                                                             }else{
+                                                                                                if(isNaN(prefix)){
+                                                                                                     alert("Attenzione, il prefisso da lei inserito non è una cifra.");
+                                                                                                     $("#submit").attr("disabled","disabled");
+                                                                                                 }else{
+                                                                                                     if(isNaN(suffix)){
+                                                                                                         alert("Attenzione, il suffisso da lei inserito non è una cifra.");
+                                                                                                         $("#submit").attr("disabled","disabled");
+                                                                                                     }else{
+                                                                                                         $("#submit").removeAttr("disabled");
+                                                                                                     }
+                                                                                                 }
+                                                                                             }
+                                                                                         }else{
+                                                                                              alert("Attenzione, il prefisso/suffisso non è stato compilato.");
+                                                                                              $("#submit").attr("disabled","disabled");
+                                                                                         }
+                                                                                     }else{
+                                                                                        alert("Attenzione, la formattazione non è esatta.\n Precisamente è prefisso/suffisso.");
+                                                                                        $("#submit").attr("disabled","disabled");
+                                                                                     }
+                                                                                });
+                                                                                
+                                                                                $("#email").focusout(function(e){
+                                                                                   var tmp = $("#email").val();
+                                                                                   var tmp_split = tmp.split("@");
+                                                                                   var prefix = tmp_split[0];
+                                                                                   var tmp1 = tmp_split[1];
+                                                                                   var protected1 = null;
+                                                                                   if(tmp1 != null){
+                                                                                        var suffix_tmp = tmp1.split(".");
+                                                                                    
+                                                                                        var domine = suffix_tmp[0];
+                                                                                        var domine_suffix = suffix_tmp[1];
+                                                                                        var domine_suffix2 = suffix_tmp[2];
+                                                                                        
+                                                                                        protected1 = suffix_tmp[3];
+                                                                                    }
+                                                                                    
+                                                                                   var protected2 =  tmp_split[2];
+                                                                                   
+                                                                                   if((protected1 == null) && (protected2 == null)){
+                                                                                        if((prefix == "")||(prefix == null)){
+                                                                                            alert("Attenzione, la formattazione non è esatta.\n Precisamente è [a-zA-Z]@[azA-Z].[a-z] oppure [a-zA-Z]@[azA-Z].[a-z].[a-z].");
+                                                                                            $("#submit").attr("disabled","disabled");
+                                                                                        }else{
+                                                                                            if((domine == "")||(domine == null)){
+                                                                                                alert("Attenzione, la formattazione non è esatta.\n Precisamente è [a-zA-Z]@[azA-Z].[a-z] oppure [a-zA-Z]@[azA-Z].[a-z].[a-z].");
+                                                                                                $("#submit").attr("disabled","disabled");
+                                                                                            }else{
+                                                                                                if((domine_suffix == "")||(domine_suffix == null)){
+                                                                                                    alert("Attenzione, la formattazione non è esatta.\n Precisamente è [a-zA-Z]@[azA-Z].[a-z] oppure [a-zA-Z]@[azA-Z].[a-z].[a-z].");
+                                                                                                    $("#submit").attr("disabled","disabled");
+                                                                                                }else{
+                                                                                                    if((domine_suffix2 == "") && (domine_suffix2 != null)){
+                                                                                                        alert("Attenzione, la formattazione non è esatta.\n Precisamente è [a-zA-Z]@[azA-Z].[a-z] oppure [a-zA-Z]@[azA-Z].[a-z].[a-z].");
+                                                                                                        $("#submit").attr("disabled","disabled");
+                                                                                                    }else{
+                                                                                                        $("#submit").removeAttr("disabled");
+                                                                                                    }
+                                                                                                }
+                                                                                            }
+                                                                                        }
+                                                                                     }else{
+                                                                                        alert("Attenzione, la formattazione non è esatta.\n Precisamente è [a-zA-Z]@[azA-Z].[a-z].");
+                                                                                        $("#submit").attr("disabled","disabled");
+                                                                                     }
+                                                                                });
+                                                                                
 										$("#companyName").keyup(function(){
                                                                                     if($("#companyName").val()!=""){
 											$("#emailAccount").val($("#companyName").val()+"@azienda.unisa.it");
@@ -297,7 +384,7 @@
 								<div class="form-group-separator"></div>
 								<div class="row">
 									<center>
-										<button type="submit" class="btn btn-blue fileinput-button">
+										<button id="submit" type="submit" class="btn btn-blue fileinput-button">
 											<i class="fa-pencil"></i>
 											<span>Registra</span>
 											<!-- The file input field used as target for the file upload widget -->

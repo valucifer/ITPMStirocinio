@@ -118,6 +118,7 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("                tpAdminFunction.completeStudentForTraining(idComplete, ");
       out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
       out.write(");\n");
+      out.write("                alert(\"Lo studente \"+idComplete+\" ha concluso il tirocinio!\");\n");
       out.write("                setTimeout(function(){ location.reload(); }, 1000);\n");
       out.write("            }\n");
       out.write("    \n");

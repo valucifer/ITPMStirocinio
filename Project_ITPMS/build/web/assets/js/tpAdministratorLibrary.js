@@ -76,7 +76,7 @@ tpAdminFunction = {
         $.get(path+"/completeStudentForTraining",{matricula:idStudent}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
-                alert("Lo studente ha concluso il tirocinio!");
+                alert("Lo studente "+idStudent+" ha concluso il tirocinio!");
             }else{
                 alert("Lo studente non può concludere il tirocinio!");          
             }

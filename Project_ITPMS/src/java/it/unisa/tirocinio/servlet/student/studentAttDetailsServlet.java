@@ -63,7 +63,8 @@ public class studentAttDetailsServlet extends HttpServlet {
                 JSONArray array = new JSONArray();
                 for( StudentInformation stuInf: studentInformation ){
                     Person person = aPerson.readPersonForAccount(stuInf.getEmailStudent());
-                    if(aTrainingRequest.readTrainingRequestByStudent(person.getSSN()).getTrainingStatus() != 3){
+                    int TRAININGStatus = aTrainingRequest.readTrainingRequestByStudent(person.getSSN()).getTrainingStatus();
+                    if( (TRAININGStatus != 2) && (TRAININGStatus != 3) ){
                         JSONObject jsonTmp = new JSONObject();
                         jsonTmp.put("idStudent",stuInf.getMatricula());
                         jsonTmp.put("matricula", stuInf.getMatricula());

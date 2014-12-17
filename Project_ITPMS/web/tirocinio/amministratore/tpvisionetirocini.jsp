@@ -19,15 +19,15 @@
 	<link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
 	<link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
 	<link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-	<link rel="stylesheet" href="../../assets/css/bootstrap.css">
+	<link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">
 	<link rel="stylesheet" href="../../assets/css/xenon-core.css">
 	<link rel="stylesheet" href="../../assets/css/xenon-forms.css">
 	<link rel="stylesheet" href="../../assets/css/xenon-components.css">
 	<link rel="stylesheet" href="../../assets/css/xenon-skins.css">
 	<link rel="stylesheet" href="../../assets/css/custom.css">
-
-	<script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpProfessorLibrary.js"></script>
+        
+        <script src="../../assets/js/jquery-1.11.1.min.js"></script>
+        <script src="../../assets/js/tpAdministratorLibrary.js"></script>
         <script src="../../assets/js/validatr.js"></script>
         
 	<script>
@@ -40,19 +40,36 @@
             pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
         %>
         <script>
-            function modifyTrainingToDatabase(idModify){
-                $("#descriptionTrainingForModify").attr("placeholder",$('#paragraphDescriptionListTraining_'+idModify).text());
-                $("#idForModifyTrainingProfessor").attr("value",idModify);
-                jQuery('#modalGestioneTirocinioANDPlacementProfessore').modal('show', {backdrop: 'static'});
+            function functionDownload(idStudent, typology) {
+                tpAdminFunction.downloadFile(idStudent,typology,${path });
             }
-            function removeTrainingToDatabase(idRemove){
-                if(confirm("Sei sicuro di voler eliminare questo tirocinio?")){
-                    tpProfessorFunction.deleteTraining(idRemove,${path });
-                    setTimeout(function(){ location.reload(); }, 1000);
+            
+            function rejectTrainingRequest(count, email){
+                if($("#esDocumentError").is(":checked")){
+                        $("#esDocumentError").click();
                 }
+                if($("#cfuNotFoundError").is(":checked")){
+                        $("#cfuNotFoundError").click();
+                }
+                $("#textareaDescriptionError").val("");
+                $("#serialNumberModalForReject").val(count);
+                $("#hiddenErroriRiscontrati").attr("value",count);
+                $("#nameANDsurnameModalForReject").val(email);
+                jQuery('#modalGestioneTirocinioANDPlacementAmministratore').modal('show', {backdrop: 'static'});
             }
+
+            function acceptTrainingRequest(idRequest, email){
+                tpAdminFunction.acceptStudentForTraining(idRequest, ${path });
+                setTimeout(function(){ location.reload(); }, 1000);
+            }
+            function completeTrainingRequest(idComplete){
+                tpAdminFunction.completeStudentForTraining(idComplete, ${path });
+                alert("Lo studente "+idComplete+" ha concluso il tirocinio!");
+                setTimeout(function(){ location.reload(); }, 1000);
+            }
+    
             jQuery(document).ready(function ($) {
-                tpProfessorFunction.appendTraining('#listTrainingProfessore',${path });
+                tpAdminFunction.appendStudentInformation('#tableNotifications',${path });
             });
         </script>
 
@@ -72,7 +89,7 @@
 		
 			<!-- Navbar Brand -->
 			<div class="navbar-brand">
-				<a href="../../offertaFormativa/professore/offertaFormativaProfessore.html" class="logo">
+				<a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html" class="logo">
 					<img src="../../assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
 					<img src="../../assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
 				</a>
@@ -100,7 +117,7 @@
 					
 			<ul class="navbar-nav">
 				<li>
-					<a href="../../offertaFormativa/professore/offertaFormativaProfessore.html">
+					<a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html">
 						<i class="linecons-desktop"></i>
 						<span class="title">Offerta Formativa</span>
 					</a>
@@ -112,7 +129,7 @@
 					</a>
 				</li>
 				<li class="opened active">
-					<a href="../../tirocinio/professore/tpprofessore.jsp">
+					<a href="../../tirocinio/amministratore/tpamministratore.jsp">
 						<i class="linecons-megaphone"></i>
 						<span class="title">Gestione Tirocinio</span>
 					</a>
@@ -153,7 +170,7 @@
 					
 					<ul class="dropdown-menu user-profile-menu list-unstyled">
 						<li>
-							<a href="../../tirocinio/professore/gestioneTirocinio&PlacementProfessoreProfiloPersonale.html">
+							<a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreProfiloPersonale.html">
 								<i class="fa-edit"></i>
 								Profilo
 							</a>
@@ -181,10 +198,40 @@
 				<ul id="main-menu" class="main-menu">
 					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-					<li id="offertaTirocini" class="opened active">
+					<li>
 						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Offerta Tirocinio</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpinserimentofileamministratore.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Inserimento Moduli</span>
+		  				</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Associa Professore</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Registra Azienda</span>
+						</a>
+					</li>
+					<li>
+						<a href="../../tirocinio/amministratore/tpaggiungistudentetraining.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Aggiungi Tirocinio</span>
+						</a>
+					</li>
+                                        <li class="opened active">
+						<a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+							<i class="linecons-cog"></i>
+							<span class="title">Visione Tirocini</span>
 						</a>
 					</li>
 				</ul>
@@ -194,8 +241,7 @@
 		<div class="main-content">
 					
 			<script>
-				jQuery(document).ready(function($)
-				{
+				jQuery(document).ready(function($){
 					$('a[href="#layout-variants"]').on('click', function(ev)
 					{
 						ev.preventDefault();
@@ -212,58 +258,32 @@
 			</script>
 			
 			<div class="row">
-				<div class="col-sm-12">
-					
+				<div class="col-md-12">
+				
 					<div class="panel panel-default">
 						<div class="panel-heading">
-							<h3 class="panel-title">Aggiungi Offerta di Tirocinio</h3>
+							<h3 class="panel-title">Tirocini degli Studenti</h3>
 						</div>
+						
 						<div class="panel-body">
-							<p align="justify">
-								Questa sezione è adibita all'inserimento di un'offerta di tirocinio. Completa i campi sottostanti per rendere l'offerta visualizzabile agli studenti; al termine di questa operazione, potrai visualizzare tutti i tirocini inseriti nella tabella di riepilogo nel pannello sottostante. Puoi ovviamente inserire più tirocini per gli studenti interessati utilizzando sempre questo modulo.
-							</p>
-							<br>
+							<table id="tableNotifications" class="table table-striped table-hover table-bordered" cellspacing="0" width="100%">
+							
+								<thead>
+									<tr>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+										<th></th>
+									</tr>
+								</thead>
 								
-							<form role="form" class="form-horizontal" action="/ServerWeb/insertTrainingByProfessorServlet" method="POST">
-								<div class="form-group">
-									<label class="col-sm-2 control-label" for="field-2">Descrizione del Tirocinio</label>
-									<div class="col-sm-10">
-										<textarea name="description" id="descriptionTrainingProfessore" required class="form-control" rows="5" cols="5" placeholder="Descrizione..." maxlength="250"></textarea>
-										<span id="validate_descriptionTrainingProfessore" style="color:#cc3f44"></span>
-									</div>
-								</div>
-								
-								<div class="col-sm-12">
-									<div id="messageTrainingControl" align="center"></div>
-								</div>
-								
-								<div class="form-group">
-									<center>
-										<button type="submit" class="btn btn-secondary btn-single" id="addTrainingProfessore">
-											<i class="fa-plus"></i>
-											<span>Aggiungi Tirocinio</span>
-										</button>
-									</center>
-								</div>
-							</form>
+								<tbody align="center">
+								</tbody>
+							</table>
 						</div>
 					</div>
 					
-				</div>
-			</div>
-			<div class="row">
-				<div class="col-sm-12">
-					<div class="panel panel-default">
-						<div class="panel-heading">
-							Lista dei tirocini aggiunti
-						</div>
-						<div class="panel-body">
-							<div class="col-sm-12">
-								<div id="listTrainingProfessore" class="list-group">
-								</div>
-							</div>
-						</div>
-					</div>
 				</div>
 			</div>
 			
@@ -277,9 +297,8 @@
 				
 					<!-- Add your copyright text here -->
 					<div class="footer-text">
-						&copy; 2014 
-						<strong>Unisa</strong> 
-						<a href="http://www.unisa.it" target="_blank"></a>
+						&copy;
+						<a href="http://www.unisa.it" target="_blank"><strong>Unisa</strong> </a>
 					</div>
 					
 					
@@ -298,40 +317,95 @@
 		</div>
 		
 	</div>
-	<div class="modal fade" id="modalGestioneTirocinioANDPlacementProfessore">
+	
+	<div class="modal fade" id="modalGestioneTirocinioANDPlacementAmministratore">
 		<div class="modal-dialog">
 			<div class="modal-content">
-				<div class="modal-header">
-					<center><h4 class="modal-title">Modifica il Tirocinio.</h4></center>
+                            <div class="modal-header">
+					<center><h4 class="modal-title">Rifiutare la domanda di tirocinio.</h4></center>
 				</div>
-                                <form role="form" class="form-horizontal" action="/ServerWeb/updateTrainingOfferByProfessorServlet" method="POST">
-                                    <div class="modal-body">
-                                            <div class="row">
-                                                    <div class="col-md-12">
-                                                            <div class="form-group">
-                                                                    <label for="descriptionTrainingForModify" class="col-sm-3 control-label">Descrizione del Tirocinio</label>
-                                                                    <div class="col-sm-9">
-                                                                            <input type="hidden" name="idModify" id="idForModifyTrainingProfessor">
-                                                                            <textarea required name="description" id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250"></textarea>
-                                                                    </div>
-                                                            </div>	
-                                                    </div>
-                                            </div>
-                                    </div>
-                                    <div class="modal-footer">
-                                            <center>
-                                                    <button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-                                                    <button type="submit" id="modifyDataForTrainingIntoDatabase" class="btn btn-orange">Modifica</button>
-                                            </center>
-                                    </div>
-                                </form>
+				
+				<div class="modal-body">
+					<div class="row">
+						<div class="col-md-6">
+							
+							<div class="form-group">
+								<label for="serialNumberModalForReject" class="control-label">Matricola</label>
+								
+								<input type="text" id="serialNumberModalForReject" class="form-control" disabled>
+							</div>	
+							
+						</div>
+						
+						<div class="col-md-6">
+							
+							<div class="form-group">
+								<label for="nameANDsurnameModalForReject" class="control-label">Email dello studente</label>
+								
+								<input type="text" id="nameANDsurnameModalForReject" class="form-control" disabled>
+							</div>	
+						
+						</div>
+					</div>
+				<form role="form" class="form-horizontal" action="/ServerWeb/sendingErrorsForStudentInformationServlet" method="POST">
+                                    <input type="hidden" name="hiddenErroriRiscontrati" id="hiddenErroriRiscontrati"/>
+                                        <div class="row">
+						<div class="col-lg-6">
+							<div class="xe-widget xe-todo-list">
+								<div class="xe-header">
+									<center><h4 class="title"><strong>Errori</strong> riscontrati.</h4></center>
+								</div>
+								<div class="xe-body">
+									<ul class="list-unstyled">
+										<li>
+											<label>
+												<input name="descriptionCurriculum" value="curriculum errato" type="checkbox" id="cvDocumentError" class="cbr"/>
+												<span>Curriculum</span>
+											</label>
+										</li>
+										<li>
+											<label>
+												<input name="descriptionLibretto" value="libretto errato" type="checkbox" id="esDocumentError" class="cbr"/>
+												<span>Libretto</span>
+											</label>
+										</li>
+										<li>
+											<label>
+												<input name="descriptionCFUMancanti" value="CFU errati" type="checkbox" id="cfuNotFoundError" class="cbr" />
+												<span>CFU mancanti</span>
+											</label>
+										</li>
+									</ul>
+								</div>
+							</div>
+						</div>
+						<div class="col-lg-6">
+							<div class="form-group no-margin">
+								<label for="textareaDescriptionError" class="control-label">Descrizione errore:</label>
+								<textarea name="descriptionTextArea" class="form-control" style="resize:none" rows="9" id="textareaDescriptionError"></textarea>
+							</div>	
+						</div>
+					</div>
+				</div>
+				
+				<div class="modal-footer">
+					<center>
+						<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
+						<button type="submit" id="invio" class="btn btn-info">Invio Errori</button>
+					</center>
+				</div>
+                            </form>
 			</div>
 		</div>
 	</div>
-	
+
 	<div class="page-loading-overlay">
 		<div class="loader-2"></div>
 	</div>
+
+	
+	<link rel="stylesheet" href="../../assets/js/datatables/dataTables.bootstrap.css">
+	<link rel="stylesheet" href="../../assets/css/fonts/meteocons/css/meteocons.css">
 	
 	<!-- Bottom Scripts -->
 	<script src="../../assets/js/bootstrap.min.js"></script>
@@ -340,36 +414,20 @@
 	<script src="../../assets/js/joinable.js"></script>
 	<script src="../../assets/js/xenon-api.js"></script>
 	<script src="../../assets/js/xenon-toggles.js"></script>
+	<script src="../../assets/js/datatables/js/jquery.dataTables.js"></script>
 
+	<!-- Imported scripts on this page -->
+	<script src="../../assets/js/datatables/dataTables.bootstrap.js"></script>
+	<script src="../../assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+	<script src="../../assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
+	
+	<!-- Imported scripts on this page -->
+	<script src="../../assets/js/xenon-widgets.js"></script>
+	<script src="../../assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+	<script src="../../assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
 
 	<!-- JavaScripts initializations and stuff -->
 	<script src="../../assets/js/xenon-custom.js"></script>
-	<script>		
-		function emptyControl(id){
-			if($("#"+id).val() == "")
-				return false;
-			return true;
-		}
-		
-		function checkNotEmptyFields(){
-			var tmp2 = emptyControl("descriptionTrainingProfessore");
-			if(!tmp2) {
-				$("#validate_descriptionTrainingProfessore").html("Campo descrizione vuoto");
-				$("#descriptionTrainingProfessore").attr("style","border-color:#cc3f44;");
-			}
-			
-			return tmp2;
-		}
-		
-		jQuery(document).ready(function($){
-		
-			$("#descriptionTrainingProfessore").keyup(function(){
-				$("#descriptionTrainingProfessore").attr("style","border-color:#e4e4e4;");
-				$("#validate_descriptionTrainingProfessore").html("");
-			});
-			
-		});
-	</script>
-	
+
 </body>
 </html>

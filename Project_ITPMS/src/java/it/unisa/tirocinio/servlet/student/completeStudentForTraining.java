@@ -61,11 +61,11 @@ public class completeStudentForTraining extends HttpServlet {
             
             if(aRejectedMessage.getDescription() == null){
                 aRejectedMessage = new RejectedTrainingMessage();
-                aRejectedMessage.setDescription("Il tuo tirocinio è concluso");
+                aRejectedMessage.setDescription("Il tuo tirocinio è concluso.\n Completa il questionario posto nella tua area personale. ");
                 aRejectedMessage.setPersonSSN(person.getSSN());
                 rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);                
             }else{
-                aRejectedMessage.setDescription("Il tuo tirocinio è concluso");
+                aRejectedMessage.setDescription("Il tuo tirocinio è concluso.\n Completa il questionario posto nella tua area personale.");
                 rejectedMessage.updateRejectedTrainingMessage(aRejectedMessage);                     
             }
             
@@ -74,10 +74,9 @@ public class completeStudentForTraining extends HttpServlet {
             
             out.println(trainingRequest.getStudentSSN());
             
-            trainingRequest.setTrainingStatus(3);
+            trainingRequest.setTrainingStatus(2);
             
-            boolean toReturn = aTrainingRequest.updateTrainingRequest(trainingRequest);
-            if(toReturn){
+            if(aTrainingRequest.updateTrainingRequest(trainingRequest)){
                 jsonObject.put("status", 1);
             }else{
                 jsonObject.put("status", 0);

@@ -112,7 +112,7 @@
 					</a>
 				</li>
 				<li class="opened active">
-					<a href="../../tirocinio/professore/gestioneTirocinio&PlacementProfessore.html">
+					<a href="../../tirocinio/professore/tpprofessore.jsp">
 						<i class="linecons-megaphone"></i>
 						<span class="title">Gestione Tirocinio</span>
 					</a>
@@ -182,7 +182,7 @@
 					<!-- add class "multiple-expanded" to allow multiple submenus to open -->
 					<!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
 					<li id="offertaTirocini" class="opened active">
-						<a href="../../tirocinio/professore/gestioneTirocinio&PlacementProfessore.html">
+						<a href="#">
 							<i class="linecons-cog"></i>
 							<span class="title">Offerta Tirocinio</span>
 						</a>
