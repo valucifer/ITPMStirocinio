@@ -124,6 +124,10 @@
         <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.changeTrainingStudentForTotalComplete</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>completeTrainingInsertQuestionnaire</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.completeTrainingInsertQuestionnaire</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -247,6 +251,10 @@
     <servlet-mapping>
         <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
         <url-pattern>/changeTrainingStudentForTotalComplete</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>completeTrainingInsertQuestionnaire</servlet-name>
+        <url-pattern>/completeTrainingInsertQuestionnaire</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
