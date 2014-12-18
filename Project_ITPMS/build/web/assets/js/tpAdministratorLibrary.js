@@ -5,6 +5,63 @@
  */
 
 tpAdminFunction = {
+    appendStudentIntoSelectForChangeTraining: function (idComboStudent,path){
+        $.get(path+"/appendStudentIntoSelectForChangeTraining",{}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status==1){
+                $(idComboStudent).empty();
+                $(idComboStudent).append("<option value>---Select---</option>");
+                var array = parsed.message;
+                for(var i = 0; i < array.length; i++){
+                    var stringToAppend_tmp = "";
+                    stringToAppend_tmp = "<option value='"+array[i].matricola+"'>Matr: "+array[i].matricola+", Nome: "+array[i].credenziali+", Titolo Tirocinio: "+array[i].titolo;
+                    stringToAppend_tmp += "</option>";
+                    $(idComboStudent).append(stringToAppend_tmp);
+                }
+            }else{
+                 $(idComboStudent).append("<option value='Dati_non_presenti'>Dati non presenti</option>");       
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
+        });
+    },
+    appendStudentTrainingComplete: function (idTable, path){
+        $.ajax({
+            url: path + '/getStudentTrainingCompleteForTable',
+            dataType: 'text',
+            type: 'POST',
+            success: function (e) {
+                var parsed = jQuery.parseJSON(e);
+                if(parsed.status==1){
+                    var array = parsed.message;
+                    $(idTable+" tbody").empty();
+                    for(var i = 0; i < array.length; i++){
+                        var stringToAppend_tmp = "";
+                        stringToAppend_tmp = "<tr><td>";
+                        
+                        stringToAppend_tmp += array[i].matricola+"</td><td>"+array[i].credenziali+ "</td><td>";
+                        stringToAppend_tmp += array[i].email+"</td><td>"+array[i].telefono+ "</td><td>";
+                        stringToAppend_tmp += array[i].titolo+"</td><td>"+array[i].azienda+ "</td><td>";
+                        
+                        stringToAppend_tmp += array[i].questionario+"</td></tr>";
+                        
+                        stringToAppend_tmp += array[i].matricola;
+                        $(idTable).append(stringToAppend_tmp);
+                    }
+                }else{
+                    $(idTable).append("<tr><td></td><td></td><td></td><td>Non ci sono studenti tirocinanti.</td><td></td><td></td><td></td></tr>");
+                }
+                
+                $(idTable).dataTable({
+                    aLengthMenu: [
+                        [10, 20, -1], [10, 20, "Tutti"]
+                    ]});
+                    
+            },error: function (e) {
+                $(idTable).append("<center><strong>I dati non sono stati caricati correttamente.</strong></center>");
+            }
+        });
+    },
     downloadFile: function (matri, typo, path) {
         jQuery.ajax({
             url: path+"/downloadFile" ,
@@ -89,7 +146,7 @@ tpAdminFunction = {
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboOrg).empty();
-                $(idComboOrg).append("<option value='none'>---Select---</option>");
+                $(idComboOrg).append("<option value>---Select---</option>");
                 var array = parsed.message;
                 for(var i = 0; i < array.length; i++){
                     var stringToAppend_tmp = "";
@@ -98,7 +155,7 @@ tpAdminFunction = {
                     $(idComboOrg).append(stringToAppend_tmp);
                 }
             }else{
-                 $(idComboOrg).append("<option value='null'>Dati non caricati</option>");       
+                 $(idComboOrg).append("<option value>Dati non caricati</option>");       
             }
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 
@@ -107,7 +164,7 @@ tpAdminFunction = {
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboProf).empty();
-                $(idComboProf).append("<option value='none'>---Select---</option>");
+                $(idComboProf).append("<option value>---Select---</option>");
                 var array = parsed.message;
                 for(var i = 0; i < array.length; i++){
                     var stringToAppend_tmp = "";
@@ -116,7 +173,7 @@ tpAdminFunction = {
                     $(idComboProf).append(stringToAppend_tmp);
                 }
             }else{
-                 $(idComboProf).append("<option value='null'>Dati non caricati</option>");       
+                 $(idComboProf).append("<option value>Dati non caricati</option>");       
             }
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 
@@ -127,7 +184,7 @@ tpAdminFunction = {
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboProf).empty();
-                $(idComboProf).append("<option value='none'>---Select---</option>");
+                $(idComboProf).append("<option value>---Select---</option>");
                 var array = parsed.message;
                 for(var i = 0; i < array.length; i++){
                     var stringToAppend_tmp = "";
@@ -136,7 +193,7 @@ tpAdminFunction = {
                     $(idComboProf).append(stringToAppend_tmp);
                 }
             }else{
-                 $(idComboProf).append("<option value='null'>Dati non caricati</option>");       
+                 $(idComboProf).append("<option value>Dati non caricati</option>");       
             }
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 

@@ -112,6 +112,18 @@
         <servlet-name>completeStudentForTraining</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.completeStudentForTraining</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingCompleteForTable</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>appendStudentIntoSelectForChangeTraining</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.appendStudentIntoSelectForChangeTraining</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.changeTrainingStudentForTotalComplete</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -223,6 +235,18 @@
     <servlet-mapping>
         <servlet-name>completeStudentForTraining</servlet-name>
         <url-pattern>/completeStudentForTraining</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
+        <url-pattern>/getStudentTrainingCompleteForTable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>appendStudentIntoSelectForChangeTraining</servlet-name>
+        <url-pattern>/appendStudentIntoSelectForChangeTraining</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
+        <url-pattern>/changeTrainingStudentForTotalComplete</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

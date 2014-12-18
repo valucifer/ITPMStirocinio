@@ -231,7 +231,7 @@
 						
 						<div class="panel-body">
 							
-							<p>Questa sezione del sito ti permetterà di inoltrare i moduli inerenti al tirocinio. Per inviare la tua richiesta, è necessario tu possieda i moduli "Piano Formativo" e "Registro Ore" sul quale riportate le informazioni relative.</p>
+							<p>Questa sezione del sito ti permetterà di inoltrare i moduli inerenti al tirocinio. Per inviare la tua richiesta, è necessario tu possieda i moduli "Piano Formativo", "Registro Ore" e il "Questionario" sul quale riportate le informazioni relative.</p>
 							<p>Entrambi i files devono essere in formato PDF. Gli Studenti, in seguito, potranno scaricare i suddetti moduli mediante accesso alle proprie aree dedicate e compilarli.</p>
                             <br><br>
                             <div class="row">
@@ -247,6 +247,11 @@
                                             <br><br>
                                             <div class="col-sm-10">
                                                 <input type="file" required class="form-control" id="examsCarriedOut" name="eco" accept="application/pdf">
+                                            </div><br><br>
+                                            <label class="col-sm-2 control-label" for="questions" >Questionario</label>
+
+                                            <div class="col-sm-10">
+                                                <input type="file" required class="form-control" id="questions" name="qs" accept="application/pdf">
                                             </div>
                                             <br><br><br>
                                             <div id="moduleControl" align="center"></div>

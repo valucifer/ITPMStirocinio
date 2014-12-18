@@ -284,6 +284,12 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\t\t<span class=\"title\">Aggiungi Tirocinio</span>\n");
       out.write("\t\t\t\t\t\t</a>\n");
       out.write("\t\t\t\t\t</li>\n");
+      out.write("                                        <li>\n");
+      out.write("\t\t\t\t\t\t<a href=\"../../tirocinio/amministratore/tpvisionetirocini.jsp\">\n");
+      out.write("\t\t\t\t\t\t\t<i class=\"linecons-cog\"></i>\n");
+      out.write("\t\t\t\t\t\t\t<span class=\"title\">Visione Tirocini</span>\n");
+      out.write("\t\t\t\t\t\t</a>\n");
+      out.write("\t\t\t\t\t</li>\n");
       out.write("\t\t\t\t</ul>\n");
       out.write("\t\t\t</div>\n");
       out.write("\t\t</div>\n");
@@ -409,7 +415,7 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\t\t\t\t\t\t\t\t\t<ul class=\"list-unstyled\">\n");
       out.write("\t\t\t\t\t\t\t\t\t\t<li>\n");
       out.write("\t\t\t\t\t\t\t\t\t\t\t<label>\n");
-      out.write("\t\t\t\t\t\t\t\t\t\t\t\t<input name=\"descriptionCurriculum\" value=\"curriculum errato\" type=\"checkbox\" id=\"cvDocumentError\" class=\"cbr\"/>\n");
+      out.write("\t\t\t\t\t\t\t\t\t\t\t\t<input name=\"descriptionCurriculum\" value=\"curriculum errato\" type=\"checkbox\" id=\"cvDocumentError\" class=\"cbr\" checked/>\n");
       out.write("\t\t\t\t\t\t\t\t\t\t\t\t<span>Curriculum</span>\n");
       out.write("\t\t\t\t\t\t\t\t\t\t\t</label>\n");
       out.write("\t\t\t\t\t\t\t\t\t\t</li>\n");

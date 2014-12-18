@@ -359,7 +359,7 @@
 									<ul class="list-unstyled">
 										<li>
 											<label>
-												<input name="descriptionCurriculum" value="curriculum errato" type="checkbox" id="cvDocumentError" class="cbr"/>
+												<input name="descriptionCurriculum" value="curriculum errato" type="checkbox" id="cvDocumentError" class="cbr" checked/>
 												<span>Curriculum</span>
 											</label>
 										</li>

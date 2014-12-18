@@ -86,8 +86,14 @@ public class uploadInformationForModuleFilesServlet extends HttpServlet {
                     Date date = new Date();
                     if( fieldName.equals("tp")){
                         fileToStore = new File(adminSubfolderPath+fileSeparator+"Module.pdf");
-                    }else if( fieldName.equals("eco")){
-                        fileToStore = new File(adminSubfolderPath+fileSeparator+"Register.pdf");
+                    }else{ 
+                        if( fieldName.equals("eco")){
+                            fileToStore = new File(adminSubfolderPath+fileSeparator+"Register.pdf");
+                        }else{ 
+                            if (fieldName.equals("qs")){
+                                fileToStore = new File(adminSubfolderPath+fileSeparator+"Questionario.pdf");
+                            }
+                        }
                     }
                     fi.write( fileToStore ) ;
                    // out.println("Uploaded Filename: " + fieldName + "<br>");

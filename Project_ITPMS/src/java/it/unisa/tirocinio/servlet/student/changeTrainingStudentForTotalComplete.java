@@ -6,12 +6,10 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.RejectedTrainingMessage;
-import it.unisa.tirocinio.beans.StudentInformation;
+import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
-import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
+import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import javax.servlet.ServletException;
@@ -19,15 +17,14 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import javax.servlet.http.HttpSession;
 
 /**
  *
  * @author Valentino
  */
-@WebServlet(name = "sendingErrorsForStudentInformationServlet", urlPatterns = {"/sendingErrorsForStudentInformationServlet"})
+@WebServlet(name = "changeProfessorForTrainingOrganizationServlet", urlPatterns = {"/changeProfessorForTrainingOrganizationServlet"})
 
-public class sendingErrorsForStudentInformationServlet extends HttpServlet {
+public class changeTrainingStudentForTotalComplete extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -44,55 +41,26 @@ public class sendingErrorsForStudentInformationServlet extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        HttpSession session = request.getSession();
         try {
-            String descriptionCurriculum = null, descriptionLibretto = null, descriptionCFUMancanti = null, descriptionTextArea = null;
-            /* TODO output your page here. You may use following sample code. */
-            descriptionCurriculum = request.getParameter("descriptionCurriculum");
-            descriptionLibretto = request.getParameter("descriptionLibretto");
-            descriptionCFUMancanti = request.getParameter("descriptionCFUMancanti");
-            descriptionTextArea = request.getParameter("descriptionTextArea");
-            String matriculaStudent = request.getParameter("hiddenErroriRiscontrati");
-            String tmp = "";
-            if(descriptionCurriculum != null)
-                tmp = tmp +" "+descriptionCurriculum+";";
-            if(descriptionLibretto != null)
-                tmp = tmp +" "+descriptionLibretto+";";
-            if(descriptionCFUMancanti != null)
-                tmp = tmp +" "+descriptionCFUMancanti+";";
-            if(descriptionTextArea != null)
-                tmp = tmp +" "+descriptionTextArea;
+            String studentMatricola = request.getParameter("studentSSN");
             
-            ConcretePerson aPerson = ConcretePerson.getInstance();  
-            Person person = aPerson.getPersonToMatricula(matriculaStudent);
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getPersonToMatricula(studentMatricola);
             
-            ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aMessage = aRejectedMessage.readTrainingMessage(person.getSSN());
+            ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
+            TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
             
-            if(aMessage.getDescription() == null){
-                aMessage = new RejectedTrainingMessage();
-                aMessage.setDescription( tmp );
-                aMessage.setPersonSSN(person.getSSN());
-                aRejectedMessage.createRejectedTrainingMessage(aMessage);                
-            }else{
-                aMessage.setDescription( tmp );
-                aRejectedMessage.updateRejectedTrainingMessage(aMessage);                
-            }
-               
-            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-            StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
+            trainingRequest.setTrainingStatus(3);
             
-            studentInformation.setStudentStatus(1);
-            boolean toReturn = aStudentInformation.updateStudentInformation(studentInformation);
-            
+            boolean toReturn = aTrainingRequest.updateTrainingRequest(trainingRequest);
             if(toReturn){
                 message.setMessage("status", 1);
             }else{
                 message.setMessage("status", 0);
             }
             request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpamministratore.jsp");
-            
+            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpvisionetirocini.jsp");
+        
         } finally {
             out.close();
         }

@@ -40,36 +40,8 @@
             pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
         %>
         <script>
-            function functionDownload(idStudent, typology) {
-                tpAdminFunction.downloadFile(idStudent,typology,${path });
-            }
-            
-            function rejectTrainingRequest(count, email){
-                if($("#esDocumentError").is(":checked")){
-                        $("#esDocumentError").click();
-                }
-                if($("#cfuNotFoundError").is(":checked")){
-                        $("#cfuNotFoundError").click();
-                }
-                $("#textareaDescriptionError").val("");
-                $("#serialNumberModalForReject").val(count);
-                $("#hiddenErroriRiscontrati").attr("value",count);
-                $("#nameANDsurnameModalForReject").val(email);
-                jQuery('#modalGestioneTirocinioANDPlacementAmministratore').modal('show', {backdrop: 'static'});
-            }
-
-            function acceptTrainingRequest(idRequest, email){
-                tpAdminFunction.acceptStudentForTraining(idRequest, ${path });
-                setTimeout(function(){ location.reload(); }, 1000);
-            }
-            function completeTrainingRequest(idComplete){
-                tpAdminFunction.completeStudentForTraining(idComplete, ${path });
-                alert("Lo studente "+idComplete+" ha concluso il tirocinio!");
-                setTimeout(function(){ location.reload(); }, 1000);
-            }
-    
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendStudentInformation('#tableNotifications',${path });
+                tpAdminFunction.appendStudentTrainingComplete('#tableTraining',${path });
             });
         </script>
 
@@ -266,15 +238,17 @@
 						</div>
 						
 						<div class="panel-body">
-							<table id="tableNotifications" class="table table-striped table-hover table-bordered" cellspacing="0" width="100%">
+							<table id="tableTraining" class="table table-striped table-hover table-bordered" cellspacing="0" width="100%">
 							
 								<thead>
 									<tr>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th></th>
-										<th></th>
+										<th>Matricola</th>
+										<th>Credenziali</th>
+										<th>E-mail</th>
+										<th>Telefono</th>
+										<th>Titolo Tirocinio</th>
+										<th>Azienda</th>
+                                        <th>Compilazione Questionario</th>
 									</tr>
 								</thead>
 								
@@ -284,6 +258,61 @@
 						</div>
 					</div>
 					
+				</div>
+			</div>
+			
+			<div class="row">
+				<div class="panel panel-default">
+					<div class="panel-heading">
+						<h3 class="panel-title">Gestione tirocinio</h3>
+					</div>
+					<div class="panel-body" align="justify">
+						<p>Qualora ci fossero dei problemi con la conferma on-line del tirocinante, riguardanti la conclusione del relativo tirocinio, l'amministratore dovrà procedere "manualmente" alla compilazione dell' medesimo premendo il bottone sottostante.</p>
+                         <br><br>
+                                            <form>
+						 <center>
+							<button type="button" class="btn btn-info fileinput-button" id="appendSolutionTraining">
+                                                            <i class="fa-legal"></i>
+                                                            <span>Risolvi tirocinio</span>
+                                                    </button>
+						 </center>
+                                                <script>
+                                                    jQuery(document).ready(function($){
+                                                        $("#appendSolutionTraining").click(function(){
+                                                            $("#solutionStudentTrainingView").removeAttr("hidden");
+                                                            tpAdminFunction.appendStudentIntoSelectForChangeTraining("#comboboxStudent",${path });
+                                                            setTimeout(function(){
+                                                                if($("#comboboxStudent").val() == "Dati_non_presenti")
+                                                                    $("#buttonChangeTraining").attr("disabled",true);
+                                                            },1000);
+                                                            
+                                                        });
+                                                    });
+                                                </script>
+                                                 <div class="form-group">
+                                                    <div class="form-group-separator"></div>
+                                                 </div>
+                                                
+                                            </form>
+                                            <div id="solutionStudentTrainingView" class="form-group" hidden>
+                                                <form role="form" class="form-horizontal" action="/ServerWeb/changeTrainingStudentForTotalComplete" method="POST">
+                                                    <label class="col-sm-1 control-label" >Studenti: </label>
+                                                    <div class="col-sm-11">
+                                                            <select name="studentSSN" id="comboboxStudent" class="form-control">
+                                                            </select>
+                                                    </div>
+                                                    <br><br><br><br>
+                                                    <div id="moduleControl" align="center"></div>
+                                                    <center>
+                                                        <button type="submit" class="btn btn-orange fileinput-button" id="buttonChangeTraining">
+                                                            <i class="fa-pencil"></i>
+                                                            <span>Concludi tirocinio Studente</span>
+                                                            <!-- The file input field used as target for the file upload widget -->
+                                                        </button>    
+                                                    </center>
+                                                </form>
+                                            </div>
+					</div>
 				</div>
 			</div>
 			
@@ -318,87 +347,6 @@
 		
 	</div>
 	
-	<div class="modal fade" id="modalGestioneTirocinioANDPlacementAmministratore">
-		<div class="modal-dialog">
-			<div class="modal-content">
-                            <div class="modal-header">
-					<center><h4 class="modal-title">Rifiutare la domanda di tirocinio.</h4></center>
-				</div>
-				
-				<div class="modal-body">
-					<div class="row">
-						<div class="col-md-6">
-							
-							<div class="form-group">
-								<label for="serialNumberModalForReject" class="control-label">Matricola</label>
-								
-								<input type="text" id="serialNumberModalForReject" class="form-control" disabled>
-							</div>	
-							
-						</div>
-						
-						<div class="col-md-6">
-							
-							<div class="form-group">
-								<label for="nameANDsurnameModalForReject" class="control-label">Email dello studente</label>
-								
-								<input type="text" id="nameANDsurnameModalForReject" class="form-control" disabled>
-							</div>	
-						
-						</div>
-					</div>
-				<form role="form" class="form-horizontal" action="/ServerWeb/sendingErrorsForStudentInformationServlet" method="POST">
-                                    <input type="hidden" name="hiddenErroriRiscontrati" id="hiddenErroriRiscontrati"/>
-                                        <div class="row">
-						<div class="col-lg-6">
-							<div class="xe-widget xe-todo-list">
-								<div class="xe-header">
-									<center><h4 class="title"><strong>Errori</strong> riscontrati.</h4></center>
-								</div>
-								<div class="xe-body">
-									<ul class="list-unstyled">
-										<li>
-											<label>
-												<input name="descriptionCurriculum" value="curriculum errato" type="checkbox" id="cvDocumentError" class="cbr"/>
-												<span>Curriculum</span>
-											</label>
-										</li>
-										<li>
-											<label>
-												<input name="descriptionLibretto" value="libretto errato" type="checkbox" id="esDocumentError" class="cbr"/>
-												<span>Libretto</span>
-											</label>
-										</li>
-										<li>
-											<label>
-												<input name="descriptionCFUMancanti" value="CFU errati" type="checkbox" id="cfuNotFoundError" class="cbr" />
-												<span>CFU mancanti</span>
-											</label>
-										</li>
-									</ul>
-								</div>
-							</div>
-						</div>
-						<div class="col-lg-6">
-							<div class="form-group no-margin">
-								<label for="textareaDescriptionError" class="control-label">Descrizione errore:</label>
-								<textarea name="descriptionTextArea" class="form-control" style="resize:none" rows="9" id="textareaDescriptionError"></textarea>
-							</div>	
-						</div>
-					</div>
-				</div>
-				
-				<div class="modal-footer">
-					<center>
-						<button type="button" class="btn btn-white" data-dismiss="modal">Close</button>
-						<button type="submit" id="invio" class="btn btn-info">Invio Errori</button>
-					</center>
-				</div>
-                            </form>
-			</div>
-		</div>
-	</div>
-
 	<div class="page-loading-overlay">
 		<div class="loader-2"></div>
 	</div>
