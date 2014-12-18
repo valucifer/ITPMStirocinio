@@ -1,3 +1,35 @@
+		--- QUESTIONNAIRE ---
+		
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: comments before and after the routine body will not be stored by the server
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+
+CREATE DEFINER=`root`@`localhost` PROCEDURE `insertQuestionnaire`( in studentSSN VARCHAR(16), in companyName VARCHAR(45), in typologyOrganization VARCHAR(45), in firs VARCHAR(5), in secon VARCHAR(5), in third VARCHAR(5), in fourth VARCHAR(5), in fifth VARCHAR(5), in sixth VARCHAR(5), in seventh VARCHAR(5) )
+BEGIN
+INSERT INTO questionnaire VALUES (studentSSN,companyName,typologyOrganization,firs,secon,third,fourth,fifth,sixth,seventh);
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selectQuestionnaire` ( in studentSSN VARCHAR(16) )
+BEGIN
+SELECT * FROM questionnaire WHERE student_ssn = studentSSN;
+END
+
+-- --------------------------------------------------------------------------------
+-- Routine DDL
+-- Note: 
+-- --------------------------------------------------------------------------------
+DELIMITER $$
+CREATE DEFINER=`root`@`localhost` PROCEDURE `selectAllQuestionnaires` ( )
+BEGIN
+SELECT * FROM questionnaire;
+END
 
 		--- STUDENT STATUS ---
 

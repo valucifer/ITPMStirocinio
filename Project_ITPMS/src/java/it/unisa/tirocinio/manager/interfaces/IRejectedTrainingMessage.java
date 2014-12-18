@@ -18,7 +18,7 @@ public interface IRejectedTrainingMessage {
     public boolean updateRejectedTrainingMessage( RejectedTrainingMessage aRejectedTrainingMessage );
     public boolean deleteOrganization( int idRejectedTrainingMessage );
     public RejectedTrainingMessage readTrainingMessage( int idRejectedTraingMessage );
-    public RejectedTrainingMessage readTrainingMessage( String ssn );
+    public RejectedTrainingMessage readLastTrainingMessage( String ssn );
     public ArrayList<RejectedTrainingMessage> getAllTrainingMessages();
     
 }

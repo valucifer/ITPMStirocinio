@@ -186,7 +186,7 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
     }
 
     @Override
-    public RejectedTrainingMessage readTrainingMessage(String ssn) {
+    public RejectedTrainingMessage readLastTrainingMessage(String ssn) {
         initializeConnection();
         RejectedTrainingMessage aRejectedMessage = null;
         try {

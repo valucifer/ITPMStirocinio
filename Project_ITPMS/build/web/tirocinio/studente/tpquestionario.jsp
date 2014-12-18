@@ -223,7 +223,7 @@
                                 <h3 class="panel-title">Questionario valutativo</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" class="form-horizontal" action="/ServerWeb/completeTrainingInsertQuestionnaire" method="POST">
+                                <form role="form" class="form-horizontal">
                                     <p align="justify">Esprimi il tuo grado di giudizio di accordo sulle affermazioni che seguono. Seleziona le caselle utilizzando la scala progressova da 1 a 5; per effettuare tale giudizio, i criteri da utilizzare sono: </p> 
                                     <br>
                                     <center>
@@ -256,6 +256,11 @@
 
                                     <div class="form-group-separator"></div>
                                     <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="matricolaStudente">Matricola: </label>
+                                        <div class="col-sm-9">
+                                            <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente">
+                                        </div>
+                                    </div><div class="form-group">
                                         <label class="col-sm-2 control-label" for="nomeAzienda">Azienda Ospitante: </label>
                                         <div class="col-sm-9">
                                             <input required type="text" class="form-control" name="nomeAzienda" id="nomeAzienda">
@@ -264,16 +269,16 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" for="tipologiaAzienda">Tipologia Struttura: </label>
                                         <div class="col-sm-9">
-                                            <select name="tipologiaAzienda" class="form-control" required>
+                                            <select name="tipologiaAzienda" id="pippo" class="form-control" required>
                                                 <option value>--Select--</option>
-                                                <option value="Azienda_pubblica">Azienda Pubblica</option>
-                                                <option value="Azieda_privata">Azienda Privata</option>
-                                                <option value="MIT">Tirocinio Interno</option>
-                                                <option value="Impresa_NO_PROFIT">Impresa no Profit</option>
+                                                <option value="Azienda_pubblica">   Azienda Pubblica</option>
+                                                <option value="Azieda_privata">     Azienda Privata</option>
+                                                <option value="MIT">    Tirocinio Interno</option>
+                                                <option value="Impresa_NO_PROFIT">  Impresa no Profit</option>
                                             </select>
                                         </div>
                                     </div>
-
+                                   
                                     <div class="form-group-separator"></div>
                                     <br>
                                     <div class="col-sm-11">
@@ -346,13 +351,13 @@
                                     <script>
                                         jQuery(document).ready(function ($) {
                                             function controlRadio() {
-                                                var uno = $("input[name*='uno']:checked").val();
-                                                var due = $("input[name*='due']:checked").val();
-                                                var tre = $("input[name*='tre']:checked").val();
-                                                var quattro = $("input[name*='quattro']:checked").val();
-                                                var cinque = $("input[name*='cinque']:checked").val();
-                                                var sei = $("input[name*='sei']:checked").val();
-                                                var sette = $("input[name*='sette']:checked").val();
+                                                var uno = $("input[name='uno']:checked").val();
+                                                var due = $("input[name='due']:checked").val();
+                                                var tre = $("input[name='tre']:checked").val();
+                                                var quattro = $("input[name='quattro']:checked").val();
+                                                var cinque = $("input[name='cinque']:checked").val();
+                                                var sei = $("input[name='sei']:checked").val();
+                                                var sette = $("input[name='sette']:checked").val();
                                                 if ((uno != null) && (due != null) && (tre != null) && (quattro != null) && (cinque != null) && (sei != null) && (sette != null)) {
                                                     $("#submit").removeAttr("disabled");
                                                 }
@@ -362,7 +367,18 @@
                                                 controlRadio();
                                             });
 
-
+                                            $("#submit").click(function(e){
+                                                $.get(${path }+"/completeTrainingInsertQuestionnaire",{idRemove:idTraining}).done(function(e){
+                                                    var parsed = jQuery.parseJSON(e);
+                                                    if(parsed.status==1){
+                                                        alert("Il tirocinio è stato eliminato!");
+                                                    }else{
+                                                        alert("Il tirocinio non è stato eliminato in quanto si sono verificati dei problemi!");          
+                                                    }
+                                                }).fail(function(e){
+                                                    alert("Si sono verificati dei problemi col server!"); 
+                                                });
+                                            });
                                         });
                                     </script>
 
