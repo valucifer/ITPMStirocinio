@@ -16,7 +16,7 @@ import java.util.ArrayList;
 public interface IPerson {
     
     public Person readPerson( String SSN );
-    public Person readPersonForAccount( String email );
+    public Person readPersonByAccount( String email );
     public ArrayList<Person> getAllPeople();
     public String getTypeOfAccountPerson ( String email );
     public boolean isAStudent(String email);
@@ -27,6 +27,6 @@ public interface IPerson {
     public Person getStudent (String email);
     public Person getOrganization (String email);
     public Person getAdministrator (String email);
-    public Person getPersonToMatricula(String matricula);
+    public Person getPersonByMatricula(String matricula);
     
 }

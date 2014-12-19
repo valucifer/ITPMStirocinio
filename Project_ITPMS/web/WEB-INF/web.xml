@@ -6,31 +6,31 @@
     </servlet>
     <servlet>
         <servlet-name>insertTrainingByOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingByOrganizationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.organizationInsertTrainingOffer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>insertTrainingByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingByProfessorServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorInsertTrainingOffer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>studentAttDetailsServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.studentAttDetailsServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentDetails</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>uploadInformationFilesServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.uploadInformationFilesServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.studentUploadFiles</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>selectTrainingByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.selectTrainingByProfessorServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorGetAllTrainingOffers</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>uploadInformationForModuleFilesServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.uploadInformationForModuleFilesServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.adminUploadFiles</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>changeProfessorForTrainingOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.changeProfessorForTrainingOrganizationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.changeLinkProfessorOrganization</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>acceptStudentForTraining</servlet-name>
@@ -42,15 +42,15 @@
     </servlet>
     <servlet>
         <servlet-name>viewAllTrainingOffer</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllTrainingOffer</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllTrainingOffers</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>selectTrainingByOrganization</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.selectTrainingByOrganization</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.organizationGetAllTrainingOffers</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>insertTrainingRequestServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingRequestServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingRequest</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewDetailsForTraininfOfferServlet</servlet-name>
@@ -58,19 +58,19 @@
     </servlet>
     <servlet>
         <servlet-name>viewAllProfessor</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllProfessor</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllProfessors</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewAllOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllOrganizationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllOrganizations</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewTrainingRequestForProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewTrainingRequestForProfessorServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getProfessorTrainingRequests</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewTrainingRequestForOrganizationSevlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getOrganizationTrainingRequests</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getStudentInformation</servlet-name>
@@ -78,7 +78,7 @@
     </servlet>
     <servlet>
         <servlet-name>deleteTrainingOfferByOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.deleteTrainingOfferByOrganizationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.organizationDeleteTrainingOffer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
@@ -90,19 +90,19 @@
     </servlet>
     <servlet>
         <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.deleteTrainingOfferByProfessorServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorDeleteTrainingOffer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.sendingErrorsForStudentInformationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.addErrorToStudentInformation</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>insertNewOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertNewOrganizationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertNewOrganization</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewAllStudentProfANDOrganizationServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllEntities</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>downloadFile</servlet-name>
@@ -110,7 +110,7 @@
     </servlet>
     <servlet>
         <servlet-name>completeStudentForTraining</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.completeStudentForTraining</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.completeTraining</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
@@ -118,19 +118,19 @@
     </servlet>
     <servlet>
         <servlet-name>appendStudentIntoSelectForChangeTraining</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.appendStudentIntoSelectForChangeTraining</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingRequestStatus</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.changeTrainingStudentForTotalComplete</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.completeTrainingRequest</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>completeTrainingInsertQuestionnaire</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.completeTrainingInsertQuestionnaire</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingQuestionnaire</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>readQuestionnaireForStudentTrainingServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.readQuestionnaireForStudentTrainingServlet</servlet-class>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentQuestionnaireCompletion</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getRejectedMessage</servlet-name>

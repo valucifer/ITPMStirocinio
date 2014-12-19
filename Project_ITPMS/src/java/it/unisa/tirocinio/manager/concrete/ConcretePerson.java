@@ -5,7 +5,6 @@
  */
 package it.unisa.tirocinio.manager.concrete;
 
-import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IPerson;
@@ -169,33 +168,32 @@ public class ConcretePerson implements IPerson{
     @Override
     public Person getProfessor(String email) {
         if(this.isAProfessor(email))
-            return this.readPersonForAccount(email);
+            return this.readPersonByAccount(email);
         return null;
     }
 
     @Override
     public Person getStudent(String email) {
         if(this.isAStudent(email))
-            return this.readPersonForAccount(email);
+            return this.readPersonByAccount(email);
         return null;
     }
 
     @Override
     public Person getOrganization(String email) {
         if(this.isAnOrganization(email))
-            return this.readPersonForAccount(email);
+            return this.readPersonByAccount(email);
         return null;
     }
 
     @Override
     public Person getAdministrator(String email) {
         if(this.isAnAdministrator(email))
-            return this.readPersonForAccount(email);
+            return this.readPersonByAccount(email);
         return null;
     }
     
-    @Override
-    public Person readPersonForAccount(String email) {
+    public Person readPersonByAccount(String email) {
         initializeConnection();
         Person aPerson = new Person();
         ConcreteAccount anAccount = ConcreteAccount.getInstance();
@@ -256,7 +254,7 @@ public class ConcretePerson implements IPerson{
     }
 
     @Override
-    public Person getPersonToMatricula(String matricula) {
+    public Person getPersonByMatricula(String matricula) {
         initializeConnection();
         Person aPerson = new Person();
         
