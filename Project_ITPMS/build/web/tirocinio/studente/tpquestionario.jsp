@@ -28,15 +28,30 @@
 
 
         <script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpAdministratorLibrary.js"></script>
+        <script src="../../assets/js/tpLibrary.js"></script>
         <script src="../../assets/js/validatr.js"></script>
         <%
+            int qStatus = -1;
+            try{
+                qStatus = (Integer)pageContext.getAttribute("questionnaireStatus");
+                pageContext.setAttribute("questionnaireStatus",qStatus );
+            }catch( java.lang.NullPointerException ex ){
+                pageContext.setAttribute("questionnaireStatus", -1 );
+            }
             pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
         %>
+        <c:if test="${questionnaireStatus == 1}">
+            <script>
+                alert("status 1");
+                /*jQuery(document).ready(function ($) {
+                    tpFunction.populateHomePanel(${idStudentStatus});
+                });*/
+            </script>
+        </c:if>
         <script>
-            jQuery(document).ready(function ($) {
+            /*jQuery(document).ready(function ($) {
                 $('form').validatr();
-            });
+            });*/
         </script>
 
     </head>
@@ -365,10 +380,6 @@
 
                                             $("input[type=radio]").change(function () {
                                                 controlRadio();
-                                            });
-
-                                            $("#submit").click(function (e) {
-                                                alert("Attendi pazientemente il download del certificato di 'Avvenuta compilazione del questionario'.");
                                             });
                                         });
                                     </script>

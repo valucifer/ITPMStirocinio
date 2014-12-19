@@ -9,31 +9,24 @@ import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.Questionnaire;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.TrainingRequest;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteQuestionnaire;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.logging.Level;
-import java.util.logging.Logger;
+import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONException;
-import org.json.JSONObject;
-
 /**
  *
  * @author Valentino
  */
 public class completeTrainingInsertQuestionnaire extends HttpServlet {
 
-    private JSONObject jsonObj = new JSONObject();
-
-    /**
+     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
      *
@@ -71,7 +64,7 @@ public class completeTrainingInsertQuestionnaire extends HttpServlet {
 
                 ConcreteQuestionnaire questionnaires = ConcreteQuestionnaire.getInstance();
                 boolean toReturn = questionnaires.insertQuestionnaire(aQuestionnaire);
-                
+
                 ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
                 RejectedTrainingMessage messageReject = aRejectedMessage.readLastTrainingMessage(person.getSSN());
                 boolean toReturnMessage = aRejectedMessage.deleteOrganization(messageReject.getIdRejectedTraingMessage());
@@ -81,16 +74,17 @@ public class completeTrainingInsertQuestionnaire extends HttpServlet {
                 boolean toReturnTraining = aTrainingRequest.updateTrainingRequest(trainingRequest);
 
                 if (toReturn && toReturnTraining && toReturnMessage) {
-                    jsonObj.put("status", 1);
+                    request.setAttribute("questionnaireStatus", 1);
                 } else {
-                    jsonObj.put("status", 0);
+                    request.setAttribute("questionnaireStatus", 0);
                 }
-                response.getWriter().write(jsonObj.toString());
-                response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
-                
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/tirocinio/studente/tpquestionario.jsp");
+                dispatcher.forward(request, response);
+                //response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
+            }else{
+                RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/tirocinio/studente/tpquestionario.jsp");
+                dispatcher.forward(request, response);
             }
-        } catch (JSONException ex) {
-            Logger.getLogger(completeTrainingInsertQuestionnaire.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }
