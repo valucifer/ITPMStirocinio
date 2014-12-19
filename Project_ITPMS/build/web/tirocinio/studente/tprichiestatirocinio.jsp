@@ -47,21 +47,22 @@
             pageContext.setAttribute("idStudentStatus", studentStatus);
         %>
 
+        <%
+            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+        %>
         <c:if test="${status == 1}">
             <c:choose>
                 <c:when test="${idStudentStatus == 3}">
                     <script>
                         jQuery(document).ready(function ($) {
                             $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
                             tpFunction.createPendingStudentPanel('#panelBody');
                         });
                     </script>
                 </c:when>
                 <c:when test="${idStudentStatus == 2}">
                     <script>
-                        <%
-                            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
-                        %>
                         jQuery(document).ready(function ($) {
                             tpFunction.createAcceptedStudentPanel('#panelBody');
                             tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer',${path});
@@ -72,7 +73,8 @@
                     <script>
                         jQuery(document).ready(function ($) {
                             $("#ID_modulistica_0").empty();
-                            tpFunction.createRejectedStudentPanel('#panelBody', ${description});
+                            $("#ID_questionario_0").empty();
+                            tpFunction.createRejectedStudentPanel('#motivationReject', ${path});
                         });
                     </script>
                 </c:when>
@@ -80,7 +82,7 @@
                     <script>
                         jQuery(document).ready(function ($) {
                             $("#ID_modulistica_0").empty();
-                            
+                            $("#ID_questionario_0").empty();
                         });
                     </script>
                 </c:otherwise>
@@ -223,6 +225,12 @@
                                 <span class="title">Modulistica</span>
                             </a>
                         </li>
+                        <li id="ID_questionario_0">
+                            <a href="../../tirocinio/studente/tpquestionario.jsp">
+                                <i class="linecons-note"></i>
+                                <span class="title">Questionario</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -239,7 +247,8 @@
                                 Richiesta Tirocinio
                             </div>
 
-                            <div class="panel-body" id="panelBody">
+                            <div class="panel-body" id="panelBody"> 
+                                <div class="row" id="motivationReject" hidden></div>
 
                                 <p>Questa sezione del sito ti permetterà di inoltrare una richiesta di tirocinio. Per inviare la tua richiesta, è necessario tu possieda un Curriculum Vitae e un documento sul quale vengono descritti esami effettuati, data di convalida e cfu ad essi associati.</p>
                                 <p>Entrambi i files devono essere in formato PDF e inviati all'Ufficio Amministrativo tramite i moduli sottostanti. L'ufficio amministrativo, in seguito, provvederà ad esaminare la tua richiesta e ti comunicherà su questa pagina l'esito della stessa.</p>

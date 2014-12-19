@@ -38,6 +38,8 @@
             pageContext.setAttribute("status", requestStatus);
             pageContext.setAttribute("description", description);
             pageContext.setAttribute("idStudentStatus", studentStatus);
+            
+            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
         %>
         <c:if test="${status == 1}">
             <script>
@@ -45,6 +47,35 @@
                     tpFunction.populateHomePanel(${idStudentStatus});
                 });
             </script>
+            <c:choose>
+                <c:when test="${idStudentStatus == 3}">
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
+                        });
+                    </script>
+                </c:when>
+                <c:when test="${idStudentStatus == 2}">
+                    
+                </c:when>
+                <c:when test="${idStudentStatus == 1}">
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
+                        });
+                    </script>
+                </c:when>
+                <c:otherwise>
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
+                        });
+                    </script>
+                </c:otherwise>
+            </c:choose>
         </c:if>
 
 
@@ -184,6 +215,12 @@
                                 <span class="title">Modulistica</span>
                             </a>
                         </li>
+                        <li id="ID_questionario_0">
+                            <a href="../../tirocinio/studente/tpquestionario.jsp">
+                                <i class="linecons-note"></i>
+                                <span class="title">Questionario</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
@@ -220,7 +257,7 @@
                             });
                         });
                     <%
-                            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+                        pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
                     %>
                         jQuery(document).ready(function ($) {
                             tpFunction.populateTableWithoutContacts('#tableNewsTrainingOrganization', '#tableContainer',${path});

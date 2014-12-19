@@ -5,31 +5,34 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.integrazione.manager.concrete.ConcreteStudent;
 import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.StudentInformation;
-import it.unisa.tirocinio.beans.StudentStatus;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcreteStudentStatus;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
-import javax.servlet.RequestDispatcher;
-import javax.servlet.ServletContext;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-public class getStudentTrainingStatus extends HttpServlet {
+@WebServlet(name = "getRejectedMessage", urlPatterns = {"/getRejectedMessage"})
 
+public class getRejectedMessage extends HttpServlet {
+    private JSONObject jsonObj = new JSONObject();
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -45,28 +48,26 @@ public class getStudentTrainingStatus extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        
-        ConcretePerson aPerson = ConcretePerson.getInstance();
-        String email = "v.vivone@studenti.unisa.it" ;//request.getParameter("accountEmail");
-
-        Person person = aPerson.getStudent(email);
+        HttpSession session = request.getSession();
+        try {
+            String email = "v.vivone@studenti.unisa.it";//request.getParameter("accountEmail");
             
-        ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
-
-        ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-        StudentStatus studentStatus = aStudentStatus.readStudentStatus(studentInformation.getStudentStatus());
-        
-        if(studentStatus != null){
-            message.setMessage("status",1);
-            message.setMessage("description",studentStatus.getDescription());
-            message.setMessage("idStudentStatus",studentStatus.getIdStudentStatus());
-            request.setAttribute("message",message);
-            //out.println("message "+message.getMessage("status"));
-        }else{
-            message.setMessage("status",0);
+            ConcretePerson aPerson = ConcretePerson.getInstance();  
+            Person person = aPerson.readPersonForAccount(email);
+            
+            ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
+            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
+            
+            jsonObj.put("status", 1);
+            jsonObj.put("Object", aMessage.getDescription());
+           
+            response.getWriter().write(jsonObj.toString());
+            
+        } catch (JSONException ex) {
+            Logger.getLogger(getRejectedMessage.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
+            out.close();
         }
-        
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

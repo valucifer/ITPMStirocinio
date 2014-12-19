@@ -21,18 +21,28 @@ tpFunction = {
     createAcceptedStudentPanel: function (panelID) {
         $(panelID).empty();
         $(panelID).append("<center><h2>La tua richiesta è stata <strong>accettata</strong>!</h2><br><h4>Puoi ora procedere a reperire le informazioni dei referenti responsabili del tirocinio.</h4></center>");
-        $(panelID).append("<center><p>Puoi inviare una mail di richiesta di tirocinio effettuando un click sull'inidirizzo associato all'azienda.</p></center>");
+        $(panelID).append("<<p>Puoi inviare una mail di richiesta di tirocinio effettuando un click sull'inidirizzo associato all'azienda.</p></center>");
     },
-    createRejectedStudentPanel: function (panelID, description) {
-        $(panelID).empty();
-        $(panelID).append("<center><h2>La tua richiesta è stata <strong>rifiutata</strong>!</h2><br><h4>Di seguito le motivazioni per cui la richiesta è stata rifiutata:</h4></center>");
-        var ulContent = '<center>';
-        var splittedDescription = description.split(';');
-        jQuery.each(splittedDescription, function (i, val) {
-            ulContent += '<ul>' + val + '</ul>';
+    createRejectedStudentPanel: function (divID, path) {
+        $(divID).removeAttr("hidden");
+        $(divID).empty();
+        $(divID).append("<center><h2>La tua richiesta è stata <strong>rifiutata</strong>!</h2><br><center><h4>Di seguito le motivazioni per cui la richiesta è stata rifiutata:</h4>");
+        var ulContent = '<ul>';
+        $.get(path+"/getRejectedMessage",{}).done(function(e){
+            var parsed = jQuery.parseJSON(e);
+            if(parsed.status == 1){
+                var splittare = parsed.Object;
+                var splitted = splittare.split(";");
+                for(var i = 0; i < splitted.length; i++){
+                    ulContent += '<li>' + splitted[i] + '</li>';
+                } 
+                ulContent += "</ul></center><hr></hr><br>";
+                $(divID).append(ulContent);
+            }
+        }).fail(function(e){
+            alert("Si sono verificati dei problemi col server!"); 
         });
-        ulContent += '</center>';
-        $(panelID).append(ulContent);
+        
     },
     populateTable: function (idTable, tableContainer, path) {
         $.ajax({

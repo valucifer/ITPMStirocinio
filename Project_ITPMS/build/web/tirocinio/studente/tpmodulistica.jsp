@@ -162,6 +162,12 @@
                                 <span class="title">Modulistica</span>
                             </a>
                         </li>
+                        <li id="ID_questionario_0">
+                            <a href="../../tirocinio/studente/tpmodulistica.jsp">
+                                <i class="linecons-note"></i>
+                                <span class="title">Questionario</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>

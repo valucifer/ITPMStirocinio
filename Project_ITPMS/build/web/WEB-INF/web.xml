@@ -132,6 +132,10 @@
         <servlet-name>readQuestionnaireForStudentTrainingServlet</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.readQuestionnaireForStudentTrainingServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getRejectedMessage</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getRejectedMessage</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -263,6 +267,10 @@
     <servlet-mapping>
         <servlet-name>readQuestionnaireForStudentTrainingServlet</servlet-name>
         <url-pattern>/readQuestionnaireForStudentTrainingServlet</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getRejectedMessage</servlet-name>
+        <url-pattern>/getRejectedMessage</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
