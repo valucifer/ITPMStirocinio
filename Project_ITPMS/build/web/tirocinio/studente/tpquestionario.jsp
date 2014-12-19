@@ -1,12 +1,9 @@
-<%@page import="it.unisa.tirocinio.beans.TrainingOffer"%>
-<%@page import="java.util.ArrayList"%>
-<%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
 <%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
 <html lang="en">
-    <head>
+    
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -30,31 +27,17 @@
         <script src="../../assets/js/jquery-1.11.1.min.js"></script>
         <script src="../../assets/js/tpLibrary.js"></script>
         <script src="../../assets/js/validatr.js"></script>
-        <%
-            int qStatus = -1;
-            try{
-                qStatus = (Integer)pageContext.getAttribute("questionnaireStatus");
-                pageContext.setAttribute("questionnaireStatus",qStatus );
-            }catch( java.lang.NullPointerException ex ){
-                pageContext.setAttribute("questionnaireStatus", -1 );
-            }
-            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
-        %>
-        <c:if test="${questionnaireStatus == 1}">
+     
+        <jsp:include page="/getStudentQuestionnaireCompletion">
+            <jsp:param name="matricula" value="0512200013" />
+        </jsp:include>
+        <c:set var="questionnaireCompletion" value="${requestScope.questionnaireCompletion}"></c:set>
+        <c:if test="${questionnaireCompletion == 1}">
             <script>
-                alert("status 1");
-                /*jQuery(document).ready(function ($) {
-                    tpFunction.populateHomePanel(${idStudentStatus});
-                });*/
+                alert("1");
             </script>
         </c:if>
-        <script>
-            /*jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });*/
-        </script>
-
-    </head>
+    
     <body class="page-body">
 
         <nav class="navbar horizontal-menu navbar-fixed-top"><!-- set fixed position by adding class "navbar-fixed-top" -->

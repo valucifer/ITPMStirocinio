@@ -92,8 +92,7 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
         Questionnaire aQuestionnaire = null;
         try {
            aCallableStatement = connector.prepareCall("{call selectQuestionnaire(?)}");
-              
-           aCallableStatement.setString("studentSSN",aQuestionnaire.getStudentSSN());    
+           aCallableStatement.setString("studentSSN",SSN);    
            ResultSet rs = aCallableStatement.executeQuery();
            
            while( rs.next() ){

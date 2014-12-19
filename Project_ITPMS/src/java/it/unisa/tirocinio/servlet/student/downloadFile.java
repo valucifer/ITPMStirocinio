@@ -45,7 +45,7 @@ public class downloadFile extends HttpServlet {
         String tipologia = request.getParameter("typology");
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
-        Person person = aPerson.getPersonToMatricula(matricula);
+        Person person = aPerson.getPersonByMatricula(matricula);
          
         String filepath = "";
         

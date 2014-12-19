@@ -73,7 +73,7 @@ public class updateTrainingOfferByProfessorServlet extends HttpServlet {
             response.sendRedirect(request.getContextPath()+"/tirocinio/professore/tpprofessore.jsp");
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
-            Logger.getLogger(deleteTrainingOfferByOrganizationServlet.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(organizationDeleteTrainingOffer.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }

@@ -53,7 +53,7 @@ public class getRejectedMessage extends HttpServlet {
             String email = "v.vivone@studenti.unisa.it";//request.getParameter("accountEmail");
             
             ConcretePerson aPerson = ConcretePerson.getInstance();  
-            Person person = aPerson.readPersonForAccount(email);
+            Person person = aPerson.readPersonByAccount(email);
             
             ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
             RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());

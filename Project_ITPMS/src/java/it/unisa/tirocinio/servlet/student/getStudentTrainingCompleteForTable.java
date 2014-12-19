@@ -101,7 +101,7 @@ public class getStudentTrainingCompleteForTable extends HttpServlet {
                
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
-            Logger.getLogger(selectTrainingByOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(organizationGetAllTrainingOffers.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
         }
     }

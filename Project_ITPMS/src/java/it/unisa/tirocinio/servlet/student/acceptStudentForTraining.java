@@ -53,7 +53,7 @@ public class acceptStudentForTraining extends HttpServlet {
             /* TODO output your page here. You may use following sample code. */
             String studentMatricula = request.getParameter("matricula");
             ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getPersonToMatricula(studentMatricula);
+            Person person = aPerson.getPersonByMatricula(studentMatricula);
             
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
