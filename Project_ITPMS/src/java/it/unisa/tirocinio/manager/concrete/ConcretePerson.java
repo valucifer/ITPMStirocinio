@@ -261,7 +261,7 @@ public class ConcretePerson implements IPerson{
         Person aPerson = new Person();
         
         try {
-            aCallableStatement = connector.prepareCall("{call getPersonForMatricula(?)}");
+            aCallableStatement = connector.prepareCall("{call getPersonByMatricula(?)}");
             aCallableStatement.setString("matric",matricula);
             ResultSet rs = aCallableStatement.executeQuery();
             
