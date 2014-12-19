@@ -30,15 +30,15 @@
         <script src="../../assets/js/jquery-1.11.1.min.js"></script>
         <script src="../../assets/js/tpAdministratorLibrary.js"></script>
         <script src="../../assets/js/validatr.js"></script>
-
+        <%
+            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+        %>
         <script>
             jQuery(document).ready(function ($) {
                 $('form').validatr();
             });
         </script>
-        <%
-            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
-        %>
+
     </head>
     <body class="page-body">
 
@@ -222,8 +222,8 @@
                             <div class="panel-heading">
                                 <h3 class="panel-title">Questionario valutativo</h3>
                             </div>
-                            <div class="panel-body">
-                                <form role="form" class="form-horizontal">
+                            <div class="panel-body" id='panel-body'>
+                                <form role="form" class="form-horizontal" action='/ServerWeb/completeTrainingInsertQuestionnaire' method='POST'>
                                     <p align="justify">Esprimi il tuo grado di giudizio di accordo sulle affermazioni che seguono. Seleziona le caselle utilizzando la scala progressova da 1 a 5; per effettuare tale giudizio, i criteri da utilizzare sono: </p> 
                                     <br>
                                     <center>
@@ -278,7 +278,7 @@
                                             </select>
                                         </div>
                                     </div>
-                                   
+
                                     <div class="form-group-separator"></div>
                                     <br>
                                     <div class="col-sm-11">
@@ -367,17 +367,8 @@
                                                 controlRadio();
                                             });
 
-                                            $("#submit").click(function(e){
-                                                $.get(${path }+"/completeTrainingInsertQuestionnaire",{idRemove:idTraining}).done(function(e){
-                                                    var parsed = jQuery.parseJSON(e);
-                                                    if(parsed.status==1){
-                                                        alert("Il tirocinio è stato eliminato!");
-                                                    }else{
-                                                        alert("Il tirocinio non è stato eliminato in quanto si sono verificati dei problemi!");          
-                                                    }
-                                                }).fail(function(e){
-                                                    alert("Si sono verificati dei problemi col server!"); 
-                                                });
+                                            $("#submit").click(function (e) {
+                                                alert("Attendi pazientemente il download del certificato di 'Avvenuta compilazione del questionario'.");
                                             });
                                         });
                                     </script>

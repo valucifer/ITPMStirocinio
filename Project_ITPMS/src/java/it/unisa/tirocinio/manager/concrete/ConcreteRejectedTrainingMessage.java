@@ -88,7 +88,7 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         initializeConnection();
         try {
             aCallableStatement = connector.prepareCall("{call deleteRejectedTrainingMessage(?)}");       
-            aCallableStatement.setInt("pkRejectedMessage",idRejectedTrainingMessage);
+            aCallableStatement.setInt("pkRejectedTraining",idRejectedTrainingMessage);
             int check = aCallableStatement.executeUpdate();
             return check > 0;
         } catch (SQLException ex) {

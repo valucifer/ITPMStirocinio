@@ -5,23 +5,26 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
+import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.Questionnaire;
-import it.unisa.tirocinio.beans.RejectedTrainingMessage;
-import it.unisa.tirocinio.beans.TrainingRequest;
+import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
+import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteQuestionnaire;
-import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
+import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -29,10 +32,11 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-public class completeTrainingInsertQuestionnaire extends HttpServlet {
 
-    private JSONObject jsonObj = new JSONObject();
-
+@WebServlet(name = "readQuestionnaireForStudentTrainingServlet", urlPatterns = {"/readQuestionnaireForStudentTrainingServlet"})
+public class readQuestionnaireForStudentTrainingServlet extends HttpServlet {
+    private final JSONObject jsonObject = new JSONObject();
+    
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -48,49 +52,23 @@ public class completeTrainingInsertQuestionnaire extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            String matricolaStudente = request.getParameter("matricolaStudente");
-            String nomeAzienda = request.getParameter("nomeAzienda");
-            String tipologiaAzienda = request.getParameter("tipologiaAzienda");
-            String uno = request.getParameter("uno");
-            String due = request.getParameter("due");
-            String tre = request.getParameter("tre");
-            String quattro = request.getParameter("quattro");
-            String cinque = request.getParameter("cinque");
-            String sei = request.getParameter("sei");
-            String sette = request.getParameter("sette");
+            String matricola = request.getParameter("matricola");
+            if (!(matricola.equals(""))){
+                ConcretePerson aPerson = ConcretePerson.getInstance();
+                Person person = aPerson.getPersonToMatricula(matricola);
 
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getPersonToMatricula(matricolaStudente);
+                ConcreteQuestionnaire aQuestionnaires = ConcreteQuestionnaire.getInstance();
+                Questionnaire questionnaire = aQuestionnaires.readQuestionnaire(person.getSSN());
 
-            ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-            TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
-
-            if (trainingRequest.getTrainingStatus() == 2) {
-
-                Questionnaire aQuestionnaire = new Questionnaire(nomeAzienda, tipologiaAzienda, uno, due, person.getSSN(), tre, quattro, cinque, sei, sette);
-
-                ConcreteQuestionnaire questionnaires = ConcreteQuestionnaire.getInstance();
-                boolean toReturn = questionnaires.insertQuestionnaire(aQuestionnaire);
-                
-                ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-                RejectedTrainingMessage messageReject = aRejectedMessage.readLastTrainingMessage(person.getSSN());
-                boolean toReturnMessage = aRejectedMessage.deleteOrganization(messageReject.getIdRejectedTraingMessage());
-
-                trainingRequest.setTrainingStatus(3);
-
-                boolean toReturnTraining = aTrainingRequest.updateTrainingRequest(trainingRequest);
-
-                if (toReturn && toReturnTraining && toReturnMessage) {
-                    jsonObj.put("status", 1);
-                } else {
-                    jsonObj.put("status", 0);
+                if(questionnaire == null)
+                    jsonObject.put("status", 0);
+                else{
+                    jsonObject.put("status", 1);
                 }
-                response.getWriter().write(jsonObj.toString());
-                response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
-                
+                response.getWriter().write(jsonObject.toString());
             }
         } catch (JSONException ex) {
-            Logger.getLogger(completeTrainingInsertQuestionnaire.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(selectTrainingByOrganization.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             out.close();
         }
