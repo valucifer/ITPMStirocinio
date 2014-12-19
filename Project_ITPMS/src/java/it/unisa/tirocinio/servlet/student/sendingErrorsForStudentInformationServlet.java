@@ -46,12 +46,13 @@ public class sendingErrorsForStudentInformationServlet extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         HttpSession session = request.getSession();
         try {
-            String descriptionCurriculum = null, descriptionLibretto = null, descriptionCFUMancanti = null, descriptionTextArea = null;
+            String descriptionCurriculum = null, descriptionLibretto = null, descriptionCFUMancanti = null, descriptionOther = null;
             /* TODO output your page here. You may use following sample code. */
             descriptionCurriculum = request.getParameter("descriptionCurriculum");
             descriptionLibretto = request.getParameter("descriptionLibretto");
             descriptionCFUMancanti = request.getParameter("descriptionCFUMancanti");
-            descriptionTextArea = request.getParameter("descriptionTextArea");
+            descriptionOther = request.getParameter("descriptionOther");
+            
             String matriculaStudent = request.getParameter("hiddenErroriRiscontrati");
             String tmp = "";
             if(descriptionCurriculum != null)
@@ -60,14 +61,14 @@ public class sendingErrorsForStudentInformationServlet extends HttpServlet {
                 tmp = tmp +" "+descriptionLibretto+";";
             if(descriptionCFUMancanti != null)
                 tmp = tmp +" "+descriptionCFUMancanti+";";
-            if(descriptionTextArea != null)
-                tmp = tmp +" "+descriptionTextArea;
+            if(descriptionOther != null)
+                tmp = tmp +" "+descriptionOther;
             
             ConcretePerson aPerson = ConcretePerson.getInstance();  
             Person person = aPerson.getPersonToMatricula(matriculaStudent);
             
             ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aMessage = aRejectedMessage.readTrainingMessage(person.getSSN());
+            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
             
             if(aMessage.getDescription() == null){
                 aMessage = new RejectedTrainingMessage();

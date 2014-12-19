@@ -354,7 +354,7 @@
                         <form role="form" class="form-horizontal" action="/ServerWeb/sendingErrorsForStudentInformationServlet" method="POST">
                             <input type="hidden" name="hiddenErroriRiscontrati" id="hiddenErroriRiscontrati"/>
                             <div class="row">
-                                <div class="col-lg-6">
+                                <div class="col-lg-12">
                                     <div class="xe-widget xe-todo-list">
                                         <div class="xe-header">
                                             <center><h4 class="title"><strong>Errori</strong> riscontrati.</h4></center>
@@ -363,31 +363,31 @@
                                             <ul class="list-unstyled">
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionCurriculum" value="curriculum errato" type="checkbox" id="cvDocumentError" class="cbr" checked/>
-                                                        <span>Curriculum</span>
+                                                        <input name="descriptionCurriculum" value="Curriculum Vitae mancante: il file inviato al personale amministrativo presenta degli errori." type="checkbox" id="cvDocumentError" class="cbr"/>
+                                                        Curriculum Vitae mancante: il file inviato dallo studente presenta degli errori.
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionLibretto" value="libretto errato" type="checkbox" id="esDocumentError" class="cbr"/>
-                                                        <span>Libretto</span>
+                                                        <input name="descriptionLibretto" value="Libretto Universitario: il file inviato al personale amministrativo presenta delle incongruenze con i dati del sistema." type="checkbox" id="esDocumentError" class="cbr"/>
+                                                        Libretto Universitario: il file inviato dallo studente presenta delle incongruenze con i dati del sistema.
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionCFUMancanti" value="CFU errati" type="checkbox" id="cfuNotFoundError" class="cbr" />
-                                                        <span>CFU mancanti</span>
+                                                        <input name="descriptionCFUMancanti" value="Non possiedi un numero di CFU sufficienti per poter proseguire la pratica." type="checkbox" id="cfuNotFoundError" class="cbr"/>
+                                                            CFU mancanti: Lo studente non possiede un numero di CFU sufficienti per poter proseguire la pratica.
+                                                    </label>
+                                                </li>
+                                                <li>
+                                                    <label>
+                                                        <input name="descriptionOther" value="Sono stati riscontrati degli errori nell'elaborazione della tua pratica. Contatta l'ufficio amministrativo." type="checkbox" id="otherError" class="cbr" />
+                                                        Altro: il motivo del rifiuto della richiesta non è elencato. Lo studente provvederà a contattare l'ufficio amministrativo.
                                                     </label>
                                                 </li>
                                             </ul>
                                         </div>
                                     </div>
-                                </div>
-                                <div class="col-lg-6">
-                                    <div class="form-group no-margin">
-                                        <label for="textareaDescriptionError" class="control-label">Descrizione errore:</label>
-                                        <textarea name="descriptionTextArea" class="form-control" style="resize:none" rows="9" id="textareaDescriptionError"></textarea>
-                                    </div>	
                                 </div>
                             </div>
                     </div>

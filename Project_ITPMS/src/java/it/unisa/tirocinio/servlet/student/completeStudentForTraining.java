@@ -57,7 +57,7 @@ public class completeStudentForTraining extends HttpServlet {
             Person person = aPerson.getPersonToMatricula(studentMatricula);
             
             ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readTrainingMessage(person.getSSN());
+            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSSN());
             
             if(aRejectedMessage.getDescription() == null){
                 aRejectedMessage = new RejectedTrainingMessage();

@@ -59,7 +59,7 @@ public class acceptStudentForTraining extends HttpServlet {
             StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
             
             ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readTrainingMessage(person.getSSN());
+            RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSSN());
             
             if(aRejectedMessage.getDescription() == null){
                 aRejectedMessage = new RejectedTrainingMessage();
