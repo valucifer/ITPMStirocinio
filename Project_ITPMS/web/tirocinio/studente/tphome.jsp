@@ -1,9 +1,8 @@
+<%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
 <%@page import="it.unisa.tirocinio.beans.TrainingOffer"%>
 <%@page import="java.util.ArrayList"%>
-<%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
 <%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
-
 <!DOCTYPE html>
 <html lang="en">
     <head>
@@ -19,24 +18,18 @@
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
         <link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
         <link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../assets/css/bootstrap.css">
-        <!--<link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">-->
+        <link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">
         <link rel="stylesheet" href="../../assets/css/xenon-core.css">
         <link rel="stylesheet" href="../../assets/css/xenon-forms.css">
         <link rel="stylesheet" href="../../assets/css/xenon-components.css">
         <link rel="stylesheet" href="../../assets/css/xenon-skins.css">
-        <link rel="stylesheet" href="../../assets/css/jquery.fileupload.css">
         <link rel="stylesheet" href="../../assets/css/custom.css">
-        <link rel="stylesheet" href="../../assets/js/datatables/dataTables.bootstrap.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/meteocons/css/meteocons.css">
-
-
 
         <script src="../../assets/js/jquery-1.11.1.min.js"></script>
         <script src="../../assets/js/tpLibrary.js"></script>
 
         <jsp:include page="/getStudentTrainingStatus" />
-        <c:set var="statusMessage" value="${requestScope.message }"></c:set>
+        <c:set var="statusMessage" value="${requestScope.message}"></c:set>
         <%
             ConcreteMessageForServlet _message = (ConcreteMessageForServlet) pageContext.getAttribute("statusMessage");
             int requestStatus = (Integer) _message.getMessage("status");
@@ -46,46 +39,14 @@
             pageContext.setAttribute("description", description);
             pageContext.setAttribute("idStudentStatus", studentStatus);
         %>
-
         <c:if test="${status == 1}">
-            <c:choose>
-                <c:when test="${idStudentStatus == 3}">
-                    <script>
-                        jQuery(document).ready(function ($) {
-                            $("#ID_modulistica_0").empty();
-                            tpFunction.createPendingStudentPanel('#panelBody');
-                        });
-                    </script>
-                </c:when>
-                <c:when test="${idStudentStatus == 2}">
-                    <script>
-                        <%
-                            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
-                        %>
-                        jQuery(document).ready(function ($) {
-                            tpFunction.createAcceptedStudentPanel('#panelBody');
-                            tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer',${path});
-                        });
-                    </script>
-                </c:when>
-                <c:when test="${idStudentStatus == 1}">
-                    <script>
-                        jQuery(document).ready(function ($) {
-                            $("#ID_modulistica_0").empty();
-                            tpFunction.createRejectedStudentPanel('#panelBody', ${description});
-                        });
-                    </script>
-                </c:when>
-                <c:otherwise>
-                    <script>
-                        jQuery(document).ready(function ($) {
-                            $("#ID_modulistica_0").empty();
-                            
-                        });
-                    </script>
-                </c:otherwise>
-            </c:choose>
+            <script>
+                jQuery(document).ready(function ($) {
+                    tpFunction.populateHomePanel(${idStudentStatus});
+                });
+            </script>
         </c:if>
+
 
     </head>
     <body class="page-body">
@@ -136,7 +97,7 @@
                         </a>
                     </li>
                     <li class="opened active">
-                        <a href="../../tirocinio/studente/gestioneTirocinio&PlacementStudente.html">
+                        <a href="../../tirocinio/studente/tphome.html">
                             <i class="linecons-megaphone"></i>
                             <span class="title">Gestione Tirocinio</span>
                         </a>
@@ -205,13 +166,13 @@
                     <ul id="main-menu" class="main-menu">
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-                        <li>
+                        <li class="opened active">
                             <a href="../../tirocinio/studente/tphome.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Home</span>
                             </a>
                         </li>
-                        <li class="opened active">
+                        <li>
                             <a href="../../tirocinio/studente/tprichiestatirocinio.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Richiesta tirocinio</span>
@@ -228,60 +189,46 @@
             </div>
 
             <div class="main-content">
-
                 <div class="row">
-
-                    <div class="col-md-12">
-
-                        <!-- Default panel -->
-                        <div class="panel panel-default" id="panelDefault">
+                    <div class="col-lg-12">
+                        <div class="panel panel-default"><!-- Add class "collapsed" to minimize the panel -->
                             <div class="panel-heading">
-                                Richiesta Tirocinio
+                                <h3 class="panel-title">Status personale</h3>
                             </div>
 
-                            <div class="panel-body" id="panelBody">
-
-                                <p>Questa sezione del sito ti permetterà di inoltrare una richiesta di tirocinio. Per inviare la tua richiesta, è necessario tu possieda un Curriculum Vitae e un documento sul quale vengono descritti esami effettuati, data di convalida e cfu ad essi associati.</p>
-                                <p>Entrambi i files devono essere in formato PDF e inviati all'Ufficio Amministrativo tramite i moduli sottostanti. L'ufficio amministrativo, in seguito, provvederà ad esaminare la tua richiesta e ti comunicherà su questa pagina l'esito della stessa.</p>
-                                <br><br>
-                                <div class="row">
-                                    <div class="col-sm-12">
-                                        <!--<div class="form-group">-->
-                                        <form role="form" class="validate" action="/ServerWeb/uploadInformationFilesServlet" method="POST" enctype="multipart/form-data">
-                                            <div class="form-group">
-                                                <!--<label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>-->
-                                                <label class="control-label">Curriculum Vitae</label>
-                                                <!--<div class="col-sm-8">-->
-                                                <input type="file" class="form-control" data-validate="required" data-message-required="Per favore, inserisci il file del CV." id="field-4" name="cv" accept="application/pdf">
-                                                <!--</div>-->
-                                                <!--<div class="col-sm-2"></div>-->
-                                            </div>
-                                            <br>
-                                            <div class="form-group">
-                                                <!--<label class="col-sm-2 control-label" for="field-5">Esami svolti</label>-->
-                                                <label class="control-label">Esami svolti</label>
-                                                <!--<div class="col-sm-8">-->
-                                                <input type="file" class="form-control" data-validate="required" id="field-5" name="doc" data-message-required="Per favore, inserisci il file degli esami svolti." accept="application/pdf">
-                                                <!--</div>-->
-                                                <!--<div class="col-sm-2"></div>-->
-                                            </div>
-                                            <br><br><br>
-                                            <div id="filesControl" align="center"></div>
-                                            <div class="row">
-                                                <center><button type="submit" class="btn btn-success fileinput-button"><i class="fa-arrow-up"></i>
-                                                        <span>Invia Richiesta</span></button></center>
-                                            </div>
-                                        </form>
-                                        <!--</div>-->
-                                    </div>
-                                </div>
+                            <div class="panel-body">
+                                <center><h4 id="statusRequestTitle"></h4>
+                                    <p id="statusRequestDescription"></p></center>
                             </div>
                         </div>
-
                     </div>
-
                 </div>
-                <div class="row" hidden id="tableContainer">
+
+                <script>
+                    jQuery(document).ready(function ($)
+                    {
+                        $('a[href="#layout-variants"]').on('click', function (ev)
+                        {
+                            ev.preventDefault();
+
+                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
+
+                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
+                                {
+                                    $(window).scrollTop(win.top);
+                                }
+                            });
+                        });
+                    <%
+                            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+                    %>
+                        jQuery(document).ready(function ($) {
+                            tpFunction.populateTableWithoutContacts('#tableNewsTrainingOrganization', '#tableContainer',${path});
+                        });
+                    });
+                </script>
+
+                <div class="row">
                     <div class="col-md-12">
 
                         <div class="panel panel-default">
@@ -308,7 +255,8 @@
                         </div>
 
                     </div>
-                </div>
+                </div>		
+
                 <!-- Main Footer -->
                 <!-- Choose between footer styles: "footer-type-1" or "footer-type-2" -->
                 <!-- Add class "sticky" to  always stick the footer to the end of page (if page contents is small) -->
@@ -341,9 +289,14 @@
 
         </div>
 
+
         <div class="page-loading-overlay">
             <div class="loader-2"></div>
         </div>
+
+
+        <link rel="stylesheet" href="../../assets/js/datatables/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="../../assets/css/fonts/meteocons/css/meteocons.css">
 
         <!-- Bottom Scripts -->
         <script src="../../assets/js/bootstrap.min.js"></script>
@@ -353,14 +306,13 @@
         <script src="../../assets/js/xenon-api.js"></script>
         <script src="../../assets/js/xenon-toggles.js"></script>
         <script src="../../assets/js/datatables/js/jquery.dataTables.js"></script>
+
+        <!-- Imported scripts on this page -->
         <script src="../../assets/js/datatables/dataTables.bootstrap.js"></script>
         <script src="../../assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
         <script src="../../assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
-
-
-        <script src="../../assets/js/jquery-validate/jquery.validate.min.js"></script>
-
+        <!-- Imported scripts on this page -->
         <script src="../../assets/js/xenon-widgets.js"></script>
         <script src="../../assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
         <script src="../../assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>

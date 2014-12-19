@@ -1,7 +1,7 @@
 <%@page import="it.unisa.tirocinio.beans.TrainingOffer"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
-<%@ taglib uri="http://java.sun.com/jsp/jstl/core" prefix="c" %>
+<%@ taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
 <%@page contentType="text/html" pageEncoding="UTF-8"%>
 
 <!DOCTYPE html>
@@ -19,8 +19,8 @@
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
         <link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
         <link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-        <!--<link rel="stylesheet" href="../../assets/css/bootstrap.css">-->
-        <link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">
+        <link rel="stylesheet" href="../../assets/css/bootstrap.css">
+        <!--<link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">-->
         <link rel="stylesheet" href="../../assets/css/xenon-core.css">
         <link rel="stylesheet" href="../../assets/css/xenon-forms.css">
         <link rel="stylesheet" href="../../assets/css/xenon-components.css">
@@ -34,13 +34,7 @@
 
         <script src="../../assets/js/jquery-1.11.1.min.js"></script>
         <script src="../../assets/js/tpLibrary.js"></script>
-        <script src="../../assets/js/validatr.js"></script>
 
-        <script>
-            jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });
-        </script>
         <jsp:include page="/getStudentTrainingStatus" />
         <c:set var="statusMessage" value="${requestScope.message }"></c:set>
         <%
@@ -64,22 +58,29 @@
                     </script>
                 </c:when>
                 <c:when test="${idStudentStatus == 2}">
-                  
                     <script>
                         <%
-                            pageContext.setAttribute("path", "\""+pageContext.getServletContext().getContextPath()+"\"");
+                            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
                         %>
                         jQuery(document).ready(function ($) {
-                            tpFunction.createAcceptStudentPanel('#panelBody');
-                            tpFunction.populateTable('#tableNewsTrainingOrganization','#tableContainer',${path});
-                            
-});
+                            tpFunction.createAcceptedStudentPanel('#panelBody');
+                            tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer',${path});
+                        });
+                    </script>
+                </c:when>
+                <c:when test="${idStudentStatus == 1}">
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            tpFunction.createRejectedStudentPanel('#panelBody', ${description});
+                        });
                     </script>
                 </c:when>
                 <c:otherwise>
                     <script>
                         jQuery(document).ready(function ($) {
                             $("#ID_modulistica_0").empty();
+                            
                         });
                     </script>
                 </c:otherwise>
@@ -205,19 +206,19 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="../../tirocinio/studente/gestioneTirocinio&PlacementStudente.html">
+                            <a href="../../tirocinio/studente/tphome.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Home</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="../../tirocinio/studente/gestioneTirocinio&PlacementStudenteRichiestaTirocinio.html">
+                        <li class="opened active">
+                            <a href="../../tirocinio/studente/tprichiestatirocinio.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Richiesta tirocinio</span>
                             </a>
                         </li>
-                        <li id="ID_modulistica_0" class="opened active">
-                            <a href="../../tirocinio/studente/gestioneTirocinio&PlacementStudenteModulistica.html">
+                        <li id="ID_modulistica_0">
+                            <a href="../../tirocinio/studente/tpmodulistica.jsp">
                                 <i class="linecons-note"></i>
                                 <span class="title">Modulistica</span>
                             </a>
@@ -245,31 +246,33 @@
                                 <br><br>
                                 <div class="row">
                                     <div class="col-sm-12">
-                                        <div class="form-group">
-                                            <form role="form" class="form-horizontal" action="/ServerWeb/uploadInformationFilesServlet" method="POST" enctype="multipart/form-data">
-                                                <div class="row">
-                                                    <label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="file" class="form-control" required id="field-4" name="cv" accept="application/pdf">
-                                                    </div>
-                                                    <div class="col-sm-2"></div>
-                                                </div>
-                                                <br>
-                                                <div class="row">
-                                                    <label class="col-sm-2 control-label" for="field-5">Esami svolti</label>
-                                                    <div class="col-sm-8">
-                                                        <input type="file" class="form-control" required id="field-5" name="doc" accept="application/pdf">
-                                                    </div>
-                                                    <div class="col-sm-2"></div>
-                                                </div>
-                                                <br><br><br>
-                                                <div id="filesControl" align="center"></div>
-                                                <div class="row">
-                                                    <center><button type="submit" class="btn btn-success fileinput-button"><i class="fa-arrow-up"></i>
-                                                            <span>Invia Richiesta</span></button></center>
-                                                </div>
-                                            </form>
-                                        </div>
+                                        <!--<div class="form-group">-->
+                                        <form role="form" class="validate" action="/ServerWeb/uploadInformationFilesServlet" method="POST" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <!--<label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>-->
+                                                <label class="control-label">Curriculum Vitae</label>
+                                                <!--<div class="col-sm-8">-->
+                                                <input type="file" class="form-control" data-validate="required" data-message-required="Per favore, inserisci il file del CV." id="field-4" name="cv" accept="application/pdf">
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-2"></div>-->
+                                            </div>
+                                            <br>
+                                            <div class="form-group">
+                                                <!--<label class="col-sm-2 control-label" for="field-5">Esami svolti</label>-->
+                                                <label class="control-label">Esami svolti</label>
+                                                <!--<div class="col-sm-8">-->
+                                                <input type="file" class="form-control" data-validate="required" id="field-5" name="doc" data-message-required="Per favore, inserisci il file degli esami svolti." accept="application/pdf">
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-2"></div>-->
+                                            </div>
+                                            <br><br><br>
+                                            <div id="filesControl" align="center"></div>
+                                            <div class="row">
+                                                <center><button type="submit" class="btn btn-success fileinput-button"><i class="fa-arrow-up"></i>
+                                                        <span>Invia Richiesta</span></button></center>
+                                            </div>
+                                        </form>
+                                        <!--</div>-->
                                     </div>
                                 </div>
                             </div>
@@ -355,6 +358,8 @@
         <script src="../../assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
 
+
+        <script src="../../assets/js/jquery-validate/jquery.validate.min.js"></script>
 
         <script src="../../assets/js/xenon-widgets.js"></script>
         <script src="../../assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
