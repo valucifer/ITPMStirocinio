@@ -136,6 +136,10 @@
         <servlet-name>getRejectedMessage</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getRejectedMessage</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.LoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>getStudentTrainingStatus</servlet-name>
         <url-pattern>/getStudentTrainingStatus</url-pattern>
@@ -271,6 +275,10 @@
     <servlet-mapping>
         <servlet-name>getRejectedMessage</servlet-name>
         <url-pattern>/getRejectedMessage</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

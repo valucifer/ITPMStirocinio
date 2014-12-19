@@ -1,30 +1,29 @@
+package it.unisa.tirocinio.servlet.student;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.unisa.tirocinio.servlet.student;
-
-import it.unisa.tirocinio.beans.Organization;
+import it.unisa.integrazione.database.AccountManager;
+import it.unisa.integrazione.database.exception.AccountNotActiveException;
+import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Valentino
+ * @author gemmacatolino
  */
-@WebServlet(name = "changeProfessorForTrainingOrganizationServlet", urlPatterns = {"/changeProfessorForTrainingOrganizationServlet"})
-
-public class changeProfessorForTrainingOrganizationServlet extends HttpServlet {
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
+public class LoginServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -38,31 +37,30 @@ public class changeProfessorForTrainingOrganizationServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        HttpSession session = request.getSession();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            String professorSSN = request.getParameter("professorSSN");
-            String organizationVAT = request.getParameter("organizationVAT");
-            
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.readPerson(professorSSN);
-            
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(organizationVAT);
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
 
-            organization.setProfessor(person.getSSN());
+            AccountManager accountManager = AccountManager.getInstance();
+            Person person = accountManager.login(username, password);
 
-            boolean toReturn = anOrganization.updateOrganization(organization);
-
-            if(toReturn){
-                message.setMessage("status", 1);
-            }else{
-                message.setMessage("status", 0);
+            if (person != null) {
+                session.removeAttribute("loginError");
+                session.setAttribute("person", person);
+                response.sendRedirect("index.jsp");
+            } else {
+                session.setAttribute("loginError", "error");
+                response.sendRedirect("login.jsp");
             }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
+            
+        } catch (SQLException sqlException) {
+            out.print("<h1>SQL Exception: </h1>" + sqlException.getMessage());
+        } catch (ConnectionException connectionException) {
+            out.print("<h1>Connection Exception</h1>");
+        } catch (AccountNotActiveException ex) {
+            out.print("<h1>Account not Active!</h1>");
         } finally {
             out.close();
         }
@@ -80,7 +78,7 @@ public class changeProfessorForTrainingOrganizationServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doPost(request, response);
     }
 
     /**
