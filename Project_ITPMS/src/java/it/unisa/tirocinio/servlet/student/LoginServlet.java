@@ -1,21 +1,28 @@
+package it.unisa.tirocinio.servlet.student;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.unisa.tirocinio.servlet.student;
-
+import it.unisa.integrazione.database.AccountManager;
+import it.unisa.integrazione.database.exception.AccountNotActiveException;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.tirocinio.beans.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
+import java.sql.SQLException;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Valentino
+ * @author gemmacatolino
  */
+@WebServlet(name = "LoginServlet", urlPatterns = {"/login"})
 public class LoginServlet extends HttpServlet {
 
     /**
@@ -31,17 +38,29 @@ public class LoginServlet extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         PrintWriter out = response.getWriter();
+        HttpSession session = request.getSession();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\" \"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
-            out.println("<html>");
-            out.println("<head>");
-            out.println("<title>Servlet LoginServlet</title>");            
-            out.println("</head>");
-            out.println("<body>");
-            out.println("<h1>Servlet LoginServlet at " + request.getContextPath() + "</h1>");
-            out.println("</body>");
-            out.println("</html>");
+            String username = request.getParameter("username");
+            String password = request.getParameter("password");
+
+            AccountManager accountManager = AccountManager.getInstance();
+            Person person = accountManager.login(username, password);
+
+            if (person != null) {
+                session.removeAttribute("loginError");
+                session.setAttribute("person", person);
+                response.sendRedirect("index.jsp");
+            } else {
+                session.setAttribute("loginError", "error");
+                response.sendRedirect("login.jsp");
+            }
+            
+        } catch (SQLException sqlException) {
+            out.print("<h1>SQL Exception: </h1>" + sqlException.getMessage());
+        } catch (ConnectionException connectionException) {
+            out.print("<h1>Connection Exception</h1>");
+        } catch (AccountNotActiveException ex) {
+            out.print("<h1>Account not Active!</h1>");
         } finally {
             out.close();
         }
@@ -59,7 +78,7 @@ public class LoginServlet extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        doPost(request, response);
     }
 
     /**
