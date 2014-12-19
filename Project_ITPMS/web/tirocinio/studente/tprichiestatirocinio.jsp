@@ -57,6 +57,9 @@
                         jQuery(document).ready(function ($) {
                             $("#ID_modulistica_0").empty();
                             $("#ID_questionario_0").empty();
+                            $("#motivationReject").empty();
+                            $("#motivationReject").attr("hidden");
+                            
                             tpFunction.createPendingStudentPanel('#panelBody');
                         });
                     </script>
@@ -64,6 +67,8 @@
                 <c:when test="${idStudentStatus == 2}">
                     <script>
                         jQuery(document).ready(function ($) {
+                            $("#motivationReject").empty();
+                            $("#motivationReject").attr("hidden");
                             tpFunction.createAcceptedStudentPanel('#panelBody');
                             tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer',${path});
                         });
@@ -83,6 +88,8 @@
                         jQuery(document).ready(function ($) {
                             $("#ID_modulistica_0").empty();
                             $("#ID_questionario_0").empty();
+                            $("#motivationReject").empty();
+                            $("#motivationReject").attr("hidden");
                         });
                     </script>
                 </c:otherwise>
