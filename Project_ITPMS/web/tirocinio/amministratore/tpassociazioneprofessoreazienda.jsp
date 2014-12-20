@@ -130,6 +130,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
+                                 ${sessionScope.person}
                             </span>
                         </a>
 
@@ -231,7 +232,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <form action="/ServerWeb/changeProfessorForTrainingOrganizationServlet" method="POST" role="form" class="form-horizontal">
+                                <form action="/ServerWeb/changeLinkProfessorOrganization" method="POST" role="form" class="form-horizontal">
                                     <label class="col-sm-2 control-label" >Organizzazioni: </label>
                                     <div class="col-sm-10">
                                         <select name="organizationVAT" id="comboboxOrganization" class="form-control">

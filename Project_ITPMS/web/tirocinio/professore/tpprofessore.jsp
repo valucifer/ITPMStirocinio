@@ -54,7 +54,7 @@
                 }
             }
             jQuery(document).ready(function ($) {
-                tpProfessorFunction.appendTraining('#listTrainingProfessore',${path });
+                tpProfessorFunction.appendTraining('#listTrainingProfessore','${sessionScope.person}',${path });
             });
         </script>
 
@@ -150,6 +150,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
+                                 ${sessionScope.person}
                             </span>
                         </a>
 
@@ -226,7 +227,7 @@
                                 </p>
                                 <br>
 
-                                <form role="form" class="form-horizontal" action="/ServerWeb/insertTrainingByProfessorServlet" method="POST">
+                                <form role="form" class="form-horizontal" action="/ServerWeb/professorInsertTrainingOffer" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" for="field-2">Descrizione del Tirocinio</label>
                                         <div class="col-sm-10">

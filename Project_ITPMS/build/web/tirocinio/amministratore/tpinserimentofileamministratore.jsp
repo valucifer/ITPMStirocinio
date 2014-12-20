@@ -125,6 +125,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
+                                ${sessionScope.person}
                             </span>
                         </a>
 
@@ -237,7 +238,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <form action="/ServerWeb/uploadInformationForModuleFilesServlet" method="POST" role="form" class="form-horizontal" id="sendModulesForm" enctype="multipart/form-data">
+                                            <form action="/ServerWeb/adminUploadFiles" method="POST" role="form" class="form-horizontal" id="sendModulesForm" enctype="multipart/form-data">
                                                 <label class="col-sm-2 control-label" for="trainingPlan" >Piano Formativo</label>
 
                                                 <div class="col-sm-10">

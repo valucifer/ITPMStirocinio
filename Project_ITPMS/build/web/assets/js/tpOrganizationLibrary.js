@@ -5,10 +5,11 @@
  */
 
 tpOrganizationFunction = {
-    appendTraining: function (idPanel, path) {
+    appendTraining: function (idPanel, account, path) {
         $.ajax({
-            url: path + '/selectTrainingByOrganization',
+            url: path + '/organizationGetAllTrainingOffers',
             dataType: 'text',
+            data: {accountEmail:account},
             type: 'POST',
             success: function (e) {
                 var parsed = jQuery.parseJSON(e);
@@ -40,7 +41,7 @@ tpOrganizationFunction = {
         
     },
     deleteTraining: function (idTraining, path) {
-        $.get(path+"/deleteTrainingOfferByOrganizationServlet",{idRemove:idTraining}).done(function(e){
+        $.get(path+"/organizationDeleteTrainingOffer",{idRemove:idTraining}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 alert("Il tirocinio è stato eliminato!");

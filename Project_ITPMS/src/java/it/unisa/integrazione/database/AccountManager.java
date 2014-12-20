@@ -32,11 +32,11 @@ public class AccountManager {
 
     }
 
-    public Person login(String pUsername, String pPassword) throws AccountNotActiveException,  SQLException, ConnectionException {
+    public Account login(String pUsername, String pPassword) throws AccountNotActiveException,  SQLException, ConnectionException {
         Connection connection = null;
         Statement stmt = null;
         ResultSet rs = null;
-        Person person = null;
+        Account person = null;
 
         String query = "select * from account where email='" + pUsername + "' and password='" + pPassword + "'";
 
@@ -54,16 +54,15 @@ public class AccountManager {
                 Account account = new Account();
                 account.setEmail(rs.getString("email"));
                 account.setPassword(rs.getString("password"));
-                account.setTypeOfAccount("typeOfAccount");
+                account.setTypeOfAccount(rs.getString("typeOfAccount"));
                 account.setActive(rs.getInt("active"));
                 
+                person = account;
                 if(account.getActive()==0) {
                     throw new AccountNotActiveException();
                 }
 
-                person = this.getPersonByEmail(account.getEmail());
             }
-
         } finally {
             if(rs != null)
                 rs.close();

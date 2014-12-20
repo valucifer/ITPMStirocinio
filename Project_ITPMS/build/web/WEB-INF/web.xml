@@ -1,10 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>acceptStudentForTraining</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.acceptStudentForTraining</servlet-class>
     </servlet>
@@ -13,12 +9,12 @@
         <servlet-class>it.unisa.tirocinio.servlet.student.addErrorToStudentInformation</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>getAllProfessor</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getAllProfessor</servlet-class>
+        <servlet-name>getAllProfessors</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllProfessors</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>getAllOrganization</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getAllOrganization</servlet-class>
+        <servlet-name>getAllOrganizations</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllOrganizations</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getAllTrainingOffers</servlet-name>
@@ -136,6 +132,10 @@
         <servlet-name>getAllEntities</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getAllEntities</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.LoginServlet</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>updateTrainingRequestStatus</servlet-name>
         <url-pattern>/updateTrainingRequestStatus</url-pattern>
@@ -157,12 +157,8 @@
         <url-pattern>/professorInsertTrainingOffer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/LoginServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>getAllProfessor</servlet-name>
-        <url-pattern>/getAllProfessor</url-pattern>
+        <servlet-name>getAllProfessors</servlet-name>
+        <url-pattern>/getAllProfessors</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>acceptStudentForTraining</servlet-name>
@@ -173,8 +169,8 @@
         <url-pattern>/addErrorToStudentInformation</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>getAllOrganization</servlet-name>
-        <url-pattern>/getAllOrganization</url-pattern>
+        <servlet-name>getAllOrganizations</servlet-name>
+        <url-pattern>/getAllOrganizations</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>getAllTrainingOffers</servlet-name>
@@ -271,6 +267,10 @@
     <servlet-mapping>
         <servlet-name>getAllEntities</servlet-name>
         <url-pattern>/getAllEntities</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

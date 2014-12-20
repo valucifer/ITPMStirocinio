@@ -49,7 +49,7 @@ public class professorGetAllTrainingOffers extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = "a.deluica@professori.unisa.it"; //request.getParameter("primaryKey"));
+            String primaryKey = request.getParameter("accountEmail");
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getProfessor(primaryKey);
             

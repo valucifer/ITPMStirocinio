@@ -43,7 +43,7 @@ public class completeTrainingRequest extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         try {
             String studentMatricola = request.getParameter("studentSSN");
-            out.println(studentMatricola);
+            //out.println(studentMatricola);
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getPersonByMatricula(studentMatricola);
             
@@ -59,7 +59,7 @@ public class completeTrainingRequest extends HttpServlet {
                 message.setMessage("status", 0);
             }
             request.setAttribute("message",message);
-            //response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpvisionetirocini.jsp");
+            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpvisionetirocini.jsp");
         
         } finally {
             out.close();

@@ -137,7 +137,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.person.name} ${sessionScope.person.surname}
+                                ${sessionScope.person}
                             </span>
                         </a>
 
@@ -297,7 +297,7 @@
 
                                 </form>
                                 <div id="solutionStudentTrainingView" class="form-group" hidden>
-                                    <form role="form" class="form-horizontal" action="${path }/completeTrainingRequest" method="POST">
+                                    <form role="form" class="form-horizontal" action="/ServerWeb/completeTrainingRequest" method="POST">
                                         <label class="col-sm-1 control-label" >Studenti: </label>
                                         <div class="col-sm-11">
                                             <select name="studentSSN" id="comboboxStudent" class="form-control">

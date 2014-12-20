@@ -130,7 +130,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.persom.name } ${sessionScope.persom.surname } 
+                                ${sessionScope.person} 
                             </span>
                         </a>
 
@@ -230,7 +230,7 @@
                                 <h3 class="panel-title">Registrazione Nuova Azienda</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" class="form-horizontal" action="${path }/insertNewOrganization" method="POST">
+                                <form role="form" class="form-horizontal" action="/ServerWeb/insertNewOrganization" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="vatNumber">IVA Azienda</label>
                                         <div class="col-sm-9">

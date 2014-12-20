@@ -142,7 +142,7 @@ tpAdminFunction = {
         });
     },
     appendOrgANDProfessor: function (idComboOrg, idComboProf, path) {
-        $.get(path+"/viewAllOrganizationServlet",{}).done(function(e){
+        $.get(path+"/getAllOrganizations",{}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboOrg).empty();
@@ -160,7 +160,7 @@ tpAdminFunction = {
         }).fail(function(e){
             alert("Si sono verificati dei problemi col server!"); 
         });
-        $.get(path+"/viewAllProfessor",{}).done(function(e){
+        $.get(path+"/getAllProfessors",{}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboProf).empty();
