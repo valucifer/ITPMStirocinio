@@ -670,7 +670,7 @@ END
 -- Note: Ex getStudentAttendece
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonForMatricula`( in matric VARCHAR(10) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonByMatricula`( in matric VARCHAR(10) )
 BEGIN
 SELECT * FROM person WHERE matricula = matric;
 END
@@ -680,7 +680,7 @@ END
 -- Note: Ex getStudentAttendece
 -- --------------------------------------------------------------------------------
 DELIMITER $$
-CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonForAccount`( in email VARCHAR(100) )
+CREATE DEFINER=`root`@`localhost` PROCEDURE `getPersonByAccount`( in email VARCHAR(100) )
 BEGIN
 SELECT * FROM person WHERE Account_email = email;
 END

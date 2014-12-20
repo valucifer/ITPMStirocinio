@@ -297,7 +297,7 @@
 
                                 </form>
                                 <div id="solutionStudentTrainingView" class="form-group" hidden>
-                                    <form role="form" class="form-horizontal" action="/ServerWeb/changeTrainingStudentForTotalComplete" method="POST">
+                                    <form role="form" class="form-horizontal" action="${path }/completeTrainingRequest" method="POST">
                                         <label class="col-sm-1 control-label" >Studenti: </label>
                                         <div class="col-sm-11">
                                             <select name="studentSSN" id="comboboxStudent" class="form-control">

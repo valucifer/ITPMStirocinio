@@ -1,84 +1,100 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app version="3.0" xmlns="http://java.sun.com/xml/ns/javaee" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://java.sun.com/xml/ns/javaee http://java.sun.com/xml/ns/javaee/web-app_3_0.xsd">
     <servlet>
-        <servlet-name>getStudentTrainingStatus</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingStatus</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>insertTrainingByOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.organizationInsertTrainingOffer</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>insertTrainingByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.professorInsertTrainingOffer</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>studentAttDetailsServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentDetails</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>uploadInformationFilesServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.studentUploadFiles</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>selectTrainingByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.professorGetAllTrainingOffers</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>uploadInformationForModuleFilesServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.adminUploadFiles</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>changeProfessorForTrainingOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.changeLinkProfessorOrganization</servlet-class>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.LoginServlet</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>acceptStudentForTraining</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.acceptStudentForTraining</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>rejectStudentForTraining</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.rejectStudentForTraining</servlet-class>
+        <servlet-name>addErrorToStudentInformation</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.addErrorToStudentInformation</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>viewAllTrainingOffer</servlet-name>
+        <servlet-name>getAllProfessor</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllProfessor</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getAllOrganization</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllOrganization</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getAllTrainingOffers</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getAllTrainingOffers</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>selectTrainingByOrganization</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.organizationGetAllTrainingOffers</servlet-class>
+        <servlet-name>getOrganizationTrainingRequests</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getOrganizationTrainingRequests</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>insertTrainingRequestServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingRequest</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>viewDetailsForTraininfOfferServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.viewDetailsForTraininfOfferServlet</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>viewAllProfessor</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getAllProfessors</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>viewAllOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getAllOrganizations</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>viewTrainingRequestForProfessorServlet</servlet-name>
+        <servlet-name>getProfessorTrainingRequests</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getProfessorTrainingRequests</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getOrganizationTrainingRequests</servlet-class>
+        <servlet-name>getRejectedMessage</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getRejectedMessage</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getStudentDetails</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentDetails</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>getStudentInformation</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.getStudentInformation</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>deleteTrainingOfferByOrganizationServlet</servlet-name>
+        <servlet-name>getStudentQuestionnaireCompletion</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentQuestionnaireCompletion</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingCompleteForTable</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getStudentTrainingStatus</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingStatus</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>insertNewOrganization</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertNewOrganization</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>insertTrainingQuestionnaire</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingQuestionnaire</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>insertTrainingRequest</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingRequest</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>organizationDeleteTrainingOffer</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.organizationDeleteTrainingOffer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>organizationGetAllTrainingOffers</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.organizationGetAllTrainingOffers</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>organizationInsertTrainingOffer</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.organizationInsertTrainingOffer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>professorDeleteTrainingOffer</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorDeleteTrainingOffer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>professorGetAllTrainingOffers</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorGetAllTrainingOffers</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>professorInsertTrainingOffer</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorInsertTrainingOffer</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>studentUploadFiles</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.studentUploadFiles</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
@@ -89,196 +105,172 @@
         <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingOfferByProfessorServlet</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.professorDeleteTrainingOffer</servlet-class>
+        <servlet-name>updateTrainingRequestStatus</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingRequestStatus</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.addErrorToStudentInformation</servlet-class>
+        <servlet-name>adminUploadFile</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.adminUploadFile</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>insertNewOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertNewOrganization</servlet-class>
+        <servlet-name>adminUploadFiles</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.adminUploadFiles</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getAllEntities</servlet-class>
+        <servlet-name>changeLinkProfessorOrganization</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.changeLinkProfessorOrganization</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>completeTraining</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.completeTraining</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>completeTrainingRequest</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.completeTrainingRequest</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>downloadFile</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.student.downloadFile</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>completeStudentForTraining</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.completeTraining</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentTrainingCompleteForTable</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>appendStudentIntoSelectForChangeTraining</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingRequestStatus</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.completeTrainingRequest</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>completeTrainingInsertQuestionnaire</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.insertTrainingQuestionnaire</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>readQuestionnaireForStudentTrainingServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getStudentQuestionnaireCompletion</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>getRejectedMessage</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.getRejectedMessage</servlet-class>
-    </servlet>
-    <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.LoginServlet</servlet-class>
+        <servlet-name>getAllEntities</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.getAllEntities</servlet-class>
     </servlet>
     <servlet-mapping>
-        <servlet-name>getStudentTrainingStatus</servlet-name>
-        <url-pattern>/getStudentTrainingStatus</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>insertTrainingByOrganizationServlet</servlet-name>
-        <url-pattern>/insertTrainingByOrganizationServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>insertTrainingByProfessorServlet</servlet-name>
-        <url-pattern>/insertTrainingByProfessorServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>studentAttDetailsServlet</servlet-name>
-        <url-pattern>/studentAttDetailsServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>uploadInformationFilesServlet</servlet-name>
-        <url-pattern>/uploadInformationFilesServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>selectTrainingByProfessorServlet</servlet-name>
-        <url-pattern>/selectTrainingByProfessorServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>uploadInformationForModuleFilesServlet</servlet-name>
-        <url-pattern>/uploadInformationForModuleFilesServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>changeProfessorForTrainingOrganizationServlet</servlet-name>
-        <url-pattern>/changeProfessorForTrainingOrganizationServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>acceptStudentForTraining</servlet-name>
-        <url-pattern>/acceptStudentForTraining</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>rejectStudentForTraining</servlet-name>
-        <url-pattern>/rejectStudentForTraining</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>viewAllTrainingOffer</servlet-name>
-        <url-pattern>/viewAllTrainingOffer</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>selectTrainingByOrganization</servlet-name>
-        <url-pattern>/selectTrainingByOrganization</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>insertTrainingRequestServlet</servlet-name>
-        <url-pattern>/insertTrainingRequestServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>viewDetailsForTraininfOfferServlet</servlet-name>
-        <url-pattern>/viewDetailsForTraininfOfferServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>viewAllProfessor</servlet-name>
-        <url-pattern>/viewAllProfessor</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>viewAllOrganizationServlet</servlet-name>
-        <url-pattern>/viewAllOrganizationServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>viewTrainingRequestForProfessorServlet</servlet-name>
-        <url-pattern>/viewTrainingRequestForProfessorServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>viewTrainingRequestForOrganizationSevlet</servlet-name>
-        <url-pattern>/viewTrainingRequestForOrganizationSevlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>getStudentInformation</servlet-name>
-        <url-pattern>/getStudentInformation</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>deleteTrainingOfferByOrganizationServlet</servlet-name>
-        <url-pattern>/deleteTrainingOfferByOrganizationServlet</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
-        <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
-        <url-pattern>/updateTrainingOfferByOrganizationServlet</url-pattern>
+        <servlet-name>updateTrainingRequestStatus</servlet-name>
+        <url-pattern>/updateTrainingRequestStatus</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>updateTrainingOfferByProfessorServlet</servlet-name>
         <url-pattern>/updateTrainingOfferByProfessorServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>deleteTrainingOfferByProfessorServlet</servlet-name>
-        <url-pattern>/deleteTrainingOfferByProfessorServlet</url-pattern>
+        <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
+        <url-pattern>/updateTrainingOfferByOrganizationServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>sendingErrorsForStudentInformationServlet</servlet-name>
-        <url-pattern>/sendingErrorsForStudentInformationServlet</url-pattern>
+        <servlet-name>studentUploadFiles</servlet-name>
+        <url-pattern>/studentUploadFiles</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>insertNewOrganizationServlet</servlet-name>
-        <url-pattern>/insertNewOrganizationServlet</url-pattern>
+        <servlet-name>professorInsertTrainingOffer</servlet-name>
+        <url-pattern>/professorInsertTrainingOffer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>viewAllStudentProfANDOrganizationServlet</servlet-name>
-        <url-pattern>/viewAllStudentProfANDOrganizationServlet</url-pattern>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/LoginServlet</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>downloadFile</servlet-name>
-        <url-pattern>/downloadFile</url-pattern>
+        <servlet-name>getAllProfessor</servlet-name>
+        <url-pattern>/getAllProfessor</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>completeStudentForTraining</servlet-name>
-        <url-pattern>/completeStudentForTraining</url-pattern>
+        <servlet-name>acceptStudentForTraining</servlet-name>
+        <url-pattern>/acceptStudentForTraining</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
-        <url-pattern>/getStudentTrainingCompleteForTable</url-pattern>
+        <servlet-name>addErrorToStudentInformation</servlet-name>
+        <url-pattern>/addErrorToStudentInformation</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>appendStudentIntoSelectForChangeTraining</servlet-name>
-        <url-pattern>/appendStudentIntoSelectForChangeTraining</url-pattern>
+        <servlet-name>getAllOrganization</servlet-name>
+        <url-pattern>/getAllOrganization</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>changeTrainingStudentForTotalComplete</servlet-name>
-        <url-pattern>/changeTrainingStudentForTotalComplete</url-pattern>
+        <servlet-name>getAllTrainingOffers</servlet-name>
+        <url-pattern>/getAllTrainingOffers</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>completeTrainingInsertQuestionnaire</servlet-name>
-        <url-pattern>/completeTrainingInsertQuestionnaire</url-pattern>
+        <servlet-name>getOrganizationTrainingRequests</servlet-name>
+        <url-pattern>/getOrganizationTrainingRequests</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>readQuestionnaireForStudentTrainingServlet</servlet-name>
-        <url-pattern>/readQuestionnaireForStudentTrainingServlet</url-pattern>
+        <servlet-name>getProfessorTrainingRequests</servlet-name>
+        <url-pattern>/getProfessorTrainingRequests</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>getRejectedMessage</servlet-name>
         <url-pattern>/getRejectedMessage</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
+        <servlet-name>getStudentDetails</servlet-name>
+        <url-pattern>/getStudentDetails</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getStudentInformation</servlet-name>
+        <url-pattern>/getStudentInformation</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getStudentQuestionnaireCompletion</servlet-name>
+        <url-pattern>/getStudentQuestionnaireCompletion</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getStudentTrainingCompleteForTable</servlet-name>
+        <url-pattern>/getStudentTrainingCompleteForTable</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getStudentTrainingStatus</servlet-name>
+        <url-pattern>/getStudentTrainingStatus</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertNewOrganization</servlet-name>
+        <url-pattern>/insertNewOrganization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertTrainingQuestionnaire</servlet-name>
+        <url-pattern>/insertTrainingQuestionnaire</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>insertTrainingRequest</servlet-name>
+        <url-pattern>/insertTrainingRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>organizationDeleteTrainingOffer</servlet-name>
+        <url-pattern>/organizationDeleteTrainingOffer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>organizationGetAllTrainingOffers</servlet-name>
+        <url-pattern>/organizationGetAllTrainingOffers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>organizationInsertTrainingOffer</servlet-name>
+        <url-pattern>/organizationInsertTrainingOffer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>professorDeleteTrainingOffer</servlet-name>
+        <url-pattern>/professorDeleteTrainingOffer</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>professorGetAllTrainingOffers</servlet-name>
+        <url-pattern>/professorGetAllTrainingOffers</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminUploadFile</servlet-name>
+        <url-pattern>/adminUploadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>adminUploadFiles</servlet-name>
+        <url-pattern>/adminUploadFiles</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>changeLinkProfessorOrganization</servlet-name>
+        <url-pattern>/changeLinkProfessorOrganization</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>completeTraining</servlet-name>
+        <url-pattern>/completeTraining</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>completeTrainingRequest</servlet-name>
+        <url-pattern>/completeTrainingRequest</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>downloadFile</servlet-name>
+        <url-pattern>/downloadFile</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getAllEntities</servlet-name>
+        <url-pattern>/getAllEntities</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

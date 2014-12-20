@@ -6,7 +6,7 @@
 
 tpAdminFunction = {
     appendStudentIntoSelectForChangeTraining: function (idComboStudent,path){
-        $.get(path+"/appendStudentIntoSelectForChangeTraining",{}).done(function(e){
+        $.get(path+"/updateTrainingRequestStatus",{}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboStudent).empty();
@@ -78,7 +78,7 @@ tpAdminFunction = {
     },
     appendStudentInformation: function (idTable, path) {
         $.ajax({
-            url: path + '/studentAttDetailsServlet',
+            url: path + '/getStudentDetails',
             dataType: 'text',
             type: 'POST',
             success: function (e) {
@@ -130,7 +130,7 @@ tpAdminFunction = {
         });
     },
     completeStudentForTraining: function (idStudent, path) {
-        $.get(path+"/completeStudentForTraining",{matricula:idStudent}).done(function(e){
+        $.get(path+"/completeTraining",{matricula:idStudent}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 alert("Lo studente "+idStudent+" ha concluso il tirocinio!");
@@ -180,7 +180,7 @@ tpAdminFunction = {
         });
     },
     appendProfessor: function (idComboProf, path) {
-        $.get(path+"/viewAllProfessor",{}).done(function(e){
+        $.get(path+"/getAllProfessors",{}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboProf).empty();
@@ -200,7 +200,7 @@ tpAdminFunction = {
         });
     },
     appendAll: function (idComboOrga, idComboProf, idComboStud, path){
-        $.get(path+"/viewAllStudentProfANDOrganizationServlet",{}).done(function(e){
+        $.get(path+"/getAllEntities",{}).done(function(e){
             var parsed = jQuery.parseJSON(e);
             if(parsed.status==1){
                 $(idComboProf).empty();

@@ -225,6 +225,11 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("                        <a href=\"#\" data-toggle=\"dropdown\">\n");
       out.write("                            <img src=\"../../assets/images/user-1.png\" alt=\"user-image\" class=\"img-circle img-inline userpic-32\" width=\"28\" />\n");
       out.write("                            <span id=\"spaceForUsername\">\n");
+      out.write("                                ");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${sessionScope.person.name }", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write(' ');
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${sessionScope.person.surname }", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("\n");
       out.write("                            </span>\n");
       out.write("                        </a>\n");
       out.write("\n");
@@ -407,7 +412,9 @@ public final class tpamministratore_jsp extends org.apache.jasper.runtime.HttpJs
       out.write("\n");
       out.write("                            </div>\n");
       out.write("                        </div>\n");
-      out.write("                        <form role=\"form\" class=\"form-horizontal\" action=\"/ServerWeb/sendingErrorsForStudentInformationServlet\" method=\"POST\">\n");
+      out.write("                        <form role=\"form\" class=\"form-horizontal\" action=\"");
+      out.write((java.lang.String) org.apache.jasper.runtime.PageContextImpl.evaluateExpression("${path }", java.lang.String.class, (PageContext)_jspx_page_context, null));
+      out.write("/addErrorToStudentInformation\" method=\"POST\">\n");
       out.write("                            <input type=\"hidden\" name=\"hiddenErroriRiscontrati\" id=\"hiddenErroriRiscontrati\"/>\n");
       out.write("                            <div class=\"row\">\n");
       out.write("                                <div class=\"col-lg-12\">\n");

@@ -22,8 +22,6 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Valentino
  */
-@WebServlet(name = "changeProfessorForTrainingOrganizationServlet", urlPatterns = {"/changeProfessorForTrainingOrganizationServlet"})
-
 public class changeLinkProfessorOrganization extends HttpServlet {
 
     /**

@@ -29,7 +29,7 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-@WebServlet(name = "studentAttDetailsServlet", urlPatterns = {"/studentAttDetailsServlet"})
+@WebServlet(name = "getStudentDetails", urlPatterns = {"/getStudentDetails"})
 
 public class getStudentDetails extends HttpServlet {
     private final JSONObject jsonObject = new JSONObject();

@@ -201,7 +201,7 @@ public class ConcretePerson implements IPerson{
         ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
         
         try {
-            aCallableStatement = connector.prepareCall("{call getPersonForAccount(?)}");
+            aCallableStatement = connector.prepareCall("{call getPersonByAccount(?)}");
             aCallableStatement.setString("email",email);
             ResultSet rs = aCallableStatement.executeQuery();
             

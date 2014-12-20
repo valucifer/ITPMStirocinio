@@ -41,7 +41,7 @@
         %>
         <script>
             function functionDownload(idStudent, typology) {
-                tpAdminFunction.downloadFile(idStudent, typology,${path });
+                tpAdminFunction.downloadFile(idStudent, typology, ${path });
             }
 
             function rejectTrainingRequest(count, email) {
@@ -169,6 +169,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
+                                ${sessionScope.person.name } ${sessionScope.person.surname }
                             </span>
                         </a>
 
@@ -351,7 +352,7 @@
 
                             </div>
                         </div>
-                        <form role="form" class="form-horizontal" action="/ServerWeb/sendingErrorsForStudentInformationServlet" method="POST">
+                        <form role="form" class="form-horizontal" action="/ServerWeb/addErrorToStudentInformation" method="POST">
                             <input type="hidden" name="hiddenErroriRiscontrati" id="hiddenErroriRiscontrati"/>
                             <div class="row">
                                 <div class="col-lg-12">

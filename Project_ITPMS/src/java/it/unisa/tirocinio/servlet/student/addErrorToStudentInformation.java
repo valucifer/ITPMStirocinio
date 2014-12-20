@@ -25,7 +25,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Valentino
  */
-@WebServlet(name = "sendingErrorsForStudentInformationServlet", urlPatterns = {"/sendingErrorsForStudentInformationServlet"})
+@WebServlet(name = "addErrorToStudentInformation", urlPatterns = {"/addErrorToStudentInformation"})
 
 public class addErrorToStudentInformation extends HttpServlet {
 

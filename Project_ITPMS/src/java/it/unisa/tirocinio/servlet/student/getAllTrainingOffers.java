@@ -26,7 +26,6 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-@WebServlet(name = "viewAllTrainingOffer", urlPatterns = {"/viewAllTrainingOffer"})
 public class getAllTrainingOffers extends HttpServlet {
     private final JSONObject jsonObject = new JSONObject();
     /**

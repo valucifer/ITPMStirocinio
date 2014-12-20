@@ -229,7 +229,7 @@
                                 <h3 class="panel-title">Registrazione Nuovi Tirocini</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" class="form-horizontal" action="/ServerWeb/insertTrainingRequestServlet" method="POST">
+                                <form role="form" class="form-horizontal" action="/ServerWeb/insertTrainingRequest" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="titleTraining">Titolo Tirocinio</label>
                                         <div class="col-sm-9">

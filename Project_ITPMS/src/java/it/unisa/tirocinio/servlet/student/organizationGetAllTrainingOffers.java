@@ -5,36 +5,19 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.TrainingOffer;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
  * @author Valentino
  */
-
-@WebServlet(name = "selectTrainingByOrganization", urlPatterns = {"/selectTrainingByOrganization"})
 public class organizationGetAllTrainingOffers extends HttpServlet {
-    private final JSONObject jsonObject = new JSONObject();
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -47,38 +30,18 @@ public class organizationGetAllTrainingOffers extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = "moderna@azienda.unisa.it"; //request.getParameter("primaryKey"));
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.getOrganizationByAccount(primaryKey);
-            
-            ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readOuterTrainingOffer(organization.getVATNumber());
-            
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            
-            if(trainingOffer == null){
-                jsonObject.put("status", 0);
-            }else{
-              
-                JSONArray array = new JSONArray();
-                for( TrainingOffer offer: trainingOffer ){
-                    JSONObject jsonTmp = new JSONObject();
-                    jsonTmp.put("description", offer.getDescription());
-                    jsonTmp.put("id", offer.getIdOfferTraining());
-                    array.put(jsonTmp);
-                }
-                jsonObject.put("status", 1);
-                jsonObject.put("message", array);
-                //request.setAttribute("trainingMessage",message);
-                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
-                
-            }
-            response.getWriter().write(jsonObject.toString());
-        } catch (JSONException ex) {
-            Logger.getLogger(organizationGetAllTrainingOffers.class.getName()).log(Level.SEVERE, null, ex);
+            /* TODO output your page here. You may use following sample code. */
+            out.println("<!DOCTYPE html PUBLIC \"-//W3C//DTD HTML 4.0 Frameset//EN\" \"http://www.w3.org/TR/REC-html40/frameset.dtd\">");
+            out.println("<html>");
+            out.println("<head>");
+            out.println("<title>Servlet organizationGetAllTrainingOffers</title>");            
+            out.println("</head>");
+            out.println("<body>");
+            out.println("<h1>Servlet organizationGetAllTrainingOffers at " + request.getContextPath() + "</h1>");
+            out.println("</body>");
+            out.println("</html>");
         } finally {
             out.close();
         }
