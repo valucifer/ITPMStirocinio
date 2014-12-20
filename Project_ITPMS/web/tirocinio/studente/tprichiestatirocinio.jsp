@@ -181,6 +181,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
+                                ${sessionScope.person}
                             </span>
                         </a>
 
@@ -263,7 +264,16 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <!--<div class="form-group">-->
-                                        <form role="form" class="validate" action="/ServerWeb/uploadInformationFilesServlet" method="POST" enctype="multipart/form-data">
+                                        <form role="form" class="validate" action="/ServerWeb/studentUploadFiles" method="POST" enctype="multipart/form-data">
+                                            <div class="form-group">
+                                                <!--<label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>-->
+                                                <label class="control-label">Studente</label>
+                                                <!--<div class="col-sm-8">-->
+                                                <input type="text" value="${sessionScope.person}" name="account" disabled>
+                                                <!--</div>-->
+                                                <!--<div class="col-sm-2"></div>-->
+                                            </div>
+                                            <br>
                                             <div class="form-group">
                                                 <!--<label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>-->
                                                 <label class="control-label">Curriculum Vitae</label>

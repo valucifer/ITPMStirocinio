@@ -55,27 +55,21 @@ public class getStudentDetails extends HttpServlet {
             ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
             ConcretePerson aPerson = ConcretePerson.getInstance();
             
-            ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-            
             if(studentInformation == null){
                 jsonObject.put("status", 0);
             }else{
                 JSONArray array = new JSONArray();
                 for( StudentInformation stuInf: studentInformation ){
-                    Person person = aPerson.readPersonByAccount(stuInf.getEmailStudent());
-                    int trainingStatus = aTrainingRequest.readTrainingRequestByStudent(person.getSSN()).getTrainingStatus();
-                    if( (trainingStatus != 2) && (trainingStatus != 3) ){
-                        JSONObject jsonTmp = new JSONObject();
-                        jsonTmp.put("idStudent",stuInf.getMatricula());
-                        jsonTmp.put("matricula", stuInf.getMatricula());
-                        jsonTmp.put("credenziali", stuInf.getStudentSSN());
-                        jsonTmp.put("statusStudent", stuInf.getStudentStatus());
-                        jsonTmp.put("curriculum", stuInf.getCVPath());
-                        jsonTmp.put("libretto", stuInf.getATPath());
-                        jsonTmp.put("emailStudent", stuInf.getEmailStudent());
+                    JSONObject jsonTmp = new JSONObject();
+                    jsonTmp.put("idStudent",stuInf.getMatricula());
+                    jsonTmp.put("matricula", stuInf.getMatricula());
+                    jsonTmp.put("credenziali", stuInf.getStudentSSN());
+                    jsonTmp.put("statusStudent", stuInf.getStudentStatus());
+                    jsonTmp.put("curriculum", stuInf.getCVPath());
+                    jsonTmp.put("libretto", stuInf.getATPath());
+                    jsonTmp.put("emailStudent", stuInf.getEmailStudent());
 
                         array.put(jsonTmp);
-                    }
                 }
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);

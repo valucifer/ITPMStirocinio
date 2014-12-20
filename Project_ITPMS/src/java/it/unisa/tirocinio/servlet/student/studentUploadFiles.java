@@ -71,7 +71,8 @@ public class studentUploadFiles extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin","*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = "v.vivone@studenti.unisa.it";//request.getParameter("primaryKey");
+            String primaryKey = request.getParameter("account");
+            out.println(primaryKey);
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getStudent(primaryKey);
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
@@ -122,7 +123,7 @@ public class studentUploadFiles extends HttpServlet {
                 message.setMessage("status", 1);
             else message.setMessage("status", 0);
             request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/studente/tprichiestatirocinio.jsp");
+            //response.sendRedirect(request.getContextPath()+"/tirocinio/studente/tprichiestatirocinio.jsp");
             //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/tirocinio/studente/tprichiestatirocinio.jsp");
             //dispatcher.forward(request,response);
         } catch (Exception ex) {
