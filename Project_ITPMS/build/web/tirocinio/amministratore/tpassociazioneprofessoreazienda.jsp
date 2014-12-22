@@ -17,31 +17,25 @@
         <title>DISTRA-MIT</title>
 
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-        <link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-core.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-forms.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-components.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-skins.css">
-        <link rel="stylesheet" href="../../assets/css/custom.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/linecons/css/linecons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/fontawesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-mod.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-core.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-forms.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-components.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-skins.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/custom.css">
 
-        <script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpAdministratorLibrary.js"></script>
-        <script src="../../assets/js/validatr.js"></script>
-
-        <script>
-            jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });
-        </script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
+       
         <%
-            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
         <script>
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendOrgANDProfessor('#comboboxOrganization', '#comboboxProfessor',${path});
+                tpAdminFunction.appendOrgANDProfessor('#comboboxOrganization', '#comboboxProfessor',"${path}");
             });
         </script>
 
@@ -54,9 +48,9 @@
 
                 <!-- Navbar Brand -->
                 <div class="navbar-brand">
-                    <a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html" class="logo">
-                        <img src="../../assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
-                        <img src="../../assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
+                    <a href="${pageContext.request.contextPath}/offertaFormativa/amministratore/offertaFormativaAmministratore.html" class="logo">
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
                     </a>
                 </div>
 
@@ -82,7 +76,7 @@
 
                 <ul class="navbar-nav">
                     <li>
-                        <a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html">
+                        <a href="${pageContext.request.contextPath}/offertaFormativa/amministratore/offertaFormativaAmministratore.html">
                             <i class="linecons-desktop"></i>
                             <span class="title">Offerta Formativa</span>
                         </a>
@@ -94,7 +88,7 @@
                         </a>
                     </li>
                     <li class="opened active">
-                        <a href="../../tirocinio/amministratore/tpamministratore.jsp">
+                        <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
                             <i class="linecons-megaphone"></i>
                             <span class="title">Gestione Tirocinio</span>
                         </a>
@@ -128,7 +122,7 @@
                 <ul class="nav nav-userinfo navbar-right">
                     <li class="dropdown user-profile">
                         <a href="#" data-toggle="dropdown">
-                            <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                            <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
                                  ${sessionScope.person}
                             </span>
@@ -136,7 +130,7 @@
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
                             <li>
-                                <a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreProfiloPersonale.html">
+                                <a href="${pageContext.request.contextPath}/tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreProfiloPersonale.html">
                                     <i class="fa-edit"></i>
                                     Profilo
                                 </a>
@@ -165,13 +159,13 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="../../tirocinio/amministratore/tpamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Offerta Tirocinio</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpinserimentofileamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpinserimentofileamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Inserimento Moduli</span>
                             </a>
@@ -183,19 +177,19 @@
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpregisteranorganization.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Registra Azienda</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpaggiungistudentetraining.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpaggiungistudentetraining.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Aggiungi Tirocinio</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpvisionetirocini.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Visione Tirocini</span>
                             </a>
@@ -232,7 +226,7 @@
                         </div>
                         <div class="panel-body">
                             <div class="form-group">
-                                <form action="/ServerWeb/changeLinkProfessorOrganization" method="POST" role="form" class="form-horizontal">
+                                <form action="${path}/changeLinkProfessorOrganization" method="POST" role="form" class="validate">
                                     <label class="col-sm-2 control-label" >Organizzazioni: </label>
                                     <div class="col-sm-10">
                                         <select name="organizationVAT" id="comboboxOrganization" class="form-control">
@@ -295,30 +289,32 @@
         </div>
 
 
-        <link rel="stylesheet" href="../../assets/js/datatables/dataTables.bootstrap.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/meteocons/css/meteocons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/js/datatables/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/meteocons/css/meteocons.css">
 
         <!-- Bottom Scripts -->
-        <script src="../../assets/js/bootstrap.min.js"></script>
-        <script src="../../assets/js/TweenMax.min.js"></script>
-        <script src="../../assets/js/resizeable.js"></script>
-        <script src="../../assets/js/joinable.js"></script>
-        <script src="../../assets/js/xenon-api.js"></script>
-        <script src="../../assets/js/xenon-toggles.js"></script>
-        <script src="../../assets/js/datatables/js/jquery.dataTables.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/TweenMax.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/resizeable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/joinable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-api.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-toggles.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/js/jquery.dataTables.js"></script>
 
         <!-- Imported scripts on this page -->
-        <script src="../../assets/js/datatables/dataTables.bootstrap.js"></script>
-        <script src="../../assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
-        <script src="../../assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/dataTables.bootstrap.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
         <!-- Imported scripts on this page -->
-        <script src="../../assets/js/xenon-widgets.js"></script>
-        <script src="../../assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-        <script src="../../assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-widgets.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
 
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
+        
         <!-- JavaScripts initializations and stuff -->
-        <script src="../../assets/js/xenon-custom.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 
     </body>
 </html>

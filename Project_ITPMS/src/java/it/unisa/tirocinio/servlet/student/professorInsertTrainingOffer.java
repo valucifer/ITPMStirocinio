@@ -7,12 +7,10 @@ package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
-import it.unisa.tirocinio.manager.concrete.ConcreteDepartment;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -24,7 +22,7 @@ import javax.servlet.http.HttpSession;
  *
  * @author Valentino
  */
-@WebServlet(name = "insertTrainingByProfessorServlet", urlPatterns = {"/insertTrainingByProfessorServlet"})
+@WebServlet(name = "professorInsertTrainingOffer", urlPatterns = {"/tirocinio/professore/tpprofessore.jsp"})
 public class professorInsertTrainingOffer extends HttpServlet {
 
     /**
@@ -40,38 +38,31 @@ public class professorInsertTrainingOffer extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = request.getParameter("description");
-            String primaryKey = "a.deluica@professori.unisa.it";//request.getParameter("primaryKey");
-            HttpSession session = request.getSession();
-             
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.getProfessor(primaryKey);
-            
-            ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            TrainingOffer trainingOffer = new TrainingOffer();
-            
-            trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-            trainingOffer.setDescription(person.getDepartmentAbbreviation()+" - "+description);
-            trainingOffer.setPersonSSN(person.getSSN());
-            
-            boolean toReturn = aTrainingOffer.createInnerTrainingOffer(trainingOffer);
-            if(toReturn){
-                message.setMessage("status", 1);
-                //out.println("message "+toReturn);
-               // request.getRequestDispatcher("/WEB-INF/gestioneTirocinio&PlacementOrganizzazione.jsp").forward(request, response);
-            }else{
-                message.setMessage("status", 0);
-            }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/professore/tpprofessore.jsp");
-            
-        } finally {
-            out.close();
+        request.setCharacterEncoding("UTF-8");
+
+        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        HttpSession aSession = request.getSession();
+
+        String description = request.getParameter("description");
+        String professorEmail = (String) aSession.getAttribute("person");
+
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person person = aPerson.getProfessor(professorEmail);
+
+        ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
+        TrainingOffer trainingOffer = new TrainingOffer();
+
+        trainingOffer.setDepartment(person.getDepartmentAbbreviation());
+        trainingOffer.setDescription(person.getDepartmentAbbreviation() + " - " + description);
+        trainingOffer.setPersonSSN(person.getSSN());
+
+        if (aTrainingOffer.createInnerTrainingOffer(trainingOffer)) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
         }
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/professore/tpprofessore.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

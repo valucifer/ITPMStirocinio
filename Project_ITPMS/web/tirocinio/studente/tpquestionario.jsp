@@ -3,7 +3,7 @@
 
 <!DOCTYPE html>
 <html lang="en">
-    
+    <head>
         <meta charset="utf-8">
         <meta http-equiv="X-UA-Compatible" content="IE=edge">
 
@@ -27,17 +27,30 @@
         <script src="../../assets/js/jquery-1.11.1.min.js"></script>
         <script src="../../assets/js/tpLibrary.js"></script>
         <script src="../../assets/js/validatr.js"></script>
-     
         <jsp:include page="/getStudentQuestionnaireCompletion">
             <jsp:param name="matricula" value="0512200013" />
         </jsp:include>
-        <c:set var="questionnaireCompletion" value="${requestScope.questionnaireCompletion}"></c:set>
-        <c:if test="${questionnaireCompletion == 1}">
-            <script>
-                alert("1");
-            </script>
-        </c:if>
-    
+        <c:set var="questionnaireCompletion" value="${requestScope.questionnaireCompletion }"></c:set>
+        <%
+            int qCompletion = (Integer) pageContext.getAttribute("questionnaireCompletion");
+            pageContext.setAttribute("qCompletion", qCompletion);
+        %>
+
+        <c:choose>
+            <c:when test="${qCompletion == 1}">
+                <script>
+                    jQuery(document).ready(function ($) {
+                        $("#questPanel").empty();
+                        tpFunction.createQuestionnaireAlreadySendPanel('questPanel');
+                    });
+                </script>
+            </c:when>
+
+        </c:choose>
+
+
+    </head>
+
     <body class="page-body">
 
         <nav class="navbar horizontal-menu navbar-fixed-top"><!-- set fixed position by adding class "navbar-fixed-top" -->
@@ -216,12 +229,12 @@
 
                 <div class="row">
                     <div class="col-sm-12">
-                        <div class="panel panel-default">
+                        <div class="panel panel-default" id="questPanel">
                             <div class="panel-heading">
                                 <h3 class="panel-title">Questionario valutativo</h3>
                             </div>
                             <div class="panel-body" id='panel-body'>
-                                <form role="form" class="form-horizontal" action='/ServerWeb/completeTrainingInsertQuestionnaire' method='POST'>
+                                <form role="form" class="form-horizontal" action='/ServerWeb/insertTrainingQuestionnaire' method='POST'>
                                     <p align="justify">Esprimi il tuo grado di giudizio di accordo sulle affermazioni che seguono. Seleziona le caselle utilizzando la scala progressova da 1 a 5; per effettuare tale giudizio, i criteri da utilizzare sono: </p> 
                                     <br>
                                     <center>

@@ -6,7 +6,6 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -41,7 +40,6 @@ public class getAllProfessors extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */

@@ -17,53 +17,48 @@
         <title>DISTRA-MIT</title>
 
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-        <link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../assets/css/bootstrap.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-core.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-forms.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-components.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-skins.css">
-        <link rel="stylesheet" href="../../assets/css/custom.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/linecons/css/linecons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/fontawesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-core.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-forms.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-components.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-skins.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/custom.css">
 
-        <script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpOrganizationLibrary.js"></script>
-        <script src="../../assets/js/validatr.js"></script>
-
-        <script>
-            jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });
-        </script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/tpOrganizationLibrary.js"></script>
 
         <%
-            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
+        
+        <c:set var="deleteTrainingOfferStatus" value="${sessionScope.message.getMessage('deleteTrainingStatus')}"></c:set>
+        <c:choose>
+            <c:when test="${deleteTrainingOfferStatus == 0}">
+                <script>
+                    alert("Si sono verificati dei problemi nel completamento della richiesta.");
+                </script>
+                <%
+                    request.getSession().removeAttribute("deleteTrainingStatus");
+                %>
+                <c:remove var="deleteTrainingOfferStatus"/>
+            </c:when>
+            <c:when test="${deleteTrainingOfferStatus == 1}">
+                <script>
+                    alert("Il tirocinio è stato eliminato!");
+                </script>
+                <%
+                    request.getSession().removeAttribute("deleteTrainingStatus");
+                %>
+                <c:remove var="deleteTrainingOfferStatus"/>
+            </c:when>
+        </c:choose>
         <script>
-            function modifyTrainingToDatabase(idModify) {
-                $("#descriptionTrainingForModify").attr("placeholder", $('#paragraphDescriptionListTraining_' + idModify).text());
-                $("#idForModifyTrainingOrganization").attr("value", idModify);
-                jQuery('#modalGestioneTirocinioANDPlacementOrganizzazione').modal('show', {backdrop: 'static'});
-            }
-            function removeTrainingToDatabase(idRemove) {
-                if (confirm("Sei sicuro di voler eliminare questo tirocinio?")) {
-                    tpOrganizationFunction.deleteTraining(idRemove,${path });
-                    setTimeout(function () {
-                        location.reload();
-                    }, 1000);
-                }
-            }
             jQuery(document).ready(function ($) {
-                tpOrganizationFunction.appendTraining('#listTrainingOrganizzazione','${sessionScope.organization}',${path });
+                tpOrganizationFunction.appendTraining('#listTrainingOrganizzazione', '${sessionScope.organization} ', '${path }');
             });
         </script>
-
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-                <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-                <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
 
     </head>
     <body class="page-body">
@@ -74,9 +69,9 @@
 
                 <!-- Navbar Brand -->
                 <div class="navbar-brand">
-                    <a href="../../offertaFormativa/organizzazione/offertaFormativaOrganizzazione.html" class="logo">
-                        <img src="../../assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
-                        <img src="../../assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
+                    <a href="${pageContext.request.contextPath}/offertaFormativa/organizzazione/offertaFormativaOrganizzazione.html" class="logo">
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
                     </a>
                 </div>
 
@@ -114,7 +109,7 @@
                         </a>
                     </li>
                     <li class="opened active">
-                        <a href="../../tirocinio/organizzazione/tporganizzazione.jsp">
+                        <a href="${pageContext.request.contextPath}/tirocinio/organizzazione/tporganizzazione.jsp">
                             <i class="linecons-megaphone"></i>
                             <span class="title">Gestione Tirocinio</span>
                         </a>
@@ -148,7 +143,7 @@
                 <ul class="nav nav-userinfo navbar-right">
                     <li class="dropdown user-profile">
                         <a href="#" data-toggle="dropdown">
-                            <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                            <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
                                 ${sessionScope.organization}
                             </span>
@@ -227,19 +222,14 @@
                                 </p>
                                 <br>
 
-                                <form role="form" class="form-horizontal" action="/ServerWeb/organizationInsertTrainingOffer" method="POST">
+                                <form role="form" class="validate" action="${path }/organizationInsertTrainingOffer" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" for="field-2">Descrizione del Tirocinio</label>
                                         <div class="col-sm-10">
-                                            <textarea name="description" id="descriptionTrainingOrganizzazione" required class="form-control" rows="5" cols="5" placeholder="Descrizione..." maxlength="250"></textarea>
-                                            <span id="validate_descriptionTrainingOrganizzazione" style="color:#cc3f44"></span>
+                                            <textarea name="description" id="descriptionTrainingOrganizzazione" data-validate="required" data-message-required="Per favore, inserisci la descrizione." class="form-control" rows="5" cols="5" placeholder="Descrizione..." maxlength="250"></textarea>
+                                            <br>
                                         </div>
                                     </div>
-
-                                    <div class="col-sm-12">
-                                        <div id="messageTrainingControl" align="center"></div>
-                                    </div>
-
                                     <div class="form-group">
                                         <center>
                                             <button type="submit" class="btn btn-secondary btn-single" id="addTrainingOrganizzazione">
@@ -248,6 +238,18 @@
                                             </button>
                                         </center>
                                     </div>
+                                    <c:set var="status" value="${sessionScope.message.getMessage('status')}"></c:set>
+                                    <c:choose>
+                                        <c:when test="${status == 0}">
+                                            <div class="alert alert-danger">
+                                                <center><strong>Errore,</strong> dati caricati non correttamente. Per favore, riprova.</center>
+                                            </div>
+                                            <%
+                                                request.getSession().removeAttribute("message");
+                                            %>
+                                            <c:remove var="status"/>
+                                        </c:when>
+                                    </c:choose>
                                 </form>
                             </div>
                         </div>
@@ -301,13 +303,13 @@
             </div>
 
         </div>
-        <div class="modal fade" id="modalGestioneTirocinioANDPlacementOrganizzazione">
+        <div class="modal fade" id="modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
                         <center><h4 class="modal-title">Modifica il Tirocinio.</h4></center>
                     </div>
-                    <form role="form" class="form-horizontal" action="/ServerWeb/updateTrainingOfferByOrganizationServlet" method="POST">
+                    <form role="form" class="validate" action="${path }/updateTrainingOfferByOrganizationServlet" method="POST">
                         <div class="modal-body">
                             <div class="row">
                                 <div class="col-md-12">
@@ -315,7 +317,7 @@
                                         <label for="descriptionTrainingForModify" class="col-sm-3 control-label">Descrizione del Tirocinio</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="idModify" id="idForModifyTrainingOrganization">
-                                            <textarea required name="description" id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250"></textarea>
+                                            <textarea required name="description" id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250" data-validate="required" data-message-required="Per favore, inserisci la descrizione."></textarea>
                                         </div>
                                     </div>	
                                 </div>
@@ -337,43 +339,17 @@
         </div>
 
         <!-- Bottom Scripts -->
-        <script src="../../assets/js/bootstrap.min.js"></script>
-        <script src="../../assets/js/TweenMax.min.js"></script>
-        <script src="../../assets/js/resizeable.js"></script>
-        <script src="../../assets/js/joinable.js"></script>
-        <script src="../../assets/js/xenon-api.js"></script>
-        <script src="../../assets/js/xenon-toggles.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/TweenMax.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/resizeable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/joinable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-api.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-toggles.js"></script>
 
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
 
         <!-- JavaScripts initializations and stuff -->
-        <script src="../../assets/js/xenon-custom.js"></script>
-        <script>
-                            function emptyControl(id) {
-                                if ($("#" + id).val() == "")
-                                    return false;
-                                return true;
-                            }
-
-                            function checkNotEmptyFields() {
-                                var tmp2 = emptyControl("descriptionTrainingOrganizzazione");
-                                if (!tmp2) {
-                                    $("#validate_descriptionTrainingOrganizzazione").html("Campo descrizione vuoto");
-                                    $("#descriptionTrainingOrganizzazione").attr("style", "border-color:#cc3f44;");
-                                }
-
-                                return tmp2;
-                            }
-
-                            jQuery(document).ready(function ($) {
-
-                                $("#descriptionTrainingOrganizzazione").keyup(function () {
-                                    $("#descriptionTrainingOrganizzazione").attr("style", "border-color:#e4e4e4;");
-                                    $("#validate_descriptionTrainingOrganizzazione").html("");
-                                });
-
-
-                            });
-        </script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 
     </body>
 </html>

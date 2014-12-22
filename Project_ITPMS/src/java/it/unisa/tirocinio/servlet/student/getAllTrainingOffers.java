@@ -6,7 +6,6 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.TrainingOffer;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -14,7 +13,6 @@ import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -27,7 +25,9 @@ import org.json.JSONObject;
  * @author Valentino
  */
 public class getAllTrainingOffers extends HttpServlet {
+
     private final JSONObject jsonObject = new JSONObject();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -41,19 +41,18 @@ public class getAllTrainingOffers extends HttpServlet {
             throws ServletException, IOException, JSONException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         PrintWriter out = response.getWriter();
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
             ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.getAllTrainingOffers();
-            if(trainingOffer == null){
+            if (trainingOffer == null) {
                 jsonObject.put("status", 0);
                 response.getWriter().write(jsonObject.toString());
-            }else{
-              
+            } else {
+
                 JSONArray array = new JSONArray();
-                for( TrainingOffer offer: trainingOffer ){
+                for (TrainingOffer offer : trainingOffer) {
                     JSONObject jsonTmp = new JSONObject();
                     jsonTmp.put("professor", offer.getPersonSSN());
                     jsonTmp.put("organization", offer.getOrganization());
@@ -64,8 +63,6 @@ public class getAllTrainingOffers extends HttpServlet {
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);
                 response.getWriter().write(jsonObject.toString());
-                //request.setAttribute("trainingMessage",message);
-                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
         } finally {
             out.close();

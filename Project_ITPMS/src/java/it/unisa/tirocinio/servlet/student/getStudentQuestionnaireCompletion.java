@@ -21,10 +21,9 @@ import javax.servlet.http.HttpServletResponse;
  *
  * @author Valentino
  */
-
 @WebServlet(name = "getStudentQuestionnaireCompletion", urlPatterns = {"/getStudentQuestionnaireCompletion"})
 public class getStudentQuestionnaireCompletion extends HttpServlet {
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -38,26 +37,26 @@ public class getStudentQuestionnaireCompletion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
-        try {
-            String matricola = request.getParameter("matricula");
-            if (!(matricola.equals(""))){
-                ConcretePerson aPerson = ConcretePerson.getInstance();
-                Person person = aPerson.getPersonByMatricula(matricola);
+        String matricola = request.getParameter("matricula");
+        System.out.println("************************************" + matricola);
+        if (!(matricola.equals(""))) {
+            ConcretePerson aPerson = ConcretePerson.getInstance();
+            Person person = aPerson.getPersonByMatricula(matricola);
 
-                ConcreteQuestionnaire aQuestionnaires = ConcreteQuestionnaire.getInstance();
-                Questionnaire questionnaire = aQuestionnaires.readQuestionnaire(person.getSSN());
+            ConcreteQuestionnaire aQuestionnaires = ConcreteQuestionnaire.getInstance();
+            Questionnaire questionnaire = aQuestionnaires.readQuestionnaire(person.getSSN());
+            System.out.println("************************************" + questionnaire);
 
-                if(questionnaire == null)
-                    request.setAttribute("questionnaireCompletion",0);
-                    
-                else{
-                    request.setAttribute("questionnaireCompletion",1);
-                }
+            if (questionnaire == null) {
+                System.out.println("************************************Questionnaire is null");
+                request.setAttribute("questionnaireCompletion", 0);
+            } else {
+                request.setAttribute("questionnaireCompletion", 1);
             }
-        } finally {
-            out.close();
+        } else {
+
         }
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

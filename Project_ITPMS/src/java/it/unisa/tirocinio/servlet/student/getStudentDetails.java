@@ -5,12 +5,8 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -53,7 +49,6 @@ public class getStudentDetails extends HttpServlet {
             
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
-            ConcretePerson aPerson = ConcretePerson.getInstance();
             
             if(studentInformation == null){
                 jsonObject.put("status", 0);
@@ -73,8 +68,6 @@ public class getStudentDetails extends HttpServlet {
                 }
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);
-                //request.setAttribute("trainingMessage",message);
-                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
             }
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {

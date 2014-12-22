@@ -11,9 +11,7 @@ import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -37,33 +35,28 @@ public class changeLinkProfessorOrganization extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            String professorSSN = request.getParameter("professorSSN");
-            String organizationVAT = request.getParameter("organizationVAT");
-            
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.readPerson(professorSSN);
-            
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(organizationVAT);
+        String professorSSN = request.getParameter("professorSSN");
+        String organizationVAT = request.getParameter("organizationVAT");
 
-            organization.setProfessor(person.getSSN());
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person person = aPerson.readPerson(professorSSN);
 
-            boolean toReturn = anOrganization.updateOrganization(organization);
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+        Organization organization = anOrganization.readOrganization(organizationVAT);
 
-            if(toReturn){
-                message.setMessage("status", 1);
-            }else{
-                message.setMessage("status", 0);
-            }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
-        } finally {
-            out.close();
+        organization.setProfessor(person.getSSN());
+
+        boolean toReturn = anOrganization.updateOrganization(organization);
+
+        if (toReturn) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
         }
+        request.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

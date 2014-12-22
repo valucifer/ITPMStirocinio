@@ -6,18 +6,20 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Organization;
+import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
+import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
+import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import org.json.JSONArray;
+import javax.servlet.http.HttpSession;
 import org.json.JSONException;
 import org.json.JSONObject;
 
@@ -25,8 +27,9 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-public class getAllOrganizations extends HttpServlet {
-    private final JSONObject jsonObject = new JSONObject();
+@WebServlet(name = "updateTrainingOfferByOrganizationServlet", urlPatterns = {"/updateTrainingOfferByOrganizationServlet"})
+
+public class organizationUpdateTrainingOffer extends HttpServlet {
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -40,33 +43,30 @@ public class getAllOrganizations extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        request.setCharacterEncoding("UTF-8");
+
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            ArrayList<Organization> organization = anOrganization.getAllOrganizations();
-            
-            if(organization == null){
-                jsonObject.put("status", 0);
-            }else{
-                JSONArray array = new JSONArray();
-                for( Organization orga: organization ){
-                    JSONObject jsonTmp = new JSONObject();
-                    jsonTmp.put("companyName", orga.getCompanyName());
-                    jsonTmp.put("vatNumber", orga.getVATNumber());
-                    array.put(jsonTmp);
-                }
-                jsonObject.put("status", 1);
-                jsonObject.put("message", array);
-                
-            }
-            response.getWriter().write(jsonObject.toString());
-        } catch (JSONException ex) {
-            Logger.getLogger(getAllOrganizations.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            out.close();
+        int idModify = Integer.parseInt(request.getParameter("idModify"));
+        String description = request.getParameter("description");
+        HttpSession aSession = request.getSession();
+
+        ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
+        TrainingOffer trainingOffer = aTrainingOffer.readTrainingOffer(idModify);
+
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+        Organization organization = anOrganization.readOrganization(trainingOffer.getOrganization());
+
+        trainingOffer.setDescription(organization.getCompanyName() + " - " + description);
+
+        if (aTrainingOffer.updateTrainingOffer(trainingOffer)) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
         }
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/organizzazione/tporganizzazione.jsp");
+       
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

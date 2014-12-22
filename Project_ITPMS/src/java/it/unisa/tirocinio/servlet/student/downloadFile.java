@@ -8,15 +8,10 @@ package it.unisa.tirocinio.servlet.student;
 import it.unisa.tirocinio.beans.*;
 import it.unisa.tirocinio.manager.concrete.*;
 import java.io.*;
-import static java.sql.DriverManager.println;
-import javafx.print.Printer;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.*;
-import jdk.nashorn.internal.objects.Global;
-import org.apache.commons.io.IOUtils;
-import org.json.JSONObject;
 
 /**
  *

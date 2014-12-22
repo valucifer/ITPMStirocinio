@@ -74,7 +74,6 @@ public class LoginServlet extends HttpServlet {
                     session.setAttribute("person", account.getEmail());
                     response.sendRedirect("tirocinio/amministratore/tpamministratore.jsp");
                 }
-                out.println("aa "+account.getTypeOfAccount());
             } else {
                 session.setAttribute("loginError", "error");
                 response.sendRedirect("login.jsp");

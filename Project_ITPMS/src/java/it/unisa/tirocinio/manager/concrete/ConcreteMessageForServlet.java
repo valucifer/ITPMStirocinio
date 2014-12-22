@@ -26,5 +26,9 @@ public class ConcreteMessageForServlet {
     public void setMessage(String key, Object value) {
         messages.put(key, value);
     }
+    
+    public Object createSubStructure( String key, Map<String, Object> newStructure ){
+        return messages.put(key, newStructure);
+    }
 
 }

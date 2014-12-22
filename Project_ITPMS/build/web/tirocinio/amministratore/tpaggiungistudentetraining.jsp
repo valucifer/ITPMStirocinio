@@ -17,32 +17,26 @@
         <title>DISTRA-MIT</title>
 
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-        <link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-core.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-forms.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-components.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-skins.css">
-        <link rel="stylesheet" href="../../assets/css/custom.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/linecons/css/linecons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/fontawesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-mod.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-core.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-forms.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-components.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-skins.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/custom.css">
 
 
-        <script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpAdministratorLibrary.js"></script>
-        <script src="../../assets/js/validatr.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
 
-        <script>
-            jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });
-        </script>
         <%
-            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
         <script>
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendAll('#comboboxOrganization', '#comboboxProfessor', '#comboboxStudent',${path});
+                tpAdminFunction.appendAll('#comboboxOrganization', '#comboboxProfessor', '#comboboxStudent', '${path}');
             });
         </script>
     </head>
@@ -54,9 +48,9 @@
 
                 <!-- Navbar Brand -->
                 <div class="navbar-brand">
-                    <a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html" class="logo">
-                        <img src="../../assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
-                        <img src="../../assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
+                    <a href="${pageContext.request.contextPath}/offertaFormativa/amministratore/offertaFormativaAmministratore.html" class="logo">
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
                     </a>
                 </div>
 
@@ -82,7 +76,7 @@
 
                 <ul class="navbar-nav">
                     <li>
-                        <a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html">
+                        <a href="${pageContext.request.contextPath}/offertaFormativa/amministratore/offertaFormativaAmministratore.html">
                             <i class="linecons-desktop"></i>
                             <span class="title">Offerta Formativa</span>
                         </a>
@@ -94,7 +88,7 @@
                         </a>
                     </li>
                     <li class="opened active">
-                        <a href="../../tirocinio/amministratore/tpamministratore.jsp">
+                        <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
                             <i class="linecons-megaphone"></i>
                             <span class="title">Gestione Tirocinio</span>
                         </a>
@@ -128,15 +122,15 @@
                 <ul class="nav nav-userinfo navbar-right">
                     <li class="dropdown user-profile">
                         <a href="#" data-toggle="dropdown">
-                            <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
+                            <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                 ${sessionScope.person}
+                                ${sessionScope.person}
                             </span>
                         </a>
 
                         <ul class="dropdown-menu user-profile-menu list-unstyled">
                             <li>
-                                <a href="../../tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreProfiloPersonale.html">
+                                <a href="${pageContext.request.contextPath}/tirocinio/amministratore/gestioneTirocinio&PlacementAmministratoreProfiloPersonale.html">
                                     <i class="fa-edit"></i>
                                     Profilo
                                 </a>
@@ -165,25 +159,25 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="../../tirocinio/amministratore/tpamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Offerta Tirocinio</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpinserimentofileamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpinserimentofileamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Inserimento Moduli</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Associa Professore</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpregisteranorganization.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Registra Azienda</span>
                             </a>
@@ -195,7 +189,7 @@
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpvisionetirocini.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Visione Tirocini</span>
                             </a>
@@ -230,51 +224,71 @@
                                 <h3 class="panel-title">Registrazione Nuovi Tirocini</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" class="form-horizontal" action="/ServerWeb/insertTrainingRequest" method="POST">
+                                <form role="form" class="validate" action="${path}/insertTrainingRequest" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="titleTraining">Titolo Tirocinio</label>
                                         <div class="col-sm-9">
-                                            <input required type="text" class="form-control" name="titleTraining" id="titleTraining">
+                                            <input required type="text" class="form-control" name="titleTraining" id="titleTraining" data-validate="required" data-message-required="Per favore, inserisci il titolo.">
                                         </div>
-                                    </div>
+                                    </div><br><br>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="descriptionTraining">Descrizione Tirocinio</label>
                                         <div class="col-sm-9">
-                                            <input required type="text" class="form-control" name="descriptionTraining" id="descriptionTraining">
+                                            <input required type="text" class="form-control" name="descriptionTraining" id="descriptionTraining" data-validate="required" data-message-required="Per favore, inserisci la descrizione.">
                                         </div>
-                                    </div>
+                                    </div><br><br>
                                     <div class="form-group-separator"></div>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="professorSSN">Professore</label>
                                         <div class="col-sm-9">
-                                            <select name="professorSSN" id="comboboxProfessor" class="form-control" required>
+                                            <select name="professorSSN" id="comboboxProfessor" class="form-control" data-validate="required" data-message-required="Per favore, inserisci il professore.">
                                             </select>
                                         </div>
-                                    </div>
+                                    </div><br><br>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="organizationVAT">Organizzazione</label>
                                         <div class="col-sm-9">
-                                            <select name="organizationVAT" id="comboboxOrganization" class="form-control" required>
+                                            <select name="organizationVAT" id="comboboxOrganization" class="form-control" data-validate="required" data-message-required="Per favore, inserisci l\'azienda.">
                                             </select>
                                         </div>
-                                    </div>
+                                    </div><br>
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="studentSSN">Studente</label>
                                         <div class="col-sm-9">
-                                            <select name="studentSSN" id="comboboxStudent" class="form-control" required>
+                                            <select name="studentSSN" id="comboboxStudent" class="form-control" data-validate="required" data-message-required="Per favore, inserisci lo studente.">
                                             </select>
                                         </div>
-                                    </div>
+                                    </div><br><br>
                                     <div class="form-group-separator"></div>
                                     <div class="row">
                                         <center>
                                             <button type="submit" class="btn btn-blue fileinput-button">
                                                 <i class="fa-pencil"></i>
                                                 <span>Inserisci Tirocinio</span>
-                                                <!-- The file input field used as target for the file upload widget -->
                                             </button>    
                                         </center>
                                     </div>
+                                    <c:set var="status" value="${sessionScope.message.getMessage('status')}"></c:set>
+                                    <c:choose>
+                                        <c:when test="${status == 0}">
+                                            <div class="alert alert-danger">
+                                                <center><strong>Errore,</strong> dati caricati non correttamente. Per favore, riprova.</center>
+                                            </div>
+                                            <%
+                                                request.getSession().removeAttribute("message");
+                                            %>
+                                            <c:remove var="status"/>
+                                        </c:when>
+                                        <c:when test="${status == 1}">
+                                            <div class="alert alert-success">
+                                                <center><strong>Eseguito,</strong> dati caricati correttamente.</center>
+                                            </div>
+                                            <%
+                                                request.getSession().removeAttribute("message");
+                                            %>
+                                            <c:remove var="status"/>
+                                        </c:when>
+                                    </c:choose>
                                 </form>
                             </div>
                         </div>
@@ -318,30 +332,32 @@
         </div>
 
 
-        <link rel="stylesheet" href="../../assets/js/datatables/dataTables.bootstrap.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/meteocons/css/meteocons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/js/datatables/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/meteocons/css/meteocons.css">
 
         <!-- Bottom Scripts -->
-        <script src="../../assets/js/bootstrap.min.js"></script>
-        <script src="../../assets/js/TweenMax.min.js"></script>
-        <script src="../../assets/js/resizeable.js"></script>
-        <script src="../../assets/js/joinable.js"></script>
-        <script src="../../assets/js/xenon-api.js"></script>
-        <script src="../../assets/js/xenon-toggles.js"></script>
-        <script src="../../assets/js/datatables/js/jquery.dataTables.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/TweenMax.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/resizeable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/joinable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-api.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-toggles.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/js/jquery.dataTables.js"></script>
 
         <!-- Imported scripts on this page -->
-        <script src="../../assets/js/datatables/dataTables.bootstrap.js"></script>
-        <script src="../../assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
-        <script src="../../assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/dataTables.bootstrap.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
         <!-- Imported scripts on this page -->
-        <script src="../../assets/js/xenon-widgets.js"></script>
-        <script src="../../assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-        <script src="../../assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-widgets.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
 
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
+        
         <!-- JavaScripts initializations and stuff -->
-        <script src="../../assets/js/xenon-custom.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 
     </body>
 </html> 

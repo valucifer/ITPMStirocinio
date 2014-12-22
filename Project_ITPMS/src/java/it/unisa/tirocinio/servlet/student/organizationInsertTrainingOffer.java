@@ -5,7 +5,6 @@
  */
 package it.unisa.tirocinio.servlet.student;
 
-import it.unisa.integrazione.manager.interfaces.OfferTraining;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
@@ -14,7 +13,6 @@ import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -43,43 +41,35 @@ public class organizationInsertTrainingOffer extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        request.setCharacterEncoding("UTF-8");
         
-        PrintWriter out = response.getWriter();
-        
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = request.getParameter("description");
-            String primaryKey = "moderna@azienda.unisa.it";//request.getParameter("primaryKey");
-            HttpSession session = request.getSession();
-                        
-            ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();
-            Organization organization = aOrganization.getOrganizationByAccount(primaryKey);
-            
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            Person person = aPerson.readPerson(organization.getProfessor());
-            
-            ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            TrainingOffer trainingOffer = new TrainingOffer();
-            
-            trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-            trainingOffer.setDescription(organization.getCompanyName()+" - "+description);
-            trainingOffer.setOrganization(organization.getVATNumber());
-            trainingOffer.setPersonSSN(person.getSSN());
-            
-            boolean toReturn = aTrainingOffer.createOuterTrainingOffer(trainingOffer);
-            
-            if(toReturn){
-                message.setMessage("status", 1);
-            }else{
-                message.setMessage("status", 0);
-            }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/organizzazione/tporganizzazione.jsp");
-            
-        } finally {
-            out.close();
+        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        String description = request.getParameter("description");
+        HttpSession aSession = request.getSession();
+        String organizationEmail = (String) aSession.getAttribute("organization");
+
+        ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();
+        Organization organization = aOrganization.getOrganizationByAccount(organizationEmail);
+
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person person = aPerson.readPerson(organization.getProfessor());
+
+        ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
+        TrainingOffer trainingOffer = new TrainingOffer();
+
+        trainingOffer.setDepartment(person.getDepartmentAbbreviation());
+        trainingOffer.setDescription(organization.getCompanyName() + " - " + description);
+        trainingOffer.setOrganization(organization.getVATNumber());
+        trainingOffer.setPersonSSN(person.getSSN());
+
+        if (aTrainingOffer.createOuterTrainingOffer(trainingOffer)) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
         }
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/organizzazione/tporganizzazione.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

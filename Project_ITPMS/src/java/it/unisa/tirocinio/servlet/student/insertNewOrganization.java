@@ -7,17 +7,15 @@ package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcreteAccount;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -39,38 +37,38 @@ public class insertNewOrganization extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            Account account = new Account();
-            Organization organization = new Organization();
+        request.setCharacterEncoding("UTF-8");
+        HttpSession aSession = request.getSession();
+        Account account = new Account();
+        Organization organization = new Organization();
+
+        organization.setVATNumber(request.getParameter("vatNumber"));
+        organization.setCompanyName(request.getParameter("companyName"));
+        organization.setCity(request.getParameter("city"));
+        organization.setAddress(request.getParameter("address"));
+        organization.setPhone(request.getParameter("phone"));
+        organization.setEmail(request.getParameter("email"));
+
+        account.setEmail(request.getParameter("emailAccount"));
+        account.setPassword(request.getParameter("password"));
+        account.setTypeOfAccount("organization");
+        account.setActive(1);
+
+        organization.setAccountEmail(account.getEmail());
+
+        organization.setProfessor(request.getParameter("professorSSN"));
+
+        ConcreteAccount anAccount = ConcreteAccount.getInstance();
+        anAccount.createAccount(account);
+
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+        
+        if(anOrganization.createOrganization(organization))
+            aSession.setAttribute("status", 1);
+        else aSession.setAttribute("status", 0);
             
-            organization.setVATNumber(request.getParameter("vatNumber"));
-            organization.setCompanyName(request.getParameter("companyName"));
-            organization.setCity(request.getParameter("city"));
-            organization.setAddress(request.getParameter("address"));
-            organization.setPhone(request.getParameter("phone"));
-            organization.setEmail(request.getParameter("email"));
-            
-            account.setEmail(request.getParameter("emailAccount"));
-            account.setPassword(request.getParameter("password"));
-            account.setTypeOfAccount("organization");
-            account.setActive(1);
-            
-            organization.setAccountEmail(account.getEmail());
-            
-            organization.setProfessor(request.getParameter("professorSSN"));
-            
-            ConcreteAccount anAccount = ConcreteAccount.getInstance();  
-            anAccount.createAccount(account);
-            
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            anOrganization.createOrganization(organization);
-            
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpregisteranorganization.jsp");
-        } finally {
-            out.close();
-        }
+        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpregisteranorganization.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

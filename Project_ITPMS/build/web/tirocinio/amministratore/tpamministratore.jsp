@@ -17,72 +17,48 @@
         <title>DISTRA-MIT</title>
 
         <link rel="stylesheet" href="http://fonts.googleapis.com/css?family=Arimo:400,700,400italic">
-        <link rel="stylesheet" href="../../assets/css/fonts/linecons/css/linecons.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/fontawesome/css/font-awesome.min.css">
-        <link rel="stylesheet" href="../../assets/css/bootstrap-mod.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-core.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-forms.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-components.css">
-        <link rel="stylesheet" href="../../assets/css/xenon-skins.css">
-        <link rel="stylesheet" href="../../assets/css/custom.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/linecons/css/linecons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/fontawesome/css/font-awesome.min.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/bootstrap-mod.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-core.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-forms.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-components.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/xenon-skins.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/custom.css">
 
-        <script src="../../assets/js/jquery-1.11.1.min.js"></script>
-        <script src="../../assets/js/tpAdministratorLibrary.js"></script>
-        <script src="../../assets/js/validatr.js"></script>
-
-        <script>
-            jQuery(document).ready(function ($) {
-                $('form').validatr();
-            });
-        </script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
 
         <%
-            pageContext.setAttribute("path", "\"" + pageContext.getServletContext().getContextPath() + "\"");
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
+
+        <c:set var="trainingComplete" value="${sessionScope.message.getMessage('trainingComplete')}"></c:set>
+        <c:choose>
+            <c:when test="${trainingComplete == 0}">
+                <script>
+                    alert("Si sono verificati dei problemi nel completamento della richiesta.");
+                </script>
+                <%
+                    request.getSession().removeAttribute("trainingComplete");
+                %>
+                <c:remove var="trainingComplete"/>
+            </c:when>
+            <c:when test="${trainingComplete == 1}">
+                <script>
+                    alert("La modifica è stata apportata.");
+                </script>
+                <%
+                    request.getSession().removeAttribute("trainingComplete");
+                %>
+                <c:remove var="trainingComplete"/>
+            </c:when>
+        </c:choose>
         <script>
-            function functionDownload(idStudent, typology) {
-                tpAdminFunction.downloadFile(idStudent, typology, ${path });
-            }
-
-            function rejectTrainingRequest(count, email) {
-                if ($("#esDocumentError").is(":checked")) {
-                    $("#esDocumentError").click();
-                }
-                if ($("#cfuNotFoundError").is(":checked")) {
-                    $("#cfuNotFoundError").click();
-                }
-                $("#textareaDescriptionError").val("");
-                $("#serialNumberModalForReject").val(count);
-                $("#hiddenErroriRiscontrati").attr("value", count);
-                $("#nameANDsurnameModalForReject").val(email);
-                jQuery('#modalGestioneTirocinioANDPlacementAmministratore').modal('show', {backdrop: 'static'});
-            }
-
-            function acceptTrainingRequest(idRequest, email) {
-                tpAdminFunction.acceptStudentForTraining(idRequest, ${path });
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            }
-            function completeTrainingRequest(idComplete) {
-                tpAdminFunction.completeStudentForTraining(idComplete, ${path });
-                alert("Lo studente " + idComplete + " ha concluso il tirocinio!");
-                setTimeout(function () {
-                    location.reload();
-                }, 1000);
-            }
-
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendStudentInformation('#tableNotifications',${path });
+                tpAdminFunction.appendStudentInformation('#tableNotifications', '${path}');
             });
         </script>
-
-        <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
-        <!--[if lt IE 9]>
-                <script src="https://oss.maxcdn.com/html5shiv/3.7.2/html5shiv.min.js"></script>
-                <script src="https://oss.maxcdn.com/respond/1.4.2/respond.min.js"></script>
-        <![endif]-->
-
 
     </head>
     <body class="page-body">
@@ -94,8 +70,8 @@
                 <!-- Navbar Brand -->
                 <div class="navbar-brand">
                     <a href="../../offertaFormativa/amministratore/offertaFormativaAmministratore.html" class="logo">
-                        <img src="../../assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
-                        <img src="../../assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsite.png" width="80" alt="" class="hidden-xs" />
+                        <img src="${pageContext.request.contextPath}/assets/images/mitforsitemini.png" width="80" alt="" class="visible-xs" />
                     </a>
                 </div>
 
@@ -169,7 +145,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="../../assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                 ${sessionScope.person}
+                                ${sessionScope.person}
                             </span>
                         </a>
 
@@ -210,31 +186,31 @@
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpinserimentofileamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpinserimentofileamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Inserimento Moduli</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Associa Professore</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpregisteranorganization.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpregisteranorganization.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Registra Azienda</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpaggiungistudentetraining.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpaggiungistudentetraining.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Aggiungi Tirocinio</span>
                             </a>
                         </li>
                         <li>
-                            <a href="../../tirocinio/amministratore/tpvisionetirocini.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpvisionetirocini.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Visione Tirocini</span>
                             </a>
@@ -288,7 +264,18 @@
                                 </table>
                             </div>
                         </div>
-
+                        <c:set var="status" value="${sessionScope.message.getMessage('status')}"></c:set>
+                        <c:choose>
+                            <c:when test="${status == 0}">
+                                <div class="alert alert-danger">
+                                    <center><strong>Errore,</strong> dati caricati non correttamente. Per favore, riprova.</center>
+                                </div>
+                                <%
+                                    request.getSession().removeAttribute("message");
+                                %>
+                                <c:remove var="status"/>
+                            </c:when>
+                        </c:choose>
                     </div>
                 </div>
 
@@ -323,7 +310,7 @@
 
         </div>
 
-        <div class="modal fade" id="modalGestioneTirocinioANDPlacementAmministratore">
+        <div class="modal fade" id="modal">
             <div class="modal-dialog">
                 <div class="modal-content">
                     <div class="modal-header">
@@ -352,8 +339,8 @@
 
                             </div>
                         </div>
-                        <form role="form" class="form-horizontal" action="/ServerWeb/addErrorToStudentInformation" method="POST">
-                            <input type="hidden" name="hiddenErroriRiscontrati" id="hiddenErroriRiscontrati"/>
+                        <form role="form" class="validate" action="${path}/addErrorToStudentInformation" method="POST">
+                            <input type="hidden" name="errors" id="errors"/>
                             <div class="row">
                                 <div class="col-lg-12">
                                     <div class="xe-widget xe-todo-list">
@@ -364,25 +351,25 @@
                                             <ul class="list-unstyled">
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionCurriculum" value="Curriculum Vitae mancante: il file inviato al personale amministrativo presenta degli errori." type="checkbox" id="cvDocumentError" class="cbr"/>
+                                                        <input name="curriculumDescription" value="Curriculum Vitae mancante: il file inviato al personale amministrativo presenta degli errori." type="checkbox" id="cvDocumentError" class="cbr"/>
                                                         Curriculum Vitae mancante: il file inviato dallo studente presenta degli errori.
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionLibretto" value="Libretto Universitario: il file inviato al personale amministrativo presenta delle incongruenze con i dati del sistema." type="checkbox" id="esDocumentError" class="cbr"/>
+                                                        <input name="accademicTrainscriptDescription" value="Libretto Universitario: il file inviato al personale amministrativo presenta delle incongruenze con i dati del sistema." type="checkbox" id="esDocumentError" class="cbr"/>
                                                         Libretto Universitario: il file inviato dallo studente presenta delle incongruenze con i dati del sistema.
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionCFUMancanti" value="Non possiedi un numero di CFU sufficienti per poter proseguire la pratica." type="checkbox" id="cfuNotFoundError" class="cbr"/>
-                                                            CFU mancanti: Lo studente non possiede un numero di CFU sufficienti per poter proseguire la pratica.
+                                                        <input name="cfuDescription" value="Non possiedi un numero di CFU sufficienti per poter proseguire la pratica." type="checkbox" id="cfuNotFoundError" class="cbr"/>
+                                                        CFU mancanti: Lo studente non possiede un numero di CFU sufficienti per poter proseguire la pratica.
                                                     </label>
                                                 </li>
                                                 <li>
                                                     <label>
-                                                        <input name="descriptionOther" value="Sono stati riscontrati degli errori nell'elaborazione della tua pratica. Contatta l'ufficio amministrativo." type="checkbox" id="otherError" class="cbr" />
+                                                        <input name="otherDescription" value="Sono stati riscontrati degli errori nell'elaborazione della tua pratica. Contatta l'ufficio amministrativo." type="checkbox" id="otherError" class="cbr" checked />
                                                         Altro: il motivo del rifiuto della richiesta non è elencato. Lo studente provvederà a contattare l'ufficio amministrativo.
                                                     </label>
                                                 </li>
@@ -409,30 +396,32 @@
         </div>
 
 
-        <link rel="stylesheet" href="../../assets/js/datatables/dataTables.bootstrap.css">
-        <link rel="stylesheet" href="../../assets/css/fonts/meteocons/css/meteocons.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/js/datatables/dataTables.bootstrap.css">
+        <link rel="stylesheet" href="${pageContext.request.contextPath}/assets/css/fonts/meteocons/css/meteocons.css">
 
         <!-- Bottom Scripts -->
-        <script src="../../assets/js/bootstrap.min.js"></script>
-        <script src="../../assets/js/TweenMax.min.js"></script>
-        <script src="../../assets/js/resizeable.js"></script>
-        <script src="../../assets/js/joinable.js"></script>
-        <script src="../../assets/js/xenon-api.js"></script>
-        <script src="../../assets/js/xenon-toggles.js"></script>
-        <script src="../../assets/js/datatables/js/jquery.dataTables.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/bootstrap.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/TweenMax.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/resizeable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/joinable.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-api.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-toggles.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/js/jquery.dataTables.js"></script>
 
         <!-- Imported scripts on this page -->
-        <script src="../../assets/js/datatables/dataTables.bootstrap.js"></script>
-        <script src="../../assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
-        <script src="../../assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/dataTables.bootstrap.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/yadcf/jquery.dataTables.yadcf.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/datatables/tabletools/dataTables.tableTools.min.js"></script>
 
         <!-- Imported scripts on this page -->
-        <script src="../../assets/js/xenon-widgets.js"></script>
-        <script src="../../assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
-        <script src="../../assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-widgets.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jvectormap/jquery-jvectormap-1.2.2.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
+
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
 
         <!-- JavaScripts initializations and stuff -->
-        <script src="../../assets/js/xenon-custom.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 
     </body>
 </html>

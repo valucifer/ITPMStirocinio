@@ -98,7 +98,7 @@ public class getAllEntities extends HttpServlet {
             jsonObject.put("professor", arrayProfessor);
             jsonObject.put("student", arrayPerson);
             
-            response.getWriter().write(jsonObject.toString());
+            out.write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(getAllEntities.class.getName()).log(Level.SEVERE, null, ex);
         } finally {

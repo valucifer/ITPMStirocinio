@@ -6,11 +6,8 @@
 package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -22,6 +19,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -50,14 +48,14 @@ public class organizationGetAllTrainingOffers extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            String primaryKey = request.getParameter("accountEmail");
+            
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.getOrganizationByAccount(primaryKey);
+            HttpSession aSession = request.getSession();
+            String organizationEmail = (String) aSession.getAttribute("organization");
+            Organization organization = anOrganization.getOrganizationByAccount(organizationEmail);
             
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
             ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readOuterTrainingOffer(organization.getVATNumber());
-            
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
             
             if(trainingOffer == null){
                 jsonObject.put("status", 0);
@@ -72,8 +70,6 @@ public class organizationGetAllTrainingOffers extends HttpServlet {
                 }
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);
-                //request.setAttribute("trainingMessage",message);
-                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
                 
             }
             response.getWriter().write(jsonObject.toString());

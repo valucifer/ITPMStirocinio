@@ -7,15 +7,11 @@ package it.unisa.tirocinio.servlet.student;
 
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.beans.TrainingRequest;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
-import java.io.PrintWriter;
 import java.util.ArrayList;
 import java.util.logging.Level;
 import java.util.logging.Logger;

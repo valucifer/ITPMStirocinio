@@ -93,12 +93,12 @@
         <servlet-class>it.unisa.tirocinio.servlet.student.studentUploadFiles</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingOfferByOrganizationServlet</servlet-class>
+        <servlet-name>organizationUpdateTrainingOffer</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.organizationUpdateTrainingOffer</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>updateTrainingOfferByProfessorServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.student.updateTrainingOfferByProfessorServlet</servlet-class>
+        <servlet-name>professorUpdateTrainingOffer</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.student.professorUpdateTrainingOffer</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>updateTrainingRequestStatus</servlet-name>
@@ -141,12 +141,12 @@
         <url-pattern>/updateTrainingRequestStatus</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>updateTrainingOfferByProfessorServlet</servlet-name>
-        <url-pattern>/updateTrainingOfferByProfessorServlet</url-pattern>
+        <servlet-name>professorUpdateTrainingOffer</servlet-name>
+        <url-pattern>/professorUpdateTrainingOffer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>updateTrainingOfferByOrganizationServlet</servlet-name>
-        <url-pattern>/updateTrainingOfferByOrganizationServlet</url-pattern>
+        <servlet-name>organizationUpdateTrainingOffer</servlet-name>
+        <url-pattern>/organizationUpdateTrainingOffer</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>studentUploadFiles</servlet-name>

@@ -62,9 +62,9 @@ public class getStudentTrainingStatus extends HttpServlet {
             message.setMessage("description",studentStatus.getDescription());
             message.setMessage("idStudentStatus",studentStatus.getIdStudentStatus());
             request.setAttribute("message",message);
-            //out.println("message "+message.getMessage("status"));
         }else{
             message.setMessage("status",0);
+            request.setAttribute("message",message);
         }
         
     }

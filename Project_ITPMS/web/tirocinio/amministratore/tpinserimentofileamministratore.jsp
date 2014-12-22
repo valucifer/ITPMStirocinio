@@ -232,8 +232,8 @@
 
                             <div class="panel-body">
 
-                                <p>Questa sezione del sito ti permetterà di inoltrare i moduli inerenti al tirocinio. Per inviare la tua richiesta, è necessario tu possieda i moduli "Piano Formativo", "Registro Ore" e il "Questionario" sul quale riportate le informazioni relative.</p>
-                                <p>Entrambi i files devono essere in formato PDF. Gli Studenti, in seguito, potranno scaricare i suddetti moduli mediante accesso alle proprie aree dedicate e compilarli.</p>
+                                <p>Questa sezione del sito permetterà di inoltrare i moduli inerenti al tirocinio. Per inviare la tua richiesta, è necessario tu possieda i moduli "Piano Formativo", "Registro Ore" e "Questionario".</p>
+                                <p>Tutti i files devono essere in formato PDF. Gli Studenti, in seguito, potranno scaricare i suddetti moduli mediante accesso alle proprie aree dedicate e compilarli.</p>
                                 <br><br>
                                 <div class="row">
                                     <div class="col-sm-12">
@@ -242,17 +242,17 @@
                                                 <label class="col-sm-2 control-label" for="trainingPlan" >Piano Formativo</label>
 
                                                 <div class="col-sm-10">
-                                                    <input type="file" required class="form-control" id="trainingPlan" name="tp" accept="application/pdf">
+                                                    <input type="file" required class="form-control" id="trainingPlan" name="trainingPlan" accept="application/pdf">
                                                 </div>
                                                 <label class="col-sm-2 control-label" for="examsCarriedOut">Esami svolti</label>
                                                 <br><br>
                                                 <div class="col-sm-10">
-                                                    <input type="file" required class="form-control" id="examsCarriedOut" name="eco" accept="application/pdf">
+                                                    <input type="file" required class="form-control" id="examsCarriedOut" name="examsCarriedOut" accept="application/pdf">
                                                 </div><br><br>
-                                                <label class="col-sm-2 control-label" for="questions" >Questionario</label>
+                                                <label class="col-sm-2 control-label" for="questionnaire" >Questionario</label>
 
                                                 <div class="col-sm-10">
-                                                    <input type="file" required class="form-control" id="questions" name="qs" accept="application/pdf">
+                                                    <input type="file" required class="form-control" id="questionnaire" name="questionnaire" accept="application/pdf">
                                                 </div>
                                                 <br><br><br>
                                                 <div id="moduleControl" align="center"></div>

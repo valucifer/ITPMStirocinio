@@ -13,7 +13,6 @@ import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -42,61 +41,58 @@ public class addErrorToStudentInformation extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
+        HttpSession aSession = request.getSession();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        HttpSession session = request.getSession();
-        try {
-            String descriptionCurriculum = null, descriptionLibretto = null, descriptionCFUMancanti = null, descriptionOther = null;
-            /* TODO output your page here. You may use following sample code. */
-            descriptionCurriculum = request.getParameter("descriptionCurriculum");
-            descriptionLibretto = request.getParameter("descriptionLibretto");
-            descriptionCFUMancanti = request.getParameter("descriptionCFUMancanti");
-            descriptionOther = request.getParameter("descriptionOther");
-            
-            String matriculaStudent = request.getParameter("hiddenErroriRiscontrati");
-            String tmp = "";
-            if(descriptionCurriculum != null)
-                tmp = tmp +" "+descriptionCurriculum+";";
-            if(descriptionLibretto != null)
-                tmp = tmp +" "+descriptionLibretto+";";
-            if(descriptionCFUMancanti != null)
-                tmp = tmp +" "+descriptionCFUMancanti+";";
-            if(descriptionOther != null)
-                tmp = tmp +" "+descriptionOther;
-            
-            ConcretePerson aPerson = ConcretePerson.getInstance();  
-            Person person = aPerson.getPersonByMatricula(matriculaStudent);
-            
-            ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
-            
-            if(aMessage.getDescription() == null){
-                aMessage = new RejectedTrainingMessage();
-                aMessage.setDescription( tmp );
-                aMessage.setPersonSSN(person.getSSN());
-                aRejectedMessage.createRejectedTrainingMessage(aMessage);                
-            }else{
-                aMessage.setDescription( tmp );
-                aRejectedMessage.updateRejectedTrainingMessage(aMessage);                
-            }
-               
-            ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-            StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
-            
-            studentInformation.setStudentStatus(1);
-            boolean toReturn = aStudentInformation.updateStudentInformation(studentInformation);
-            
-            if(toReturn){
-                message.setMessage("status", 1);
-            }else{
-                message.setMessage("status", 0);
-            }
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpamministratore.jsp");
-            
-        } finally {
-            out.close();
+        String curriculumDescription = request.getParameter("curriculumDescription");
+        String accademicTranscriptDescription = request.getParameter("accademicTrainscriptDescription");
+        String cfuDescription = request.getParameter("cfuDescription");
+        String otherErrorsDescription = request.getParameter("otherDescription");
+
+        String matriculaStudent = request.getParameter("errors");
+        String tmp = "";
+        if (curriculumDescription != null) {
+            tmp = tmp + " " + curriculumDescription + ";";
         }
+        if (accademicTranscriptDescription != null) {
+            tmp = tmp + " " + accademicTranscriptDescription + ";";
+        }
+        if (cfuDescription != null) {
+            tmp = tmp + " " + cfuDescription + ";";
+        }
+        if (otherErrorsDescription != null) {
+            tmp = tmp + " " + otherErrorsDescription;
+        }
+
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person person = aPerson.getPersonByMatricula(matriculaStudent);
+
+        ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
+        RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
+
+        if (aMessage.getDescription() == null) {
+            aMessage = new RejectedTrainingMessage();
+            aMessage.setDescription(tmp);
+            aMessage.setPersonSSN(person.getSSN());
+            aRejectedMessage.createRejectedTrainingMessage(aMessage);
+        } else {
+            aMessage.setDescription(tmp);
+            aRejectedMessage.updateRejectedTrainingMessage(aMessage);
+        }
+
+        ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
+        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
+
+        studentInformation.setStudentStatus(1);
+        boolean toReturn = aStudentInformation.updateStudentInformation(studentInformation);
+
+        if (toReturn) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
+        }
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpamministratore.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

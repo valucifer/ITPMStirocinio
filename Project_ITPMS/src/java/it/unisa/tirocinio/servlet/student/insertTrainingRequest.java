@@ -13,11 +13,11 @@ import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,49 +38,45 @@ public class insertTrainingRequest extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        HttpSession aSession = request.getSession();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        PrintWriter out = response.getWriter();
-        try {
-            /* TODO output your page here. You may use following sample code. */
-            String title = request.getParameter("titleTraining");
-            String description = request.getParameter("descriptionTraining");
-            String professor = request.getParameter("professorSSN");
-            String student = request.getParameter("studentSSN");
-            String organiz = request.getParameter("organizationVAT");
-            
-            ConcretePerson aStudent = ConcretePerson.getInstance();
-            Person studentSSN = aStudent.readPerson(student);
-            
-            ConcretePerson aProfessor = ConcretePerson.getInstance();
-            Person professorSSN = aProfessor.readPerson(professor);
-            
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(organiz);
-            
-            ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-            TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(student);
-            
-            if(trainingRequest.getStudentSSN() == null){
-                trainingRequest = new TrainingRequest();
-                trainingRequest.setDescription(description);
-                trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
-                trainingRequest.setPersonSSN(professorSSN.getSSN());
-                trainingRequest.setStudentSSN(studentSSN.getSSN());
-                trainingRequest.setTitle(title);
-                trainingRequest.setTrainingStatus(1);
-            }
-            
-            if(aTrainingRequest.createTrainingRequest(trainingRequest)){
-                message.setMessage("status", 1);
-            }else
-                message.setMessage("status", 0);
-            
-            request.setAttribute("message",message);
-            response.sendRedirect(request.getContextPath()+"/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
-            
-        } finally {
-            out.close();
+        String title = request.getParameter("titleTraining");
+        String description = request.getParameter("descriptionTraining");
+        String professor = request.getParameter("professorSSN");
+        String student = request.getParameter("studentSSN");
+        String organiz = request.getParameter("organizationVAT");
+
+        ConcretePerson aStudent = ConcretePerson.getInstance();
+        Person studentSSN = aStudent.readPerson(student);
+
+        ConcretePerson aProfessor = ConcretePerson.getInstance();
+        Person professorSSN = aProfessor.readPerson(professor);
+
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+        Organization organization = anOrganization.readOrganization(organiz);
+
+        ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
+        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(student);
+
+        if (trainingRequest.getStudentSSN() == null) {
+            trainingRequest = new TrainingRequest();
+            trainingRequest.setDescription(description);
+            trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
+            trainingRequest.setPersonSSN(professorSSN.getSSN());
+            trainingRequest.setStudentSSN(studentSSN.getSSN());
+            trainingRequest.setTitle(title);
+            trainingRequest.setTrainingStatus(1);
         }
+
+        if (aTrainingRequest.createTrainingRequest(trainingRequest)) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
+        }
+
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
