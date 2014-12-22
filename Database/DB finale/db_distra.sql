@@ -931,6 +931,26 @@ ENGINE = InnoDB
 DEFAULT CHARACTER SET = utf8;
 
 
+-- -----------------------------------------------------
+-- Table `db_distra`.`questionnaire`
+-- -----------------------------------------------------
+DROP TABLE IF EXISTS `db_distra`.`questionnaire` ;
+
+CREATE TABLE IF NOT EXISTS `db_distra`.`questionnaire` (
+  `student_ssn` VARCHAR(16) NOT NULL,
+  `company_name` VARCHAR(45) NOT NULL,
+  `typology_organization` VARCHAR(45) NULL,
+  `first_question` VARCHAR(45) NULL,
+  `second_question` VARCHAR(45) NULL,
+  `third_question` VARCHAR(45) NULL,
+  `fourth_question` VARCHAR(45) NULL,
+  `fifth_question` VARCHAR(45) NULL,
+  `sixth_question` VARCHAR(45) NULL,
+  `seventh_question` VARCHAR(45) NULL,
+  PRIMARY KEY (`student_ssn`))
+ENGINE = InnoDB;
+
+
 SET SQL_MODE=@OLD_SQL_MODE;
 SET FOREIGN_KEY_CHECKS=@OLD_FOREIGN_KEY_CHECKS;
 SET UNIQUE_CHECKS=@OLD_UNIQUE_CHECKS;
