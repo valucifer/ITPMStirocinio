@@ -224,7 +224,7 @@
                                 <h3 class="panel-title">Registrazione Nuova Azienda</h3>
                             </div>
                             <div class="panel-body">
-                                <form role="form" class="validate" action="${path}/insertNewOrganization" method="POST">
+                                <form role="form" class="form-horizontal validate" action="${path}/insertNewOrganization" method="POST">
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="vatNumber">P.IVA Azienda</label>
                                         <div class="col-sm-9">
@@ -270,8 +270,8 @@
                                                 var prefix = tmp_split[0];
                                                 var suffix = tmp_split[1];
                                                 var protected = tmp_split[2];
-                                                if (protected === null) {
-                                                    if (((prefix !== null) && (suffix !== null)) && ((prefix !== "") && (suffix !== ""))) {
+                                                if (protected == null) {
+                                                    if (((prefix != null) && (suffix != null)) && ((prefix != "") && (suffix != ""))) {
                                                         if (!(((prefix.length >= 3) && (prefix.length <= 5)) && ((suffix.length >= 6) && (suffix.length <= 10)))) {
                                                             alert("Attenzione alla formattazione del campo 'TELEFONO'.\nIn particolare:\nil prefisso prevede un min di 3 e un max di 5 numeri,\nil suffisso un min di 6 e un max di 10 numeri.");
                                                             $("#submit").attr("disabled", "disabled");
@@ -386,7 +386,7 @@
                                             </button>    
                                         </center>
                                     </div>
-                                    <c:set var="status" value="${sessionScope.message.getMessage('status')}"></c:set>
+                                    <c:set var="status" value="${sessionScope.status}"></c:set>
                                     <c:choose>
                                         <c:when test="${status == 0}">
                                             <div class="alert alert-danger">

@@ -40,8 +40,10 @@ public class completeTraining extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         HttpSession aSession = request.getSession();
+        
         String studentMatricula = request.getParameter("matricula");
         ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = aPerson.getPersonByMatricula(studentMatricula);
@@ -70,7 +72,7 @@ public class completeTraining extends HttpServlet {
             message.setMessage("trainingComplete", 0);
         }
         aSession.setAttribute("message", message);
-        response.sendRedirect(request.getContextPath() + "/tirocinio/organizzazione/tpamministratore.jsp");
+        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpamministratore.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

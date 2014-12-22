@@ -119,10 +119,10 @@ tpAdminFunction = {
                     stringToAppend_tmp += "<button onClick=tpAdminFunction.functionDownload('" + array[i].idStudent + "','ES','"+path+"') class='btn btn-info btn-sm'><i class='fa fa-external-link'></i><span> Visualizza</span></button>";
                     stringToAppend_tmp += "</td><td>";
                     if (array[i].statusStudent !== 2) {
-                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon btn-secondary" onClick=tpAdminFunction.acceptTrainingRequest("' + array[i].idStudent + '","' + array[i].emailStudent + ',"'+path+'")>Accetta</button>';
+                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon btn-secondary" onClick=tpAdminFunction.acceptTrainingRequest("' + array[i].idStudent + '","'+path+'")>Accetta</button>';
                         stringToAppend_tmp += "<button class='btn btn-sm btn-icon btn-red' onClick=tpAdminFunction.rejectTrainingRequest('" + array[i].idStudent + "','" + array[i].emailStudent + "')>Rifiuta</button></span></td></tr>";
                     } else {
-                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon" onClick=tpAdminFunction.completeTrainingRequest("' + array[i].idStudent + ',"'+path+'") style="background-color:#38548f; color:white;">Concluso</button></span></td></tr>';
+                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon" onClick=tpAdminFunction.completeTrainingRequest("' + array[i].idStudent + '","'+path+'") style="background-color:#38548f; color:white;">Concluso</button></span></td></tr>';
                     }
                     $(idTable).append(stringToAppend_tmp);
                 }

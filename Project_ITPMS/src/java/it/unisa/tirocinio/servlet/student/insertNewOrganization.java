@@ -66,7 +66,7 @@ public class insertNewOrganization extends HttpServlet {
         if(anOrganization.createOrganization(organization))
             aSession.setAttribute("status", 1);
         else aSession.setAttribute("status", 0);
-            
+        
         response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpregisteranorganization.jsp");
 
     }

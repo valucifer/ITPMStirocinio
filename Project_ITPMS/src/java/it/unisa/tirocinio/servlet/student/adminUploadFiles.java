@@ -13,6 +13,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
@@ -52,6 +53,7 @@ public class adminUploadFiles extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        HttpSession aSession = request.getSession();
         PrintWriter out = response.getWriter();
         try {
             out = response.getWriter();
@@ -84,6 +86,7 @@ public class adminUploadFiles extends HttpServlet {
             ConcreteMessageForServlet message = new ConcreteMessageForServlet();
             message.setMessage("status", 1);
             out.write(message.toString());
+            aSession.setAttribute("message", message);
             response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpinserimentofileamministratore.jsp");
         } catch (Exception ex) {
             Logger.getLogger(adminUploadFiles.class.getName()).log(Level.SEVERE, null, ex);

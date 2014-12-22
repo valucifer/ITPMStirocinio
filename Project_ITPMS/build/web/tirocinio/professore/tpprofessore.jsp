@@ -317,7 +317,7 @@
                                         <label for="descriptionTrainingForModify" class="col-sm-3 control-label">Descrizione del Tirocinio</label>
                                         <div class="col-sm-9">
                                             <input type="hidden" name="idModify" id="idForModifyTrainingProfessor">
-                                            <textarea required name="description" id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250" data-validate="required" data-message-required="Per favore, inserisci la descrizione."></textarea>
+                                            <textarea name="description" id="descriptionTrainingForModify" class="form-control" placeholder="" rows="5" cols="5" maxlength="250" data-validate="required" data-message-required="Per favore, inserisci la descrizione."></textarea>
                                         </div>
                                     </div>	
                                 </div>

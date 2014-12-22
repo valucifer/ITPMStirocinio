@@ -44,15 +44,6 @@
                 %>
                 <c:remove var="trainingComplete"/>
             </c:when>
-            <c:when test="${trainingComplete == 1}">
-                <script>
-                    alert("La modifica è stata apportata.");
-                </script>
-                <%
-                    request.getSession().removeAttribute("trainingComplete");
-                %>
-                <c:remove var="trainingComplete"/>
-            </c:when>
         </c:choose>
         <script>
             jQuery(document).ready(function ($) {

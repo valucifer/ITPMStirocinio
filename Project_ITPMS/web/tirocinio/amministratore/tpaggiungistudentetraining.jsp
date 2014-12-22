@@ -355,7 +355,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
-        
+
         <!-- JavaScripts initializations and stuff -->
         <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 

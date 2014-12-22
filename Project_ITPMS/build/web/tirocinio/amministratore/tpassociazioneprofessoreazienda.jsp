@@ -28,14 +28,14 @@
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
-       
+
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
         <script>
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendOrgANDProfessor('#comboboxOrganization', '#comboboxProfessor',"${path}");
+                tpAdminFunction.appendOrgANDProfessor('#comboboxOrganization', '#comboboxProfessor', "${path}");
             });
         </script>
 
@@ -124,7 +124,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                 ${sessionScope.person}
+                                ${sessionScope.person}
                             </span>
                         </a>
 
@@ -248,6 +248,27 @@
                                             </button>    
                                         </center>
                                     </div>
+                                    <c:set var="status" value="${sessionScope.message.getMessage('status')}"></c:set>
+                                    <c:choose>
+                                        <c:when test="${status == 0}">
+                                            <div class="alert alert-danger">
+                                                <center><strong>Errore,</strong> dati caricati non correttamente. Per favore, riprova.</center>
+                                            </div>
+                                            <%
+                                                request.getSession().removeAttribute("message");
+                                            %>
+                                            <c:remove var="status"/>
+                                        </c:when>
+                                        <c:when test="${status == 1}">
+                                            <div class="alert alert-success">
+                                                <center><strong>Effettuato,</strong> dati caricati correttamente</center>
+                                            </div>
+                                            <%
+                                                request.getSession().removeAttribute("message");
+                                            %>
+                                            <c:remove var="status"/>
+                                        </c:when>
+                                    </c:choose>
                                 </form>
                             </div>
                         </div>
@@ -312,7 +333,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
-        
+
         <!-- JavaScripts initializations and stuff -->
         <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 

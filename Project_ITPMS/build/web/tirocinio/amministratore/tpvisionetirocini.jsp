@@ -158,7 +158,7 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="#">
+                           <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Offerta Tirocinio</span>
                             </a>
@@ -268,7 +268,7 @@
                                         jQuery(document).ready(function ($) {
                                             $("#appendSolutionTraining").click(function () {
                                                 $("#solutionStudentTrainingView").removeAttr("hidden");
-                                                tpAdminFunction.appendStudentIntoSelectForChangeTraining("#comboboxStudent",${path });
+                                                tpAdminFunction.appendStudentIntoSelectForChangeTraining("#comboboxStudent",'${path }');
                                                 setTimeout(function () {
                                                     if ($("#comboboxStudent").val() === "Dati_non_presenti")
                                                         $("#buttonChangeTraining").attr("disabled", true);

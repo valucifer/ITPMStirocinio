@@ -43,10 +43,7 @@ public class getStudentDetails extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             ArrayList<StudentInformation> studentInformation = aStudentInformation.getAllStudentInformations();
             
@@ -72,8 +69,6 @@ public class getStudentDetails extends HttpServlet {
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(getStudentDetails.class.getName()).log(Level.SEVERE, null, ex);
-        } finally {
-            out.close();
         }
     }
 

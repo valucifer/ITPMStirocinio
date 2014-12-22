@@ -15,6 +15,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,7 +39,7 @@ public class changeLinkProfessorOrganization extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         String professorSSN = request.getParameter("professorSSN");
         String organizationVAT = request.getParameter("organizationVAT");
-
+        HttpSession aSession = request.getSession();
         ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = aPerson.readPerson(professorSSN);
 
@@ -54,7 +55,7 @@ public class changeLinkProfessorOrganization extends HttpServlet {
         } else {
             message.setMessage("status", 0);
         }
-        request.setAttribute("message", message);
+        aSession.setAttribute("message", message);
         response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
 
     }
