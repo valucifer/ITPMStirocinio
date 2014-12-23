@@ -21,7 +21,7 @@ tpFunction = {
     createAcceptedStudentPanel: function (panelID) {
         $(panelID).empty();
         $(panelID).append("<center><h2>La tua richiesta è stata <strong>accettata</strong>!</h2><br><h4>Puoi ora procedere a reperire le informazioni dei referenti responsabili del tirocinio.</h4></center>");
-        $(panelID).append("<<p>Puoi inviare una mail di richiesta di tirocinio effettuando un click sull'inidirizzo associato all'azienda.</p></center>");
+        $(panelID).append("<p>Puoi inviare una mail di richiesta di tirocinio effettuando un click sull'indirizzo associato all'azienda.</p></center>");
     },
     createRejectedStudentPanel: function (divID, path) {
         $(divID).removeAttr("hidden");

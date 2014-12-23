@@ -43,13 +43,13 @@ public class getStudentTrainingStatus extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
+        HttpSession aSession = request.getSession();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
-        String email = "v.vivone@studenti.unisa.it" ;//request.getParameter("accountEmail");
+        String studentEmail = (String) aSession.getAttribute("person");
 
-        Person person = aPerson.getStudent(email);
+        Person person = aPerson.getStudent(studentEmail);
             
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
         StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
@@ -61,12 +61,13 @@ public class getStudentTrainingStatus extends HttpServlet {
             message.setMessage("status",1);
             message.setMessage("description",studentStatus.getDescription());
             message.setMessage("idStudentStatus",studentStatus.getIdStudentStatus());
-            request.setAttribute("message",message);
+            aSession.setAttribute("message",message);
         }else{
             message.setMessage("status",0);
-            request.setAttribute("message",message);
+            aSession.setAttribute("message",message);
         }
-        
+        response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tphome.jsp");
+
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">
