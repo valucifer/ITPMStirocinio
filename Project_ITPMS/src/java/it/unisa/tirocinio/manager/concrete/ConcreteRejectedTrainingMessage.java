@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
@@ -33,6 +28,11 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param aRejectedTrainingMessage
+     * @return true if a RejectedTrainingMessage is created without errors, false otherwise
+     */
     @Override
     public boolean createRejectedTrainingMessage(RejectedTrainingMessage aRejectedTrainingMessage) {
         initializeConnection();
@@ -58,6 +58,11 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         }
     }
     
+    /**
+     *
+     * @param aRejectedTrainingMessage
+     * @return true if a RejectedTrainingMessage object is correctly updated
+     */
     @Override
     public boolean updateRejectedTrainingMessage( RejectedTrainingMessage aRejectedTrainingMessage ){
         initializeConnection();
@@ -83,6 +88,11 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         }
     }
 
+    /**
+     *
+     * @param idRejectedTrainingMessage
+     * @return true if a certain RejectedTrainingMessage object is successfully deleted, false otherwise
+     */
     @Override
     public boolean deleteOrganization(int idRejectedTrainingMessage) {
         initializeConnection();
@@ -107,7 +117,7 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
     /**
      *
      * @param idRejectedTraingMessage
-     * @return
+     * @return a RejectedTrainingMessage object if reading operation from Database is correct, null otherwise
      */
     @Override
     public RejectedTrainingMessage readTrainingMessage(int idRejectedTraingMessage) {
@@ -139,6 +149,10 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of RejectedTrainingMessage which contains all rejected training messages
+     */
     @Override
     public ArrayList<RejectedTrainingMessage> getAllTrainingMessages() {
         initializeConnection();        
@@ -170,6 +184,10 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         }
     }
     
+    /**
+     *
+     * @return a ConcreteRejectedTrainingMessage object if there are no instances of ConcreteRejectedTrainingMessage currently alive
+     */
     public static synchronized ConcreteRejectedTrainingMessage getInstance(){
         if(instance == null)
             instance = new ConcreteRejectedTrainingMessage();
@@ -185,6 +203,11 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
         }
     }
 
+    /**
+     *
+     * @param ssn
+     * @return a RejectedTrainingMessage if reading operation from Database is correct, null otherwise
+     */
     @Override
     public RejectedTrainingMessage readLastTrainingMessage(String ssn) {
         initializeConnection();

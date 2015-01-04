@@ -29,6 +29,12 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpProfessorLibrary.js"></script>
 
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
+
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
@@ -53,7 +59,7 @@
                 <c:remove var="deleteTrainingOfferStatus"/>
             </c:when>
         </c:choose>
-       
+
         <script>
             jQuery(document).ready(function ($) {
                 tpProfessorFunction.appendTraining('#listTrainingProfessore', '${sessionScope.person}', "${path}");

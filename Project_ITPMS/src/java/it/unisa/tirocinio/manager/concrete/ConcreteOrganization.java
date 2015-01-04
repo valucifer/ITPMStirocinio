@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Organization;
@@ -33,6 +28,11 @@ public class ConcreteOrganization implements IOrganization{
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param organization
+     * @return true if organization is created successfully, false otherwise
+     */
     @Override
     public boolean createOrganization(Organization organization) {
         initializeConnection();
@@ -65,6 +65,11 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
 
+    /**
+     *
+     * @param VATNumber
+     * @return true if organization delete operation is correct, false otherwise
+     */
     @Override
     public boolean deleteOrganization(String VATNumber) {
         initializeConnection();
@@ -86,6 +91,11 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
 
+    /**
+     *
+     * @param organization
+     * @return true if organization update operation is correct, false otherwise
+     */
     @Override
     public boolean updateOrganization(Organization organization) {
         initializeConnection();
@@ -118,6 +128,11 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
 
+    /**
+     *
+     * @param VATNumber
+     * @return an Organization object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public Organization readOrganization(String VATNumber) {
         initializeConnection();
@@ -156,6 +171,10 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of Organization if reading operation from Database is correct, null otherwise
+     */
     @Override
     public ArrayList<Organization> getAllOrganizations() {
         initializeConnection();
@@ -197,6 +216,11 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
     
+    /**
+     *
+     * @param professorSSN
+     * @return an ArrayList of Organization that contains every organization a professor handle
+     */
     @Override
     public ArrayList<Organization> getOwnOrganizations(String professorSSN) {
         initializeConnection();
@@ -239,6 +263,11 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
     
+    /**
+     *
+     * @param VATNumber
+     * @return a Person object that contains informations about professor who handle a certain organization
+     */
     @Override
     public Person getProfessorOrganization(String VATNumber) {
         Organization anOrganization = this.readOrganization(VATNumber);
@@ -246,6 +275,11 @@ public class ConcreteOrganization implements IOrganization{
         return person.readPerson(anOrganization.getProfessor());
     }
 
+    /**
+     *
+     * @param VATNumber
+     * @return a Person object that contains informations about external tutor 
+     */
     @Override
     public Person getExternalTutor(String VATNumber) {
         Organization anOrganization = this.readOrganization(VATNumber);
@@ -253,6 +287,11 @@ public class ConcreteOrganization implements IOrganization{
         return person.readPerson(anOrganization.getExternalTutor());
     }
 
+    /**
+     *
+     * @param accountEmail
+     * @return an Organization object which contains informations about the organization through its email account
+     */
     @Override
     public Organization getOrganizationByAccount(String accountEmail) {
         initializeConnection();
@@ -291,6 +330,10 @@ public class ConcreteOrganization implements IOrganization{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteOrganization object if currently there is no ConcreteOrganization objects alive
+     */
     public static synchronized ConcreteOrganization getInstance(){
         if(instance == null)
             instance = new ConcreteOrganization();

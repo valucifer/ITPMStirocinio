@@ -1,37 +1,57 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.beans;
 
 /**
  *
  * @author johneisenheim
  */
-public final class Cycle {
+public  class Cycle {
     
     private int cycleNumber;
     private String title = null;
 
+    /**
+     *
+     */
     public Cycle(){}
-    public Cycle(int cycle_number, String title) {
-        setCycleNumber(cycleNumber);
-        setTitle(title);
+
+    /**
+     *
+     * @param cycleNumber
+     * @param title
+     */
+    public Cycle(int cycleNumber, String title) {
+        this.cycleNumber = cycleNumber;
+        this.title = title;
     }
 
+    /**
+     *
+     * @return the cycle number
+     */
     public int getCycleNumber() {
         return cycleNumber;
     }
 
+    /**
+     *
+     * @return the title
+     */
     public String getTitle() {
         return title;
     }
 
+    /**
+     *
+     * @param cycleNumber
+     */
     public void setCycleNumber(int cycleNumber) {
         this.cycleNumber = cycleNumber;
     }
 
+    /**
+     *
+     * @param title
+     */
     public void setTitle(String title) {
         this.title = title;
     }

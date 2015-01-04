@@ -1,3 +1,4 @@
+<%@page import="it.unisa.tirocinio.beans.Department"%>
 <%@page import="it.unisa.tirocinio.beans.TrainingOffer"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
@@ -31,6 +32,8 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
 
+        <jsp:include page="/getAllDepartments" />
+        <c:set var="allDepartments" value="${sessionScope.departments }"></c:set>
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
@@ -194,26 +197,6 @@
             </div>
 
             <div class="main-content">
-
-                <script>
-                    jQuery(document).ready(function ($)
-                    {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-
-                    });
-                </script>
-
                 <div class="row">
 
                     <div class="col-md-12">
@@ -232,29 +215,39 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <div class="form-group">
-                                            <form action="${path}/adminUploadFiles" method="POST" role="form" class="form-horizontal" id="sendModulesForm" enctype="multipart/form-data">
-                                                <label class="col-sm-2 control-label" for="trainingPlan" >Modulistica</label>
-
-                                                <div class="col-sm-10">
-                                                    <input type="file" required class="form-control" id="trainingPlan" name="trainingPlan" accept="application/pdf">
+                                            <form action="${path}/adminUploadFiles" method="POST" role="form" class="validate" id="sendModulesForm" enctype="multipart/form-data">
+                                                <div class="form-group">
+                                                    <label class="control-label">Seleziona il dipartimento a cui appartengono i documenti:</label>
+                                                    <select class="form-control" id="departments" name="department" data-validate="required" data-message-required="Per favore, inserisci il dipartimento.">
+                                                        <!--<option value="" selected>--Seleziona--</option>-->
+                                                        <%
+                                                            ArrayList<Department> departments = (ArrayList<Department>)pageContext.getAttribute("allDepartments");
+                                                            for ( Department dep: departments ){
+                                                                out.println("<option value=\""+dep.getAbbreviation()+"\">"+dep.getAbbreviation()+"</option>");
+                                                            }
+                                                        %>
+                                                    </select>
                                                 </div>
-                                                <label class="col-sm-2 control-label" for="examsCarriedOut">Registro Ore</label>
-                                                <br><br>
-                                                <div class="col-sm-10">
-                                                    <input type="file" required class="form-control" id="examsCarriedOut" name="examsCarriedOut" accept="application/pdf">
-                                                </div><br><br>
-                                                <label class="col-sm-2 control-label" for="questionnaire" >Questionario</label>
-
-                                                <div class="col-sm-10">
-                                                    <input type="file" required class="form-control" id="questionnaire" name="questionnaire" accept="application/pdf">
+                                                <div class="form-group">
+                                                    <label class="control-label">Modulistica</label>
+                                                    <input type="file" class="form-control" id="trainingPlan" name="trainingPlan" accept="application/pdf" data-validate="required" data-message-required="Per favore, inserisci il file della modulistica."/>
                                                 </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">Registro Ore</label>
+                                                    <input type="file" class="form-control" id="examsCarriedOut" name="examsCarriedOut" accept="application/pdf" data-validate="required" data-message-required="Per favore, inserisci il file del Registro Ore."/>
+                                                </div>
+
+                                                <div class="form-group">
+                                                    <label class="control-label">Questionario</label>
+                                                    <input type="file" class="form-control" id="questionnaire" name="questionnaire" accept="application/pdf" data-validate="required" data-message-required="Per favore, inserisci il file del Questionario."/>
+                                                </div>
+
                                                 <br><br><br>
-                                                <div id="moduleControl" align="center"></div>
                                                 <div class="row">
                                                     <center><button type="submit" class="btn btn-success fileinput-button" id="sendModules">
                                                             <i class="fa-pencil"></i>
                                                             <span>Invia Modulo</span>
-                                                            <!-- The file input field used as target for the file upload widget -->
                                                         </button>    
                                                     </center>
                                                 </div>
@@ -263,6 +256,15 @@
                                                     <c:when test="${status == 1}">
                                                         <div class="alert alert-success">
                                                             <center><strong>Successo,</strong> dati caricati correttamente.</center>
+                                                        </div>
+                                                        <%
+                                                            request.getSession().removeAttribute("message");
+                                                        %>
+                                                        <c:remove var="status"/>
+                                                    </c:when>
+                                                    <c:when test="${status == 0}">
+                                                        <div class="alert alert-danger">
+                                                            <center><strong>Errore</strong> nell'elaborazione dei dati. Riprova per favore!</center>
                                                         </div>
                                                         <%
                                                             request.getSession().removeAttribute("message");
@@ -325,6 +327,8 @@
         <script src="${pageContext.request.contextPath}/assets/js/xenon-api.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/xenon-toggles.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/rwd-table/js/rwd-table.min.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
+        
 
         <!-- JavaScripts initializations and stuff -->
         <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>

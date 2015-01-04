@@ -29,6 +29,12 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
 
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
+
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
@@ -211,24 +217,6 @@
             </div>
 
             <div class="main-content">
-
-                <script>
-                    jQuery(document).ready(function ($) {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                    });
-                </script>
-
                 <div class="row">
                     <div class="col-md-12">
 

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.beans;
 
 /**
@@ -10,114 +5,208 @@ package it.unisa.tirocinio.beans;
  * @author Valentino
  */
 public class Questionnaire {
-    private String nomeAzienda = null;
-    private String tipologiaAzienda = null;
-    private String primaDomanda = null;
-    private String secondaDomanda = null;
-    private String terzaDomanda = null;
-    private String quartaDomanda = null;
-    private String quintaDomanda = null;
-    private String sestaDomanda = null;
-    private String settimaDomanda = null;
+    
+    private String organizationName = null;
+    private String organizationType = null;
+    private String firstQuestion = null;
+    private String secondQuestion = null;
+    private String thirdQuestion = null;
+    private String fourthQuestion = null;
+    private String fifthQuestion = null;
+    private String sixthQuestion = null;
+    private String seventhQuestion = null;
     private String studentSSN = null;
 
-    public Questionnaire(String nomeAzienda, String tipologiaAzienda, String primaDomanda, String secondaDomanda, String studentSSN, String terzaDomanda, String quartaDomanda, String quintaDomanda, String sestaDomanda, String settimaDomanda) {
-        setNomeAzienda(nomeAzienda);
-        setTipologiaAzienda(tipologiaAzienda);
-        setPrimaDomanda(primaDomanda);
-        setSecondaDomanda(secondaDomanda);
-        setTerzaDomanda(terzaDomanda);
-        setQuartaDomanda(quartaDomanda);
-        setQuintaDomanda(quintaDomanda);
-        setSestaDomanda(sestaDomanda);
-        setSettimaDomanda(settimaDomanda);
-        setStudentSSN(studentSSN);
+    /**
+     *
+     * @param organizationName
+     * @param organizationType
+     * @param firstQuestion
+     * @param secondQuestion
+     * @param studentSSN
+     * @param thirdQuestion
+     * @param fourthQuestion
+     * @param fifthQuestion
+     * @param sixthQuestion
+     * @param seventhQuestion
+     */
+    public Questionnaire(String organizationName, String organizationType, String firstQuestion, String secondQuestion, String studentSSN, String thirdQuestion, String fourthQuestion, String fifthQuestion, String sixthQuestion, String seventhQuestion) {
+        this.organizationName = organizationName;
+        this.organizationType = organizationType;
+        this.firstQuestion = firstQuestion;
+        this.secondQuestion = secondQuestion;
+        this.thirdQuestion = thirdQuestion;
+        this.fourthQuestion = fourthQuestion;
+        this.fifthQuestion = fifthQuestion;
+        this.sixthQuestion = sixthQuestion;
+        this.seventhQuestion = seventhQuestion;
+        this.studentSSN = studentSSN;
+    }
+    
+        
+    /**
+     *
+     */
+    public Questionnaire() {
     }
 
+    /**
+     *
+     * @return student SSN
+     */
     public String getStudentSSN() {
         return studentSSN;
     }
 
+    /**
+     *
+     * @param studentSSN
+     */
     public void setStudentSSN(String studentSSN) {
         this.studentSSN = studentSSN;
     }
-    
-    public Questionnaire() {
+
+    /**
+     *
+     * @return organization name
+     */
+    public String getOrganizationName() {
+        return organizationName;
     }
 
-    public String getNomeAzienda() {
-        return nomeAzienda;
+    /**
+     *
+     * @return organization type
+     */
+    public String getOrganizationType() {
+        return organizationType;
     }
 
-    public String getTipologiaAzienda() {
-        return tipologiaAzienda;
+    /**
+     *
+     * @return first question answer
+     */
+    public String getFirstQuestion() {
+        return firstQuestion;
     }
 
-    public String getPrimaDomanda() {
-        return primaDomanda;
+    /**
+     *
+     * @return second question answer
+     */
+    public String getSecondQuestion() {
+        return secondQuestion;
     }
 
-    public String getSecondaDomanda() {
-        return secondaDomanda;
+    /**
+     *
+     * @return third question answer
+     */
+    public String getThirdQuestion() {
+        return thirdQuestion;
     }
 
-    public String getTerzaDomanda() {
-        return terzaDomanda;
+    /**
+     *
+     * @return fourth question answer
+     */
+    public String getFourthQuestion() {
+        return fourthQuestion;
     }
 
-    public String getQuartaDomanda() {
-        return quartaDomanda;
+    /**
+     *
+     * @return fifth question answer
+     */
+    public String getFifthQuestion() {
+        return fifthQuestion;
     }
 
-    public String getQuintaDomanda() {
-        return quintaDomanda;
+    /**
+     *
+     * @return sixth question answer
+     */
+    public String getSixthQuestion() {
+        return sixthQuestion;
     }
 
-    public String getSestaDomanda() {
-        return sestaDomanda;
+    /**
+     *
+     * @return seventh question answer
+     */
+    public String getSeventhQuestion() {
+        return seventhQuestion;
     }
 
-    public String getSettimaDomanda() {
-        return settimaDomanda;
+    /**
+     *
+     * @param organizationName
+     */
+    public void setOrganizationName(String organizationName) {
+        this.organizationName = organizationName;
     }
 
-    public void setNomeAzienda(String nomeAzienda) {
-        this.nomeAzienda = nomeAzienda;
+    /**
+     *
+     * @param organizationType
+     */
+    public void setOrganizationType(String organizationType) {
+        this.organizationType = organizationType;
     }
 
-    public void setTipologiaAzienda(String tipologiaAzienda) {
-        this.tipologiaAzienda = tipologiaAzienda;
+    /**
+     *
+     * @param firstQuestion
+     */
+    public void setFirstQuestion(String firstQuestion) {
+        this.firstQuestion = firstQuestion;
     }
 
-    public void setPrimaDomanda(String primaDomanda) {
-        this.primaDomanda = primaDomanda;
+    /**
+     *
+     * @param secondQuestion
+     */
+    public void setSecondQuestion(String secondQuestion) {
+        this.secondQuestion = secondQuestion;
     }
 
-    public void setSecondaDomanda(String secondaDomanda) {
-        this.secondaDomanda = secondaDomanda;
+    /**
+     *
+     * @param thirdQuestion
+     */
+    public void setThirdQuestion(String thirdQuestion) {
+        this.thirdQuestion = thirdQuestion;
     }
 
-    public void setTerzaDomanda(String terzaDomanda) {
-        this.terzaDomanda = terzaDomanda;
+    /**
+     *
+     * @param fourthQuestion
+     */
+    public void setFourthQuestion(String fourthQuestion) {
+        this.fourthQuestion = fourthQuestion;
     }
 
-    public void setQuartaDomanda(String quartaDomanda) {
-        this.quartaDomanda = quartaDomanda;
+    /**
+     *
+     * @param fifthQuestion
+     */
+    public void setFifthQuestion(String fifthQuestion) {
+        this.fifthQuestion = fifthQuestion;
     }
 
-    public void setQuintaDomanda(String quintaDomanda) {
-        this.quintaDomanda = quintaDomanda;
+    /**
+     *
+     * @param sixthQuestion
+     */
+    public void setSixthQuestion(String sixthQuestion) {
+        this.sixthQuestion = sixthQuestion;
     }
 
-    public void setSestaDomanda(String sestaDomanda) {
-        this.sestaDomanda = sestaDomanda;
+    /**
+     *
+     * @param seventhQuestion
+     */
+    public void setSeventhQuestion(String seventhQuestion) {
+        this.seventhQuestion = seventhQuestion;
     }
-
-    public void setSettimaDomanda(String settimaDomanda) {
-        this.settimaDomanda = settimaDomanda;
-    }
-    
-    
-    
-    
 }

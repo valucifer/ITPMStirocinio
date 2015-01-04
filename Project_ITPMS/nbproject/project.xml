@@ -7,11 +7,11 @@
             <minimum-ant-version>1.6.5</minimum-ant-version>
             <web-module-libraries>
                 <library dirs="200">
-                    <file>${file.reference.com.mysql.jdbc_5.1.5.jar}</file>
+                    <file>${file.reference.java-json.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
-                    <file>${file.reference.java-json.jar}</file>
+                    <file>${file.reference.com.mysql.jdbc_5.1.5.jar}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
                 </library>
                 <library dirs="200">
@@ -33,6 +33,9 @@
                 <library dirs="200">
                     <file>${libs.javaee-api-7.0.classpath}</file>
                     <path-in-war>WEB-INF/lib</path-in-war>
+                </library>
+                <library dirs="200">
+                    <file>${libs.jstl.classpath}</file>
                 </library>
             </web-module-libraries>
             <web-module-additional-libraries/>

@@ -27,13 +27,19 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpLibrary.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/validatr.js"></script>
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
         <jsp:include page="/getStudentQuestionnaireCompletion">
-            <jsp:param name="matricula" value="0512200013" />
+            <jsp:param name="account" value="${sessionScope.person}" />
         </jsp:include>
         <c:set var="questionnaireCompletion" value="${requestScope.questionnaireCompletion }"></c:set>
         <%
             int qCompletion = (Integer) pageContext.getAttribute("questionnaireCompletion");
             pageContext.setAttribute("qCompletion", qCompletion);
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
         <c:choose>
@@ -45,7 +51,6 @@
                     });
                 </script>
             </c:when>
-
         </c:choose>
 
 
@@ -135,6 +140,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
+                                ${sessionScope.person}
                             </span>
                         </a>
 
@@ -169,39 +175,27 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/studente/gestioneTirocinio&PlacementStudente.html">
                                 <i class="linecons-cog"></i>
-                                <span class="title">Offerta Tirocinio</span>
+                                <span class="title">Home</span>
                             </a>
                         </li>
                         <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpinserimentofileamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/studente/tprichiestatirocinio.jsp">
                                 <i class="linecons-cog"></i>
-                                <span class="title">Inserimento Moduli</span>
+                                <span class="title">Richiesta tirocinio</span>
                             </a>
                         </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp">
-                                <i class="linecons-cog"></i>
-                                <span class="title">Associa Professore</span>
+                        <li id="ID_modulistica_0">
+                            <a href="${pageContext.request.contextPath}/tirocinio/studente/tpmodulistica.jsp">
+                                <i class="linecons-note"></i>
+                                <span class="title">Modulistica</span>
                             </a>
                         </li>
-                        <li class="opened active">
-                            <a href="#">
-                                <i class="linecons-cog"></i>
-                                <span class="title">Registra Azienda</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpaggiungistudentetraining.jsp">
-                                <i class="linecons-cog"></i>
-                                <span class="title">Aggiungi Tirocinio</span>
-                            </a>
-                        </li>
-                        <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpvisionetirocini.jsp">
-                                <i class="linecons-cog"></i>
-                                <span class="title">Visione Tirocini</span>
+                        <li id="ID_questionario_0"  class="opened active">
+                            <a href="${pageContext.request.contextPath}/tirocinio/studente/tpquestionario.jsp">
+                                <i class="linecons-note"></i>
+                                <span class="title">Questionario</span>
                             </a>
                         </li>
                     </ul>
@@ -210,23 +204,6 @@
 
             <div class="main-content">
 
-                <script>
-                    jQuery(document).ready(function ($) {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                    });
-                </script>
-
                 <div class="row">
                     <div class="col-sm-12">
                         <div class="panel panel-default" id="questPanel">
@@ -234,49 +211,49 @@
                                 <h3 class="panel-title">Questionario valutativo</h3>
                             </div>
                             <div class="panel-body" id='panel-body'>
-                                <form role="form" class="form-horizontal" action='/ServerWeb/insertTrainingQuestionnaire' method='POST'>
-                                    <p align="justify">Esprimi il tuo grado di giudizio di accordo sulle affermazioni che seguono. Seleziona le caselle utilizzando la scala progressova da 1 a 5; per effettuare tale giudizio, i criteri da utilizzare sono: </p> 
-                                    <br>
-                                    <center>
-                                        <p>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" checked disabled>
-                                                1
-                                            </label>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" checked disabled>
-                                                2
-                                            </label>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" checked disabled>
-                                                3
-                                            </label>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" checked disabled>
-                                                4
-                                            </label>
-                                            <label class="checkbox-inline">
-                                                <input type="checkbox" checked disabled>
-                                                5
-                                            </label>
-                                        </p>
-                                    </center>
-                                    <br>
-                                    <p align="justify">dove, ovviamente, i valori da attribuire ad ogni casella sono: 1: insufficiente; 2: mediocre; 3: sufficiente; 4:buono; 5:ottimo.</p>
-                                    <br>
-
-                                    <div class="form-group-separator"></div>
-                                    <div class="form-group">
-                                        <label class="col-sm-2 control-label" for="matricolaStudente">Matricola: </label>
-                                        <div class="col-sm-9">
-                                            <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente">
-                                        </div>
-                                    </div><div class="form-group">
-                                        <label class="col-sm-2 control-label" for="nomeAzienda">Azienda Ospitante: </label>
-                                        <div class="col-sm-9">
-                                            <input required type="text" class="form-control" name="nomeAzienda" id="nomeAzienda">
-                                        </div>
+                                <p align="justify">Esprimi il tuo grado di giudizio di accordo sulle affermazioni che seguono. Seleziona le caselle utilizzando la scala progressova da 1 a 5; per effettuare tale giudizio, i criteri da utilizzare sono: </p> 
+                                <br>
+                                <center>
+                                    <p>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" checked disabled>
+                                            1
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" checked disabled>
+                                            2
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" checked disabled>
+                                            3
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" checked disabled>
+                                            4
+                                        </label>
+                                        <label class="checkbox-inline">
+                                            <input type="checkbox" checked disabled>
+                                            5
+                                        </label>
+                                    </p>
+                                </center>
+                                <br>
+                                <p align="justify">dove i valori da attribuire ad ogni casella sono: 1: insufficiente; 2: mediocre; 3: sufficiente; 4:buono; 5:ottimo.</p>
+                                <br>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="matricolaStudente">Matricola: </label>
+                                    <div class="col-sm-9">
+                                        <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente">
                                     </div>
+                                </div>
+                                <div class="form-group">
+                                    <label class="col-sm-2 control-label" for="nomeAzienda">Azienda Ospitante: </label>
+                                    <div class="col-sm-9">
+                                        <input required type="text" class="form-control" name="nomeAzienda" id="nomeAzienda">
+                                    </div>
+                                </div>
+                                <form role="form" class="validate" action="${path}/insertTrainingQuestionnaire">
+
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" for="tipologiaAzienda">Tipologia Struttura: </label>
                                         <div class="col-sm-9">
@@ -289,8 +266,6 @@
                                             </select>
                                         </div>
                                     </div>
-
-                                    <div class="form-group-separator"></div>
                                     <br>
                                     <div class="col-sm-11">
                                         <table class="table responsive" >
@@ -302,59 +277,59 @@
                                             <tbody >
                                                 <tr>
                                                     <td align="justify">Grado di soddisfazione per il ruolo di mansione svolta</td>
-                                                    <td><input type="radio" name="uno" value="1"></td>
-                                                    <td><input type="radio" name="uno" value="2"></td>
-                                                    <td><input type="radio" name="uno" value="3"></td>
-                                                    <td><input type="radio" name="uno" value="4"></td>
-                                                    <td><input type="radio" name="uno" value="5"></td>
+                                                    <td><input type="radio" name="firstAnswer" value="1"></td>
+                                                    <td><input type="radio" name="firstAnswer" value="2"></td>
+                                                    <td><input type="radio" name="firstAnswer" value="3"></td>
+                                                    <td><input type="radio" name="firstAnswer" value="4"></td>
+                                                    <td><input type="radio" name="firstAnswer" value="5"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="justify">Adeguatezza delle competenze acquisite nel persorso di studi rispetto alle attività di tirocinio svolte</td>
-                                                    <td><input type="radio" name="due" value="1"></td>
-                                                    <td><input type="radio" name="due" value="2"></td>
-                                                    <td><input type="radio" name="due" value="3"></td>
-                                                    <td><input type="radio" name="due" value="4"></td>
-                                                    <td><input type="radio" name="due" value="5"></td>
+                                                    <td><input type="radio" name="secondAnswer" value="1"></td>
+                                                    <td><input type="radio" name="secondAnswer" value="2"></td>
+                                                    <td><input type="radio" name="secondAnswer" value="3"></td>
+                                                    <td><input type="radio" name="secondAnswer" value="4"></td>
+                                                    <td><input type="radio" name="secondAnswer" value="5"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="justify">Valutazione del tutor universitario, durante le attività di tirocinio</td>
-                                                    <td><input type="radio" name="tre" value="1"></td>
-                                                    <td><input type="radio" name="tre" value="2"></td>
-                                                    <td><input type="radio" name="tre" value="3"></td>
-                                                    <td><input type="radio" name="tre" value="4"></td>
-                                                    <td><input type="radio" name="tre" value="5"></td>
+                                                    <td><input type="radio" name="thirdAnswer" value="1"></td>
+                                                    <td><input type="radio" name="thirdAnswer" value="2"></td>
+                                                    <td><input type="radio" name="thirdAnswer" value="3"></td>
+                                                    <td><input type="radio" name="thirdAnswer" value="4"></td>
+                                                    <td><input type="radio" name="thirdAnswer" value="5"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="justify">Valutazione del tutor aziendale, durante le attività di tirocinio</td>
-                                                    <td><input type="radio" name="quattro" value="1"></td>
-                                                    <td><input type="radio" name="quattro" value="2"></td>
-                                                    <td><input type="radio" name="quattro" value="3"></td>
-                                                    <td><input type="radio" name="quattro" value="4"></td>
-                                                    <td><input type="radio" name="quattro" value="5"></td>
+                                                    <td><input type="radio" name="fourthAnswer" value="1"></td>
+                                                    <td><input type="radio" name="fourthAnswer" value="2"></td>
+                                                    <td><input type="radio" name="fourthAnswer" value="3"></td>
+                                                    <td><input type="radio" name="fourthAnswer" value="4"></td>
+                                                    <td><input type="radio" name="fourthAnswer" value="5"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="justify">Valutazione del supporto ricevuto nelle informazioni e attività di tirocinio preliminari e successive allo svolgimento del tirocinio</td>
-                                                    <td><input type="radio" name="cinque" value="1"></td>
-                                                    <td><input type="radio" name="cinque" value="2"></td>
-                                                    <td><input type="radio" name="cinque" value="3"></td>
-                                                    <td><input type="radio" name="cinque" value="4"></td>
-                                                    <td><input type="radio" name="cinque" value="5"></td>
+                                                    <td><input type="radio" name="fifthAnswer" value="1"></td>
+                                                    <td><input type="radio" name="fifthAnswer" value="2"></td>
+                                                    <td><input type="radio" name="fifthAnswer" value="3"></td>
+                                                    <td><input type="radio" name="fifthAnswer" value="4"></td>
+                                                    <td><input type="radio" name="fifthAnswer" value="5"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="justify">Valutazione acquisizione di competenze nello svolgimento delle attività di tirocinio</td>
-                                                    <td><input type="radio" name="sei" value="1"></td>
-                                                    <td><input type="radio" name="sei" value="2"></td>
-                                                    <td><input type="radio" name="sei" value="3"></td>
-                                                    <td><input type="radio" name="sei" value="4"></td>
-                                                    <td><input type="radio" name="sei" value="5"></td>
+                                                    <td><input type="radio" name="sixthAnswer" value="1"></td>
+                                                    <td><input type="radio" name="sixthAnswer" value="2"></td>
+                                                    <td><input type="radio" name="sixthAnswer" value="3"></td>
+                                                    <td><input type="radio" name="sixthAnswer" value="4"></td>
+                                                    <td><input type="radio" name="sixthAnswer" value="5"></td>
                                                 </tr>
                                                 <tr>
                                                     <td align="justify">Valutazione complessiva dell'esperienza di tirocinio</td>
-                                                    <td><input type="radio" name="sette" value="1"></td>
-                                                    <td><input type="radio" name="sette" value="2"></td>
-                                                    <td><input type="radio" name="sette" value="3"></td>
-                                                    <td><input type="radio" name="sette" value="4"></td>
-                                                    <td><input type="radio" name="sette" value="5"></td>
+                                                    <td><input type="radio" name="seventhAnswer" value="1"></td>
+                                                    <td><input type="radio" name="seventhAnswer" value="2"></td>
+                                                    <td><input type="radio" name="seventhAnswer" value="3"></td>
+                                                    <td><input type="radio" name="seventhAnswer" value="4"></td>
+                                                    <td><input type="radio" name="seventhAnswer" value="5"></td>
                                                 </tr>
                                             </tbody>
                                         </table>
@@ -362,14 +337,14 @@
                                     <script>
                                         jQuery(document).ready(function ($) {
                                             function controlRadio() {
-                                                var uno = $("input[name='uno']:checked").val();
-                                                var due = $("input[name='due']:checked").val();
-                                                var tre = $("input[name='tre']:checked").val();
-                                                var quattro = $("input[name='quattro']:checked").val();
-                                                var cinque = $("input[name='cinque']:checked").val();
-                                                var sei = $("input[name='sei']:checked").val();
-                                                var sette = $("input[name='sette']:checked").val();
-                                                if ((uno != null) && (due != null) && (tre != null) && (quattro != null) && (cinque != null) && (sei != null) && (sette != null)) {
+                                                var firstAnswer = $("input[name='firstAnswer']:checked").val();
+                                                var secondAnswer = $("input[name='secondAnswer']:checked").val();
+                                                var thirdAnswer = $("input[name='thirdAnswer']:checked").val();
+                                                var fourthAnswer = $("input[name='fourthAnswer']:checked").val();
+                                                var fifthAnswer = $("input[name='fifthAnswer']:checked").val();
+                                                var sixthAnswer = $("input[name='sixthAnswer']:checked").val();
+                                                var seventhAnswer = $("input[name='seventhAnswer']:checked").val();
+                                                if ((firstAnswer != null) && (secondAnswer != null) && (thirdAnswer != null) && (fourthAnswer != null) && (fifthAnswer != null) && (sixthAnswer != null) && (seventhAnswer != null)) {
                                                     $("#submit").removeAttr("disabled");
                                                 }
                                             }
@@ -380,7 +355,6 @@
                                         });
                                     </script>
 
-                                    <div class="form-group-separator"></div>
                                     <div class="row">
                                         <div class="col-sm-12">
                                             <center>

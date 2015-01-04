@@ -1,78 +1,133 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.beans;
 
 /**
  *
  * @author johneisenheim
  */
-public final class TrainingOffer {
+public class TrainingOffer {
    
-    private int idOfferTraining;
+    private int idTrainingOffer;
     private String description;
     private String organization = null;
     private String personSSN = null;
     private String department = null;
     private String contact = null;
     
+    /**
+     *
+     */
     public TrainingOffer(){}
     
-    public TrainingOffer(int idOfferTraining,String contact, String description, String organization, String personSSN, String department){
-        setIdOfferTraining(idOfferTraining);
-        setDescription(description);
-        setOrganization(organization);
-        setPersonSSN(personSSN);
-        setDepartment(department);
-        setContact(contact);
+    /**
+     *
+     * @param idTrainingOffer
+     * @param contact
+     * @param description
+     * @param organization
+     * @param personSSN
+     * @param department
+     */
+    public TrainingOffer(int idTrainingOffer,String contact, String description, String organization, String personSSN, String department){
+        this.idTrainingOffer = idTrainingOffer;
+        this.description = description;
+        this.organization = organization;
+        this.personSSN = personSSN;
+        this.department = department;
+        this.contact = contact;
     }
 
+    /**
+     *
+     * @param contact
+     */
     public void setContact(String contact) {
         this.contact = contact;
     }
 
+    /**
+     *
+     * @return contact
+     */
     public String getContact() {
         return contact;
     }
 
-    public int getIdOfferTraining() {
-        return idOfferTraining;
+    /**
+     *
+     * @return id training offer
+     */
+    public int getIdTrainingOffer() {
+        return idTrainingOffer;
     }
 
+    /**
+     *
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @return organization
+     */
     public String getOrganization() {
         return organization;
     }
 
+    /**
+     *
+     * @return person SSN
+     */
     public String getPersonSSN() {
         return personSSN;
     }
 
+    /**
+     *
+     * @return department
+     */
     public String getDepartment() {
         return department;
     }
 
-    public void setIdOfferTraining(int idOfferTraining) {
-        this.idOfferTraining = idOfferTraining;
+    /**
+     *
+     * @param idTrainingOffer
+     */
+    public void setIdOfferTraining(int idTrainingOffer) {
+        this.idTrainingOffer = idTrainingOffer;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }
 
+    /**
+     *
+     * @param organization
+     */
     public void setOrganization(String organization) {
         this.organization = organization;
     }
 
+    /**
+     *
+     * @param personSSN
+     */
     public void setPersonSSN(String personSSN) {
         this.personSSN = personSSN;
     }
 
+    /**
+     *
+     * @param department
+     */
     public void setDepartment(String department) {
         this.department = department;
     }

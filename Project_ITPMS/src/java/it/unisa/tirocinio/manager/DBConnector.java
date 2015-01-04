@@ -1,15 +1,8 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager;
 
-import java.io.FileInputStream;
 import java.io.FileNotFoundException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.DriverManager;
 import java.sql.SQLException;
@@ -26,15 +19,14 @@ public class DBConnector {
     private static Connection aConnection = null;
     
     public static Connection getConnection(){
-        InputStream cfg = null;
+        InputStream stream = null;
         try {
-            String userPath = System.getProperty("user.home");
-            String fileSeparator = System.getProperty("file.separator");
-            cfg = new FileInputStream(userPath+fileSeparator+"TPConfig"+fileSeparator+"config.cfg");
-            Properties configFile = new java.util.Properties();
-            configFile.load(cfg);
+            Properties prop = new Properties();
+            ClassLoader loader = Thread.currentThread().getContextClassLoader();  
+            stream = loader.getResourceAsStream("properties/dbconfiguration.properties");
+            prop.load(stream);
             Class.forName("com.mysql.jdbc.Driver");
-            aConnection = DriverManager.getConnection(configFile.getProperty("serverConn"), configFile.getProperty("userName"), configFile.getProperty("password"));
+            aConnection = DriverManager.getConnection(prop.getProperty("serverConn"), prop.getProperty("username"), prop.getProperty("password"));
             return aConnection;
         } catch (FileNotFoundException ex) {
             Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
@@ -46,7 +38,7 @@ public class DBConnector {
             Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
             try {
-                cfg.close();
+                stream.close();
             } catch (IOException ex) {
                 Logger.getLogger(DBConnector.class.getName()).log(Level.SEVERE, null, ex);
             }

@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.PendingAcceptance;
@@ -32,6 +27,11 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
             throw new RuntimeException("Unable to connect to Database.");
     }
     
+    /**
+     *
+     * @param idPendingAcceptance
+     * @return a PendingAcceptance object which contains informations about a certain pending acceptance id
+     */
     @Override
     public PendingAcceptance readStudentInPendingAcceptance(int idPendingAcceptance) {
         initializeConnection();
@@ -62,6 +62,10 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of PendingAcceptance which contains all students that are in pending acceptance status
+     */
     @Override
     public ArrayList<PendingAcceptance> getAllStudentsInPendingAcceptance() {
         initializeConnection();
@@ -95,6 +99,10 @@ public class ConcretePendingAcceptance implements IPendingAcceptance{
         }
     }
     
+    /**
+     *
+     * @return a ConcretePendingAcceptance object if there are no currently PendingAcceptance objects alive
+     */
     public static synchronized ConcretePendingAcceptance getInstance(){
         if(instance == null)
             instance = new ConcretePendingAcceptance();

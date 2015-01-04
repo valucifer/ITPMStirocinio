@@ -28,13 +28,19 @@
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
-        
+
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
+
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
         <script>
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendStudentTrainingComplete('#tableTraining',"${path }");
+                tpAdminFunction.appendStudentTrainingComplete('#tableTraining', "${path }");
             });
         </script>
 
@@ -158,7 +164,7 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                           <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratore.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Offerta Tirocinio</span>
                             </a>
@@ -198,24 +204,6 @@
             </div>
 
             <div class="main-content">
-
-                <script>
-                    jQuery(document).ready(function ($) {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                    });
-                </script>
-
                 <div class="row">
                     <div class="col-md-12">
 
@@ -268,7 +256,7 @@
                                         jQuery(document).ready(function ($) {
                                             $("#appendSolutionTraining").click(function () {
                                                 $("#solutionStudentTrainingView").removeAttr("hidden");
-                                                tpAdminFunction.appendStudentIntoSelectForChangeTraining("#comboboxStudent",'${path }');
+                                                tpAdminFunction.appendStudentIntoSelectForChangeTraining("#comboboxStudent", '${path }');
                                                 setTimeout(function () {
                                                     if ($("#comboboxStudent").val() === "Dati_non_presenti")
                                                         $("#buttonChangeTraining").attr("disabled", true);

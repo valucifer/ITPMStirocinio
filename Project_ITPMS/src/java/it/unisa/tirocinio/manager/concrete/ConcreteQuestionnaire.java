@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Questionnaire;
@@ -26,7 +21,10 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
     private Connection connector = null;
     private CallableStatement aCallableStatement = null;
     
-    
+    /**
+     *
+     * @return a ConcreteQuestionnaire instance if there are no ConcreteQuestionnaire instances currently alive
+     */
     public static synchronized ConcreteQuestionnaire getInstance(){
         if(instance == null)
             instance = new ConcreteQuestionnaire();
@@ -42,13 +40,20 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
         }
     }
     
+    /**
+     *
+     */
     public ConcreteQuestionnaire() {
         connector = DBConnector.getConnection();
         if( connector == null )
             throw new RuntimeException("Unable to connect to Database.");
     }
     
-    
+    /**
+     *
+     * @param aQuestionnaire
+     * @return true if insert into Database operation is correct, false otherwise
+     */
     @Override
     public boolean insertQuestionnaire(Questionnaire aQuestionnaire) {
         initializeConnection();
@@ -58,15 +63,15 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
             
             aCallableStatement = connector.prepareCall("{call insertQuestionnaire(?,?,?,?,?,?,?,?,?,?)}");       
             aCallableStatement.setString("studentSSN",aQuestionnaire.getStudentSSN());    
-            aCallableStatement.setString("companyName",aQuestionnaire.getNomeAzienda());    
-            aCallableStatement.setString("typologyOrganization",aQuestionnaire.getTipologiaAzienda());    
-            aCallableStatement.setString("firs",aQuestionnaire.getPrimaDomanda());    
-            aCallableStatement.setString("secon",aQuestionnaire.getSecondaDomanda());   
-            aCallableStatement.setString("third",aQuestionnaire.getTerzaDomanda());    
-            aCallableStatement.setString("fourth",aQuestionnaire.getQuartaDomanda());
-            aCallableStatement.setString("fifth",aQuestionnaire.getQuintaDomanda());    
-            aCallableStatement.setString("sixth",aQuestionnaire.getSestaDomanda()); 
-            aCallableStatement.setString("seventh",aQuestionnaire.getSettimaDomanda());
+            aCallableStatement.setString("companyName",aQuestionnaire.getOrganizationName());    
+            aCallableStatement.setString("typologyOrganization",aQuestionnaire.getOrganizationType());    
+            aCallableStatement.setString("firs",aQuestionnaire.getFirstQuestion());    
+            aCallableStatement.setString("secon",aQuestionnaire.getSecondQuestion());   
+            aCallableStatement.setString("third",aQuestionnaire.getThirdQuestion());    
+            aCallableStatement.setString("fourth",aQuestionnaire.getFourthQuestion());
+            aCallableStatement.setString("fifth",aQuestionnaire.getFifthQuestion());    
+            aCallableStatement.setString("sixth",aQuestionnaire.getSixthQuestion()); 
+            aCallableStatement.setString("seventh",aQuestionnaire.getSeventhQuestion());
             
             int check = aCallableStatement.executeUpdate();
             aCallableStatement.close();
@@ -86,6 +91,11 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
         }
     }
 
+    /**
+     *
+     * @param SSN
+     * @return a Questionnaire object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public Questionnaire readQuestionnaire(String SSN) {
         initializeConnection();
@@ -97,16 +107,16 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
            
            while( rs.next() ){
                 aQuestionnaire = new Questionnaire();
-                aQuestionnaire.setNomeAzienda(rs.getString("company_name"));
-                aQuestionnaire.setPrimaDomanda(rs.getString("first_question"));
-                aQuestionnaire.setQuartaDomanda(rs.getString("fourth_question"));
-                aQuestionnaire.setQuintaDomanda(rs.getString("fifth_question"));
-                aQuestionnaire.setSecondaDomanda(rs.getString("second_question"));
-                aQuestionnaire.setSestaDomanda(rs.getString("sixth_question"));
-                aQuestionnaire.setSettimaDomanda(rs.getString("seventh_question"));
+                aQuestionnaire.setOrganizationName(rs.getString("company_name"));
+                aQuestionnaire.setFirstQuestion(rs.getString("first_question"));
+                aQuestionnaire.setFourthQuestion(rs.getString("fourth_question"));
+                aQuestionnaire.setFifthQuestion(rs.getString("fifth_question"));
+                aQuestionnaire.setSecondQuestion(rs.getString("second_question"));
+                aQuestionnaire.setSixthQuestion(rs.getString("sixth_question"));
+                aQuestionnaire.setSeventhQuestion(rs.getString("seventh_question"));
                 aQuestionnaire.setStudentSSN(rs.getString("student_ssn"));
-                aQuestionnaire.setTerzaDomanda(rs.getString("third_question"));
-                aQuestionnaire.setTipologiaAzienda(rs.getString("typologt_organization"));
+                aQuestionnaire.setThirdQuestion(rs.getString("third_question"));
+                aQuestionnaire.setOrganizationType(rs.getString("typologt_organization"));
                 
            }
            rs.close();
@@ -125,6 +135,10 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of Questionnaire containing all questionnaires if reading operation from Database is correct, null otherwise 
+     */
     @Override
     public ArrayList<Questionnaire> readAllQuestionnaire() {
         initializeConnection();
@@ -136,16 +150,16 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
            
            while( rs.next() ){
                 aQuestionnaire = new Questionnaire();
-                aQuestionnaire.setNomeAzienda(rs.getString("company_name"));
-                aQuestionnaire.setPrimaDomanda(rs.getString("first_question"));
-                aQuestionnaire.setQuartaDomanda(rs.getString("fourth_question"));
-                aQuestionnaire.setQuintaDomanda(rs.getString("fifth_question"));
-                aQuestionnaire.setSecondaDomanda(rs.getString("second_question"));
-                aQuestionnaire.setSestaDomanda(rs.getString("sixth_question"));
-                aQuestionnaire.setSettimaDomanda(rs.getString("seventh_question"));
+                aQuestionnaire.setOrganizationName(rs.getString("company_name"));
+                aQuestionnaire.setFirstQuestion(rs.getString("first_question"));
+                aQuestionnaire.setFourthQuestion(rs.getString("fourth_question"));
+                aQuestionnaire.setFifthQuestion(rs.getString("fifth_question"));
+                aQuestionnaire.setSecondQuestion(rs.getString("second_question"));
+                aQuestionnaire.setSixthQuestion(rs.getString("sixth_question"));
+                aQuestionnaire.setSeventhQuestion(rs.getString("seventh_question"));
                 aQuestionnaire.setStudentSSN(rs.getString("student_ssn"));
-                aQuestionnaire.setTerzaDomanda(rs.getString("third_question"));
-                aQuestionnaire.setTipologiaAzienda(rs.getString("typologt_organization"));
+                aQuestionnaire.setThirdQuestion(rs.getString("third_question"));
+                aQuestionnaire.setOrganizationType(rs.getString("typologt_organization"));
                 
                 allQuestionnaires.add(aQuestionnaire);
            }

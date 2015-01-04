@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Account;
@@ -32,6 +27,11 @@ public class ConcreteAccount implements IAccount{
             throw new RuntimeException("Unable to connect to Database.");
     }
     
+    /**
+     *
+     * @param account
+     * @return true if account is created, false otherwise 
+     */
     public boolean createAccount(Account account){
         initializeConnection();
         try {
@@ -58,6 +58,11 @@ public class ConcreteAccount implements IAccount{
         }
     }
     
+    /**
+     *
+     * @param email
+     * @return an Account object if reading operation is correct, null otherwise
+     */
     @Override
     public Account readAccount(String email) {
         initializeConnection();
@@ -88,6 +93,10 @@ public class ConcreteAccount implements IAccount{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of Account if DB select is correct, null otherwise
+     */
     @Override
     public ArrayList<Account> getAllAccounts() {
         initializeConnection();
@@ -121,12 +130,21 @@ public class ConcreteAccount implements IAccount{
         }       
     }
     
+    /**
+     *
+     * @return a new instance of ConcreteAccount if there is any instance of ConcreteAccount alive
+     */
     public static synchronized ConcreteAccount getInstance(){
         if(instance == null)
             instance = new ConcreteAccount();
         return instance;
     }
 
+    /**
+     *
+     * @param email
+     * @return type of account
+     */
     @Override
     public String getTypeOfAccount(String email) {
         initializeConnection();

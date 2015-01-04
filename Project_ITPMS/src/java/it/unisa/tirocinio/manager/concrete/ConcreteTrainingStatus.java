@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.TrainingStatus;
@@ -32,6 +27,11 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param aStatus
+     * @return true if a training status is successfully created, false otherwise
+     */
     @Override
     public boolean createTrainingStatus(TrainingStatus aStatus) {
         initializeConnection();
@@ -55,6 +55,10 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of TrainingStatus which contains all training status
+     */
     @Override
     public ArrayList<TrainingStatus> getAllTrainingsStatus() {
         initializeConnection();
@@ -86,6 +90,11 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
         }
     }
 
+    /**
+     *
+     * @param idTrainingStatus
+     * @return a TrainingStatus object if reading operation is correct, null otherwise
+     */
     @Override
     public TrainingStatus readTrainingStatus(int idTrainingStatus) {
         initializeConnection();
@@ -114,6 +123,10 @@ public class ConcreteTrainingStatus implements ITrainingStatus{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteTrainingStatus instance if there are no ConcreteTrainingStatus instances currently alive
+     */
     public static synchronized ConcreteTrainingStatus getInstance(){
         if(instance == null)
             instance = new ConcreteTrainingStatus();

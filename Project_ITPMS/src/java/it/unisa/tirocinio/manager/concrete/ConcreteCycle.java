@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Cycle;
@@ -31,6 +26,11 @@ private static ConcreteCycle instance = null;
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param cycleNumber
+     * @return a Cycle object if read operation from db is correct, null otherwise
+     */
     @Override
     public Cycle readCycle(int cycleNumber) {
         initializeConnection();
@@ -59,6 +59,10 @@ private static ConcreteCycle instance = null;
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of Cycle if read operation from Database is correct, null otherwise
+     */
     @Override
     public ArrayList<Cycle> getAllCycles() {
         initializeConnection();
@@ -90,6 +94,10 @@ private static ConcreteCycle instance = null;
         }       
     }
     
+    /**
+     *
+     * @return a ConcreteCycle instance if there is no others ConcreteCycle instances alive
+     */
     public static synchronized ConcreteCycle getInstance(){
         if(instance == null)
             instance = new ConcreteCycle();

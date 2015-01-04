@@ -1,10 +1,6 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.ITrainingOffer;
@@ -32,6 +28,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param aTrainingOffer
+     * @return true if creation of an inner training offer is correct, false otherwise
+     */
     @Override
     public boolean createInnerTrainingOffer(TrainingOffer aTrainingOffer) {
         initializeConnection();
@@ -62,6 +63,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
     
+    /**
+     *
+     * @param aTrainingOffer
+     * @return true if creation of an outer training offer is correct, false otherwise
+     */
     @Override
     public boolean createOuterTrainingOffer(TrainingOffer aTrainingOffer) {
         initializeConnection();
@@ -92,7 +98,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
     
-
+    /**
+     *
+     * @param aTrainingOffer
+     * @return true if a certain training offer is successfully updated, false otherwise
+     */
     @Override
     public boolean updateTrainingOffer(TrainingOffer aTrainingOffer) {
         initializeConnection();
@@ -101,7 +111,7 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 throw new NullPointerException("OfferTraining is null!");
             
             aCallableStatement = connector.prepareCall("{call updateTrainingOffer(?,?,?,?,?)}");       
-            aCallableStatement.setInt("idTrainingOffer",aTrainingOffer.getIdOfferTraining());
+            aCallableStatement.setInt("idTrainingOffer",aTrainingOffer.getIdTrainingOffer());
             aCallableStatement.setString("description",aTrainingOffer.getDescription());
             aCallableStatement.setString("FK_Organization",aTrainingOffer.getOrganization());
             aCallableStatement.setString("FK_PersonSSN",aTrainingOffer.getPersonSSN());
@@ -122,6 +132,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
 
+    /**
+     *
+     * @param idTrainingOffer
+     * @return a TrainingOffer object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public TrainingOffer readTrainingOffer(int idTrainingOffer) {
         initializeConnection();
@@ -157,6 +172,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
     
+    /**
+     *
+     * @param personSSN
+     * @return an ArrayList of TrainingOffer which contains all inner training offers pubblished by a certain person, null otherwise
+     */
     @Override
     public ArrayList<TrainingOffer> readInnerTrainingOffer(String personSSN) {
         initializeConnection();
@@ -202,6 +222,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
 
+    /**
+     *
+     * @param vatNumber
+     * @return an ArrayList of TrainingOffer which contains all outer training offers pubblished by a certain person, null otherwise
+     */
     @Override
     public ArrayList<TrainingOffer> readOuterTrainingOffer(String vatNumber) {
         initializeConnection();
@@ -243,6 +268,10 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of TrainingOffer which contains all training offers
+     */
     @Override
     public ArrayList<TrainingOffer> getAllTrainingOffers() {
         initializeConnection();
@@ -252,8 +281,10 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
            ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
            ConcretePerson aPerson = ConcretePerson.getInstance();
+           Person externalTutor = null;
            aCallableStatement = connector.prepareCall("{call getAllTrainingOffers()}");
            ResultSet rs = aCallableStatement.executeQuery();
+           String innerTraining = null;
            
            while( rs.next() ){
                 aTrainingOffer = new TrainingOffer();
@@ -261,12 +292,14 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 aTrainingOffer.setDescription(rs.getString("description"));
                 aTrainingOffer.setOrganization(anOrganization.readOrganization(rs.getString("fk_organization")).getCompanyName());
                 aTrainingOffer.setDepartment(aDepartment.readDepartment(rs.getString("fk_department")).getAbbreviation());
-                String tmp = "";
-                       tmp += aPerson.readPerson(rs.getString("fk_person")).getName()+" ";
-                       tmp += aPerson.readPerson(rs.getString("fk_person")).getSurname();
-                aTrainingOffer.setPersonSSN(tmp);
-                aTrainingOffer.setContact(anOrganization.readOrganization(rs.getString("fk_organization")).getEmail());
-            
+                externalTutor = aPerson.readPerson(rs.getString("fk_person"));
+                aTrainingOffer.setPersonSSN(externalTutor.getName()+" "+externalTutor.getSurname());
+                innerTraining = anOrganization.readOrganization(rs.getString("fk_organization")).getEmail();
+                if ( innerTraining == null )
+                    aTrainingOffer.setContact(externalTutor.getAccountEmail());
+                else aTrainingOffer.setContact(innerTraining);
+                
+                System.out.println(aTrainingOffer.getContact());
                 allTraining.add(aTrainingOffer);
            }
            rs.close();
@@ -285,6 +318,10 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteTrainingOffer instance if there are no ConcreteTrainingOffer instances alive
+     */
     public static synchronized ConcreteTrainingOffer getInstance(){
         if(instance == null)
             instance = new ConcreteTrainingOffer();
@@ -300,6 +337,11 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
         }
     }
 
+    /**
+     *
+     * @param idTrainingOffer
+     * @return
+     */
     @Override
     public boolean deleteTrainingOffer(int idTrainingOffer) {
         initializeConnection();

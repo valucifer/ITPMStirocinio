@@ -35,6 +35,12 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpLibrary.js"></script>
 
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
+
         <jsp:include page="/getStudentTrainingStatus" />
         <c:set var="statusMessage" value="${sessionScope.message }"></c:set>
         <%
@@ -48,7 +54,7 @@
         %>
 
         <%
-            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath() );
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
         <c:if test="${status == 1}">
             <c:choose>
@@ -59,7 +65,7 @@
                             $("#ID_questionario_0").empty();
                             $("#motivationReject").empty();
                             $("#motivationReject").attr("hidden");
-                            
+
                             tpFunction.createPendingStudentPanel('#panelBody');
                         });
                     </script>
@@ -70,7 +76,7 @@
                             $("#motivationReject").empty();
                             $("#motivationReject").attr("hidden");
                             tpFunction.createAcceptedStudentPanel('#panelBody');
-                            tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer','${path}');
+                            tpFunction.populateTable('#tableNewsTrainingOrganization', '#tableContainer', '${path}');
                         });
                     </script>
                 </c:when>

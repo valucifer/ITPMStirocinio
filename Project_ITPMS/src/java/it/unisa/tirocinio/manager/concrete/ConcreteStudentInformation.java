@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Person;
@@ -34,6 +29,11 @@ public class ConcreteStudentInformation implements IStudentInformation{
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param aStudentInformation
+     * @return true if a student's informations are updated, false otherwise
+     */
     @Override
     public boolean updateStudentInformation(StudentInformation aStudentInformation) {
         initializeConnection();
@@ -62,6 +62,13 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
     
+    /**
+     *
+     * @param studentSSN
+     * @param CVPath
+     * @param ATPath
+     * @return true if a trining request is started successfully, false otherwise
+     */
     @Override
     public boolean startTrainingRequest(String studentSSN, String CVPath, String ATPath) {
         initializeConnection();
@@ -85,11 +92,22 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }        
     }
 
+    /**
+     *
+     * @param aStudent
+     * @return
+     */
     @Override
     public boolean deleteStudentInformation(Person aStudent) {
         throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
+    /**
+     *
+     * @param studentSSN
+     * @param newStatus
+     * @return true if a student status is successfully changed, false otherwise
+     */
     @Override
     public boolean changeStudentStatus(String studentSSN, StudentStatus newStatus) {
         initializeConnection();
@@ -112,6 +130,11 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
 
+    /**
+     *
+     * @param studentSSN
+     * @return a StudentInformation object if there is a student represented by a certain student SSN
+     */
     public StudentInformation readAStudentInformation (String studentSSN){
         initializeConnection();
         StudentInformation aStudentInformation = new StudentInformation();
@@ -144,6 +167,11 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
     
+    /**
+     *
+     * @param studentSSN
+     * @return a StudentInformation object if there is a student with a student SSN into Database, null otherwise
+     */
     @Override
     public StudentInformation readStudentInformation(String studentSSN) {
         initializeConnection();
@@ -178,6 +206,10 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of StudentInformation which contains all informations of a certain student
+     */
     @Override
     public ArrayList<StudentInformation> getAllStudentInformations() {
         initializeConnection();
@@ -216,6 +248,10 @@ public class ConcreteStudentInformation implements IStudentInformation{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteStudentInformation object if no ConcreteStudentInformation object are alive
+     */
     public static synchronized ConcreteStudentInformation getInstance(){
         if(instance == null)
             instance = new ConcreteStudentInformation();

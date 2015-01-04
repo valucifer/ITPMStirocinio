@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Person;
@@ -32,6 +27,11 @@ public class ConcretePerson implements IPerson{
             throw new RuntimeException("Unable to connect to Database.");
     }
 
+    /**
+     *
+     * @param SSN
+     * @return a Person object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public Person readPerson(String SSN) {
         initializeConnection();
@@ -75,6 +75,10 @@ public class ConcretePerson implements IPerson{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of Person if reading operation from Database is correct, null otherwise
+     */
     @Override
     public ArrayList<Person> getAllPeople() {
         initializeConnection();
@@ -119,13 +123,23 @@ public class ConcretePerson implements IPerson{
         }
     }
 
+    /**
+     *
+     * @param email
+     * @return type of account of a certain email address
+     */
     @Override
     public String getTypeOfAccountPerson(String email) {
         ConcreteAccount account = ConcreteAccount.getInstance();
         return account.readAccount(email).getTypeOfAccount();
     }
     
-     @Override
+    /**
+     *
+     * @param email
+     * @return true if an email address belongs to a student, false otherwise
+     */
+    @Override
     public boolean isAStudent(String email) {
         String student = "student";
         String studente = "studente";
@@ -135,6 +149,11 @@ public class ConcretePerson implements IPerson{
         return variable.equalsIgnoreCase(student) || variable.equalsIgnoreCase(studente);
     }
 
+    /**
+     *
+     * @param email
+     * @return true if an email address belongs to a professor, false otherwise
+     */
     @Override
     public boolean isAProfessor(String email) {
         String professor = "professor";
@@ -145,6 +164,11 @@ public class ConcretePerson implements IPerson{
         return variable.equalsIgnoreCase(professor) || variable.equalsIgnoreCase(professore);
     }
 
+    /**
+     *
+     * @param email
+     * @return true if an email address belongs to an organization, false otherwise
+     */
     @Override
     public boolean isAnOrganization(String email) {
         String org = "organization";
@@ -155,6 +179,11 @@ public class ConcretePerson implements IPerson{
         return variable.equalsIgnoreCase(org) || variable.equalsIgnoreCase(orga);
     }
 
+    /**
+     *
+     * @param email
+     * @return true if an email address belongs to an administrator, false otherwise
+     */
     @Override
     public boolean isAnAdministrator(String email) {
         String adm = "administrator";
@@ -165,6 +194,11 @@ public class ConcretePerson implements IPerson{
         return variable.equalsIgnoreCase(adm) || variable.equalsIgnoreCase(amm);
     }
     
+    /**
+     *
+     * @param email
+     * @return a Person Object if there is a professor represented by a certain email address, null otherwise
+     */
     @Override
     public Person getProfessor(String email) {
         if(this.isAProfessor(email))
@@ -172,6 +206,11 @@ public class ConcretePerson implements IPerson{
         return null;
     }
 
+    /**
+     *
+     * @param email
+     * @return a Person Object if there is a student represented by a certain email address, null otherwise
+     */
     @Override
     public Person getStudent(String email) {
         if(this.isAStudent(email))
@@ -179,6 +218,11 @@ public class ConcretePerson implements IPerson{
         return null;
     }
 
+    /**
+     *
+     * @param email
+     * @return a Person Object if there is an organization represented by a certain email address, null otherwise
+     */
     @Override
     public Person getOrganization(String email) {
         if(this.isAnOrganization(email))
@@ -186,6 +230,11 @@ public class ConcretePerson implements IPerson{
         return null;
     }
 
+    /**
+     *
+     * @param email
+     * @return a Person Object if there is an administrator represented by a certain email address, null otherwise
+     */
     @Override
     public Person getAdministrator(String email) {
         if(this.isAnAdministrator(email))
@@ -193,6 +242,12 @@ public class ConcretePerson implements IPerson{
         return null;
     }
     
+    /**
+     *
+     * @param email
+     * @return a Person object if there is a person into Database with the given email address
+     */
+    @Override
     public Person readPersonByAccount(String email) {
         initializeConnection();
         Person aPerson = new Person();
@@ -238,6 +293,10 @@ public class ConcretePerson implements IPerson{
         }
     }
     
+    /**
+     *
+     * @return a ConcretePerson instance if there are no ConcretePerson instances currently alive
+     */
     public static synchronized ConcretePerson getInstance(){ 
         if(instance == null)
             instance = new ConcretePerson();
@@ -253,6 +312,11 @@ public class ConcretePerson implements IPerson{
         }
     }
 
+    /**
+     *
+     * @param matricula
+     * @return
+     */
     @Override
     public Person getPersonByMatricula(String matricula) {
         initializeConnection();

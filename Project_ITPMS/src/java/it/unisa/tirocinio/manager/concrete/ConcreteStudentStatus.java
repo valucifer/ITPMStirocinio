@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.StudentStatus;
@@ -33,6 +28,11 @@ public class ConcreteStudentStatus implements IStudentStatus{
             throw new RuntimeException("Unable to connect to Database.");
     }
     
+    /**
+     *
+     * @param aStudentStatus
+     * @return true if a StudentStatus object is successfully created, false otherwise
+     */
     @Override
     public boolean createStudentStatus(StudentStatus aStudentStatus) {
         initializeConnection();
@@ -57,6 +57,11 @@ public class ConcreteStudentStatus implements IStudentStatus{
         }
     }
 
+    /**
+     *
+     * @param idStudentStatus
+     * @return a StudentStatus object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public StudentStatus readStudentStatus(int idStudentStatus) {
         initializeConnection();
@@ -85,6 +90,10 @@ public class ConcreteStudentStatus implements IStudentStatus{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of StudentStatus which contains every student's status
+     */
     @Override
     public ArrayList<StudentStatus> getAllStudentStatus() {
         initializeConnection();
@@ -115,6 +124,10 @@ public class ConcreteStudentStatus implements IStudentStatus{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteStudentStatus instace if there are no ConcreteStudentStatus instances alive
+     */
     public static synchronized ConcreteStudentStatus getInstance(){
         if(instance == null)
             instance = new ConcreteStudentStatus();

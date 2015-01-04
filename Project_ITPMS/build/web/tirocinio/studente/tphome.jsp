@@ -28,6 +28,12 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpLibrary.js"></script>
 
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
+
         <jsp:include page="/getStudentTrainingStatus" />
         <c:set var="statusMessage" value="${sessionScope.message}"></c:set>
         <%
@@ -38,8 +44,8 @@
             pageContext.setAttribute("status", requestStatus);
             pageContext.setAttribute("description", description);
             pageContext.setAttribute("idStudentStatus", studentStatus);
-            
-            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath() );
+
+            pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
         <c:if test="${status == 1}">
             <script>
@@ -57,7 +63,7 @@
                     </script>
                 </c:when>
                 <c:when test="${idStudentStatus == 2}">
-                    
+
                 </c:when>
                 <c:when test="${idStudentStatus == 1}">
                     <script>
@@ -245,21 +251,8 @@
                 <script>
                     jQuery(document).ready(function ($)
                     {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                        
                         jQuery(document).ready(function ($) {
-                            tpFunction.populateTableWithoutContacts('#tableNewsTrainingOrganization', '#tableContainer','${path}');
+                            tpFunction.populateTableWithoutContacts('#tableNewsTrainingOrganization', '#tableContainer', '${path}');
                         });
                     });
                 </script>

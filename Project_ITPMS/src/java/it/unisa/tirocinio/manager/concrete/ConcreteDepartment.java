@@ -1,8 +1,3 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
 import it.unisa.tirocinio.beans.Department;
@@ -32,6 +27,11 @@ public class ConcreteDepartment implements IDepartment{
             throw new RuntimeException("Unable to connect to Database.");
     }
     
+    /**
+     *
+     * @param department
+     * @return a Department object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public Department readDepartment(String department) {
         initializeConnection();
@@ -60,6 +60,10 @@ public class ConcreteDepartment implements IDepartment{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of Department if reading operation is correct, null otherwise
+     */
     @Override
     public ArrayList<Department> getAllDepartments() {
         initializeConnection();
@@ -91,6 +95,10 @@ public class ConcreteDepartment implements IDepartment{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteDepartment object if there are no instances of ConcreteDepartment alive
+     */
     public static synchronized ConcreteDepartment getInstance(){
         if(instance == null)
             instance = new ConcreteDepartment();

@@ -29,14 +29,19 @@
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
-       
+
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
         <script>
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendProfessor('#comboboxProfessor',"${path}");
+                tpAdminFunction.appendProfessor('#comboboxProfessor', "${path}");
             });
         </script>
     </head>
@@ -473,7 +478,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/jvectormap/regions/jquery-jvectormap-world-mill-en.js"></script>
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
-        
+
         <!-- JavaScripts initializations and stuff -->
         <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
 

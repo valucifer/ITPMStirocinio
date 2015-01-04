@@ -29,10 +29,16 @@
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpOrganizationLibrary.js"></script>
 
+        <c:choose>
+            <c:when test="${sessionScope.person == null}">
+                <c:redirect url="login.jsp" />
+            </c:when>
+        </c:choose>
+
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
-        
+
         <c:set var="deleteTrainingOfferStatus" value="${sessionScope.message.getMessage('deleteTrainingStatus')}"></c:set>
         <c:choose>
             <c:when test="${deleteTrainingOfferStatus == 0}">

@@ -1,38 +1,57 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.beans;
 
 /**
  *
  * @author johneisenheim
  */
-public final class StudentStatus {
+public class StudentStatus {
     
     private int idStudentStatus;
     private String description = null;
 
+    /**
+     *
+     */
     public StudentStatus() {}
     
+    /**
+     *
+     * @param idStudentStatus
+     * @param description
+     */
     public StudentStatus( int idStudentStatus, String description ) {
-        setIdStudentStatus(idStudentStatus);
-        setDescription(description);
+        this.idStudentStatus = idStudentStatus;
+        this.description = description;
     }
 
+    /**
+     *
+     * @return id student status
+     */
     public int getIdStudentStatus() {
         return idStudentStatus;
     }
 
+    /**
+     *
+     * @return description
+     */
     public String getDescription() {
         return description;
     }
 
+    /**
+     *
+     * @param idStudentStatus
+     */
     public void setIdStudentStatus(int idStudentStatus) {
         this.idStudentStatus = idStudentStatus;
     }
 
+    /**
+     *
+     * @param description
+     */
     public void setDescription(String description) {
         this.description = description;
     }

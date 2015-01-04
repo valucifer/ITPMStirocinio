@@ -15,18 +15,37 @@ import java.util.Map;
 public class ConcreteMessageForServlet {
     private Map<String, Object> messages = null;
     
+    /**
+     *
+     */
     public ConcreteMessageForServlet(){
         messages = new HashMap<String, Object>();
     }
 
+    /**
+     *
+     * @param key
+     * @return message associated to the key
+     */
     public Object getMessage(String key) {
         return messages.get(key);
     }
 
+    /**
+     *
+     * @param key
+     * @param value
+     */
     public void setMessage(String key, Object value) {
         messages.put(key, value);
     }
     
+    /**
+     *
+     * @param key
+     * @param newStructure
+     * @return the result of put operation
+     */
     public Object createSubStructure( String key, Map<String, Object> newStructure ){
         return messages.put(key, newStructure);
     }

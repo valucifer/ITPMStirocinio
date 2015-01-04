@@ -1,11 +1,5 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
 package it.unisa.tirocinio.manager.concrete;
 
-import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.beans.TrainingStatus;
 import it.unisa.tirocinio.manager.DBConnector;
@@ -34,6 +28,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
             throw new RuntimeException("Unable to connect to Database.");
     }
     
+    /**
+     *
+     * @param aTrainingRequest
+     * @return true if a training request is successfully created, false otherwise 
+     */
     @Override
     public boolean createTrainingRequest(TrainingRequest aTrainingRequest) {
         initializeConnection();
@@ -63,6 +62,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param idTraininngRequest
+     * @return true if a training request is successfully deleted, false otherwise
+     */
     @Override
     public boolean deleteTrainingRequest(int idTraininngRequest) {
         initializeConnection();
@@ -84,6 +88,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param aTrainingRequest
+     * @return true if a training request is successfully updated, false otherwise
+     */
     @Override
     public boolean updateTrainingRequest(TrainingRequest aTrainingRequest) {
         initializeConnection();
@@ -114,6 +123,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param aTrainingRequest
+     * @return a TrainingRequest object if reading operation from Database is successfully done, null otherwise
+     */
     @Override
     public TrainingRequest readTrainingRequest(int aTrainingRequest) {
         initializeConnection();
@@ -155,6 +169,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param VATNumber
+     * @return an ArrayList of TrainingRequest which contains all training request pubblished by a certain organization
+     */
     @Override
     public ArrayList<TrainingRequest> readTrainingRequestByOrganization(String VATNumber) {
         initializeConnection();
@@ -200,6 +219,10 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of TrainingRequest which contains all training requestes
+     */
     @Override
     public ArrayList<TrainingRequest> getAllTrainingRequests() {
         initializeConnection();
@@ -244,6 +267,12 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param idTrainingRequest
+     * @param aStatus
+     * @return true if a certain training request is successfully updated, false otherwise
+     */
     @Override
     public boolean changeTrainingStatus(int idTrainingRequest, TrainingStatus aStatus) {
         initializeConnection();
@@ -269,6 +298,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param idTrainingRequest
+     * @return return true if a certain training request is internship, false otherwise
+     */
     @Override
     public boolean isInternship(int idTrainingRequest) {
         initializeConnection();
@@ -298,6 +332,10 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @return an ArrayList of TrainingRequest which contains all internships
+     */
     @Override
     public ArrayList<TrainingRequest> getAllInternships() {
         initializeConnection();
@@ -342,6 +380,11 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
     
+    /**
+     *
+     * @param SSN
+     * @return an ArrayList of TrainingRequest which contains all training requestes pubblished by a professor
+     */
     @Override
     public ArrayList<TrainingRequest> readTrainingRequestByProfessor(String SSN) {
         initializeConnection();
@@ -387,15 +430,15 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
 
+    /**
+     *
+     * @param SSN
+     * @return a TrainingRequest object if reading operation from Database is correct, null otherwise
+     */
     @Override
     public TrainingRequest readTrainingRequestByStudent(String SSN) {
         initializeConnection();
         TrainingRequest aTraining = new TrainingRequest();
-        ConcreteTrainingStatus aTrainingStatus = ConcreteTrainingStatus.getInstance();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
-        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance().getInstance();
-        ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        
         try {
             aCallableStatement = connector.prepareCall("{call getStudentInformationTrainingRequests(?)}");
             aCallableStatement.setString("SSN",SSN);
@@ -428,6 +471,10 @@ public class ConcreteTrainingRequest implements ITrainingRequest{
         }
     }
     
+    /**
+     *
+     * @return a ConcreteTrainingRequest instance if there are no ConcreteTrainingRequest instances currently alive
+     */
     public static synchronized ConcreteTrainingRequest getInstance(){
         if(instance == null)
             instance = new ConcreteTrainingRequest();
