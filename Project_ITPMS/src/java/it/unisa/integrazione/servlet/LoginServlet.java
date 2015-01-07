@@ -70,11 +70,11 @@ public class LoginServlet extends HttpServlet {
                     response.sendRedirect(request.getContextPath() + "/tirocinio/professore/tpprofessore.jsp");
                 } else {
                     session.setAttribute("loginError", "error");
-                    response.sendRedirect("login.jsp");
+                    response.sendRedirect(request.getContextPath() + "/login.jsp");
                 }
             } else {
                 session.setAttribute("loginError", "error");
-                response.sendRedirect("login.jsp");
+                response.sendRedirect(request.getContextPath() +"login.jsp");
             }
         } catch (SQLException sqlException) {
             out.print("<h1>SQL Exception: </h1>" + sqlException.getMessage());

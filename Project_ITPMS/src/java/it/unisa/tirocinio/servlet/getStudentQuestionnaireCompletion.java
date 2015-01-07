@@ -16,6 +16,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -38,6 +39,7 @@ public class getStudentQuestionnaireCompletion extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         String account = request.getParameter("account");
+        HttpSession aSession = request.getSession();
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
         Person me = aPerson.readPersonByAccount(account);
@@ -48,12 +50,15 @@ public class getStudentQuestionnaireCompletion extends HttpServlet {
             Questionnaire questionnaire = aQuestionnaires.readQuestionnaire(me.getSSN());
             
             if (questionnaire == null) {
-               request.setAttribute("questionnaireCompletion", 0);
+               aSession.setAttribute("questionnaireCompletion", 0);
+               response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
             } else {
-                request.setAttribute("questionnaireCompletion", 1);
+               aSession.setAttribute("questionnaireCompletion", 1);
+               response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
             }
         } else {
-            request.setAttribute("questionnaireCompletion", 0);
+            aSession.setAttribute("questionnaireCompletion", 0);
+            response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
         }
 
     }

@@ -58,4 +58,33 @@ ADD CONSTRAINT `fk_tutor`
   REFERENCES `db_distra`.`person` (`SSN`)
   ON DELETE NO ACTION
   ON UPDATE NO ACTION;
+  
+  
+  CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `activetraining` AS
+    select 
+        `student_information`.`SSN` AS `SSN`
+    from
+        (`student_information`
+        join `training_request`)
+    where
+        ((`training_request`.`fk_training_status` = 1)
+            and (`training_request`.`fk_training_status` = 2))
+        
+        
+CREATE 
+    ALGORITHM = UNDEFINED 
+    DEFINER = `root`@`localhost` 
+    SQL SECURITY DEFINER
+VIEW `studentstartedtraining` AS
+    select 
+        `student_information`.`SSN` AS `SSN`
+    from
+        (`student_information`
+        join `training_status`)
+    where
+        (`training_status`.`id_training_status` = 1)
 

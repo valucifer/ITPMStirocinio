@@ -32,6 +32,7 @@ public class insertTrainingQuestionnaire extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
+        System.out.println("Here");
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         HttpSession aSession = request.getSession();
@@ -45,17 +46,18 @@ public class insertTrainingQuestionnaire extends HttpServlet {
         String fourthAnswer = request.getParameter("fourthAnswer");
         String fifthAnswer = request.getParameter("fifthAnswer");
         String sixthAnswer = request.getParameter("sixthAnswer");
-        String seventAnswer = request.getParameter("seventAnswer");
+        String seventhAnswer = request.getParameter("seventhAnswer");
 
         ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = aPerson.getPersonByMatricula(matricolaStudente);
 
         ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
         TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
+        System.out.println(trainingRequest.getTrainingStatus());
 
         if (trainingRequest.getTrainingStatus() == 2) {
 
-            Questionnaire aQuestionnaire = new Questionnaire(nomeAzienda, tipologiaAzienda, firstAnswer, secondAnswer, person.getSSN(), thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventAnswer);
+            Questionnaire aQuestionnaire = new Questionnaire(nomeAzienda, tipologiaAzienda, firstAnswer, secondAnswer, person.getSSN(), thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer);
 
             ConcreteQuestionnaire questionnaires = ConcreteQuestionnaire.getInstance();
             boolean toReturn = questionnaires.insertQuestionnaire(aQuestionnaire);

@@ -57,8 +57,6 @@
             </div>
         </div>
     </div>
-
-    <body>
     <body class="page-body">
         <nav class="navbar horizontal-menu navbar-fixed-top"><!-- set fixed position by adding class "navbar-fixed-top" -->
 

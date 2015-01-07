@@ -116,7 +116,7 @@ public class ConcreteQuestionnaire implements IQuestionnaire {
                 aQuestionnaire.setSeventhQuestion(rs.getString("seventh_question"));
                 aQuestionnaire.setStudentSSN(rs.getString("student_ssn"));
                 aQuestionnaire.setThirdQuestion(rs.getString("third_question"));
-                aQuestionnaire.setOrganizationType(rs.getString("typologt_organization"));
+                aQuestionnaire.setOrganizationType(rs.getString("typology_organization"));
                 
            }
            rs.close();

@@ -26,16 +26,16 @@
 
         <script src="${pageContext.request.contextPath}/assets/js/jquery-1.11.1.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/tpLibrary.js"></script>
-        <script src="${pageContext.request.contextPath}/assets/js/validatr.js"></script>
+
         <c:choose>
             <c:when test="${sessionScope.person.account.email == null}">
-                <c:redirect url="login.jsp" />
+                <c:redirect url="/login.jsp" />
             </c:when>
         </c:choose>
         <jsp:include page="/getStudentQuestionnaireCompletion">
             <jsp:param name="account" value="${sessionScope.person.account.email}" />
         </jsp:include>
-        <c:set var="questionnaireCompletion" value="${requestScope.questionnaireCompletion }"></c:set>
+        <c:set var="questionnaireCompletion" value="${sessionScope.questionnaireCompletion }"></c:set>
         <%
             int qCompletion = (Integer) pageContext.getAttribute("questionnaireCompletion");
             pageContext.setAttribute("qCompletion", qCompletion);
@@ -56,7 +56,7 @@
         <script>
             jQuery(document).ready(function ($) {
                 $("#logout").click(function (e) {
-                    $.get(${path } + "/logout", {}).fail(function (e) {
+                    $.get("${path}/logout", {}).fail(function (e) {
                         alert("Si sono verificati dei problemi col server!");
                     });
                 });
@@ -248,19 +248,20 @@
                                 <br>
                                 <p align="justify">dove i valori da attribuire ad ogni casella sono: 1: insufficiente; 2: mediocre; 3: sufficiente; 4:buono; 5:ottimo.</p>
                                 <br>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="matricolaStudente">Matricola: </label>
-                                    <div class="col-sm-9">
-                                        <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente">
+                                <form role="form" class="validate" action="${path}/insertTrainingQuestionnaire" method="POST">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="matricolaStudente">Matricola: </label>
+                                        <div class="col-sm-9">
+                                            <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente">
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="form-group">
-                                    <label class="col-sm-2 control-label" for="nomeAzienda">Azienda Ospitante: </label>
-                                    <div class="col-sm-9">
-                                        <input required type="text" class="form-control" name="nomeAzienda" id="nomeAzienda">
+                                    <div class="form-group">
+                                        <label class="col-sm-2 control-label" for="nomeAzienda">Azienda Ospitante: </label>
+                                        <div class="col-sm-9">
+                                            <input required type="text" class="form-control" name="nomeAzienda" id="nomeAzienda">
+                                        </div>
                                     </div>
-                                </div>
-                                <form role="form" class="validate" action="${path}/insertTrainingQuestionnaire">
+
 
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" for="tipologiaAzienda">Tipologia Struttura: </label>
@@ -440,6 +441,7 @@
 
         <!-- JavaScripts initializations and stuff -->
         <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>
+        <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
 
     </body>
 </html> 

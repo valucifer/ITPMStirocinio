@@ -25,3 +25,5 @@ Project_ITPMS/nbproject/project.properties
 
 Project_ITPMS/nbproject/ant-deploy.xml
 /Project_ITPMS/dist/
+
+Project_ITPMS/build/generated/src/org/apache/jsp/tirocinio/professore/tpprofessore_jsp.java

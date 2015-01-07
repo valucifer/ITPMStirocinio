@@ -2,11 +2,15 @@
 <project-private xmlns="http://www.netbeans.org/ns/project-private/1">
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
+<<<<<<< Updated upstream
         <group>
             <file>file:/C:/Users/Nello/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/manager/concrete/ConcretePerson.java</file>
             <file>file:/C:/Users/Nello/Desktop/ITPMStirocinio/Project_ITPMS/src/java/it/unisa/tirocinio/servlet/getAllTrainingOffers.java</file>
             <file>file:/C:/Users/Nello/Desktop/ITPMStirocinio/Project_ITPMS/web/assets/js/tpLibrary.js</file>
             <file>file:/C:/Users/Nello/Desktop/ITPMStirocinio/Project_ITPMS/web/tirocinio/studente/tprichiestatirocinio.jsp</file>
         </group>
+=======
+        <group/>
+>>>>>>> Stashed changes
     </open-files>
 </project-private>

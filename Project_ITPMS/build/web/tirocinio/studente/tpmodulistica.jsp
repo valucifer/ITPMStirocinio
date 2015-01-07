@@ -34,7 +34,7 @@
         pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
     %>
 
-</head>
+    </head>
 <body class="page-body">
 
     <nav class="navbar horizontal-menu navbar-fixed-top"><!-- set fixed position by adding class "navbar-fixed-top" -->
@@ -304,7 +304,7 @@
                                         $("#printModuleButton").click(function (e) {
                                             var first = moment($('#trainingStart').val(), "DD MM YYYY");
                                             var second = moment($('#trainingEnd').val(), "DD MM YYYY");
-                                            if (first.isValid() && second.isVali d()) {
+                                            if (first.isValid() && second.isValid()) {
                                                 if (first > second)
                                                     alert("La data di inizio e di fine tirocinio sono errate!");
                                                 else {
