@@ -50,7 +50,8 @@ public class getRejectedMessage extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         HttpSession session = request.getSession();
         try {
-            String email = "v.vivone@studenti.unisa.it";//request.getParameter("accountEmail");
+            Person pers = (Person) session.getAttribute("person");
+            String email = pers.getAccount().getEmail();
             
             ConcretePerson aPerson = ConcretePerson.getInstance();  
             Person person = aPerson.readPersonByAccount(email);

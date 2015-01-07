@@ -42,7 +42,7 @@ public class ConcreteAccount implements IAccount{
             aCallableStatement.setString("emailInput",account.getEmail());
             aCallableStatement.setString("passwordInput",account.getPassword());
             aCallableStatement.setString("typology",account.getTypeOfAccount());
-            aCallableStatement.setInt("activeInput",account.getActive());
+            aCallableStatement.setBoolean("activeInput",account.isActive());
             int check = aCallableStatement.executeUpdate();
             return check > 0;
         } catch (SQLException ex) {
@@ -73,10 +73,10 @@ public class ConcreteAccount implements IAccount{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
-                anAccount.setEmail(rs.getString(1));
-                anAccount.setPassword(rs.getString(2));
-                anAccount.setTypeOfAccount(rs.getString(3));
-                anAccount.setActive(rs.getInt(4));
+                anAccount.setEmail(rs.getString("email"));
+                anAccount.setPassword(rs.getString("password"));
+                anAccount.setTypeOfAccount(rs.getString("typeOfAccount"));
+                anAccount.setActive(rs.getBoolean("active"));
             }
             rs.close();
             return anAccount;
@@ -110,8 +110,8 @@ public class ConcreteAccount implements IAccount{
                 anAccount = new Account();
                 anAccount.setEmail(rs.getString("email"));
                 anAccount.setPassword(rs.getString("password"));
-                anAccount.setTypeOfAccount(rs.getString("type_of_account"));
-                anAccount.setActive(rs.getInt("active"));
+                anAccount.setTypeOfAccount(rs.getString("typeOfAccount"));
+                anAccount.setActive(rs.getBoolean("active"));
                 accounts.add(anAccount);
             }
             rs.close();

@@ -57,7 +57,6 @@ tpFunction = {
                 var jsonObj = parsed.message;
                 var tmp = '';
                 for (var i = 0; i < jsonObj.length; i++) {
-                    alert(jsonObj[i].organization);
                     if (jsonObj[i].organization === undefined)
                         tmp += '<tr><td>Nessuna</td><td>' + jsonObj[i].professor + '</td><td>' + jsonObj[i].description + '</td><td><a href=mailto:' + jsonObj[i].contacts + '?subject=Richiesta Tirocinio>' + jsonObj[i].contacts + '</a></td></tr>';
                     else

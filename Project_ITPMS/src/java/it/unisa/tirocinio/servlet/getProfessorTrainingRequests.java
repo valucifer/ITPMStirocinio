@@ -17,6 +17,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -40,18 +41,21 @@ public class getProfessorTrainingRequests extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            String professorSSN = "delucia";//request.getParameter("professorAccountEmail");
+            HttpSession aSession = request.getSession();
+            Person pers = (Person) aSession.getAttribute("person");
             
+            /* TODO output your page here. You may use following sample code. */
+            String professorSSN = pers.getSSN();
+
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.readPersonByAccount(professorSSN);
-            
+
             ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
             ArrayList<TrainingRequest> trainingRequest = aTrainingRequest.readTrainingRequestByProfessor(person.getSSN());
-            
-            if(trainingRequest == null){
+
+            if (trainingRequest == null) {
                 message.setMessage("status", 0);
-            }else{
+            } else {
                 message.setMessage("status", 1);
                 message.setMessage("Object", trainingRequest);
                 for (TrainingRequest trainingRequest1 : trainingRequest) {
@@ -62,7 +66,7 @@ public class getProfessorTrainingRequests extends HttpServlet {
                     out.println("org " + trainingRequest1.getOrganizationVATNumber());
                     out.println("prof " + trainingRequest1.getPersonSSN());
                     out.println("stud " + trainingRequest1.getStudentSSN());
-                    out.println("stat " + trainingRequest1.getTrainingStatus());  
+                    out.println("stat " + trainingRequest1.getTrainingStatus());
                 }
             }
         } finally {

@@ -23,7 +23,7 @@ import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-
+import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
 import org.apache.commons.fileupload.FileUploadException;
@@ -37,8 +37,8 @@ import org.json.JSONObject;
  *
  * @author Valentino
  */
-
 public class studentUploadFiles extends HttpServlet {
+
     private PrintWriter out = null;
     private boolean isMultipart;
     private String filePath;
@@ -48,14 +48,14 @@ public class studentUploadFiles extends HttpServlet {
     public void init() {
         fileSeparator = System.getProperty("file.separator");
         String userHome = System.getProperty("user.home");
-        filePath = userHome+fileSeparator+"PlatformDocuments";
+        filePath = userHome + fileSeparator + "PlatformDocuments";
         message = new ConcreteMessageForServlet();
         File directoryCheck = new File(filePath);
-        if( !directoryCheck.exists() ){
+        if (!directoryCheck.exists()) {
             directoryCheck.mkdir();
-        } 
+        }
     }
-    
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -68,22 +68,23 @@ public class studentUploadFiles extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin","*");
+        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
+        HttpSession aSession = request.getSession();
         try {
-            String primaryKey = request.getParameter("account");
-            out.println(primaryKey);
+            Person pers = (Person) aSession.getAttribute("person");
+            String primaryKey = pers.getAccount().getEmail();
             ConcretePerson aPerson = ConcretePerson.getInstance();
             Person person = aPerson.getStudent(primaryKey);
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             out = response.getWriter();
-            
-            String studentSubfolderPath = filePath+fileSeparator+reverseSerialNumber(person.getMatricula());
+
+            String studentSubfolderPath = filePath + fileSeparator + reverseSerialNumber(person.getMatricula());
             File subfolderFile = new File(studentSubfolderPath);
-            if( !subfolderFile.exists() ){
+            if (!subfolderFile.exists()) {
                 subfolderFile.mkdir();
             }
-            
+
             isMultipart = ServletFileUpload.isMultipartContent(request);
             String serialNumber = null;
             DiskFileItemFactory factory = new DiskFileItemFactory();
@@ -92,55 +93,56 @@ public class studentUploadFiles extends HttpServlet {
             Iterator i = fileItems.iterator();
             File fileToStore = null;
             String CVPath = "", ATPath = "";
-            
-            while ( i.hasNext () ) {
-               
-                FileItem fi = (FileItem)i.next();
-                if ( !fi.isFormField () ){
+
+            while (i.hasNext()) {
+
+                FileItem fi = (FileItem) i.next();
+                if (!fi.isFormField()) {
                     // Get the uploaded file parameters
                     String fieldName = fi.getFieldName();
                     String fileName = fi.getName();
-                    if( fieldName.equals("cv")){
-                        fileToStore = new File(studentSubfolderPath+fileSeparator+"CV.pdf");
+                    if (fieldName.equals("cv")) {
+                        fileToStore = new File(studentSubfolderPath + fileSeparator + "CV.pdf");
                         CVPath = fileToStore.getAbsolutePath();
-                    }else if( fieldName.equals("doc")){
-                        fileToStore = new File(studentSubfolderPath+fileSeparator+"ES.pdf");
+                    } else if (fieldName.equals("doc")) {
+                        fileToStore = new File(studentSubfolderPath + fileSeparator + "ES.pdf");
                         ATPath = fileToStore.getAbsolutePath();
                     }
-                    fi.write( fileToStore ) ;
-                    
-                   // out.println("Uploaded Filename: " + fieldName + "<br>");
-                }else{
+                    fi.write(fileToStore);
+
+                    // out.println("Uploaded Filename: " + fieldName + "<br>");
+                } else {
                     //out.println("It's not formfield");
                     //out.println(fi.getString());
-                    
-                } 
-               
+
+                }
+
             }
-            
-            message.setMessage("status", 1);
-            if( aStudentInformation.startTrainingRequest(person.getSSN(), CVPath, ATPath) )
+
+            if (aStudentInformation.startTrainingRequest(person.getSSN(), CVPath, ATPath)) {
                 message.setMessage("status", 1);
-            else message.setMessage("status", 0);
-            request.setAttribute("message",message);
-            //response.sendRedirect(request.getContextPath()+"/tirocinio/studente/tprichiestatirocinio.jsp");
+            } else {
+                message.setMessage("status", 0);
+            }
+            aSession.setAttribute("message", message);
+            response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tprichiestatirocinio.jsp");
             //RequestDispatcher dispatcher = getServletContext().getRequestDispatcher("/tirocinio/studente/tprichiestatirocinio.jsp");
             //dispatcher.forward(request,response);
         } catch (Exception ex) {
             Logger.getLogger(studentUploadFiles.class.getName()).log(Level.SEVERE, null, ex);
             message.setMessage("status", -1);
-            request.setAttribute("message",message);
+            aSession.setAttribute("message", message);
         } finally {
             out.close();
         }
     }
-    
+
     private String reverseSerialNumber(String primaryKey) {
         String reversedSerialNumber = "";
-        for ( int i = primaryKey.length()-1; i >= 0; i-- ){
+        for (int i = primaryKey.length() - 1; i >= 0; i--) {
             reversedSerialNumber += (primaryKey.charAt(i));
         }
-        
+
         return reversedSerialNumber;
     }
 

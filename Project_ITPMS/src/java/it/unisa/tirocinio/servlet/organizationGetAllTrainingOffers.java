@@ -1,6 +1,7 @@
 package it.unisa.tirocinio.servlet;
 
 import it.unisa.tirocinio.beans.Organization;
+import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
@@ -46,7 +47,8 @@ public class organizationGetAllTrainingOffers extends HttpServlet {
             
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
             HttpSession aSession = request.getSession();
-            String organizationEmail = (String) aSession.getAttribute("organization");
+            Person aOrganization = (Person) aSession.getAttribute("person");
+            String organizationEmail = (String) aOrganization.getAccount().getEmail();
             Organization organization = anOrganization.getOrganizationByAccount(organizationEmail);
             
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();

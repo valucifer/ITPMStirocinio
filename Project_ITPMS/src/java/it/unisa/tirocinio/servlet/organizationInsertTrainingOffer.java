@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
@@ -46,7 +47,8 @@ public class organizationInsertTrainingOffer extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         String description = request.getParameter("description");
         HttpSession aSession = request.getSession();
-        String organizationEmail = (String) aSession.getAttribute("organization");
+        Person anOrganization = (Person) aSession.getAttribute("person");
+        String organizationEmail = (String) anOrganization.getAccount().getEmail();
 
         ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();
         Organization organization = aOrganization.getOrganizationByAccount(organizationEmail);
@@ -56,8 +58,8 @@ public class organizationInsertTrainingOffer extends HttpServlet {
 
         ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
         TrainingOffer trainingOffer = new TrainingOffer();
-
-        trainingOffer.setDepartment(person.getDepartmentAbbreviation());
+        Department departmentAbb = person.getDepartment();
+        trainingOffer.setDepartment(departmentAbb.getAbbreviation());
         trainingOffer.setDescription(organization.getCompanyName() + " - " + description);
         trainingOffer.setOrganization(organization.getVATNumber());
         trainingOffer.setPersonSSN(person.getSSN());

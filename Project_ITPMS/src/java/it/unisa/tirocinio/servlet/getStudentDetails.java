@@ -61,7 +61,7 @@ public class getStudentDetails extends HttpServlet {
                     jsonTmp.put("libretto", stuInf.getATPath());
                     jsonTmp.put("emailStudent", stuInf.getEmailStudent());
 
-                        array.put(jsonTmp);
+                    array.put(jsonTmp);
                 }
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);

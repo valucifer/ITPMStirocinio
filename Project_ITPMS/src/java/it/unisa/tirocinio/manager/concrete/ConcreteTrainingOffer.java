@@ -1,5 +1,6 @@
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.DBConnector;
@@ -295,9 +296,10 @@ public class ConcreteTrainingOffer implements ITrainingOffer{
                 externalTutor = aPerson.readPerson(rs.getString("fk_person"));
                 aTrainingOffer.setPersonSSN(externalTutor.getName()+" "+externalTutor.getSurname());
                 innerTraining = anOrganization.readOrganization(rs.getString("fk_organization")).getEmail();
-                if ( innerTraining == null )
-                    aTrainingOffer.setContact(externalTutor.getAccountEmail());
-                else aTrainingOffer.setContact(innerTraining);
+                if ( innerTraining == null ){
+                    Account account = externalTutor.getAccount();
+                    aTrainingOffer.setContact(account.getEmail());
+                }else aTrainingOffer.setContact(innerTraining);
                 
                 System.out.println(aTrainingOffer.getContact());
                 allTraining.add(aTrainingOffer);

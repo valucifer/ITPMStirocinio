@@ -36,7 +36,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/tpLibrary.js"></script>
 
         <c:choose>
-            <c:when test="${sessionScope.person == null}">
+            <c:when test="${sessionScope.person.account.email == null}">
                 <c:redirect url="login.jsp" />
             </c:when>
         </c:choose>
@@ -101,7 +101,7 @@
                 </c:otherwise>
             </c:choose>
         </c:if>
-
+        
     </head>
     <body class="page-body">
 
@@ -187,7 +187,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.person}
+                                ${sessionScope.person.account.email}
                             </span>
                         </a>
 
@@ -199,7 +199,7 @@
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="#" id="logout">
+                                <a href='${path }/logout' id="logout">
                                     <i class="fa-lock"></i>
                                     Logout
                                 </a>
@@ -275,7 +275,7 @@
                                                 <!--<label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>-->
                                                 <label class="control-label">Studente</label>
                                                 <!--<div class="col-sm-8">-->
-                                                <input type="text" value="${sessionScope.person}" name="account" disabled>
+                                                <input type="text" value="${sessionScope.person.account.email}" name="account" disabled>
                                                 <!--</div>-->
                                                 <!--<div class="col-sm-2"></div>-->
                                             </div>

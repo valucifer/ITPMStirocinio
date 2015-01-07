@@ -30,7 +30,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/tpAdministratorLibrary.js"></script>
 
         <c:choose>
-            <c:when test="${sessionScope.person == null}">
+            <c:when test="${sessionScope.person.account.email == null}">
                 <c:redirect url="login.jsp" />
             </c:when>
         </c:choose>
@@ -39,12 +39,12 @@
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
+        
         <script>
             jQuery(document).ready(function ($) {
-                tpAdminFunction.appendOrgANDProfessor('#comboboxOrganization', '#comboboxProfessor', "${path}");
+                tpAdminFunction.appendOrgANDProfessor("#comboboxOrganization","#comboboxProfessor",'${path }')
             });
         </script>
-
     </head>
     <body class="page-body">
 
@@ -130,7 +130,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.person}
+                                ${sessionScope.person.account.email}
                             </span>
                         </a>
 
@@ -142,7 +142,7 @@
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="#" id="logout">
+                                <a href="${path }/logout" id="logout">
                                     <i class="fa-lock"></i>
                                     Logout
                                 </a>

@@ -5,11 +5,21 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.database.exception.MissingDataException;
 import it.unisa.tirocinio.beans.Account;
+import it.unisa.tirocinio.beans.Cycle;
+import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Organization;
+import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcreteAccount;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -35,25 +45,39 @@ public class insertNewOrganization extends HttpServlet {
      * @throws IOException if an I/O error occurs
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
-            throws ServletException, IOException {
+            throws ServletException, IOException, SQLException, ConnectionException, MissingDataException {
         response.setContentType("text/html;charset=UTF-8");
         request.setCharacterEncoding("UTF-8");
         HttpSession aSession = request.getSession();
         Account account = new Account();
         Organization organization = new Organization();
-
+        Person person = new Person();
+        
         organization.setVATNumber(request.getParameter("vatNumber"));
         organization.setCompanyName(request.getParameter("companyName"));
         organization.setCity(request.getParameter("city"));
         organization.setAddress(request.getParameter("address"));
         organization.setPhone(request.getParameter("phone"));
         organization.setEmail(request.getParameter("email"));
-
+        
         account.setEmail(request.getParameter("emailAccount"));
         account.setPassword(request.getParameter("password"));
         account.setTypeOfAccount("organization");
-        account.setActive(1);
-
+        account.setActive(true);
+        Department department = new Department();
+        Cycle cycle = new Cycle();
+        cycle.setCycleNumber(1);
+        department.setAbbreviation("MIT");
+        person.setName(request.getParameter("nameLiable"));
+        person.setLastName(request.getParameter("surnameLiable"));
+        person.setSSN(request.getParameter("ssnLiable"));
+        person.setAccount(account);
+        person.setDepartment(department);
+        person.setCycle(cycle);
+        person.setGender("m");
+        PersonManager aPerson = PersonManager.getInstance();
+        aPerson.add(person);
+        
         organization.setAccountEmail(account.getEmail());
 
         organization.setProfessor(request.getParameter("professorSSN"));
@@ -83,7 +107,15 @@ public class insertNewOrganization extends HttpServlet {
     @Override
     protected void doGet(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(insertNewOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionException ex) {
+            Logger.getLogger(insertNewOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MissingDataException ex) {
+            Logger.getLogger(insertNewOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**
@@ -97,7 +129,15 @@ public class insertNewOrganization extends HttpServlet {
     @Override
     protected void doPost(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        processRequest(request, response);
+        try {
+            processRequest(request, response);
+        } catch (SQLException ex) {
+            Logger.getLogger(insertNewOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionException ex) {
+            Logger.getLogger(insertNewOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (MissingDataException ex) {
+            Logger.getLogger(insertNewOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        }
     }
 
     /**

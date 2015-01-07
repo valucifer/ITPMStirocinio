@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.File;
@@ -50,8 +51,8 @@ public class studentDownloadModule extends HttpServlet {
         
         ConcretePerson aPerson = ConcretePerson.getInstance();
         Person me = aPerson.readPersonByAccount(who);
-        
-        String department = me.getDepartmentAbbreviation();
+        Department departmentAbb = me.getDepartment();
+        String department = departmentAbb.getAbbreviation();
         String path = fullPath+fileSeparator+department;
         String customFilename = "";
         if( what.equals("registroOre")){

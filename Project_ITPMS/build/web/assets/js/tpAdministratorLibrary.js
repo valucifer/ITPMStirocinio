@@ -144,7 +144,7 @@ tpAdminFunction = {
         });
     },
     completeStudentForTraining: function (idStudent, path) {
-        $.post(path + "/completeTraining", {matricula: idStudent}).done(function (e) {}).fail(function (e) {
+        $.get(path + "/completeTraining", {matricula: idStudent}).done(function (e) {}).fail(function (e) {
             alert("Si sono verificati dei problemi col server!");
         });
     },

@@ -26,13 +26,14 @@
         <script src="${pageContext.request.contextPath}/assets/js/jspdf.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/splitlines.js"></script>
     <c:choose>
-        <c:when test="${sessionScope.person == null}">
+        <c:when test="${sessionScope.person.account.email == null}">
             <c:redirect url="login.jsp" />
         </c:when>
     </c:choose>
     <%
         pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
     %>
+
 </head>
 <body class="page-body">
 
@@ -131,7 +132,7 @@
                             </a>
                         </li>
                         <li class="last">
-                            <a href="#" id="logout">
+                            <a href='${path }/logout' id="logout">
                                 <i class="fa-lock"></i>
                                 Logout
                             </a>
@@ -154,7 +155,7 @@
                     <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                     <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                     <li>
-                        <a href="${pageContext.request.contextPath}/tirocinio/studente/gestioneTirocinio&PlacementStudente.html">
+                        <a href="${pageContext.request.contextPath}/tirocinio/studente/tphome.jsp">
                             <i class="linecons-cog"></i>
                             <span class="title">Home</span>
                         </a>
@@ -165,7 +166,7 @@
                             <span class="title">Richiesta tirocinio</span>
                         </a>
                     </li>
-                    <li id="ID_modulistica_0" class="opened active">
+                    <li class="opened active" id="ID_modulistica_0">
                         <a href="${pageContext.request.contextPath}/tirocinio/studente/tpmodulistica.jsp">
                             <i class="linecons-note"></i>
                             <span class="title">Modulistica</span>
@@ -340,7 +341,7 @@
                             <p>Tramite il pulsante sottostante, è possibile scaricare il modulo del registro delle ore.</p>
                             <br>
                             <div class="row">
-                                <form method="POST" action="${path}/studentDownloadModule?who=${sessionScope.person}&what=registroOre">
+                                <form method="POST" action="${path}/studentDownloadModule?who=${sessionScope.person.account.email}&what=registroOre">
                                     <center><button type="submit" class="btn btn-success"><i class="fa-file-text-o"></i>
                                             <span>Scarica Modulo</span></button></center>
                                 </form>
@@ -360,7 +361,7 @@
                             <p>Scarica e compila questo modulo che attesta la conclusione del tuo tirocinio. Il suddetto modulo dovrà poi essere consegnato all'Ufficio Stage.</p>
                             <br>
                             <div class="row">
-                                <form method="POST" action="${path}/studentDownloadModule?who=${sessionScope.person}&what=fineTirocinio">
+                                <form method="POST" action="${path}/studentDownloadModule?who=${sessionScope.person.account.email}&what=fineTirocinio">
                                     <center><button type="submit" class="btn btn-success"><i class="fa-file-text-o"></i>
                                             <span>Scarica Modulo</span></button></center>
                                 </form>

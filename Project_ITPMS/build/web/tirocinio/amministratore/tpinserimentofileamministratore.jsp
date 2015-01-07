@@ -37,6 +37,7 @@
         <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
+        
     </head>
     <body class="page-body">
 
@@ -122,7 +123,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.person}
+                                ${sessionScope.person.account.email}
                             </span>
                         </a>
 
@@ -134,7 +135,7 @@
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="#" id="logout">
+                                <a href='${path }/logout' id="logout">
                                     <i class="fa-lock"></i>
                                     Logout
                                 </a>
@@ -221,9 +222,9 @@
                                                     <select class="form-control" id="departments" name="department" data-validate="required" data-message-required="Per favore, inserisci il dipartimento.">
                                                         <!--<option value="" selected>--Seleziona--</option>-->
                                                         <%
-                                                            ArrayList<Department> departments = (ArrayList<Department>)pageContext.getAttribute("allDepartments");
-                                                            for ( Department dep: departments ){
-                                                                out.println("<option value=\""+dep.getAbbreviation()+"\">"+dep.getAbbreviation()+"</option>");
+                                                            ArrayList<Department> departments = (ArrayList<Department>) pageContext.getAttribute("allDepartments");
+                                                            for (Department dep : departments) {
+                                                                out.println("<option value=\"" + dep.getAbbreviation() + "\">" + dep.getAbbreviation() + "</option>");
                                                             }
                                                         %>
                                                     </select>
@@ -328,7 +329,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/xenon-toggles.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/rwd-table/js/rwd-table.min.js"></script>
         <script src="${pageContext.request.contextPath}/assets/js/jquery-validate/jquery.validate.min.js"></script>
-        
+
 
         <!-- JavaScripts initializations and stuff -->
         <script src="${pageContext.request.contextPath}/assets/js/xenon-custom.js"></script>

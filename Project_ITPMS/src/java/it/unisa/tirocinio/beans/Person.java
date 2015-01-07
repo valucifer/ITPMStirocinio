@@ -19,10 +19,11 @@ public class Person {
     private String university = null;
     private String position = null;
     private String matricula = null;
-    private String accountEmail = null;
     private String role = null;
-    private int cycle;
-    private String departmentAbbreviation = null;
+    private Cycle cycle;
+    private Department department;
+    private Account account;
+    private Degree degree;
     
     /**
      *
@@ -48,7 +49,7 @@ public class Person {
      * @param matricula
      * @param cycle
      */
-    public Person(String SSN, String name, String lastName, String phone, String city, String address, String zipCode, String gender, String citizenship, String accountEmail, String departmentAbbreviation, String webPage, String university, String role, String matricula, int cycle){
+    public Person(String SSN, String name, String lastName, String phone, String city, String address, String zipCode, String gender, Degree degree, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula, Cycle cycle){
         this.SSN = SSN;
         this.name = name;
         this.lastName = lastName;
@@ -58,13 +59,54 @@ public class Person {
         this.zipCode = zipCode;
         this.gender = gender;
         this.citizenship = citizenship;
-        this.accountEmail = accountEmail;
-        this.departmentAbbreviation = departmentAbbreviation;
+        this.account = accountEmail;
+        this.department = departmentAbbreviation;
         this.webPage = webPage;
         this.university = university;
         this.role = role;
         this.matricula = matricula;
         this.cycle = cycle;
+        this.degree = degree;
+    }
+
+    public void setLastName(String lastName) {
+        this.lastName = lastName;
+    }
+
+    public void setCycle(Cycle cycle) {
+        this.cycle = cycle;
+    }
+
+    public void setDepartment(Department department) {
+        this.department = department;
+    }
+
+    public void setAccount(Account account) {
+        this.account = account;
+    }
+
+    public void setDegree(Degree degree) {
+        this.degree = degree;
+    }
+
+    public String getLastName() {
+        return lastName;
+    }
+
+    public Cycle getCycle() {
+        return cycle;
+    }
+
+    public Department getDepartment() {
+        return department;
+    }
+
+    public Account getAccount() {
+        return account;
+    }
+
+    public Degree getDegree() {
+        return degree;
     }
 
     /**
@@ -291,52 +333,4 @@ public class Person {
         this.matricula = matricula;
     }
 
-    /**
-     *
-     * @return person account email
-     */
-    public String getAccountEmail() {
-        return accountEmail;
-    }
-
-    /**
-     *
-     * @return department abbreviation
-     */
-    public String getDepartmentAbbreviation() {
-        return departmentAbbreviation;
-    }
-
-    /**
-     *
-     * @param accountEmail
-     */
-    public void setAccountEmail(String accountEmail) {
-        this.accountEmail = accountEmail;
-    }
-
-    /**
-     *
-     * @param departmentAbbreviation
-     */
-    public void setDepartmentAbbreviation(String departmentAbbreviation) {
-        this.departmentAbbreviation = departmentAbbreviation;
-    }
-
-    /**
-     *
-     * @return cycle
-     */
-    public int getCycle() {
-        return cycle;
-    }
-
-    /**
-     *
-     * @param cycle
-     */
-    public void setCycle(int cycle) {
-        this.cycle = cycle;
-    }
-   
 }

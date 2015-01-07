@@ -1,5 +1,6 @@
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.StudentStatus;
@@ -229,7 +230,8 @@ public class ConcreteStudentInformation implements IStudentInformation{
                 aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
                 aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
                 aStudentInformation.setStudentStatus(aStudentStatus.readStudentStatus(rs.getInt("fk_student_status")).getIdStudentStatus());
-                aStudentInformation.setEmailStudent(person.getAccountEmail());
+                Account account = person.getAccount();
+                aStudentInformation.setEmailStudent(account.getEmail());
                 studentInformations.add(aStudentInformation);
            }
            rs.close();

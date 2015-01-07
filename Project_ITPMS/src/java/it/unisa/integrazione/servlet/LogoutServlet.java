@@ -1,28 +1,20 @@
-/*
- * To change this license header, choose License Headers in Project Properties.
- * To change this template file, choose Tools | Templates
- * and open the template in the editor.
- */
-package it.unisa.tirocinio.servlet.student;
+package it.unisa.integrazione.servlet;
 
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.beans.TrainingRequest;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
+import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
- * @author Valentino
+ * @author gemmacatolino
  */
-@WebServlet(name = "completeTrainingRequest", urlPatterns = {"/completeTrainingRequest"})
-
-public class completeTrainingRequest extends HttpServlet {
+@WebServlet(name = "LogoutServlet", urlPatterns = {"/logout"})
+public class LogoutServlet extends HttpServlet {
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -35,25 +27,9 @@ public class completeTrainingRequest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-
-        String studentMatricola = request.getParameter("studentSSN");
-        ConcretePerson aPerson = ConcretePerson.getInstance();
-        Person person = aPerson.getPersonByMatricula(studentMatricola);
-
-        ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
-
-        trainingRequest.setTrainingStatus(3);
-
-        boolean toReturn = aTrainingRequest.updateTrainingRequest(trainingRequest);
-        if (toReturn) {
-            request.setAttribute("status", 1);
-        } else {
-            request.setAttribute("status", 0);
-        }
-        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpvisionetirocini.jsp");
+        HttpSession session = request.getSession();
+        session.removeAttribute("person");
+        response.sendRedirect(request.getContextPath() + "/index.jsp");
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

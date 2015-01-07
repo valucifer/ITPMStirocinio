@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
@@ -53,7 +54,8 @@ public class getStudentTrainingCompleteForTable extends HttpServlet {
             ArrayList<Person> student = new ArrayList<Person>();
             
             for(Person pers: person){
-                if(aPerson.isAStudent(pers.getAccountEmail()))
+                Account account = pers.getAccount();
+                if(aPerson.isAStudent(account.getEmail()))
                     student.add(pers);
             }
             
@@ -62,10 +64,11 @@ public class getStudentTrainingCompleteForTable extends HttpServlet {
             
             JSONArray array = new JSONArray();
             for( Person stud: student ){
+                Account account = stud.getAccount();
                 JSONObject jsonTmp = new JSONObject();
                 jsonTmp.put("matricola", stud.getMatricula());
                 jsonTmp.put("credenziali", stud.getName()+" "+stud.getSurname());
-                jsonTmp.put("email", stud.getAccountEmail());
+                jsonTmp.put("email", account.getEmail());
                 jsonTmp.put("telefono", stud.getPhone());
                 
                 TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSSN());

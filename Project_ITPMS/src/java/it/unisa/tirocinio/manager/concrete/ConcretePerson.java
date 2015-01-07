@@ -1,5 +1,8 @@
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.tirocinio.beans.Account;
+import it.unisa.tirocinio.beans.Cycle;
+import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IPerson;
@@ -43,12 +46,18 @@ public class ConcretePerson implements IPerson{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
-               aPerson.setAccountEmail(rs.getString("Account_email"));
+               ConcreteAccount anAccount = ConcreteAccount.getInstance();
+               Account account = anAccount.readAccount(rs.getString("Account_email"));
+               aPerson.setAccount(account);
                aPerson.setAddress(rs.getString("address"));
                aPerson.setCitizenship(rs.getString("citizenship"));
                aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(rs.getInt("cycle"));
-               aPerson.setDepartmentAbbreviation(rs.getString("Department_abbreviation"));
+               ConcreteCycle aCycle = ConcreteCycle.getInstance();
+               Cycle cycle = aCycle.readCycle(rs.getInt("cycle"));
+               aPerson.setCycle(cycle);
+               ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
+               Department department = aDepartment.readDepartment(rs.getString("Department_abbreviation"));
+               aPerson.setDepartment(department);
                aPerson.setGender(rs.getString("gender"));
                aPerson.setMatricula(rs.getString("matricula"));
                aPerson.setName(rs.getString("name"));
@@ -90,12 +99,18 @@ public class ConcretePerson implements IPerson{
            
            while( rs.next() ){
                aPerson = new Person();
-               aPerson.setAccountEmail(rs.getString("Account_email"));
+               ConcreteAccount anAccount = ConcreteAccount.getInstance();
+               Account account = anAccount.readAccount(rs.getString("Account_email"));
+               aPerson.setAccount(account);
                aPerson.setAddress(rs.getString("address"));
                aPerson.setCitizenship(rs.getString("citizenship"));
                aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(rs.getInt("cycle"));
-               aPerson.setDepartmentAbbreviation(rs.getString("Department_abbreviation"));
+               ConcreteCycle aCycle = ConcreteCycle.getInstance();
+               Cycle cycle = aCycle.readCycle(rs.getInt("cycle"));
+               aPerson.setCycle(cycle);
+               ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
+               Department department = aDepartment.readDepartment(rs.getString("Department_abbreviation"));
+               aPerson.setDepartment(department);
                aPerson.setGender(rs.getString("gender"));
                aPerson.setMatricula(rs.getString("matricula"));
                aPerson.setName(rs.getString("name"));
@@ -261,12 +276,15 @@ public class ConcretePerson implements IPerson{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
-               aPerson.setAccountEmail(anAccount.readAccount(rs.getString("Account_email")).getEmail());
+               Account account = anAccount.readAccount(rs.getString("Account_email"));
+               aPerson.setAccount(account);
                aPerson.setAddress(rs.getString("address"));
                aPerson.setCitizenship(rs.getString("citizenship"));
                aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(aCycle.readCycle(rs.getInt("cycle")).getCycleNumber());
-               aPerson.setDepartmentAbbreviation(aDepartment.readDepartment(rs.getString("Department_abbreviation")).getAbbreviation());
+               Cycle cycle = aCycle.readCycle(rs.getInt("cycle"));
+               aPerson.setCycle(cycle);
+               Department department = aDepartment.readDepartment(rs.getString("Department_abbreviation"));
+               aPerson.setDepartment(department);
                aPerson.setGender(rs.getString("gender"));
                aPerson.setMatricula(rs.getString("matricula"));
                aPerson.setName(rs.getString("name"));
@@ -328,12 +346,18 @@ public class ConcretePerson implements IPerson{
             ResultSet rs = aCallableStatement.executeQuery();
             
             while( rs.next() ){
-               aPerson.setAccountEmail(rs.getString("Account_email"));
+               ConcreteAccount anAccount = ConcreteAccount.getInstance();
+               Account account = anAccount.readAccount(rs.getString("Account_email"));
+               aPerson.setAccount(account);
                aPerson.setAddress(rs.getString("address"));
                aPerson.setCitizenship(rs.getString("citizenship"));
                aPerson.setCity(rs.getString("city"));
-               aPerson.setCycle(rs.getInt("cycle"));
-               aPerson.setDepartmentAbbreviation(rs.getString("Department_abbreviation"));
+               ConcreteCycle aCycle = ConcreteCycle.getInstance();
+               Cycle cycle = aCycle.readCycle(rs.getInt("cycle"));
+               aPerson.setCycle(cycle);
+               ConcreteDepartment aDepartment = ConcreteDepartment.getInstance();
+               Department department = aDepartment.readDepartment(rs.getString("Department_abbreviation"));
+               aPerson.setDepartment(department);
                aPerson.setGender(rs.getString("gender"));
                aPerson.setMatricula(rs.getString("matricula"));
                aPerson.setName(rs.getString("name"));

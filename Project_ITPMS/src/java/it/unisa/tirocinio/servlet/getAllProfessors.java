@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
@@ -49,7 +50,8 @@ public class getAllProfessors extends HttpServlet {
             ArrayList<Person> allProfessor = new ArrayList<Person>();
             
             for(int i = 0; i < person.size(); i++){
-                if(aPerson.isAProfessor(person.get(i).getAccountEmail())){
+                Account account = person.get(i).getAccount();
+                if(aPerson.isAProfessor(account.getEmail())){
                     allProfessor.add(person.get(i));
                 }
             }

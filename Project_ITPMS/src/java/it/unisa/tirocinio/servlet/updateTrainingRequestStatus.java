@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcretePerson;
@@ -53,7 +54,8 @@ public class updateTrainingRequestStatus extends HttpServlet {
             ArrayList<Person> student = new ArrayList<Person>();
             
             for(Person pers: person){
-                if(aPerson.isAStudent(pers.getAccountEmail()))
+                Account account = pers.getAccount();
+                if(aPerson.isAStudent(account.getEmail()))
                     student.add(pers);
             }
             

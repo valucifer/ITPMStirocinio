@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
@@ -44,16 +45,17 @@ public class professorInsertTrainingOffer extends HttpServlet {
         HttpSession aSession = request.getSession();
 
         String description = request.getParameter("description");
-        String professorEmail = (String) aSession.getAttribute("person");
+        Person professor = (Person) aSession.getAttribute("person");
+        String professorEmail = (String) professor.getAccount().getEmail();
 
         ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = aPerson.getProfessor(professorEmail);
 
         ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
         TrainingOffer trainingOffer = new TrainingOffer();
-
-        trainingOffer.setDepartment(person.getDepartmentAbbreviation());
-        trainingOffer.setDescription(person.getDepartmentAbbreviation() + " - " + description);
+        Department departmentAbb = person.getDepartment();
+        trainingOffer.setDepartment(departmentAbb.getAbbreviation());
+        trainingOffer.setDescription(departmentAbb.getAbbreviation() + " - " + description);
         trainingOffer.setPersonSSN(person.getSSN());
 
         if (aTrainingOffer.createInnerTrainingOffer(trainingOffer)) {

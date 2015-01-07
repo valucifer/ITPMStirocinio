@@ -1,16 +1,13 @@
-package it.unisa.tirocinio.servlet;
 /*
  * To change this license header, choose License Headers in Project Properties.
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
+package it.unisa.integrazione.servlet;
+
 import it.unisa.integrazione.database.AccountManager;
-import it.unisa.integrazione.database.exception.AccountNotActiveException;
 import it.unisa.integrazione.database.exception.ConnectionException;
-import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcreteAccount;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -40,7 +37,6 @@ public class LoginServlet extends HttpServlet {
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         HttpSession session = request.getSession();
         try {
@@ -48,43 +44,42 @@ public class LoginServlet extends HttpServlet {
             String password = request.getParameter("password");
 
             AccountManager accountManager = AccountManager.getInstance();
-            Account account = accountManager.login(username, password);
-            
-            ConcretePerson person = ConcretePerson.getInstance();
-            Person aPerson = new Person();
-            
-            if (account != null) {
-                if(account.getTypeOfAccount().equals("organization")){
+            Person person = accountManager.login(username, password);
+
+            if (person != null) {
+                if (! person.getAccount().isActive()) {
+                    out.println("<script type=\"text/javascript\">");
+                    out.println("alert('Account non attivo');");
+                    out.println("location='login.jsp';");
+                    out.println("</script>");
+                } else if (person.getAccount().getTypeOfAccount().equals("student")) {
                     session.removeAttribute("loginError");
-                    session.setAttribute("organization", account.getEmail());
-                    response.sendRedirect("tirocinio/organizzazione/tporganizzazione.jsp");
-                }
-                if(account.getTypeOfAccount().equals("professor")){
+                    session.setAttribute("person", person);
+                    response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tphome.jsp");
+                } else if (person.getAccount().getTypeOfAccount().equals("administrator")) {
                     session.removeAttribute("loginError");
-                    session.setAttribute("person", account.getEmail());
-                    response.sendRedirect("tirocinio/professore/tpprofessore.jsp");
-                }
-                if(account.getTypeOfAccount().equals("student")){
+                    session.setAttribute("person", person);
+                    response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpamministratore.jsp");
+                } else if (person.getAccount().getTypeOfAccount().equals("organization")) {
                     session.removeAttribute("loginError");
-                    session.setAttribute("person", account.getEmail());
-                    response.sendRedirect("tirocinio/studente/tphome.jsp");
-                }
-                if(account.getTypeOfAccount().equals("administrator")){
+                    session.setAttribute("person", person);
+                    response.sendRedirect(request.getContextPath() + "/tirocinio/organizzazione/tporganizzazione.jsp");
+                } else if (person.getAccount().getTypeOfAccount().equals("professor")) {
                     session.removeAttribute("loginError");
-                    session.setAttribute("person", account.getEmail());
-                    response.sendRedirect("tirocinio/amministratore/tpamministratore.jsp");
+                    session.setAttribute("person", person);
+                    response.sendRedirect(request.getContextPath() + "/tirocinio/professore/tpprofessore.jsp");
+                } else {
+                    session.setAttribute("loginError", "error");
+                    response.sendRedirect("login.jsp");
                 }
             } else {
                 session.setAttribute("loginError", "error");
                 response.sendRedirect("login.jsp");
             }
-            
         } catch (SQLException sqlException) {
             out.print("<h1>SQL Exception: </h1>" + sqlException.getMessage());
         } catch (ConnectionException connectionException) {
             out.print("<h1>Connection Exception</h1>");
-        } catch (AccountNotActiveException ex) {
-            out.print("<h1>Account not Active!</h1>");
         } finally {
             out.close();
         }

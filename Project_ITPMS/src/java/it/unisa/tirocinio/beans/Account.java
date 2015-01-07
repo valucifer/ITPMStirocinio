@@ -9,7 +9,7 @@ public class Account {
     private String email = null;
     private String password = null;
     private String typeOfAccount = null;
-    private int active;
+    private boolean active;
     
     /**
      *
@@ -23,7 +23,7 @@ public class Account {
      * @param typeOfAccount
      * @param active
      */
-    public Account(String email, String password, String typeOfAccount, int active){
+    public Account(String email, String password, String typeOfAccount, boolean active){
         this.email = email;
         this.password = password;
         this.typeOfAccount = typeOfAccount;
@@ -82,7 +82,7 @@ public class Account {
      *
      * @param active
      */
-    public void setActive(int active) {
+    public void setActive(boolean active) {
         this.active = active;
     }
 
@@ -90,7 +90,7 @@ public class Account {
      *
      * @return true if account is active
      */
-    public int getActive() {
+    public boolean isActive() {
         return active;
     }
     

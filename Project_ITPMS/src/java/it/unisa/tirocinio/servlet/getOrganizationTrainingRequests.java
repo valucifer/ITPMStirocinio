@@ -19,6 +19,7 @@ import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+import javax.servlet.http.HttpSession;
 
 /**
  *
@@ -42,29 +43,31 @@ public class getOrganizationTrainingRequests extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         PrintWriter out = response.getWriter();
         try {
+            HttpSession aSession = request.getSession();
+            Person aOrganization = (Person) aSession.getAttribute("person");
+            String organizationAccount = (String) aOrganization.getAccount().getEmail();
+
             /* TODO output your page here. You may use following sample code. */
-            String organizationAccount = "ibm";//request.getParameter("organizationAccountEmail");
-            
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
             Organization organization = anOrganization.getOrganizationByAccount(organizationAccount);
-            
+
             ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
             ArrayList<TrainingRequest> trainingRequest = aTrainingRequest.readTrainingRequestByOrganization(organization.getVATNumber());
-            
-            if(trainingRequest == null){
+
+            if (trainingRequest == null) {
                 message.setMessage("status", 0);
-            }else{
+            } else {
                 message.setMessage("status", 1);
                 message.setMessage("Object", trainingRequest);
-                for(int i = 0; i < trainingRequest.size(); i++){
+                for (int i = 0; i < trainingRequest.size(); i++) {
                     out.println("\n ----------------\n");
-                    out.println("id "+trainingRequest.get(i).getIdTrainingRequest());       
-                    out.println("desc "+trainingRequest.get(i).getDescription());    
-                    out.println("titl "+trainingRequest.get(i).getTitle());       
-                    out.println("org "+trainingRequest.get(i).getOrganizationVATNumber());       
-                    out.println("prof "+trainingRequest.get(i).getPersonSSN());       
-                    out.println("stud "+trainingRequest.get(i).getStudentSSN());       
-                    out.println("stat "+trainingRequest.get(i).getTrainingStatus());  
+                    out.println("id " + trainingRequest.get(i).getIdTrainingRequest());
+                    out.println("desc " + trainingRequest.get(i).getDescription());
+                    out.println("titl " + trainingRequest.get(i).getTitle());
+                    out.println("org " + trainingRequest.get(i).getOrganizationVATNumber());
+                    out.println("prof " + trainingRequest.get(i).getPersonSSN());
+                    out.println("stud " + trainingRequest.get(i).getStudentSSN());
+                    out.println("stat " + trainingRequest.get(i).getTrainingStatus());
                 }
             }
         } finally {

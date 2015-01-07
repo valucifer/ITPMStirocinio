@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
@@ -58,8 +59,9 @@ public class getAllEntities extends HttpServlet {
             JSONArray arrayPerson = new JSONArray();
             
             for(Person pers: student){
+                Account account = pers.getAccount();
                 JSONObject jsonTmpPro = new JSONObject();
-                if(aPerson.isAProfessor(pers.getAccountEmail())){
+                if(aPerson.isAProfessor(account.getEmail())){
                     jsonTmpPro.put("credential", pers.getName()+" "+pers.getSurname());
                     jsonTmpPro.put("SSN",pers.getSSN());
                     arrayProfessor.put(jsonTmpPro);
@@ -77,7 +79,8 @@ public class getAllEntities extends HttpServlet {
             }
             
             for( Person stud: student ){
-                if(aPerson.isAStudent(stud.getAccountEmail())){
+                Account account = stud.getAccount();
+                if(aPerson.isAStudent(account.getEmail())){
                     ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
                     StudentInformation studentInformation = aStudentInformation.readAStudentInformation(stud.getSSN());
                     

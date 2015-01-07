@@ -133,16 +133,20 @@
         <servlet-class>it.unisa.tirocinio.servlet.getAllEntities</servlet-class>
     </servlet>
     <servlet>
-        <servlet-name>LoginServlet</servlet-name>
-        <servlet-class>it.unisa.tirocinio.servlet.LoginServlet</servlet-class>
-    </servlet>
-    <servlet>
         <servlet-name>getAllDepartments</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.getAllDepartments</servlet-class>
     </servlet>
     <servlet>
         <servlet-name>studentDownloadModule</servlet-name>
         <servlet-class>it.unisa.tirocinio.servlet.studentDownloadModule</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LoginServlet</servlet-name>
+        <servlet-class>it.unisa.integrazione.servlet.LoginServlet</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>LogoutServlet</servlet-name>
+        <servlet-class>it.unisa.integrazione.servlet.LogoutServlet</servlet-class>
     </servlet>
     <servlet-mapping>
         <servlet-name>updateTrainingRequestStatus</servlet-name>
@@ -277,16 +281,20 @@
         <url-pattern>/getAllEntities</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
-        <servlet-name>LoginServlet</servlet-name>
-        <url-pattern>/login</url-pattern>
-    </servlet-mapping>
-    <servlet-mapping>
         <servlet-name>getAllDepartments</servlet-name>
         <url-pattern>/getAllDepartments</url-pattern>
     </servlet-mapping>
     <servlet-mapping>
         <servlet-name>studentDownloadModule</servlet-name>
         <url-pattern>/studentDownloadModule</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LoginServlet</servlet-name>
+        <url-pattern>/login</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>LogoutServlet</servlet-name>
+        <url-pattern>/logout</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

@@ -46,8 +46,8 @@ public class professorGetAllTrainingOffers extends HttpServlet {
         try {
             ConcretePerson aPerson = ConcretePerson.getInstance();
             HttpSession aSession = request.getSession();
-            
-            String professorEmail = (String) aSession.getAttribute("person");
+            Person professor = (Person) aSession.getAttribute("person");
+            String professorEmail = professor.getAccount().getEmail();
             
             Person person = aPerson.getProfessor(professorEmail);
             

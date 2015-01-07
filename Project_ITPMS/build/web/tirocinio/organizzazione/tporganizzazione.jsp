@@ -30,7 +30,7 @@
         <script src="${pageContext.request.contextPath}/assets/js/tpOrganizationLibrary.js"></script>
 
         <c:choose>
-            <c:when test="${sessionScope.person == null}">
+            <c:when test="${sessionScope.person.account.email == null}">
                 <c:redirect url="login.jsp" />
             </c:when>
         </c:choose>
@@ -62,7 +62,7 @@
         </c:choose>
         <script>
             jQuery(document).ready(function ($) {
-                tpOrganizationFunction.appendTraining('#listTrainingOrganizzazione', '${sessionScope.organization} ', '${path }');
+                tpOrganizationFunction.appendTraining('#listTrainingOrganizzazione', '${sessionScope.person} ', '${path }');
             });
         </script>
 
@@ -151,7 +151,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.organization}
+                                ${sessionScope.person.account.email};
                             </span>
                         </a>
 
@@ -163,7 +163,7 @@
                                 </a>
                             </li>
                             <li class="last">
-                                <a href="#" id="logout">
+                                <a href="${path }/logout" id="logout">
                                     <i class="fa-lock"></i>
                                     Logout
                                 </a>
