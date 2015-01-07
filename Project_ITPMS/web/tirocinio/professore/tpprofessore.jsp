@@ -50,9 +50,6 @@
                 <c:remove var="deleteTrainingOfferStatus"/>
             </c:when>
             <c:when test="${deleteTrainingOfferStatus == 1}">
-                <script>
-                    alert("Il tirocinio è stato eliminato!");
-                </script>
                 <%
                     request.getSession().removeAttribute("deleteTrainingStatus");
                 %>

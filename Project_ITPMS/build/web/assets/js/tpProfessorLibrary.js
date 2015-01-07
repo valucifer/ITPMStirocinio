@@ -59,6 +59,7 @@ tpProfessorFunction = {
     },
     removeTraining: function (idRemove, path) {
         if (confirm("Sei sicuro di voler eliminare questo tirocinio?")) {
+            alert("Il toricinio è stato eliminato.");
             this.deleteTraining(idRemove, path);
             setTimeout(function () {
                 location.reload();
