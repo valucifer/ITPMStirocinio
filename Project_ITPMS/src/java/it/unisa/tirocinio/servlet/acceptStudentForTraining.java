@@ -5,10 +5,10 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.StudentInformation;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
@@ -40,19 +40,19 @@ public class acceptStudentForTraining extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         
         String studentMatricula = request.getParameter("matricula");
-        PersonManager aPerson = PersonManager.getInstance();
+        ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = aPerson.getPersonByMatricula(studentMatricula);
 
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSsn());
+        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
 
         ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-        RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSsn());
+        RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSSN());
 
         if (aRejectedMessage.getDescription() == null) {
             aRejectedMessage = new RejectedTrainingMessage();
             aRejectedMessage.setDescription("La tua richiesta è stata accettata!");
-            aRejectedMessage.setPersonSSN(person.getSsn());
+            aRejectedMessage.setPersonSSN(person.getSSN());
             rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);
         } else {
             aRejectedMessage.setDescription("La tua richiesta è stata accettata!");

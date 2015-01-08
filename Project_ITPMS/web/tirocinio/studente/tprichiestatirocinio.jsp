@@ -37,7 +37,7 @@
 
         <c:choose>
             <c:when test="${sessionScope.person.account.email == null}">
-                <c:redirect url="/login.jsp" />
+                <c:redirect url="login.jsp" />
             </c:when>
         </c:choose>
 
@@ -51,7 +51,9 @@
             pageContext.setAttribute("status", requestStatus);
             pageContext.setAttribute("description", description);
             pageContext.setAttribute("idStudentStatus", studentStatus);
-        
+        %>
+
+        <%
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
         <c:if test="${status == 1}">
@@ -268,7 +270,7 @@
                                 <div class="row">
                                     <div class="col-sm-12">
                                         <!--<div class="form-group">-->
-                                        <form role="form" class="validate" action="${path }/studentUploadFiles" method="POST" enctype="multipart/form-data">
+                                        <form role="form" class="validate" action="/ServerWeb/studentUploadFiles" method="POST" enctype="multipart/form-data">
                                             <div class="form-group">
                                                 <!--<label class="col-sm-2 control-label" for="field-4" >Curriculum Vitae</label>-->
                                                 <label class="control-label">Studente</label>

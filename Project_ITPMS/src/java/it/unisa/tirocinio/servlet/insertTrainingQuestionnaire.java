@@ -1,10 +1,10 @@
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.Questionnaire;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.TrainingRequest;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteQuestionnaire;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
@@ -48,21 +48,22 @@ public class insertTrainingQuestionnaire extends HttpServlet {
         String sixthAnswer = request.getParameter("sixthAnswer");
         String seventhAnswer = request.getParameter("seventhAnswer");
 
-        PersonManager aPerson = PersonManager.getInstance();
+        ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = aPerson.getPersonByMatricula(matricolaStudente);
 
         ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSsn());
+        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
+        System.out.println(trainingRequest.getTrainingStatus());
 
         if (trainingRequest.getTrainingStatus() == 2) {
 
-            Questionnaire aQuestionnaire = new Questionnaire(nomeAzienda, tipologiaAzienda, firstAnswer, secondAnswer, person.getSsn(), thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer);
+            Questionnaire aQuestionnaire = new Questionnaire(nomeAzienda, tipologiaAzienda, firstAnswer, secondAnswer, person.getSSN(), thirdAnswer, fourthAnswer, fifthAnswer, sixthAnswer, seventhAnswer);
 
             ConcreteQuestionnaire questionnaires = ConcreteQuestionnaire.getInstance();
             boolean toReturn = questionnaires.insertQuestionnaire(aQuestionnaire);
 
             ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage messageReject = aRejectedMessage.readLastTrainingMessage(person.getSsn());
+            RejectedTrainingMessage messageReject = aRejectedMessage.readLastTrainingMessage(person.getSSN());
             boolean toReturnMessage = aRejectedMessage.deleteOrganization(messageReject.getIdRejectedTraingMessage());
 
             trainingRequest.setTrainingStatus(3);
@@ -76,7 +77,6 @@ public class insertTrainingQuestionnaire extends HttpServlet {
             }
             response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
         } else {
-            aSession.setAttribute("questionnaireStatus", 0);
             response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tpquestionario.jsp");
         }
     }

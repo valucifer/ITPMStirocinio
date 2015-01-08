@@ -5,16 +5,12 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.database.PersonManager;
-import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Person;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
@@ -39,55 +35,59 @@ public class studentDownloadModule extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            String who = request.getParameter("who");
-            String what = request.getParameter("what");
-            String rootDirectoryPath = getServletContext().getRealPath("/");
-            File directory = new File(rootDirectoryPath + "/files");
-            String fullPath = directory.getAbsolutePath();
-            String fileSeparator = System.getProperty("file.separator");
-            
-            PersonManager aPerson = PersonManager.getInstance();
-            Person me = aPerson.getPersonByEmail(who);
-            Department departmentAbb = me.getDepartment();
-            String department = departmentAbb.getAbbreviation();
-            String path = fullPath+fileSeparator+department;
-            String customFilename = "";
-            if( what.equals("registroOre")){
-                path += fileSeparator+"register.pdf";
-                customFilename = "registro_ore.pdf";
-            }else if( what.equals("fineTirocinio")){
-                path += fileSeparator+"module.pdf";
-                customFilename = "modulo_fine_tirocinio.pdf";
-            }
-            
-            // Make sure to show the download dialog
-            response.setHeader("Content-disposition", "attachment; filename="+customFilename);
-            ServletContext ctx = getServletContext();
-            
-            File my_file = new File(path);
-            
-            // This should send the file to browser
-            ServletOutputStream out = response.getOutputStream();
-            FileInputStream in = new FileInputStream(my_file);
-            String mimeType = ctx.getMimeType(my_file.getAbsolutePath());
-            response.setContentType(mimeType != null? mimeType:"application/pdf");
-            response.setContentLength((int) my_file.length());
-            byte[] buffer = new byte[1024];
-            int length;
-            while ((length = in.read(buffer)) > 0) {
-                out.write(buffer, 0, length);
-            }
-            in.close();
-            out.flush();
-            out.close();
-        } catch (SQLException ex) {
-            Logger.getLogger(studentDownloadModule.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ConnectionException ex) {
-            Logger.getLogger(studentDownloadModule.class.getName()).log(Level.SEVERE, null, ex);
+        System.out.println("servletResponse");
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        String who = request.getParameter("who");
+        String what = request.getParameter("what");
+        String rootDirectoryPath = getServletContext().getRealPath("/");
+        File directory = new File(rootDirectoryPath + "/files");
+        if (!directory.exists()) {
+            System.out.println("Have I created directory? " + directory.mkdir());
         }
+        String fullPath = directory.getAbsolutePath();
+        String fileSeparator = System.getProperty("file.separator");
+        System.out.println(who);
+        
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person me = aPerson.readPersonByAccount(who);
+        Department departmentAbb = me.getDepartment();
+        String department = departmentAbb.getAbbreviation();
+        String path = fullPath+fileSeparator+department;
+        String customFilename = "";
+        if( what.equals("registroOre")){
+            path += fileSeparator+"register.pdf";
+            customFilename = "registro_ore.pdf";
+        }else if( what.equals("fineTirocinio")){
+             path += fileSeparator+"module.pdf";
+            customFilename = "modulo_fine_tirocinio.pdf";
+        }
+       
+        // Make sure to show the download dialog
+        response.setHeader("Content-disposition", "attachment; filename="+customFilename);
+        ServletContext ctx = getServletContext();
+        System.out.println(customFilename);
+
+        File my_file = new File(path);
+        System.out.println(path);
+
+        // This should send the file to browser
+        ServletOutputStream out = response.getOutputStream();
+        FileInputStream in = new FileInputStream(my_file);
+        System.out.println(in.available());
+        String mimeType = ctx.getMimeType(my_file.getAbsolutePath());
+        System.out.println(mimeType);
+        response.setContentType(mimeType != null? mimeType:"application/pdf");
+        response.setContentLength((int) my_file.length());
+        byte[] buffer = new byte[1024];
+        int length;
+        while ((length = in.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
+            System.out.println(in.available());
+        }
+        in.close();
+        out.flush();
+        out.close();
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

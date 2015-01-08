@@ -3,14 +3,10 @@ package it.unisa.integrazione.database;
 import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import java.sql.CallableStatement;
 import java.sql.Connection;
 import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -19,7 +15,6 @@ import java.util.logging.Logger;
 public class AccountManager {
 
     private static AccountManager instance;
-    private CallableStatement aCallableStatement = null;
 
     public static AccountManager getInstance() {
 
@@ -54,15 +49,15 @@ public class AccountManager {
                 account.setPassword(rs.getString("password"));
                 account.setTypeOfAccount(rs.getString("typeOfAccount"));
                 account.setActive(rs.getBoolean("active"));
-
+                
                 person = PersonManager.getInstance().getPersonByEmail(account.getEmail());
-
+                
             }
 
         } finally {
             DBConnection.releaseConnection(connection);
         }
-
+        
         return person;
     }
 
@@ -78,8 +73,8 @@ public class AccountManager {
         } finally {
             DBConnection.releaseConnection(connect);
         }
-    }
-
+    } 
+    
     public Account getAccoutnByEmail(String pEmail) throws SQLException, ConnectionException {
         Statement stmt = null;
         ResultSet rs = null;
@@ -100,7 +95,7 @@ public class AccountManager {
 
             if (rs.next()) {
                 account = new Account();
-
+                
                 account.setActive(rs.getBoolean("active"));
                 account.setEmail(rs.getString("email"));
                 account.setPassword(rs.getString("password"));
@@ -108,48 +103,9 @@ public class AccountManager {
             }
         } finally {
 
-            DBConnection.releaseConnection(connection);
+         DBConnection.releaseConnection(connection);
         }
 
         return account;
     }
-
-    /* --- Gruppo tirocinio and Placement ---*/
-    /**
-     *
-     * @param email
-     * @return type of account
-     */
-    public String getTypeOfAccount(String email) throws ConnectionException {
-        Connection connection = null;
-        try {
-            connection = DBConnection.getConnection();
-
-            if (connection == null) {
-                throw new ConnectionException();
-            }
-
-            String aTypeOfAccount = null;
-            aCallableStatement = connection.prepareCall("{call getTypeOfAccount(?)}");
-            aCallableStatement.setString("pkAccount", email);
-            ResultSet rs = aCallableStatement.executeQuery();
-
-            while (rs.next()) {
-                aTypeOfAccount = rs.getString("typeOfAccount");
-            }
-            rs.close();
-            return aTypeOfAccount;
-        } catch (SQLException ex) {
-            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-            return null;
-        } finally {
-            try {
-                aCallableStatement.close();
-                DBConnection.releaseConnection(connection);
-            } catch (SQLException ex) {
-                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-            }
-        }
-    }
-
 }

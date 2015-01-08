@@ -5,16 +5,12 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.database.PersonManager;
-import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -38,43 +34,29 @@ public class changeLinkProfessorOrganization extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        ConcreteMessageForServlet message = null;
-        HttpSession aSession = null;
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            message = new ConcreteMessageForServlet();
-            String professorSSN = request.getParameter("professorSSN");
-            String organizationVAT = request.getParameter("organizationVAT");
-            aSession = request.getSession();
-            PersonManager aPerson = PersonManager.getInstance();
-            Person person = aPerson.getPersonBySSN(professorSSN);
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        String professorSSN = request.getParameter("professorSSN");
+        String organizationVAT = request.getParameter("organizationVAT");
+        HttpSession aSession = request.getSession();
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person person = aPerson.readPerson(professorSSN);
 
-            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            Organization organization = anOrganization.readOrganization(organizationVAT);
+        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+        Organization organization = anOrganization.readOrganization(organizationVAT);
 
-            organization.setProfessor(person.getSsn());
+        organization.setProfessor(person.getSSN());
 
-            boolean toReturn = anOrganization.updateOrganization(organization);
+        boolean toReturn = anOrganization.updateOrganization(organization);
 
-            if (toReturn) {
-                message.setMessage("status", 1);
-            } else {
-                message.setMessage("status", 0);
-            }
-            aSession.setAttribute("message", message);
-            response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
-        } catch (SQLException ex) {
-            Logger.getLogger(changeLinkProfessorOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        if (toReturn) {
+            message.setMessage("status", 1);
+        } else {
             message.setMessage("status", 0);
-            aSession.setAttribute("message", message);
-            response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
-        } catch (ConnectionException ex) {
-            Logger.getLogger(changeLinkProfessorOrganization.class.getName()).log(Level.SEVERE, null, ex);
-            message.setMessage("status", 0);
-            aSession.setAttribute("message", message);
-            response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
         }
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpassociazioneprofessoreazienda.jsp");
 
     }
 

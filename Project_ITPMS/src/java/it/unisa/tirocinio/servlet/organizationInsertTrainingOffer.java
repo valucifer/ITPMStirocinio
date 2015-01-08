@@ -5,19 +5,15 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.database.PersonManager;
-import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
-import java.sql.SQLException;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -44,44 +40,37 @@ public class organizationInsertTrainingOffer extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        try {
-            response.setContentType("text/html;charset=UTF-8");
-            response.setHeader("Access-Control-Allow-Origin", "*");
-            request.setCharacterEncoding("UTF-8");
-            
-            ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-            String description = request.getParameter("description");
-            HttpSession aSession = request.getSession();
-            Person anOrganization = (Person) aSession.getAttribute("person");
-            String organizationEmail = (String) anOrganization.getAccount().getEmail();
-            
-            ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();
-            Organization organization = aOrganization.getOrganizationByAccount(organizationEmail);
-            
-            PersonManager aPerson = PersonManager.getInstance();
-            Person person = aPerson.getPersonBySSN(organization.getProfessor());
-            
-            ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            TrainingOffer trainingOffer = new TrainingOffer();
-            Department departmentAbb = person.getDepartment();
-            
-            trainingOffer.setDepartment(departmentAbb.getAbbreviation());
-            trainingOffer.setDescription(organization.getCompanyName() + " - " + description);
-            trainingOffer.setOrganization(organization.getVATNumber());
-            trainingOffer.setPersonSSN(person.getSsn());
-            
-            if (aTrainingOffer.createOuterTrainingOffer(trainingOffer)) {
-                message.setMessage("status", 1);
-            } else {
-                message.setMessage("status", 0);
-            }
-            aSession.setAttribute("message", message);
-            response.sendRedirect(request.getContextPath() + "/tirocinio/organizzazione/tporganizzazione.jsp");
-        } catch (SQLException ex) {
-            Logger.getLogger(organizationInsertTrainingOffer.class.getName()).log(Level.SEVERE, null, ex);
-        } catch (ConnectionException ex) {
-            Logger.getLogger(organizationInsertTrainingOffer.class.getName()).log(Level.SEVERE, null, ex);
+        response.setContentType("text/html;charset=UTF-8");
+        response.setHeader("Access-Control-Allow-Origin", "*");
+        request.setCharacterEncoding("UTF-8");
+        
+        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
+        String description = request.getParameter("description");
+        HttpSession aSession = request.getSession();
+        Person anOrganization = (Person) aSession.getAttribute("person");
+        String organizationEmail = (String) anOrganization.getAccount().getEmail();
+
+        ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();
+        Organization organization = aOrganization.getOrganizationByAccount(organizationEmail);
+
+        ConcretePerson aPerson = ConcretePerson.getInstance();
+        Person person = aPerson.readPerson(organization.getProfessor());
+
+        ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
+        TrainingOffer trainingOffer = new TrainingOffer();
+        Department departmentAbb = person.getDepartment();
+        trainingOffer.setDepartment(departmentAbb.getAbbreviation());
+        trainingOffer.setDescription(organization.getCompanyName() + " - " + description);
+        trainingOffer.setOrganization(organization.getVATNumber());
+        trainingOffer.setPersonSSN(person.getSSN());
+
+        if (aTrainingOffer.createOuterTrainingOffer(trainingOffer)) {
+            message.setMessage("status", 1);
+        } else {
+            message.setMessage("status", 0);
         }
+        aSession.setAttribute("message", message);
+        response.sendRedirect(request.getContextPath() + "/tirocinio/organizzazione/tporganizzazione.jsp");
 
     }
 

@@ -1,9 +1,8 @@
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.integrazione.database.PersonManager;
-import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
+import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -45,16 +44,15 @@ public class professorGetAllTrainingOffers extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            PersonManager aPerson = PersonManager.getInstance();
+            ConcretePerson aPerson = ConcretePerson.getInstance();
             HttpSession aSession = request.getSession();
             Person professor = (Person) aSession.getAttribute("person");
-            Account p = professor.getAccount();
-            String professorEmail = p.getEmail();
+            String professorEmail = professor.getAccount().getEmail();
             
             Person person = aPerson.getProfessor(professorEmail);
             
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
-            ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readInnerTrainingOffer(person.getSsn());
+            ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.readInnerTrainingOffer(person.getSSN());
             if(trainingOffer == null){
                 jsonObject.put("status", 0);
             }else{
