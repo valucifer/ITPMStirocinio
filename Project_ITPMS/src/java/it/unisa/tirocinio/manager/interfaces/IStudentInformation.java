@@ -17,7 +17,6 @@ import java.util.ArrayList;
 public interface IStudentInformation {
     
     public boolean startTrainingRequest( String studentSSN, String CVPath, String ATPath );
-    public boolean deleteStudentInformation( Person aStudent );
     public boolean updateStudentInformation( StudentInformation aStudentInformation );
     public boolean changeStudentStatus( String studentSSN, StudentStatus newStatus );
     public StudentInformation readStudentInformation( String studentSSN );

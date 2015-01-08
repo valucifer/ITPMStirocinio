@@ -5,9 +5,9 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -39,11 +39,11 @@ public class completeTrainingRequest extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
 
         String studentMatricola = request.getParameter("studentSSN");
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.getPersonByMatricula(studentMatricola);
 
         ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
+        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSsn());
 
         trainingRequest.setTrainingStatus(3);
 

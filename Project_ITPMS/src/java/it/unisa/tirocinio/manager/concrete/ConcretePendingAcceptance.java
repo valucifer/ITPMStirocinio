@@ -1,7 +1,8 @@
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.integrazione.database.DBConnection;
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.PendingAcceptance;
-import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IPendingAcceptance;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -15,106 +16,96 @@ import java.util.logging.Logger;
  *
  * @author johneisenheim
  */
-public class ConcretePendingAcceptance implements IPendingAcceptance{
-    
+public class ConcretePendingAcceptance implements IPendingAcceptance {
+
     private static ConcretePendingAcceptance instance = null;
-    private Connection connector = null;
     private CallableStatement aCallableStatement = null;
-    
-    private ConcretePendingAcceptance(){
-        connector = DBConnector.getConnection();
-        if( connector == null )
-            throw new RuntimeException("Unable to connect to Database.");
-    }
-    
+
     /**
      *
      * @param idPendingAcceptance
-     * @return a PendingAcceptance object which contains informations about a certain pending acceptance id
+     * @return a PendingAcceptance object which contains informations about a
+     * certain pending acceptance id
      */
     @Override
     public PendingAcceptance readStudentInPendingAcceptance(int idPendingAcceptance) {
-        initializeConnection();
+        Connection connect = null;
         PendingAcceptance aStudentInPendingAcceptance = new PendingAcceptance();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
         try {
-            aCallableStatement = connector.prepareCall("{call getPendingStudents(?)}");
-            aCallableStatement.setInt("pkPersonSSN",idPendingAcceptance);
+            connect = DBConnection.getConnection();
+            aCallableStatement = connect.prepareCall("{call getPendingStudents(?)}");
+            aCallableStatement.setInt("pkPersonSSN", idPendingAcceptance);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 aStudentInPendingAcceptance.setIdPendingAcceptance(rs.getInt("id_pending_acceptance"));
                 aStudentInPendingAcceptance.setRequestDate(rs.getDate("request_date"));
-                aStudentInPendingAcceptance.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aStudentInPendingAcceptance.setPersonSSN(rs.getString("fk_person"));
             }
             rs.close();
             return aStudentInPendingAcceptance;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcretePendingAcceptance.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
     /**
      *
-     * @return an ArrayList of PendingAcceptance which contains all students that are in pending acceptance status
+     * @return an ArrayList of PendingAcceptance which contains all students
+     * that are in pending acceptance status
      */
     @Override
     public ArrayList<PendingAcceptance> getAllStudentsInPendingAcceptance() {
-        initializeConnection();
+        Connection connect = null;
         ArrayList<PendingAcceptance> studentsInPendingAcceptance = new ArrayList<PendingAcceptance>();
         PendingAcceptance aStudentInPendingAcceptance = null;
         try {
-           ConcretePerson aPerson = ConcretePerson.getInstance();
-           aCallableStatement = connector.prepareCall("{call getAllOrganizations()}");
-           ResultSet rs = aCallableStatement.executeQuery();
-           
-           while( rs.next() ){
-               aStudentInPendingAcceptance = new PendingAcceptance();
-               aStudentInPendingAcceptance.setIdPendingAcceptance(rs.getInt("id_pending_acceptance"));
-               aStudentInPendingAcceptance.setRequestDate(rs.getDate("request_date"));
-                aStudentInPendingAcceptance.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
-               studentsInPendingAcceptance.add(aStudentInPendingAcceptance);
-           }
-           rs.close();
-           return studentsInPendingAcceptance;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }finally{
+            connect = DBConnection.getConnection();
+            PersonManager aPerson = PersonManager.getInstance();
+            aCallableStatement = connect.prepareCall("{call getAllOrganizations()}");
+            ResultSet rs = aCallableStatement.executeQuery();
+
+            while (rs.next()) {
+                aStudentInPendingAcceptance = new PendingAcceptance();
+                aStudentInPendingAcceptance.setIdPendingAcceptance(rs.getInt("id_pending_acceptance"));
+                aStudentInPendingAcceptance.setRequestDate(rs.getDate("request_date"));
+                aStudentInPendingAcceptance.setPersonSSN(rs.getString("fk_person"));
+                studentsInPendingAcceptance.add(aStudentInPendingAcceptance);
+            }
+            rs.close();
+            return studentsInPendingAcceptance;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcretePendingAcceptance.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     /**
      *
-     * @return a ConcretePendingAcceptance object if there are no currently PendingAcceptance objects alive
+     * @return a ConcretePendingAcceptance object if there are no currently
+     * PendingAcceptance objects alive
      */
-    public static synchronized ConcretePendingAcceptance getInstance(){
-        if(instance == null)
+    public static synchronized ConcretePendingAcceptance getInstance() {
+        if (instance == null) {
             instance = new ConcretePendingAcceptance();
+        }
         return instance;
     }
 
-    private void initializeConnection(){
-        try {
-            if(connector.isClosed())
-                connector = DBConnector.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
 }

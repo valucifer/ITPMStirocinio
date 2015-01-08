@@ -5,33 +5,26 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.File;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.sql.SQLException;
 import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Level;
 import java.util.logging.Logger;
-import javax.servlet.RequestDispatcher;
 import javax.servlet.ServletException;
-import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
 import org.apache.commons.fileupload.FileItem;
-import org.apache.commons.fileupload.FileUploadException;
 import org.apache.commons.fileupload.disk.DiskFileItemFactory;
 import org.apache.commons.fileupload.servlet.ServletFileUpload;
-import org.apache.commons.io.output.*;
-import org.json.JSONException;
-import org.json.JSONObject;
 
 /**
  *
@@ -74,7 +67,7 @@ public class studentUploadFiles extends HttpServlet {
         try {
             Person pers = (Person) aSession.getAttribute("person");
             String primaryKey = pers.getAccount().getEmail();
-            ConcretePerson aPerson = ConcretePerson.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
             Person person = aPerson.getStudent(primaryKey);
             ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
             out = response.getWriter();
@@ -119,7 +112,7 @@ public class studentUploadFiles extends HttpServlet {
 
             }
 
-            if (aStudentInformation.startTrainingRequest(person.getSSN(), CVPath, ATPath)) {
+            if (aStudentInformation.startTrainingRequest(person.getSsn(), CVPath, ATPath)) {
                 message.setMessage("status", 1);
             } else {
                 message.setMessage("status", 0);

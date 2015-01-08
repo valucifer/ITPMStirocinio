@@ -5,14 +5,18 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
+import java.sql.SQLException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -36,46 +40,60 @@ public class insertTrainingRequest extends HttpServlet {
      */
     protected void processRequest(HttpServletRequest request, HttpServletResponse response)
             throws ServletException, IOException {
-        response.setContentType("text/html;charset=UTF-8");
-        response.setHeader("Access-Control-Allow-Origin", "*");
-        HttpSession aSession = request.getSession();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
-        String title = request.getParameter("titleTraining");
-        String description = request.getParameter("descriptionTraining");
-        String professor = request.getParameter("professorSSN");
-        String student = request.getParameter("studentSSN");
-        String organiz = request.getParameter("organizationVAT");
 
-        ConcretePerson aStudent = ConcretePerson.getInstance();
-        Person studentSSN = aStudent.readPerson(student);
+        HttpSession aSession = null;
+        ConcreteMessageForServlet message = null;
+        try {
+            response.setContentType("text/html;charset=UTF-8");
+            response.setHeader("Access-Control-Allow-Origin", "*");
+            aSession = request.getSession();
+            message = new ConcreteMessageForServlet();
+            String title = request.getParameter("titleTraining");
+            String description = request.getParameter("descriptionTraining");
+            String professor = request.getParameter("professorSSN");
+            String student = request.getParameter("studentSSN");
+            String organiz = request.getParameter("organizationVAT");
 
-        ConcretePerson aProfessor = ConcretePerson.getInstance();
-        Person professorSSN = aProfessor.readPerson(professor);
+            PersonManager aStudent = PersonManager.getInstance();
+            Person studentSSN = aStudent.getPersonBySSN(student);
 
-        ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-        Organization organization = anOrganization.readOrganization(organiz);
+            PersonManager aProfessor = PersonManager.getInstance();
+            Person professorSSN = aProfessor.getPersonBySSN(professor);
 
-        ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(student);
+            ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
+            Organization organization = anOrganization.readOrganization(organiz);
 
-        if (trainingRequest.getStudentSSN() == null) {
-            trainingRequest = new TrainingRequest();
-            trainingRequest.setDescription(description);
-            trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
-            trainingRequest.setPersonSSN(professorSSN.getSSN());
-            trainingRequest.setStudentSSN(studentSSN.getSSN());
-            trainingRequest.setTitle(title);
-            trainingRequest.setTrainingStatus(1);
-        }
+            ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
+            TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(student);
 
-        if (aTrainingRequest.createTrainingRequest(trainingRequest)) {
-            message.setMessage("status", 1);
-        } else {
+            if (trainingRequest.getStudentSSN() == null) {
+                trainingRequest = new TrainingRequest();
+                trainingRequest.setDescription(description);
+                trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
+                trainingRequest.setPersonSSN(professorSSN.getSsn());
+                trainingRequest.setStudentSSN(studentSSN.getSsn());
+                trainingRequest.setTitle(title);
+                trainingRequest.setTrainingStatus(1);
+            }
+
+            if (aTrainingRequest.createTrainingRequest(trainingRequest)) {
+                message.setMessage("status", 1);
+            } else {
+                message.setMessage("status", 0);
+            }
+
+            aSession.setAttribute("message", message);
+            response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
+        } catch (SQLException ex) {
+            Logger.getLogger(insertTrainingRequest.class.getName()).log(Level.SEVERE, null, ex);
+
             message.setMessage("status", 0);
-        }
+            aSession.setAttribute("message", message);
+            response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
 
-        aSession.setAttribute("message", message);
-        response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpaggiungistudentetraining.jsp");
+        } catch (ConnectionException ex) {
+            Logger.getLogger(insertTrainingRequest.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
     }
 

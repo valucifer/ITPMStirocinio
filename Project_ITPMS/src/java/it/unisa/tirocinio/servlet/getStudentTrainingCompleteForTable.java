@@ -5,12 +5,12 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.util.ArrayList;
@@ -49,7 +49,7 @@ public class getStudentTrainingCompleteForTable extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         
         try {
-            ConcretePerson aPerson = ConcretePerson.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
             ArrayList<Person> person = aPerson.getAllPeople();
             ArrayList<Person> student = new ArrayList<Person>();
             
@@ -71,7 +71,7 @@ public class getStudentTrainingCompleteForTable extends HttpServlet {
                 jsonTmp.put("email", account.getEmail());
                 jsonTmp.put("telefono", stud.getPhone());
                 
-                TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSSN());
+                TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSsn());
                 if(trainingRequest.getTrainingStatus() > 1){
                     jsonTmp.put("titolo", trainingRequest.getTitle());
 
@@ -95,13 +95,11 @@ public class getStudentTrainingCompleteForTable extends HttpServlet {
                 jsonObject.put("message", array);
             }
             
-            //request.setAttribute("trainingMessage",message);
-            //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
-               
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {
             Logger.getLogger(organizationGetAllTrainingOffers.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
+             response.getWriter().close();
         }
     }
 

@@ -5,11 +5,11 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -48,15 +48,16 @@ public class professorInsertTrainingOffer extends HttpServlet {
         Person professor = (Person) aSession.getAttribute("person");
         String professorEmail = (String) professor.getAccount().getEmail();
 
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.getProfessor(professorEmail);
 
         ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
         TrainingOffer trainingOffer = new TrainingOffer();
         Department departmentAbb = person.getDepartment();
+        System.out.println("department "+departmentAbb.getAbbreviation());
         trainingOffer.setDepartment(departmentAbb.getAbbreviation());
         trainingOffer.setDescription(departmentAbb.getAbbreviation() + " - " + description);
-        trainingOffer.setPersonSSN(person.getSSN());
+        trainingOffer.setPersonSSN(person.getSsn());
 
         if (aTrainingOffer.createInnerTrainingOffer(trainingOffer)) {
             message.setMessage("status", 1);

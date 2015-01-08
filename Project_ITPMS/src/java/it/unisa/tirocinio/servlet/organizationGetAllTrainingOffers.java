@@ -1,5 +1,6 @@
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;

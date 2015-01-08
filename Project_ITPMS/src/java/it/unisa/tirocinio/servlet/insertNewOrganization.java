@@ -5,6 +5,7 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.AccountManager;
 import it.unisa.integrazione.database.PersonManager;
 import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.integrazione.database.exception.MissingDataException;
@@ -13,9 +14,7 @@ import it.unisa.tirocinio.beans.Cycle;
 import it.unisa.tirocinio.beans.Department;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcreteAccount;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -64,17 +63,22 @@ public class insertNewOrganization extends HttpServlet {
         account.setPassword(request.getParameter("password"));
         account.setTypeOfAccount("organization");
         account.setActive(true);
+        
         Department department = new Department();
+        department.setAbbreviation("MIT");
+        
         Cycle cycle = new Cycle();
         cycle.setCycleNumber(1);
-        department.setAbbreviation("MIT");
+        
         person.setName(request.getParameter("nameLiable"));
         person.setLastName(request.getParameter("surnameLiable"));
-        person.setSSN(request.getParameter("ssnLiable"));
+        person.setSsn(request.getParameter("ssnLiable"));
+        
         person.setAccount(account);
         person.setDepartment(department);
         person.setCycle(cycle);
         person.setGender("m");
+        
         PersonManager aPerson = PersonManager.getInstance();
         aPerson.add(person);
         
@@ -82,8 +86,8 @@ public class insertNewOrganization extends HttpServlet {
 
         organization.setProfessor(request.getParameter("professorSSN"));
 
-        ConcreteAccount anAccount = ConcreteAccount.getInstance();
-        anAccount.createAccount(account);
+        AccountManager anAccount = AccountManager.getInstance();
+        anAccount.add(account);
 
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         

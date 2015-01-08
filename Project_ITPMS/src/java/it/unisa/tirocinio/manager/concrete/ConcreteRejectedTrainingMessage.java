@@ -1,7 +1,8 @@
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.integrazione.database.DBConnection;
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
-import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IRejectedTrainingMessage;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -15,75 +16,72 @@ import java.util.logging.Logger;
  *
  * @author johneisenheim
  */
-public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage{
+public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage {
 
-    
     private static ConcreteRejectedTrainingMessage instance = null;
-    private Connection connector = null;
     private CallableStatement aCallableStatement = null;
-    
-    private ConcreteRejectedTrainingMessage(){
-        connector = DBConnector.getConnection();
-        if( connector == null )
-            throw new RuntimeException("Unable to connect to Database.");
-    }
 
     /**
      *
      * @param aRejectedTrainingMessage
-     * @return true if a RejectedTrainingMessage is created without errors, false otherwise
+     * @return true if a RejectedTrainingMessage is created without errors,
+     * false otherwise
      */
     @Override
     public boolean createRejectedTrainingMessage(RejectedTrainingMessage aRejectedTrainingMessage) {
-        initializeConnection();
+        Connection connect = null;
         try {
-            if( aRejectedTrainingMessage == null )
+            connect = DBConnection.getConnection();
+            if (aRejectedTrainingMessage == null) {
                 throw new NullPointerException("RejectedMessage is null!");
-            
-            aCallableStatement = connector.prepareCall("{call insertRejectedTrainingMessage(?,?)}");       
-            aCallableStatement.setString("message",aRejectedTrainingMessage.getDescription());
-            aCallableStatement.setString("personSSN",aRejectedTrainingMessage.getPersonSSN());
+            }
+
+            aCallableStatement = connect.prepareCall("{call insertRejectedTrainingMessage(?,?)}");
+            aCallableStatement.setString("message", aRejectedTrainingMessage.getDescription());
+            aCallableStatement.setString("personSSN", aRejectedTrainingMessage.getPersonSSN());
             int check = aCallableStatement.executeUpdate();
             return check > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     /**
      *
      * @param aRejectedTrainingMessage
      * @return true if a RejectedTrainingMessage object is correctly updated
      */
     @Override
-    public boolean updateRejectedTrainingMessage( RejectedTrainingMessage aRejectedTrainingMessage ){
-        initializeConnection();
+    public boolean updateRejectedTrainingMessage(RejectedTrainingMessage aRejectedTrainingMessage) {
+        Connection connect = null;
         try {
-            if( aRejectedTrainingMessage == null )
+            connect = DBConnection.getConnection();
+            if (aRejectedTrainingMessage == null) {
                 throw new NullPointerException("RejectedMessage is null!");
-            
-            aCallableStatement = connector.prepareCall("{call updateRejectedTrainingMessage(?,?)}");       
-            aCallableStatement.setString("message",aRejectedTrainingMessage.getDescription());
-            aCallableStatement.setString("personSSN",aRejectedTrainingMessage.getPersonSSN());
+            }
+
+            aCallableStatement = connect.prepareCall("{call updateRejectedTrainingMessage(?,?)}");
+            aCallableStatement.setString("message", aRejectedTrainingMessage.getDescription());
+            aCallableStatement.setString("personSSN", aRejectedTrainingMessage.getPersonSSN());
             int check = aCallableStatement.executeUpdate();
             return check > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -91,25 +89,27 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
     /**
      *
      * @param idRejectedTrainingMessage
-     * @return true if a certain RejectedTrainingMessage object is successfully deleted, false otherwise
+     * @return true if a certain RejectedTrainingMessage object is successfully
+     * deleted, false otherwise
      */
     @Override
     public boolean deleteOrganization(int idRejectedTrainingMessage) {
-        initializeConnection();
+        Connection connect = null;
         try {
-            aCallableStatement = connector.prepareCall("{call deleteRejectedTrainingMessage(?)}");       
-            aCallableStatement.setInt("pkRejectedTraining",idRejectedTrainingMessage);
+            connect = DBConnection.getConnection();
+            aCallableStatement = connect.prepareCall("{call deleteRejectedTrainingMessage(?)}");
+            aCallableStatement.setInt("pkRejectedTraining", idRejectedTrainingMessage);
             int check = aCallableStatement.executeUpdate();
             return check > 0;
         } catch (SQLException ex) {
-            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
@@ -117,108 +117,107 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
     /**
      *
      * @param idRejectedTraingMessage
-     * @return a RejectedTrainingMessage object if reading operation from Database is correct, null otherwise
+     * @return a RejectedTrainingMessage object if reading operation from
+     * Database is correct, null otherwise
      */
     @Override
     public RejectedTrainingMessage readTrainingMessage(int idRejectedTraingMessage) {
-        initializeConnection();
+        Connection connect = null;
         RejectedTrainingMessage aRejectedMessage = new RejectedTrainingMessage();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         try {
-            aCallableStatement = connector.prepareCall("{call getRejectedTrainingMessage(?)}");
-            aCallableStatement.setInt("pkRejectedTrainingMessage",idRejectedTraingMessage);
+            connect = DBConnection.getConnection();
+            aCallableStatement = connect.prepareCall("{call getRejectedTrainingMessage(?)}");
+            aCallableStatement.setInt("pkRejectedTrainingMessage", idRejectedTraingMessage);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 aRejectedMessage.setDescription(rs.getString("description"));
                 aRejectedMessage.setIdRejectedTraingMessage(rs.getInt("id_rejected_training_message"));
-                aRejectedMessage.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aRejectedMessage.setPersonSSN(rs.getString("fk_person"));
             }
             rs.close();
             return aRejectedMessage;
         } catch (SQLException ex) {
-            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
 
     /**
      *
-     * @return an ArrayList of RejectedTrainingMessage which contains all rejected training messages
+     * @return an ArrayList of RejectedTrainingMessage which contains all
+     * rejected training messages
      */
     @Override
     public ArrayList<RejectedTrainingMessage> getAllTrainingMessages() {
-        initializeConnection();        
+        Connection connect = null;
         ArrayList<RejectedTrainingMessage> rejectedMessages = new ArrayList<RejectedTrainingMessage>();
         RejectedTrainingMessage aRejectedMessage = null;
         try {
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            aCallableStatement = connector.prepareCall("{call getAllRejectedTrainingMessage()}");
+            connect = DBConnection.getConnection();
+            PersonManager aPerson = PersonManager.getInstance();
+            aCallableStatement = connect.prepareCall("{call getAllRejectedTrainingMessage()}");
             ResultSet rs = aCallableStatement.executeQuery();
 
-            while( rs.next() ){
+            while (rs.next()) {
                 aRejectedMessage.setDescription(rs.getString("description"));
                 aRejectedMessage.setIdRejectedTraingMessage(rs.getInt("id_rejected_training_message"));
-                aRejectedMessage.setPersonSSN(aPerson.readPerson(rs.getString("fk_person")).getSSN());
+                aRejectedMessage.setPersonSSN(rs.getString("fk_person"));
                 rejectedMessages.add(aRejectedMessage);
             }
             rs.close();
             return rejectedMessages;
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }finally{
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }
-    
+
     /**
      *
-     * @return a ConcreteRejectedTrainingMessage object if there are no instances of ConcreteRejectedTrainingMessage currently alive
+     * @return a ConcreteRejectedTrainingMessage object if there are no
+     * instances of ConcreteRejectedTrainingMessage currently alive
      */
-    public static synchronized ConcreteRejectedTrainingMessage getInstance(){
-        if(instance == null)
+    public static synchronized ConcreteRejectedTrainingMessage getInstance() {
+        if (instance == null) {
             instance = new ConcreteRejectedTrainingMessage();
-        return instance;
-    }
-    
-    private void initializeConnection(){
-        try {
-            if(connector.isClosed())
-                connector = DBConnector.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
         }
+        return instance;
     }
 
     /**
      *
      * @param ssn
-     * @return a RejectedTrainingMessage if reading operation from Database is correct, null otherwise
+     * @return a RejectedTrainingMessage if reading operation from Database is
+     * correct, null otherwise
      */
     @Override
     public RejectedTrainingMessage readLastTrainingMessage(String ssn) {
-        initializeConnection();
+        Connection connect = null;
         RejectedTrainingMessage aRejectedMessage = null;
         try {
+            connect = DBConnection.getConnection();
             aRejectedMessage = new RejectedTrainingMessage();
-            aCallableStatement = connector.prepareCall("{call getRejectedTrainingMessageBySSN(?)}");
-            aCallableStatement.setString("ssn",ssn);
+            aCallableStatement = connect.prepareCall("{call getRejectedTrainingMessageBySSN(?)}");
+            aCallableStatement.setString("ssn", ssn);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 aRejectedMessage.setDescription(rs.getString("description"));
                 aRejectedMessage.setIdRejectedTraingMessage(rs.getInt("id_rejected_training_message"));
                 aRejectedMessage.setPersonSSN(ssn);
@@ -226,14 +225,14 @@ public class ConcreteRejectedTrainingMessage implements IRejectedTrainingMessage
             rs.close();
             return aRejectedMessage;
         } catch (SQLException ex) {
-            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
+                DBConnection.releaseConnection(connect);
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(ConcreteRejectedTrainingMessage.class.getName()).log(Level.SEVERE, null, ex);
             }
         }
     }

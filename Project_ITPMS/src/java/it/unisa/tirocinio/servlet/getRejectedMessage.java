@@ -5,15 +5,13 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
-import it.unisa.tirocinio.beans.StudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
-import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.logging.Level;
 import java.util.logging.Logger;
 import javax.servlet.ServletException;
@@ -32,7 +30,9 @@ import org.json.JSONObject;
 @WebServlet(name = "getRejectedMessage", urlPatterns = {"/getRejectedMessage"})
 
 public class getRejectedMessage extends HttpServlet {
+
     private JSONObject jsonObj = new JSONObject();
+
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
      * methods.
@@ -46,28 +46,31 @@ public class getRejectedMessage extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        PrintWriter out = response.getWriter();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         HttpSession session = request.getSession();
         try {
             Person pers = (Person) session.getAttribute("person");
             String email = pers.getAccount().getEmail();
-            
-            ConcretePerson aPerson = ConcretePerson.getInstance();  
-            Person person = aPerson.readPersonByAccount(email);
-            
+
+            PersonManager aPerson = PersonManager.getInstance();
+            Person person = aPerson.getPersonByEmail(email);
+
             ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
-            
-            jsonObj.put("status", 1);
-            jsonObj.put("Object", aMessage.getDescription());
-           
+            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSsn());
+            if (aMessage != null) {
+                jsonObj.put("status", 1);
+                jsonObj.put("Object", aMessage.getDescription());
+            } else {
+                jsonObj.put("status", 0);
+            }
             response.getWriter().write(jsonObj.toString());
-            
         } catch (JSONException ex) {
             Logger.getLogger(getRejectedMessage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (SQLException ex) {
+            Logger.getLogger(getRejectedMessage.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionException ex) {
+            Logger.getLogger(getRejectedMessage.class.getName()).log(Level.SEVERE, null, ex);
         } finally {
-            out.close();
+            response.getWriter().close();
         }
     }
 

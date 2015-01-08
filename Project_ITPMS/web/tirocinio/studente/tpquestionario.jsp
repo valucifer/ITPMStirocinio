@@ -32,13 +32,17 @@
                 <c:redirect url="/login.jsp" />
             </c:when>
         </c:choose>
+
         <jsp:include page="/getStudentQuestionnaireCompletion">
             <jsp:param name="account" value="${sessionScope.person.account.email}" />
         </jsp:include>
         <c:set var="questionnaireCompletion" value="${sessionScope.questionnaireCompletion }"></c:set>
+        <c:set var="studentStatus" value="${sessionScope.studentStatus }"></c:set>
         <%
+            int sStudent = (Integer) pageContext.getAttribute("studentStatus");
             int qCompletion = (Integer) pageContext.getAttribute("questionnaireCompletion");
             pageContext.setAttribute("qCompletion", qCompletion);
+            pageContext.setAttribute("studentStatus", sStudent);
             pageContext.setAttribute("path", pageContext.getServletContext().getContextPath());
         %>
 
@@ -53,15 +57,37 @@
             </c:when>
         </c:choose>
 
-        <script>
-            jQuery(document).ready(function ($) {
-                $("#logout").click(function (e) {
-                    $.get("${path}/logout", {}).fail(function (e) {
-                        alert("Si sono verificati dei problemi col server!");
-                    });
-                });
-            });
-        </script>
+        <c:if test="${studentStatus != -1}">
+            <c:choose>
+                <c:when test="${studentStatus == 3}">
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
+                        });
+                    </script>
+                </c:when>
+                <c:when test="${studentStatus == 2}">
+                </c:when>
+                <c:when test="${idStudentStatus == 1}">
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
+                        });
+                    </script>
+                </c:when>
+                <c:otherwise>
+                    <script>
+                        jQuery(document).ready(function ($) {
+                            $("#ID_modulistica_0").empty();
+                            $("#ID_questionario_0").empty();
+                        });
+                    </script>
+                </c:otherwise>
+            </c:choose>
+        </c:if>
+
     </head>
 
     <body class="page-body">
@@ -183,7 +209,7 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/studente/gestioneTirocinio&PlacementStudente.html">
+                            <a href="${pageContext.request.contextPath}/tirocinio/studente/tphome.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Home</span>
                             </a>

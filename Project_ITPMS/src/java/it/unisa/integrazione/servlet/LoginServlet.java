@@ -74,7 +74,7 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 session.setAttribute("loginError", "error");
-                response.sendRedirect(request.getContextPath() +"login.jsp");
+                response.sendRedirect(request.getContextPath() +"/login.jsp");
             }
         } catch (SQLException sqlException) {
             out.print("<h1>SQL Exception: </h1>" + sqlException.getMessage());

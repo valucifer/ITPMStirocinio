@@ -5,11 +5,11 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
@@ -63,16 +63,16 @@ public class addErrorToStudentInformation extends HttpServlet {
             tmp = tmp + " " + otherErrorsDescription;
         }
 
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.getPersonByMatricula(matriculaStudent);
 
         ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-        RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
+        RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSsn());
 
         if (aMessage.getDescription() == null) {
             aMessage = new RejectedTrainingMessage();
             aMessage.setDescription(tmp);
-            aMessage.setPersonSSN(person.getSSN());
+            aMessage.setPersonSSN(person.getSsn());
             aRejectedMessage.createRejectedTrainingMessage(aMessage);
         } else {
             aMessage.setDescription(tmp);
@@ -80,7 +80,7 @@ public class addErrorToStudentInformation extends HttpServlet {
         }
 
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
+        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSsn());
 
         studentInformation.setStudentStatus(1);
         boolean toReturn = aStudentInformation.updateStudentInformation(studentInformation);

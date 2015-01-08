@@ -6,7 +6,7 @@ package it.unisa.tirocinio.beans;
  */
 public class Person {
     
-    private String SSN = null;
+    private String ssn = null;
     private String name = null;
     private String lastName = null;
     private String phone = null;
@@ -32,7 +32,7 @@ public class Person {
     
     /**
      *
-     * @param SSN
+     * @param ssn
      * @param name
      * @param lastName
      * @param phone
@@ -49,8 +49,8 @@ public class Person {
      * @param matricula
      * @param cycle
      */
-    public Person(String SSN, String name, String lastName, String phone, String city, String address, String zipCode, String gender, Degree degree, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula, Cycle cycle){
-        this.SSN = SSN;
+    public Person(String ssn, String name, String lastName, String phone, String city, String address, String zipCode, String gender, Degree degree, String citizenship, Account accountEmail, Department departmentAbbreviation, String webPage, String university, String role, String matricula, Cycle cycle){
+        this.ssn = ssn;
         this.name = name;
         this.lastName = lastName;
         this.phone = phone;
@@ -98,7 +98,7 @@ public class Person {
     }
 
     public Department getDepartment() {
-        return department;
+        return this.department;
     }
 
     public Account getAccount() {
@@ -111,10 +111,10 @@ public class Person {
 
     /**
      *
-     * @return person SSN 
+     * @return person ssn 
      */
-    public String getSSN() {
-        return SSN;
+    public String getSsn() {
+        return ssn;
     }
 
     /**
@@ -191,10 +191,10 @@ public class Person {
 
     /**
      *
-     * @param SSN
+     * @param ssn
      */
-    public void setSSN(String SSN) {
-        this.SSN = SSN;
+    public void setSsn(String ssn) {
+        this.ssn = ssn;
     }
 
     /**

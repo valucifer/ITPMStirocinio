@@ -5,10 +5,10 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -49,7 +49,7 @@ public class updateTrainingRequestStatus extends HttpServlet {
         PrintWriter out = response.getWriter();
         
         try {
-            ConcretePerson aPerson = ConcretePerson.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
             ArrayList<Person> person = aPerson.getAllPeople();
             ArrayList<Person> student = new ArrayList<Person>();
             
@@ -67,7 +67,7 @@ public class updateTrainingRequestStatus extends HttpServlet {
                 jsonTmp.put("matricola", stud.getMatricula());
                 jsonTmp.put("credenziali", stud.getName()+" "+stud.getSurname());
                 
-                TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSSN());
+                TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSsn());
                 if(trainingRequest.getTrainingStatus() == 2){
                     jsonTmp.put("titolo", trainingRequest.getTitle());
                     array.put(jsonTmp);

@@ -5,13 +5,13 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
 import it.unisa.tirocinio.beans.Account;
 import it.unisa.tirocinio.beans.Organization;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
@@ -49,28 +49,26 @@ public class getAllEntities extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            ConcretePerson aPerson = ConcretePerson.getInstance();
-            ArrayList<Person> student = aPerson.getAllPeople();
+            PersonManager aPerson = PersonManager.getInstance();
+            ArrayList<Person> people = aPerson.getAllPeople();
             
             JSONArray arrayOrganization = new JSONArray();
             JSONArray arrayProfessor = new JSONArray();
             JSONArray arrayPerson = new JSONArray();
             
-            for(Person pers: student){
+            for(Person pers: people){
                 Account account = pers.getAccount();
                 JSONObject jsonTmpPro = new JSONObject();
                 if(aPerson.isAProfessor(account.getEmail())){
                     jsonTmpPro.put("credential", pers.getName()+" "+pers.getSurname());
-                    jsonTmpPro.put("SSN",pers.getSSN());
+                    jsonTmpPro.put("SSN",pers.getSsn());
                     arrayProfessor.put(jsonTmpPro);
                     
-                    ArrayList<Organization> organization = anOrganization.getOwnOrganizations(pers.getSSN());
+                    ArrayList<Organization> organization = anOrganization.getOwnOrganizations(pers.getSsn());
                     
                     for( Organization orga: organization){
                         JSONObject jsonTmpOrg = new JSONObject();
-
                         jsonTmpOrg.put("vatNumber", orga.getVATNumber());
                         jsonTmpOrg.put("companyNa", orga.getCompanyName());
                         arrayOrganization.put(jsonTmpOrg);
@@ -78,19 +76,19 @@ public class getAllEntities extends HttpServlet {
                 }  
             }
             
-            for( Person stud: student ){
+            for( Person stud: people ){
                 Account account = stud.getAccount();
                 if(aPerson.isAStudent(account.getEmail())){
                     ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-                    StudentInformation studentInformation = aStudentInformation.readAStudentInformation(stud.getSSN());
+                    StudentInformation studentInformation = aStudentInformation.readAStudentInformation(stud.getSsn());
                     
                     ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-                    TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSSN());
+                    TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSsn());
                     
                     if((studentInformation.getStudentStatus() == 2)&&(trainingRequest.getStudentSSN()==null)){
                         JSONObject jsonTmpStu = new JSONObject();
                         jsonTmpStu.put("credentialStudent", stud.getName()+" "+stud.getSurname());
-                        jsonTmpStu.put("SSNStudent",stud.getSSN());
+                        jsonTmpStu.put("SSNStudent",stud.getSsn());
                         arrayPerson.put(jsonTmpStu);
                     }
                 }

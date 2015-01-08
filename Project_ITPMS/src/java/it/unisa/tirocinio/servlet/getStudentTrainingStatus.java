@@ -8,12 +8,9 @@ package it.unisa.tirocinio.servlet;
 import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.StudentStatus;
-import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentStatus;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,25 +40,23 @@ public class getStudentTrainingStatus extends HttpServlet {
         HttpSession aSession = request.getSession();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
 
-        ConcretePerson aPerson = ConcretePerson.getInstance();
         Person student = (Person) aSession.getAttribute("person");
-        String studentEmail = student.getAccount().getEmail();
-
-        Person person = aPerson.getStudent(studentEmail);
-
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
+        StudentInformation studentInformation = aStudentInformation.readStudentInformation(student.getSsn());
 
-        ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest anotherTrainingRequest = aTrainingRequest.readTrainingRequestByStudent(studentInformation.getStudentSSN());
-
-        int studentStatus = anotherTrainingRequest.getIdTrainingRequest();
-
-        message.setMessage("status", 1);
-        message.setMessage("description", anotherTrainingRequest.getDescription());
-        message.setMessage("idStudentStatus", studentStatus);
+        int fkStudentStatus = studentInformation.getStudentStatus();
+        
+        ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
+        StudentStatus studentStatus = aStudentStatus.readStudentStatus(fkStudentStatus);
+        
+        if(studentStatus != null){
+            message.setMessage("status", 1);
+            message.setMessage("description", studentStatus.getDescription());
+            message.setMessage("idStudentStatus", fkStudentStatus);
+        }else{
+            message.setMessage("status", 0);
+        }
         aSession.setAttribute("message", message);
-
         response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tphome.jsp");
 
     }
