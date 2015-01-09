@@ -5,8 +5,7 @@
  */
 package it.unisa.tirocinio.manager.interfaces;
 
-import it.unisa.tirocinio.beans.Account;
-import it.unisa.tirocinio.beans.Organization;
+import it.unisa.integrazione.model.Account;
 import java.util.ArrayList;
 
 /**

@@ -5,7 +5,7 @@
  */
 package it.unisa.tirocinio.manager.interfaces;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.StudentStatus;
 import java.util.ArrayList;

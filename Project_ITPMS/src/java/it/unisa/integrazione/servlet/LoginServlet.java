@@ -7,7 +7,7 @@ package it.unisa.integrazione.servlet;
 
 import it.unisa.integrazione.database.AccountManager;
 import it.unisa.integrazione.database.exception.ConnectionException;
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.model.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.sql.SQLException;
@@ -52,7 +52,15 @@ public class LoginServlet extends HttpServlet {
                     out.println("alert('Account non attivo');");
                     out.println("location='login.jsp';");
                     out.println("</script>");
-                } else if (person.getAccount().getTypeOfAccount().equals("student")) {
+                } else if (person.getAccount().getTypeOfAccount().equals("Bstudent")) {
+                    session.removeAttribute("loginError");
+                    session.setAttribute("person", person);
+                    response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tphome.jsp");
+                }else if (person.getAccount().getTypeOfAccount().equals("Mstudent")) {
+                    session.removeAttribute("loginError");
+                    session.setAttribute("person", person);
+                    response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tphome.jsp");
+                } else if (person.getAccount().getTypeOfAccount().equals("phd")) {
                     session.removeAttribute("loginError");
                     session.setAttribute("person", person);
                     response.sendRedirect(request.getContextPath() + "/tirocinio/studente/tphome.jsp");
@@ -74,7 +82,7 @@ public class LoginServlet extends HttpServlet {
                 }
             } else {
                 session.setAttribute("loginError", "error");
-                response.sendRedirect(request.getContextPath() +"login.jsp");
+                response.sendRedirect(request.getContextPath() +"/login.jsp");
             }
         } catch (SQLException sqlException) {
             out.print("<h1>SQL Exception: </h1>" + sqlException.getMessage());

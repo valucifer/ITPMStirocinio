@@ -3,7 +3,8 @@
  * To change this template file, choose Tools | Templates
  * and open the template in the editor.
  */
-package it.unisa.tirocinio.beans;
+package it.unisa.integrazione.model;
+
 /**
  *
  * @author Alessandro

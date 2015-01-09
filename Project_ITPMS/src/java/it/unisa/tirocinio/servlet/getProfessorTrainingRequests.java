@@ -5,10 +5,10 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;
@@ -44,14 +44,13 @@ public class getProfessorTrainingRequests extends HttpServlet {
             HttpSession aSession = request.getSession();
             Person pers = (Person) aSession.getAttribute("person");
             
-            /* TODO output your page here. You may use following sample code. */
-            String professorSSN = pers.getSSN();
+            String professorSSN = pers.getSsn();
 
-            ConcretePerson aPerson = ConcretePerson.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
             Person person = aPerson.readPersonByAccount(professorSSN);
 
             ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-            ArrayList<TrainingRequest> trainingRequest = aTrainingRequest.readTrainingRequestByProfessor(person.getSSN());
+            ArrayList<TrainingRequest> trainingRequest = aTrainingRequest.readTrainingRequestByProfessor(person.getSsn());
 
             if (trainingRequest == null) {
                 message.setMessage("status", 0);

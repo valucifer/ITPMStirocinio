@@ -31,7 +31,7 @@
 
         <c:choose>
             <c:when test="${sessionScope.person.account.email == null}">
-                <c:redirect url="login.jsp" />
+                <c:redirect url="/login.jsp" />
             </c:when>
         </c:choose>
 
@@ -151,7 +151,7 @@
                         <a href="#" data-toggle="dropdown">
                             <img src="${pageContext.request.contextPath}/assets/images/user-1.png" alt="user-image" class="img-circle img-inline userpic-32" width="28" />
                             <span id="spaceForUsername">
-                                ${sessionScope.person.account.email};
+                                ${sessionScope.person.account.email}
                             </span>
                         </a>
 
@@ -187,7 +187,7 @@
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li id="offertaTirocini" class="opened active">
                             <a href="#">
-                                <i class="linecons-cog"></i>
+                                <i class="fa-certificate"></i>
                                 <span class="title">Offerta Tirocinio</span>
                             </a>
                         </li>
@@ -196,25 +196,6 @@
             </div>
 
             <div class="main-content">
-
-                <script>
-                    jQuery(document).ready(function ($)
-                    {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                    });
-                </script>
-
                 <div class="row">
                     <div class="col-sm-12">
 

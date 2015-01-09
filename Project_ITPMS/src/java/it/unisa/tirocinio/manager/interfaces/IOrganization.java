@@ -5,8 +5,8 @@
  */
 package it.unisa.tirocinio.manager.interfaces;
 
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import java.util.ArrayList;
 
 /**

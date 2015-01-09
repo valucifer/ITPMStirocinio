@@ -5,12 +5,11 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Questionnaire;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteQuestionnaire;
 import java.io.IOException;
-import java.io.PrintWriter;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -38,14 +37,16 @@ public class getStudentQuestionnaireCompletion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
+        String account = request.getParameter("account");
         HttpSession aSession = request.getSession();
         
-        Person me = (Person) aSession.getAttribute("person");
-        System.out.println("persona "+me.getSSN());
+        PersonManager aPerson = PersonManager.getInstance();
+        Person me = aPerson.readPersonByAccount(account);
+        
         if ( me != null ) {
 
             ConcreteQuestionnaire aQuestionnaires = ConcreteQuestionnaire.getInstance();
-            Questionnaire questionnaire = aQuestionnaires.readQuestionnaire(me.getSSN());
+            Questionnaire questionnaire = aQuestionnaires.readQuestionnaire(me.getSsn());
             
             if (questionnaire == null) {
                aSession.setAttribute("questionnaireCompletion", 0);

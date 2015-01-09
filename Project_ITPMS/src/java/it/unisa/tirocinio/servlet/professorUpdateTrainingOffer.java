@@ -45,6 +45,7 @@ public class professorUpdateTrainingOffer extends HttpServlet {
         TrainingOffer trainingOffer = aTrainingOffer.readTrainingOffer(idModify);
         trainingOffer.setDescription(trainingOffer.getDepartment() + " - " + description);
         if (aTrainingOffer.updateTrainingOffer(trainingOffer)) {
+            //System.out.println(" "+aTrainingOffer.updateTrainingOffer(trainingOffer));
             message.setMessage("status", 1);
         } else {
             message.setMessage("status", 0);

@@ -23,7 +23,7 @@ tpProfessorFunction = {
                             var stringToAppend_tmp = '<a href="#" class="list-group-item" onclick="return false;" style="cursor:default;">';
                             stringToAppend_tmp = stringToAppend_tmp + '<p id="paragraphDescriptionListTraining_' + tmpIDTraining + '" class="list-group-item-text">' + tmpDescriptionTraining + '</p><div class="vertical-top" align="right">';
                             stringToAppend_tmp = stringToAppend_tmp + '<button id="modifyListTraining_' + tmpIDTraining + '" class="btn btn-orange btn-sm" onclick=tpProfessorFunction.modifyTraining(' + tmpIDTraining + ')><i class="fa fa-pencil"></i><span> Modifica</span></button>';
-                            stringToAppend_tmp = stringToAppend_tmp + '<button id="removeListTraining_' + tmpIDTraining + '" class="btn btn-red btn-sm" onclick=tpProfessorFunction.removeTraining(' + tmpIDTraining + ',"'+path+'")><i class="fa fa-trash"></i><span> Elimina</span></button>';
+                            stringToAppend_tmp = stringToAppend_tmp + '<button id="removeListTraining_' + tmpIDTraining + '" class="btn btn-red btn-sm" onclick=tpProfessorFunction.removeTraining(' + tmpIDTraining + ',"' + path + '")><i class="fa fa-trash"></i><span> Elimina</span></button>';
                             stringToAppend_tmp = stringToAppend_tmp + '</div></a>';
                             $(idPanel).append(stringToAppend_tmp);
                         } else {
@@ -43,7 +43,7 @@ tpProfessorFunction = {
 
     },
     deleteTraining: function (idTraining, path) {
-        $.post(path + "/professorDeleteTrainingOffer", {idRemove: idTraining}).fail(function(e) {
+        $.post(path + "/professorDeleteTrainingOffer", {idRemove: idTraining}).fail(function (e) {
             alert("Si sono verificati dei problemi nell\'elaborazione della richiesta.");
         });
     },
@@ -65,5 +65,32 @@ tpProfessorFunction = {
                 location.reload();
             }, 1000);
         }
+    },
+    populateProfessorPanel: function (idTable, idContainer, path) {
+        $.ajax({
+            url: path + '/getProfessorStudentsViews',
+            dataType: 'text',
+            type: 'POST',
+            success: function (e) {
+                $(idTable).append('<thead><tr><th>Nome</th><th>Cognome</th><th>Email</th><th>Status</th></tr></thead>');
+                var parsed = JSON.parse(e);
+                if (!parsed.status)
+                    return;
+                var jsonObj = parsed.message;
+                var tmp = '';
+                for (var i = 0; i < jsonObj.length; i++) {
+                    tmp += '<tr><td>' + jsonObj[i].name + '</td><td>' + jsonObj[i].surname + '</td><td>' + jsonObj[i].email + '</td><td>' + jsonObj[i].trainingstatus + '</td></tr>';
+                }
+                $(idTable).append(tmp);
+                $(idTable).dataTable({
+                    aLengthMenu: [
+                        [5, 10, 20, -1], [5, 10, 20, "Tutti"]
+                    ]});
+                $(tableContainer).attr("hidden", false);
+            },
+            error: function (e) {
+                alert(JSON.stringify(e));
+            }
+        });
     }
 };		

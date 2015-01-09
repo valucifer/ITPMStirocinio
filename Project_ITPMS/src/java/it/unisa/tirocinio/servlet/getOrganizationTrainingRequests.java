@@ -5,12 +5,11 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import java.io.PrintWriter;

@@ -148,6 +148,14 @@
         <servlet-name>LogoutServlet</servlet-name>
         <servlet-class>it.unisa.integrazione.servlet.LogoutServlet</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>getProfessorStudentsViews</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.getProfessorStudentsViews</servlet-class>
+    </servlet>
+    <servlet>
+        <servlet-name>getAdminStudentsViews</servlet-name>
+        <servlet-class>it.unisa.tirocinio.servlet.getAdminStudentsViews</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>updateTrainingRequestStatus</servlet-name>
         <url-pattern>/updateTrainingRequestStatus</url-pattern>
@@ -295,6 +303,14 @@
     <servlet-mapping>
         <servlet-name>LogoutServlet</servlet-name>
         <url-pattern>/logout</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getProfessorStudentsViews</servlet-name>
+        <url-pattern>/getProfessorStudentsViews</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>getAdminStudentsViews</servlet-name>
+        <url-pattern>/getAdminStudentsViews</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>

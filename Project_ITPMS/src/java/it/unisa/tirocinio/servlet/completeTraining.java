@@ -5,11 +5,11 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
@@ -45,16 +45,16 @@ public class completeTraining extends HttpServlet {
         HttpSession aSession = request.getSession();
         
         String studentMatricula = request.getParameter("matricula");
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.getPersonByMatricula(studentMatricula);
 
         ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-        RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSSN());
+        RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSsn());
 
         if (aRejectedMessage.getDescription() == null) {
             aRejectedMessage = new RejectedTrainingMessage();
             aRejectedMessage.setDescription("Il tuo tirocinio è concluso.\n Completa il questionario posto nella tua area personale. ");
-            aRejectedMessage.setPersonSSN(person.getSSN());
+            aRejectedMessage.setPersonSSN(person.getSsn());
             rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);
         } else {
             aRejectedMessage.setDescription("Il tuo tirocinio è concluso.\n Completa il questionario posto nella tua area personale.");
@@ -62,7 +62,7 @@ public class completeTraining extends HttpServlet {
         }
 
         ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSSN());
+        TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(person.getSsn());
 
         trainingRequest.setTrainingStatus(2);
 

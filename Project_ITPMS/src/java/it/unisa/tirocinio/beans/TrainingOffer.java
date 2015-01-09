@@ -12,6 +12,7 @@ public class TrainingOffer {
     private String personSSN = null;
     private String department = null;
     private String contact = null;
+    private String organizationVAT = null;
     
     /**
      *
@@ -130,6 +131,18 @@ public class TrainingOffer {
      */
     public void setDepartment(String department) {
         this.department = department;
+    }
+    
+    public void setIdTrainingOffer(int idTrainingOffer) {
+        this.idTrainingOffer = idTrainingOffer;
+    }
+
+    public void setOrganizationVAT(String organizationVAT) {
+        this.organizationVAT = organizationVAT;
+    }
+
+    public String getOrganizationVAT() {
+        return organizationVAT;
     }
     
     

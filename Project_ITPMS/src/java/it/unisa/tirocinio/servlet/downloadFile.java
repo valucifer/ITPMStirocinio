@@ -5,9 +5,15 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.*;
 import it.unisa.tirocinio.manager.concrete.*;
 import java.io.*;
+import java.util.logging.Level;
+import java.util.logging.Logger;
+import javax.servlet.ServletContext;
 import javax.servlet.ServletException;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.annotation.WebServlet;
@@ -39,41 +45,50 @@ public class downloadFile extends HttpServlet {
         String matricula = request.getParameter("matricula");
         String tipologia = request.getParameter("typology");
         
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.getPersonByMatricula(matricula);
          
         String filepath = "";
+        String fileName = "";
         
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
+        StudentInformation studentInformation = null;
+        try {
+            studentInformation = aStudentInformation.readAStudentInformation(person.getSsn());
+        } catch (ConnectionException ex) {
+            Logger.getLogger(downloadFile.class.getName()).log(Level.SEVERE, null, ex);
+        }
         
         if(tipologia.equals("CV")){
             filepath = studentInformation.getCVPath();
+            fileName = "CV-"+matricula+".pdf";
         }
         if(tipologia.equals("ES")){
             filepath = studentInformation.getATPath();
+            fileName = "ES-"+matricula+".pdf";
         }
         
-        File file = new File(filepath);
-        int length   = 0;
-        ServletOutputStream outStream = response.getOutputStream();
+        response.setHeader("Content-disposition", "attachment; filename="+fileName);
+        ServletContext ctx = getServletContext();
         
-        response.setContentType("Content-Type: application/octet-stream");
-        response.setContentLength((int)file.length());
-
-        // sets HTTP header
-        response.setHeader("Content-Disposition", "attachment; filename=" + tipologia + ".pdf");
-
-        byte[] byteBuffer = new byte[4096];
-        DataInputStream in = new DataInputStream(new FileInputStream(file));
-
-        // reads the file's bytes and writes them to the response stream
-        while ((in != null) && ((length = in.read(byteBuffer)) != -1)){
-            outStream.write(byteBuffer,0,length);
+        File my_file = new File(filepath);
+        ServletOutputStream out = response.getOutputStream();
+        FileInputStream in = new FileInputStream(my_file);
+        System.out.println(in.available());
+        String mimeType = ctx.getMimeType(my_file.getAbsolutePath());
+        System.out.println(mimeType);
+        response.setContentType(mimeType != null? mimeType:"application/pdf");
+        response.setContentLength((int) my_file.length());
+        byte[] buffer = new byte[1024];
+        int length = 0;
+        while ((length = in.read(buffer)) > 0) {
+            out.write(buffer, 0, length);
+            System.out.println(in.available());
         }
-
         in.close();
-        outStream.close();
+        out.flush();
+        out.close();
+       
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

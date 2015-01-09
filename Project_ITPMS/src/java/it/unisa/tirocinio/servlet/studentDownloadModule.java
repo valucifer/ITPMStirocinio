@@ -5,9 +5,9 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Department;
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Department;
+import it.unisa.integrazione.model.Person;
 import java.io.File;
 import java.io.FileInputStream;
 import java.io.IOException;
@@ -49,7 +49,7 @@ public class studentDownloadModule extends HttpServlet {
         String fileSeparator = System.getProperty("file.separator");
         System.out.println(who);
         
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person me = aPerson.readPersonByAccount(who);
         Department departmentAbb = me.getDepartment();
         String department = departmentAbb.getAbbreviation();
@@ -66,11 +66,9 @@ public class studentDownloadModule extends HttpServlet {
         // Make sure to show the download dialog
         response.setHeader("Content-disposition", "attachment; filename="+customFilename);
         ServletContext ctx = getServletContext();
-        System.out.println(customFilename);
-
+        
         File my_file = new File(path);
-        System.out.println(path);
-
+        
         // This should send the file to browser
         ServletOutputStream out = response.getOutputStream();
         FileInputStream in = new FileInputStream(my_file);

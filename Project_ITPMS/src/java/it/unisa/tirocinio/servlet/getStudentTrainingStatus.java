@@ -5,15 +5,12 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.StudentStatus;
-import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentStatus;
-import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -43,11 +40,10 @@ public class getStudentTrainingStatus extends HttpServlet {
         HttpSession aSession = request.getSession();
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
 
-        ConcretePerson aPerson = ConcretePerson.getInstance();
         Person person = (Person) aSession.getAttribute("person");
         
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
+        StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSsn());
 
         int studentStatus = studentInformation.getStudentStatus();
         ConcreteStudentStatus studentStatusConcrete = ConcreteStudentStatus.getInstance();

@@ -5,7 +5,7 @@
  */
 package it.unisa.tirocinio.manager.interfaces;
 
-import it.unisa.tirocinio.beans.Cycle;
+import it.unisa.integrazione.model.Cycle;
 import java.util.ArrayList;
 
 /**

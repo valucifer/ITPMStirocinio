@@ -1,10 +1,13 @@
 package it.unisa.tirocinio.manager.concrete;
 
-import it.unisa.tirocinio.beans.Account;
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.database.CycleManager;
+import it.unisa.integrazione.database.DBConnection;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.model.Account;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.StudentStatus;
-import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IStudentInformation;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -18,17 +21,9 @@ import java.util.logging.Logger;
  *
  * @author johneisenheim
  */
-public class ConcreteStudentInformation implements IStudentInformation{
-    
+public class ConcreteStudentInformation implements IStudentInformation {
+
     private static ConcreteStudentInformation instance = null;
-    private Connection connector = null;
-    private CallableStatement aCallableStatement = null;
-    
-    private ConcreteStudentInformation(){
-        connector = DBConnector.getConnection();
-        if( connector == null )
-            throw new RuntimeException("Unable to connect to Database.");
-    }
 
     /**
      *
@@ -37,60 +32,86 @@ public class ConcreteStudentInformation implements IStudentInformation{
      */
     @Override
     public boolean updateStudentInformation(StudentInformation aStudentInformation) {
-        initializeConnection();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            if( aStudentInformation == null )
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            if (aStudentInformation == null) {
                 throw new NullPointerException("OfferTraining is null!");
-            
-            aCallableStatement = connector.prepareCall("{call updateStudentInformation(?,?,?,?)}");       
-            aCallableStatement.setString("ss",aStudentInformation.getStudentSSN());
-            aCallableStatement.setString("CV",aStudentInformation.getCVPath());
-            aCallableStatement.setString("AcT",aStudentInformation.getATPath());
-            aCallableStatement.setInt("fk_status",aStudentInformation.getStudentStatus());
+            }
+
+            aCallableStatement = connection.prepareCall("{call updateStudentInformation(?,?,?,?)}");
+            aCallableStatement.setString("ss", aStudentInformation.getStudentSSN());
+            aCallableStatement.setString("CV", aStudentInformation.getCVPath());
+            aCallableStatement.setString("AcT", aStudentInformation.getATPath());
+            aCallableStatement.setInt("fk_status", aStudentInformation.getStudentStatus());
             int check = aCallableStatement.executeUpdate();
+            connection.commit();
             return check > 0;
-            
+
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return false;
     }
-    
+
     /**
      *
      * @param studentSSN
      * @param CVPath
      * @param ATPath
-     * @return true if a trining request is started successfully, false otherwise
+     * @return true if a trining request is started successfully, false
+     * otherwise
      */
     @Override
     public boolean startTrainingRequest(String studentSSN, String CVPath, String ATPath) {
-        initializeConnection();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            aCallableStatement = connector.prepareCall("{call storeUploadFile(?,?,?)}");
-            aCallableStatement.setString("CVPath",CVPath);
-            aCallableStatement.setString("ATPath",ATPath);
-            aCallableStatement.setString("studentSSN",studentSSN);
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call storeUploadFile(?,?,?)}");
+            aCallableStatement.setString("CVPath", CVPath);
+            aCallableStatement.setString("ATPath", ATPath);
+            aCallableStatement.setString("studentSSN", studentSSN);
             int check = aCallableStatement.executeUpdate();
+            connection.commit();
             return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
-        }        
+            DBConnection.releaseConnection(connection);
+        }
+        return false;
     }
 
     /**
@@ -111,44 +132,65 @@ public class ConcreteStudentInformation implements IStudentInformation{
      */
     @Override
     public boolean changeStudentStatus(String studentSSN, StudentStatus newStatus) {
-        initializeConnection();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            aCallableStatement = connector.prepareCall("{call changeStudentStatus(?,?)}");
-            aCallableStatement.setString("studentSSN",studentSSN);
-            aCallableStatement.setInt("status",newStatus.getIdStudentStatus());
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call changeStudentStatus(?,?)}");
+            aCallableStatement.setString("studentSSN", studentSSN);
+            aCallableStatement.setInt("status", newStatus.getIdStudentStatus());
             int check = aCallableStatement.executeUpdate();
+            connection.commit();
             return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return false;
     }
 
     /**
      *
      * @param studentSSN
-     * @return a StudentInformation object if there is a student represented by a certain student SSN
+     * @return a StudentInformation object if there is a student represented by
+     * a certain student SSN
      */
-    public StudentInformation readAStudentInformation (String studentSSN){
-        initializeConnection();
+    public StudentInformation readAStudentInformation(String studentSSN) throws ConnectionException {
         StudentInformation aStudentInformation = new StudentInformation();
         ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            aCallableStatement = connector.prepareCall("{call getStudentInformation(?)}");
-            aCallableStatement.setString("ss",studentSSN);
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call getStudentInformation(?)}");
+            aCallableStatement.setString("ss", studentSSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 Person person = aPerson.readPerson(rs.getString("SSN"));
-                aStudentInformation.setStudentSSN(person.getSSN());
+                aStudentInformation.setStudentSSN(person.getSsn());
                 aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
                 aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
                 aStudentInformation.setStudentStatus(rs.getInt("fk_student_status"));
@@ -158,35 +200,45 @@ public class ConcreteStudentInformation implements IStudentInformation{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
     }
-    
+
     /**
      *
      * @param studentSSN
-     * @return a StudentInformation object if there is a student with a student SSN into Database, null otherwise
+     * @return a StudentInformation object if there is a student with a student
+     * SSN into Database, null otherwise
      */
     @Override
     public StudentInformation readStudentInformation(String studentSSN) {
-        initializeConnection();
+
         StudentInformation aStudentInformation = new StudentInformation();
         ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            aCallableStatement = connector.prepareCall("{call getStudentInformation(?)}");
-            aCallableStatement.setString("ss",studentSSN);
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call getStudentInformation(?)}");
+            aCallableStatement.setString("ss", studentSSN);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 Person person = aPerson.readPerson(rs.getString("SSN"));
-                aStudentInformation.setStudentSSN(person.getName()+" "+person.getSurname());
+                aStudentInformation.setStudentSSN(person.getName() + " " + person.getSurname());
                 aStudentInformation.setMatricula(person.getMatricula());
                 aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
                 aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
@@ -197,35 +249,48 @@ public class ConcreteStudentInformation implements IStudentInformation{
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return null;
     }
 
     /**
      *
-     * @return an ArrayList of StudentInformation which contains all informations of a certain student
+     * @return an ArrayList of StudentInformation which contains all
+     * informations of a certain student
      */
     @Override
     public ArrayList<StudentInformation> getAllStudentInformations() {
-        initializeConnection();
+
         ArrayList<StudentInformation> studentInformations = new ArrayList<StudentInformation>();
         StudentInformation aStudentInformation = null;
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-           ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
-           ConcretePerson aPerson = ConcretePerson.getInstance();
-           aCallableStatement = connector.prepareCall("{call getAllStudentInformation()}");
-           ResultSet rs = aCallableStatement.executeQuery();
-           
-           while( rs.next() ){
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            ConcreteStudentStatus aStudentStatus = ConcreteStudentStatus.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
+            aCallableStatement = connection.prepareCall("{call getAllStudentInformation()}");
+            ResultSet rs = aCallableStatement.executeQuery();
+
+            while (rs.next()) {
                 aStudentInformation = new StudentInformation();
                 Person person = aPerson.readPerson(rs.getString("SSN"));
-                aStudentInformation.setStudentSSN(person.getName()+" "+person.getSurname());
+                aStudentInformation.setStudentSSN(person.getName() + " " + person.getSurname());
                 aStudentInformation.setMatricula(person.getMatricula());
                 aStudentInformation.setCVPath(rs.getString("curriculum_vitae_path"));
                 aStudentInformation.setATPath(rs.getString("accademic_transcript_path"));
@@ -233,39 +298,36 @@ public class ConcreteStudentInformation implements IStudentInformation{
                 Account account = person.getAccount();
                 aStudentInformation.setEmailStudent(account.getEmail());
                 studentInformations.add(aStudentInformation);
-           }
-           rs.close();
-           return studentInformations;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }finally{
+            }
+            rs.close();
+            return studentInformations;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteStudentInformation.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return null;
     }
-    
+
     /**
      *
-     * @return a ConcreteStudentInformation object if no ConcreteStudentInformation object are alive
+     * @return a ConcreteStudentInformation object if no
+     * ConcreteStudentInformation object are alive
      */
-    public static synchronized ConcreteStudentInformation getInstance(){
-        if(instance == null)
+    public static synchronized ConcreteStudentInformation getInstance() {
+        if (instance == null) {
             instance = new ConcreteStudentInformation();
+        }
         return instance;
     }
-    
-    private void initializeConnection(){
-        try {
-            if(connector.isClosed())
-                connector = DBConnector.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+
 }

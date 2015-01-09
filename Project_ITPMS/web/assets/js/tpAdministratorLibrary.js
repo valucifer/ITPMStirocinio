@@ -93,8 +93,7 @@ tpAdminFunction = {
             type: "POST",
             data: {matricula: matri, typology: typo},
             success: function (data) {
-                alert(JSON.stringify(data));
-                window.location.href = data;
+                
             },
             error: function (jqXHR, textStatus, errorThrown) {
                 alert('Error ' + textStatus);
@@ -113,16 +112,21 @@ tpAdminFunction = {
                 for (var i = 0; i < array.length; i++) {
                     var stringToAppend_tmp = "";
                     stringToAppend_tmp = "<tr><td>" + array[i].matricula + "</td><td>" + array[i].credenziali;
-                    stringToAppend_tmp += "</td><td>";
-                    stringToAppend_tmp += "<button onClick=tpAdminFunction.functionDownload('" + array[i].idStudent + "','CV','"+path+"') class='btn btn-info btn-sm'><i class='fa fa-external-link'></i><span> Visualizza</span></button>";
-                    stringToAppend_tmp += "</td><td>";
-                    stringToAppend_tmp += "<button onClick=tpAdminFunction.functionDownload('" + array[i].idStudent + "','ES','"+path+"') class='btn btn-info btn-sm'><i class='fa fa-external-link'></i><span> Visualizza</span></button>";
-                    stringToAppend_tmp += "</td><td>";
+                    stringToAppend_tmp += "</td><td><form action='"+path+"/downloadFile' method='POST'>";
+                    stringToAppend_tmp += "<button type='submit' class='btn btn-info btn-sm'><input type='text' hidden name='matricula' value='"+array[i].matricula+"'/><input type='text' hidden name='typology' value='CV'/><i class='fa fa-external-link'></i><span> Visualizza</span></button>";
+                    stringToAppend_tmp += "</form></td><td><form action='"+path+"/downloadFile' method='POST'>";
+                    stringToAppend_tmp += "<button type='submit' class='btn btn-info btn-sm'><input type='text' hidden name='matricula' value='"+array[i].matricula+"'/><input type='text' hidden name='typology' value='ES'/><i class='fa fa-external-link'></i><span> Visualizza</span></button>";
+                    stringToAppend_tmp += "</form></td><td>";
+                    
                     if (array[i].statusStudent !== 2) {
-                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon btn-secondary" onClick=tpAdminFunction.acceptTrainingRequest("' + array[i].idStudent + '","'+path+'")>Accetta</button>';
-                        stringToAppend_tmp += "<button class='btn btn-sm btn-icon btn-red' onClick=tpAdminFunction.rejectTrainingRequest('" + array[i].idStudent + "','" + array[i].emailStudent + "')>Rifiuta</button></span></td></tr>";
+                        if (array[i].statusStudent === 1) {
+                            stringToAppend_tmp += "<button class='btn btn-sm btn-icon btn-red'>Rifiutata</button></span></td></tr>";
+                        } else {
+                            stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon btn-secondary" onClick=tpAdminFunction.acceptTrainingRequest("' + array[i].idStudent + '","' + path + '")>Accetta</button>';
+                            stringToAppend_tmp += "<button class='btn btn-sm btn-icon btn-red' onClick=tpAdminFunction.rejectTrainingRequest('" + array[i].idStudent + "','" + array[i].emailStudent + "')>Rifiuta</button></span></td></tr>";
+                        }
                     } else {
-                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon" onClick=tpAdminFunction.completeTrainingRequest("' + array[i].idStudent + '","'+path+'") style="background-color:#38548f; color:white;">Concluso</button></span></td></tr>';
+                        stringToAppend_tmp += '<span id="changeRequestTrainingForComplete_' + array[i].idStudent + '"><button class="btn btn-sm btn-icon" onClick=tpAdminFunction.completeTrainingRequest("' + array[i].idStudent + '","' + path + '") style="background-color:#38548f; color:white;">Concluso</button></span></td></tr>';
                     }
                     $(idTable).append(stringToAppend_tmp);
                 }
@@ -139,12 +143,14 @@ tpAdminFunction = {
         });
     },
     acceptStudentForTraining: function (idStudent, path) {
-        $.post(path + "/acceptStudentForTraining", {matricula: idStudent}).done(function (e) {}).fail(function (e) {
+        $.post(path + "/acceptStudentForTraining", {matricula: idStudent}).done(function (e) {
+        }).fail(function (e) {
             alert("Si sono verificati dei problemi col server!");
         });
     },
     completeStudentForTraining: function (idStudent, path) {
-        $.get(path + "/completeTraining", {matricula: idStudent}).done(function (e) {}).fail(function (e) {
+        $.get(path + "/completeTraining", {matricula: idStudent}).done(function (e) {
+        }).fail(function (e) {
             alert("Si sono verificati dei problemi col server!");
         });
     },
@@ -247,6 +253,33 @@ tpAdminFunction = {
             }
         }).fail(function (e) {
             alert("Si sono verificati dei problemi col server!");
+        });
+    },
+    populateAdminPanel: function (idTable, idContainer, path) {
+        $.ajax({
+            url: path + '/getAdminStudentsViews',
+            dataType: 'text',
+            type: 'POST',
+            success: function (e) {
+                $(idTable).append('<thead><tr><th>Nome</th><th>Cognome</th><th>Email</th><th>Status</th></tr></thead>');
+                var parsed = JSON.parse(e);
+                if (!parsed.status)
+                    return;
+                var jsonObj = parsed.message;
+                var tmp = '';
+                for (var i = 0; i < jsonObj.length; i++) {
+                    tmp += '<tr><td>' + jsonObj[i].name + '</td><td>' + jsonObj[i].surname + '</td><td>' + jsonObj[i].email + '</td><td>' + jsonObj[i].trainingstatus + '</td></tr>';
+                }
+                $(idTable).append(tmp);
+                $(idTable).dataTable({
+                    aLengthMenu: [
+                        [5, 10, 20, -1], [5, 10, 20, "Tutti"]
+                    ]});
+                $(tableContainer).attr("hidden", false);
+            },
+            error: function (e) {
+                alert(JSON.stringify(e));
+            }
         });
     }
 };		

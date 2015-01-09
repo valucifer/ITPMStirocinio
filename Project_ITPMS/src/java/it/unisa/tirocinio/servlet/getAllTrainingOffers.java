@@ -6,7 +6,9 @@
 package it.unisa.tirocinio.servlet;
 
 import it.unisa.tirocinio.beans.TrainingOffer;
+import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
+import it.unisa.tirocinio.manager.concrete.ConcreteViews;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,8 +45,8 @@ public class getAllTrainingOffers extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
             ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
+            ConcreteViews aConcreteView = ConcreteViews.getInstance();
             ArrayList<TrainingOffer> trainingOffer = aTrainingOffer.getAllTrainingOffers();
             if (trainingOffer == null) {
                 jsonObject.put("status", 0);
@@ -58,6 +60,10 @@ public class getAllTrainingOffers extends HttpServlet {
                     jsonTmp.put("organization", offer.getOrganization());
                     jsonTmp.put("description", offer.getDescription());
                     jsonTmp.put("contacts", offer.getContact());
+                    System.out.println(offer.getOrganizationVAT());
+                    if( offer.getOrganizationVAT() != null )
+                        jsonTmp.put("numbers", aConcreteView.getNumberOfTrainingForOrganization(offer.getOrganizationVAT()).getCount());
+                    else jsonTmp.put("numbers", "-");
                     array.put(jsonTmp);
                 }
                 jsonObject.put("status", 1);

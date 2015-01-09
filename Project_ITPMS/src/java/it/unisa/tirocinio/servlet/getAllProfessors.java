@@ -5,9 +5,9 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Account;
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Account;
+import it.unisa.integrazione.model.Person;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.ArrayList;
@@ -43,34 +43,30 @@ public class getAllProfessors extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
         try {
-            /* TODO output your page here. You may use following sample code. */
-            ConcretePerson aPerson = ConcretePerson.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
             ArrayList<Person> person = aPerson.getAllPeople();
             
             ArrayList<Person> allProfessor = new ArrayList<Person>();
             
-            for(int i = 0; i < person.size(); i++){
-                Account account = person.get(i).getAccount();
-                if(aPerson.isAProfessor(account.getEmail())){
-                    allProfessor.add(person.get(i));
+            for (Person person1 : person) {
+                Account account = person1.getAccount();
+                if (aPerson.isAProfessor(account.getEmail())) {
+                    allProfessor.add(person1);
                 }
             }
             
-            if(allProfessor == null){
+            if(allProfessor.isEmpty()){
                 jsonObject.put("status", 0);
             }else{
                 JSONArray array = new JSONArray();
                 for( Person prof: allProfessor ){
                     JSONObject jsonTmp = new JSONObject();
                     jsonTmp.put("NameANDSurname", prof.getName()+" "+prof.getSurname());
-                    jsonTmp.put("SSNProf", prof.getSSN());
+                    jsonTmp.put("SSNProf", prof.getSsn());
                     array.put(jsonTmp);
                 }
                 jsonObject.put("status", 1);
                 jsonObject.put("message", array);
-                //request.setAttribute("trainingMessage",message);
-                //out.println(trainingOffer.get(0).getDescription()+" "+trainingOffer.get(0).getIdOfferTraining());
-                
             }
             response.getWriter().write(jsonObject.toString());
         } catch (JSONException ex) {

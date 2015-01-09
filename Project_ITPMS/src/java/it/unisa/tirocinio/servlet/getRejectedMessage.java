@@ -5,13 +5,10 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
-import it.unisa.tirocinio.beans.StudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
-import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
 import java.io.PrintWriter;
 import java.util.logging.Level;
@@ -47,17 +44,16 @@ public class getRejectedMessage extends HttpServlet {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
         PrintWriter out = response.getWriter();
-        ConcreteMessageForServlet message = new ConcreteMessageForServlet();
         HttpSession session = request.getSession();
         try {
             Person pers = (Person) session.getAttribute("person");
             String email = pers.getAccount().getEmail();
             
-            ConcretePerson aPerson = ConcretePerson.getInstance();  
+            PersonManager aPerson = PersonManager.getInstance();  
             Person person = aPerson.readPersonByAccount(email);
             
             ConcreteRejectedTrainingMessage aRejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSSN());
+            RejectedTrainingMessage aMessage = aRejectedMessage.readLastTrainingMessage(person.getSsn());
             
             jsonObj.put("status", 1);
             jsonObj.put("Object", aMessage.getDescription());

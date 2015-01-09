@@ -1,7 +1,7 @@
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;

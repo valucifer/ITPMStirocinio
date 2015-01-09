@@ -85,7 +85,7 @@ tpFunction = {
             dataType: 'text',
             type: 'POST',
             success: function (e) {
-                $(idTable).append('<thead><tr><th>Nome Azienda</th><th>Professore Associato</th><th>Descrizione</th></tr></thead>');
+                $(idTable).append('<thead><tr><th>Nome Azienda</th><th>Professore Associato</th><th>Descrizione</th><th># tirocinanti</th></tr></thead>');
                 var parsed = JSON.parse(e);
                 if (!parsed.status)
                     return;
@@ -93,9 +93,9 @@ tpFunction = {
                 var tmp = '';
                 for (var i = 0; i < jsonObj.length; i++) {
                     if (jsonObj[i].organization === undefined)
-                        tmp += '<tr><td>Nessuna</td><td>' + jsonObj[i].professor + '</td><td>' + jsonObj[i].description + '</td></tr>';
+                        tmp += '<tr><td>Nessuna</td><td>' + jsonObj[i].professor + '</td><td>' + jsonObj[i].description + '</td><td>'+jsonObj[i].numbers+'</td></tr>';
                     else
-                        tmp += '<tr><td>' + jsonObj[i].organization + '</td><td>' + jsonObj[i].professor + '</td><td>' + jsonObj[i].description + '</td></tr>';
+                        tmp += '<tr><td>' + jsonObj[i].organization + '</td><td>' + jsonObj[i].professor + '</td><td>' + jsonObj[i].description + '</td><td>'+jsonObj[i].numbers+'</td></tr>';
                 }
                 $(idTable).append(tmp);
                 $(idTable).dataTable({

@@ -5,12 +5,12 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -46,10 +46,10 @@ public class insertTrainingRequest extends HttpServlet {
         String student = request.getParameter("studentSSN");
         String organiz = request.getParameter("organizationVAT");
 
-        ConcretePerson aStudent = ConcretePerson.getInstance();
+        PersonManager aStudent = PersonManager.getInstance();
         Person studentSSN = aStudent.readPerson(student);
 
-        ConcretePerson aProfessor = ConcretePerson.getInstance();
+        PersonManager aProfessor = PersonManager.getInstance();
         Person professorSSN = aProfessor.readPerson(professor);
 
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
@@ -62,8 +62,8 @@ public class insertTrainingRequest extends HttpServlet {
             trainingRequest = new TrainingRequest();
             trainingRequest.setDescription(description);
             trainingRequest.setOrganizationVATNumber(organization.getVATNumber());
-            trainingRequest.setPersonSSN(professorSSN.getSSN());
-            trainingRequest.setStudentSSN(studentSSN.getSSN());
+            trainingRequest.setPersonSSN(professorSSN.getSsn());
+            trainingRequest.setStudentSSN(studentSSN.getSsn());
             trainingRequest.setTitle(title);
             trainingRequest.setTrainingStatus(1);
         }

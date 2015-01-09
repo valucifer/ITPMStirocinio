@@ -5,13 +5,14 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Account;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.model.Account;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.StudentInformation;
 import it.unisa.tirocinio.beans.TrainingRequest;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingRequest;
 import java.io.IOException;
@@ -51,7 +52,7 @@ public class getAllEntities extends HttpServlet {
         try {
             /* TODO output your page here. You may use following sample code. */
             ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
-            ConcretePerson aPerson = ConcretePerson.getInstance();
+            PersonManager aPerson = PersonManager.getInstance();
             ArrayList<Person> student = aPerson.getAllPeople();
             
             JSONArray arrayOrganization = new JSONArray();
@@ -63,10 +64,10 @@ public class getAllEntities extends HttpServlet {
                 JSONObject jsonTmpPro = new JSONObject();
                 if(aPerson.isAProfessor(account.getEmail())){
                     jsonTmpPro.put("credential", pers.getName()+" "+pers.getSurname());
-                    jsonTmpPro.put("SSN",pers.getSSN());
+                    jsonTmpPro.put("SSN",pers.getSsn());
                     arrayProfessor.put(jsonTmpPro);
                     
-                    ArrayList<Organization> organization = anOrganization.getOwnOrganizations(pers.getSSN());
+                    ArrayList<Organization> organization = anOrganization.getOwnOrganizations(pers.getSsn());
                     
                     for( Organization orga: organization){
                         JSONObject jsonTmpOrg = new JSONObject();
@@ -82,15 +83,20 @@ public class getAllEntities extends HttpServlet {
                 Account account = stud.getAccount();
                 if(aPerson.isAStudent(account.getEmail())){
                     ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-                    StudentInformation studentInformation = aStudentInformation.readAStudentInformation(stud.getSSN());
+                    StudentInformation studentInformation = null;
+                    try {
+                        studentInformation = aStudentInformation.readAStudentInformation(stud.getSsn());
+                    } catch (ConnectionException ex) {
+                        Logger.getLogger(getAllEntities.class.getName()).log(Level.SEVERE, null, ex);
+                    }
                     
                     ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-                    TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSSN());
+                    TrainingRequest trainingRequest = aTrainingRequest.readTrainingRequestByStudent(stud.getSsn());
                     
                     if((studentInformation.getStudentStatus() == 2)&&(trainingRequest.getStudentSSN()==null)){
                         JSONObject jsonTmpStu = new JSONObject();
                         jsonTmpStu.put("credentialStudent", stud.getName()+" "+stud.getSurname());
-                        jsonTmpStu.put("SSNStudent",stud.getSSN());
+                        jsonTmpStu.put("SSNStudent",stud.getSsn());
                         arrayPerson.put(jsonTmpStu);
                     }
                 }

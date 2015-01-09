@@ -36,7 +36,7 @@ public class adminUploadFiles extends HttpServlet {
         rootDirectoryPath = getServletContext().getRealPath("/");
         File directory = new File(rootDirectoryPath + "/files");
         if (!directory.exists()) {
-            System.out.println("Have I created directory? " + directory.mkdir());
+             directory.mkdir();
         }
         fullPath = directory.getAbsolutePath();
         fileSeparator = System.getProperty("file.separator");
@@ -96,10 +96,7 @@ public class adminUploadFiles extends HttpServlet {
                     department = fi.getString();
                 }
             }
-            File f = new File(fullPath + fileSeparator + department + ".properties");
-            OutputStream out = new FileOutputStream(f);
-            props.store(out, null);
-            out.close();
+            
             aMessage.setMessage("status", 1);
             aSession.setAttribute("message", aMessage);
             response.sendRedirect(request.getContextPath() + "/tirocinio/amministratore/tpinserimentofileamministratore.jsp");

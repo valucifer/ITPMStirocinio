@@ -5,13 +5,13 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Department;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Department;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.beans.TrainingOffer;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteTrainingOffer;
 import java.io.IOException;
 import javax.servlet.ServletException;
@@ -53,7 +53,7 @@ public class organizationInsertTrainingOffer extends HttpServlet {
         ConcreteOrganization aOrganization = ConcreteOrganization.getInstance();
         Organization organization = aOrganization.getOrganizationByAccount(organizationEmail);
 
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.readPerson(organization.getProfessor());
 
         ConcreteTrainingOffer aTrainingOffer = ConcreteTrainingOffer.getInstance();
@@ -62,7 +62,7 @@ public class organizationInsertTrainingOffer extends HttpServlet {
         trainingOffer.setDepartment(departmentAbb.getAbbreviation());
         trainingOffer.setDescription(organization.getCompanyName() + " - " + description);
         trainingOffer.setOrganization(organization.getVATNumber());
-        trainingOffer.setPersonSSN(person.getSSN());
+        trainingOffer.setPersonSSN(person.getSsn());
 
         if (aTrainingOffer.createOuterTrainingOffer(trainingOffer)) {
             message.setMessage("status", 1);

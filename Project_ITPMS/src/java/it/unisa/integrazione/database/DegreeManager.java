@@ -6,7 +6,7 @@
 package it.unisa.integrazione.database;
 
 import it.unisa.integrazione.database.exception.ConnectionException;
-import it.unisa.tirocinio.beans.Degree;
+import it.unisa.integrazione.model.Degree;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.ResultSet;

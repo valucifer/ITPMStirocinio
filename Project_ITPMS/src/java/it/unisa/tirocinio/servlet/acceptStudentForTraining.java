@@ -5,13 +5,16 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Person;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.RejectedTrainingMessage;
 import it.unisa.tirocinio.beans.StudentInformation;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import it.unisa.tirocinio.manager.concrete.ConcreteRejectedTrainingMessage;
 import it.unisa.tirocinio.manager.concrete.ConcreteStudentInformation;
 import java.io.IOException;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.annotation.WebServlet;
 import javax.servlet.http.HttpServlet;
@@ -40,19 +43,24 @@ public class acceptStudentForTraining extends HttpServlet {
         response.setHeader("Access-Control-Allow-Origin", "*");
         
         String studentMatricula = request.getParameter("matricula");
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.getPersonByMatricula(studentMatricula);
 
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
-        StudentInformation studentInformation = aStudentInformation.readAStudentInformation(person.getSSN());
+        StudentInformation studentInformation = null;
+        try {
+            studentInformation = aStudentInformation.readAStudentInformation(person.getSsn());
+        } catch (ConnectionException ex) {
+            Logger.getLogger(acceptStudentForTraining.class.getName()).log(Level.SEVERE, null, ex);
+        }
 
         ConcreteRejectedTrainingMessage rejectedMessage = ConcreteRejectedTrainingMessage.getInstance();
-        RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSSN());
+        RejectedTrainingMessage aRejectedMessage = rejectedMessage.readLastTrainingMessage(person.getSsn());
 
         if (aRejectedMessage.getDescription() == null) {
             aRejectedMessage = new RejectedTrainingMessage();
             aRejectedMessage.setDescription("La tua richiesta è stata accettata!");
-            aRejectedMessage.setPersonSSN(person.getSSN());
+            aRejectedMessage.setPersonSSN(person.getSsn());
             rejectedMessage.createRejectedTrainingMessage(aRejectedMessage);
         } else {
             aRejectedMessage.setDescription("La tua richiesta è stata accettata!");

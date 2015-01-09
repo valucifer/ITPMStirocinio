@@ -223,13 +223,13 @@
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
                             <a href="${pageContext.request.contextPath}/tirocinio/studente/tphome.jsp">
-                                <i class="linecons-cog"></i>
+                                <i class="fa-home"></i>
                                 <span class="title">Home</span>
                             </a>
                         </li>
                         <li class="opened active">
                             <a href="${pageContext.request.contextPath}/tirocinio/studente/tprichiestatirocinio.jsp">
-                                <i class="linecons-cog"></i>
+                                <i class="fa-bullhorn"></i>
                                 <span class="title">Richiesta tirocinio</span>
                             </a>
                         </li>
@@ -241,7 +241,7 @@
                         </li>
                         <li id="ID_questionario_0">
                             <a href="${pageContext.request.contextPath}/tirocinio/studente/tpquestionario.jsp">
-                                <i class="linecons-note"></i>
+                                <i class="fa-file-o"></i>
                                 <span class="title">Questionario</span>
                             </a>
                         </li>

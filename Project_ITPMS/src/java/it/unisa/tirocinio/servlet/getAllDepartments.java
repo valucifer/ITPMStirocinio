@@ -5,11 +5,15 @@
  */
 package it.unisa.tirocinio.servlet;
 
-import it.unisa.tirocinio.beans.Department;
-import it.unisa.tirocinio.manager.concrete.ConcreteDepartment;
+import it.unisa.integrazione.database.DepartmentManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.model.Department;
 import java.io.IOException;
-import java.io.PrintWriter;
+import java.sql.SQLException;
 import java.util.ArrayList;
+import java.util.Collection;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
@@ -35,9 +39,15 @@ public class getAllDepartments extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         HttpSession aSession = request.getSession();
-        ArrayList<Department> departments = null;
-        ConcreteDepartment aConcreteDepartment = ConcreteDepartment.getInstance();
-        departments = aConcreteDepartment.getAllDepartments();
+        Collection<Department> departments = null;
+        DepartmentManager aConcreteDepartment = DepartmentManager.getInstance();
+        try {
+            departments = aConcreteDepartment.getAllDepartments();
+        } catch (SQLException ex) {
+            Logger.getLogger(getAllDepartments.class.getName()).log(Level.SEVERE, null, ex);
+        } catch (ConnectionException ex) {
+            Logger.getLogger(getAllDepartments.class.getName()).log(Level.SEVERE, null, ex);
+        }
         aSession.setAttribute("departments", departments);
         
     }

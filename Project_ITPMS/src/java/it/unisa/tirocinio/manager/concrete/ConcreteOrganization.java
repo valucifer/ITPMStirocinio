@@ -1,8 +1,12 @@
 package it.unisa.tirocinio.manager.concrete;
 
+import it.unisa.integrazione.database.AccountManager;
+import it.unisa.integrazione.database.CycleManager;
+import it.unisa.integrazione.database.DBConnection;
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.database.exception.ConnectionException;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.DBConnector;
 import it.unisa.tirocinio.manager.interfaces.IOrganization;
 import java.sql.CallableStatement;
 import java.sql.Connection;
@@ -16,17 +20,9 @@ import java.util.logging.Logger;
  *
  * @author johneisenheim
  */
-public class ConcreteOrganization implements IOrganization{
-    
+public class ConcreteOrganization implements IOrganization {
+
     private static ConcreteOrganization instance = null;
-    private Connection connector = null;
-    private CallableStatement aCallableStatement = null;
-    
-    private ConcreteOrganization(){
-        connector = DBConnector.getConnection();
-        if( connector == null )
-            throw new RuntimeException("Unable to connect to Database.");
-    }
 
     /**
      *
@@ -35,34 +31,47 @@ public class ConcreteOrganization implements IOrganization{
      */
     @Override
     public boolean createOrganization(Organization organization) {
-        initializeConnection();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            if( organization == null )
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            if (organization == null) {
                 throw new NullPointerException("Organization is null!");
-            
-            aCallableStatement = connector.prepareCall("{call insertOrganization(?,?,?,?,?,?,?,?,?)}");       
-            aCallableStatement.setString("vatNumber",organization.getVATNumber());
-            aCallableStatement.setString("companyName",organization.getCompanyName());
-            aCallableStatement.setString("city",organization.getCity());
-            aCallableStatement.setString("address",organization.getAddress());
-            aCallableStatement.setString("phone",organization.getPhone());
-            aCallableStatement.setString("email",organization.getEmail());
-            aCallableStatement.setString("personSSN",organization.getProfessor());
-            aCallableStatement.setString("accountEmail",organization.getAccount());
-            aCallableStatement.setString("tutorSSN",organization.getExternalTutor());
+            }
+
+            aCallableStatement = connection.prepareCall("{call insertOrganization(?,?,?,?,?,?,?,?,?)}");
+            aCallableStatement.setString("vatNumber", organization.getVATNumber());
+            aCallableStatement.setString("companyName", organization.getCompanyName());
+            aCallableStatement.setString("city", organization.getCity());
+            aCallableStatement.setString("address", organization.getAddress());
+            aCallableStatement.setString("phone", organization.getPhone());
+            aCallableStatement.setString("email", organization.getEmail());
+            aCallableStatement.setString("personSSN", organization.getProfessor());
+            aCallableStatement.setString("accountEmail", organization.getAccount());
+            aCallableStatement.setString("tutorSSN", organization.getExternalTutor());
             int check = aCallableStatement.executeUpdate();
+            connection.commit();
             return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return false;
     }
 
     /**
@@ -72,23 +81,35 @@ public class ConcreteOrganization implements IOrganization{
      */
     @Override
     public boolean deleteOrganization(String VATNumber) {
-        initializeConnection();
-       try {
-            aCallableStatement = connector.prepareCall("{call deleteOrganization(?)}");       
-            aCallableStatement.setString("vatNumber",VATNumber);
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
+        try {
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call deleteOrganization(?)}");
+            aCallableStatement.setString("vatNumber", VATNumber);
             int check = aCallableStatement.executeUpdate();
+            connection.commit();
             return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return false;
     }
 
     /**
@@ -98,54 +119,76 @@ public class ConcreteOrganization implements IOrganization{
      */
     @Override
     public boolean updateOrganization(Organization organization) {
-        initializeConnection();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            if( organization == null )
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            if (organization == null) {
                 throw new NullPointerException("Organization is null!");
-            
-            aCallableStatement = connector.prepareCall("{call updateOrganization(?,?,?,?,?,?,?,?,?)}");       
-            aCallableStatement.setString("vatNumber",organization.getVATNumber());
-            aCallableStatement.setString("companyName",organization.getCompanyName());
-            aCallableStatement.setString("city",organization.getCity());
-            aCallableStatement.setString("address",organization.getAddress());
-            aCallableStatement.setString("phone",organization.getPhone());
-            aCallableStatement.setString("email",organization.getEmail());
-            aCallableStatement.setString("personSSN",organization.getProfessor());
-            aCallableStatement.setString("accountEmail",organization.getAccount());
-            aCallableStatement.setString("tutorSSN",organization.getExternalTutor());
+            }
+
+            aCallableStatement = connection.prepareCall("{call updateOrganization(?,?,?,?,?,?,?,?,?)}");
+            aCallableStatement.setString("vatNumber", organization.getVATNumber());
+            aCallableStatement.setString("companyName", organization.getCompanyName());
+            aCallableStatement.setString("city", organization.getCity());
+            aCallableStatement.setString("address", organization.getAddress());
+            aCallableStatement.setString("phone", organization.getPhone());
+            aCallableStatement.setString("email", organization.getEmail());
+            aCallableStatement.setString("personSSN", organization.getProfessor());
+            aCallableStatement.setString("accountEmail", organization.getAccount());
+            aCallableStatement.setString("tutorSSN", organization.getExternalTutor());
             int check = aCallableStatement.executeUpdate();
+            connection.commit();
             return check > 0;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return false;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return false;
     }
 
     /**
      *
      * @param VATNumber
-     * @return an Organization object if reading operation from Database is correct, null otherwise
+     * @return an Organization object if reading operation from Database is
+     * correct, null otherwise
      */
     @Override
     public Organization readOrganization(String VATNumber) {
-        initializeConnection();
         Organization anOrganization = new Organization();
-        ConcreteAccount anAccount = ConcreteAccount.getInstance();
-        ConcretePerson aProfessor = ConcretePerson.getInstance();
-        ConcretePerson aTutor = ConcretePerson.getInstance();
+        AccountManager anAccount = AccountManager.getInstance();
+        PersonManager aProfessor = PersonManager.getInstance();
+        PersonManager aTutor = PersonManager.getInstance();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            aCallableStatement = connector.prepareCall("{call getOrganizationByPrimaryKey(?)}");
-            aCallableStatement.setString("vatNumber",VATNumber);
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call getOrganizationByPrimaryKey(?)}");
+            aCallableStatement.setString("vatNumber", VATNumber);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 anOrganization.setVATNumber(rs.getString("vat_number"));
                 anOrganization.setCompanyName(rs.getString("company_name"));
                 anOrganization.setCity(rs.getString("city"));
@@ -153,158 +196,192 @@ public class ConcreteOrganization implements IOrganization{
                 anOrganization.setPhone(rs.getString("phone"));
                 anOrganization.setEmail(rs.getString("email"));
                 anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
-                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
-                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSsn());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSsn());
             }
             rs.close();
             return anOrganization;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return null;
     }
 
     /**
      *
-     * @return an ArrayList of Organization if reading operation from Database is correct, null otherwise
+     * @return an ArrayList of Organization if reading operation from Database
+     * is correct, null otherwise
      */
     @Override
     public ArrayList<Organization> getAllOrganizations() {
-        initializeConnection();
         ArrayList<Organization> organizations = new ArrayList<Organization>();
         Organization anOrganization = null;
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-           ConcreteAccount anAccount = ConcreteAccount.getInstance();
-           ConcretePerson aProfessor = ConcretePerson.getInstance();
-           ConcretePerson aTutor = ConcretePerson.getInstance();
-           aCallableStatement = connector.prepareCall("{call getAllOrganizations()}");
-           ResultSet rs = aCallableStatement.executeQuery();
-           
-           while( rs.next() ){
-               anOrganization = new Organization();
-               anOrganization.setVATNumber(rs.getString("vat_number"));
-               anOrganization.setCompanyName(rs.getString("company_name"));
-               anOrganization.setCity(rs.getString("city"));
-               anOrganization.setAddress(rs.getString("address"));
-               anOrganization.setPhone(rs.getString("phone"));
-               anOrganization.setEmail(rs.getString("email"));
-               anOrganization.setAccount(rs.getString("fk_account"));
-               anOrganization.setProfessor(rs.getString("fk_professor"));
-               anOrganization.setExternalTutor(rs.getString("fk_external_tutor"));
-               organizations.add(anOrganization);
-           }
-           rs.close();
-           return organizations;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }finally{
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call getAllOrganizations()}");
+            ResultSet rs = aCallableStatement.executeQuery();
+
+            while (rs.next()) {
+                anOrganization = new Organization();
+                anOrganization.setVATNumber(rs.getString("vat_number"));
+                anOrganization.setCompanyName(rs.getString("company_name"));
+                anOrganization.setCity(rs.getString("city"));
+                anOrganization.setAddress(rs.getString("address"));
+                anOrganization.setPhone(rs.getString("phone"));
+                anOrganization.setEmail(rs.getString("email"));
+                anOrganization.setAccount(rs.getString("fk_account"));
+                anOrganization.setProfessor(rs.getString("fk_professor"));
+                anOrganization.setExternalTutor(rs.getString("fk_external_tutor"));
+                organizations.add(anOrganization);
+            }
+            rs.close();
+            return organizations;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return null;
     }
-    
+
     /**
      *
      * @param professorSSN
-     * @return an ArrayList of Organization that contains every organization a professor handle
+     * @return an ArrayList of Organization that contains every organization a
+     * professor handle
      */
     @Override
     public ArrayList<Organization> getOwnOrganizations(String professorSSN) {
-        initializeConnection();
         ArrayList<Organization> organizations = new ArrayList<Organization>();
         Organization anOrganization = null;
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-           ConcreteAccount anAccount = ConcreteAccount.getInstance();
-           ConcretePerson aProfessor = ConcretePerson.getInstance();
-           ConcretePerson aTutor = ConcretePerson.getInstance();
-           aCallableStatement = connector.prepareCall("{call getOwnOrganizations(?)}");
-           aCallableStatement.setString("professorSSN",professorSSN);
-           ResultSet rs = aCallableStatement.executeQuery();
-          
-           while( rs.next() ){
-               anOrganization = new Organization();
-               anOrganization.setVATNumber(rs.getString("vat_number"));
-               anOrganization.setCompanyName(rs.getString("company_name"));
-               anOrganization.setCity(rs.getString("city"));
-               anOrganization.setAddress(rs.getString("address"));
-               anOrganization.setPhone(rs.getString("phone"));
-               anOrganization.setEmail(rs.getString("email"));
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            AccountManager anAccount = AccountManager.getInstance();
+            PersonManager aProfessor = PersonManager.getInstance();
+            PersonManager aTutor = PersonManager.getInstance();
+            aCallableStatement = connection.prepareCall("{call getOwnOrganizations(?)}");
+            aCallableStatement.setString("professorSSN", professorSSN);
+            ResultSet rs = aCallableStatement.executeQuery();
+
+            while (rs.next()) {
+                anOrganization = new Organization();
+                anOrganization.setVATNumber(rs.getString("vat_number"));
+                anOrganization.setCompanyName(rs.getString("company_name"));
+                anOrganization.setCity(rs.getString("city"));
+                anOrganization.setAddress(rs.getString("address"));
+                anOrganization.setPhone(rs.getString("phone"));
+                anOrganization.setEmail(rs.getString("email"));
                 anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
-                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
-                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
-               organizations.add(anOrganization);
-           }
-           rs.close();
-           return organizations;
-           
-       } catch (SQLException ex) {
-           Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
-           return null;
-       }finally{
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSsn());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSsn());
+                organizations.add(anOrganization);
+            }
+            rs.close();
+            return organizations;
+
+        } catch (SQLException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+            return null;
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return null;
     }
-    
+
     /**
      *
      * @param VATNumber
-     * @return a Person object that contains informations about professor who handle a certain organization
+     * @return a Person object that contains informations about professor who
+     * handle a certain organization
      */
     @Override
     public Person getProfessorOrganization(String VATNumber) {
         Organization anOrganization = this.readOrganization(VATNumber);
-        ConcretePerson person = ConcretePerson.getInstance();
+        PersonManager person = PersonManager.getInstance();
         return person.readPerson(anOrganization.getProfessor());
     }
 
     /**
      *
      * @param VATNumber
-     * @return a Person object that contains informations about external tutor 
+     * @return a Person object that contains informations about external tutor
      */
     @Override
     public Person getExternalTutor(String VATNumber) {
         Organization anOrganization = this.readOrganization(VATNumber);
-        ConcretePerson person = ConcretePerson.getInstance();
+        PersonManager person = PersonManager.getInstance();
         return person.readPerson(anOrganization.getExternalTutor());
     }
 
     /**
      *
      * @param accountEmail
-     * @return an Organization object which contains informations about the organization through its email account
+     * @return an Organization object which contains informations about the
+     * organization through its email account
      */
     @Override
     public Organization getOrganizationByAccount(String accountEmail) {
-        initializeConnection();
         Organization anOrganization = new Organization();
-        ConcreteAccount anAccount = ConcreteAccount.getInstance();
-        ConcretePerson aProfessor = ConcretePerson.getInstance();
-        ConcretePerson aTutor = ConcretePerson.getInstance();
+        AccountManager anAccount = AccountManager.getInstance();
+        PersonManager aProfessor = PersonManager.getInstance();
+        PersonManager aTutor = PersonManager.getInstance();
+        Connection connection = null;
+        CallableStatement aCallableStatement = null;
+
         try {
-            aCallableStatement = connector.prepareCall("{call getOrganizationByAccount(?)}");
-            aCallableStatement.setString("fkAccount",accountEmail);
+            connection = DBConnection.getConnection();
+
+            if (connection == null) {
+                throw new ConnectionException();
+            }
+
+            aCallableStatement = connection.prepareCall("{call getOrganizationByAccount(?)}");
+            aCallableStatement.setString("fkAccount", accountEmail);
             ResultSet rs = aCallableStatement.executeQuery();
-            
-            while( rs.next() ){
+
+            while (rs.next()) {
                 anOrganization.setVATNumber(rs.getString("vat_number"));
                 anOrganization.setCompanyName(rs.getString("company_name"));
                 anOrganization.setCity(rs.getString("city"));
@@ -312,40 +389,37 @@ public class ConcreteOrganization implements IOrganization{
                 anOrganization.setPhone(rs.getString("phone"));
                 anOrganization.setEmail(rs.getString("email"));
                 anOrganization.setAccount(anAccount.readAccount(rs.getString("fk_account")).getEmail());
-                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSSN());
-                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSSN());
+                anOrganization.setProfessor(aProfessor.readPerson(rs.getString("fk_professor")).getSsn());
+                anOrganization.setExternalTutor(aTutor.readPerson(rs.getString("fk_external_tutor")).getSsn());
             }
             rs.close();
             return anOrganization;
         } catch (SQLException ex) {
             Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
             return null;
-        }finally{
+        } catch (ConnectionException ex) {
+            Logger.getLogger(ConcreteOrganization.class.getName()).log(Level.SEVERE, null, ex);
+        } finally {
             try {
                 aCallableStatement.close();
-                connector.close();
             } catch (SQLException ex) {
-                Logger.getLogger(ConcretePerson.class.getName()).log(Level.SEVERE, null, ex);
+                Logger.getLogger(CycleManager.class.getName()).log(Level.SEVERE, null, ex);
             }
+            DBConnection.releaseConnection(connection);
         }
+        return null;
     }
-    
+
     /**
      *
-     * @return a ConcreteOrganization object if currently there is no ConcreteOrganization objects alive
+     * @return a ConcreteOrganization object if currently there is no
+     * ConcreteOrganization objects alive
      */
-    public static synchronized ConcreteOrganization getInstance(){
-        if(instance == null)
+    public static synchronized ConcreteOrganization getInstance() {
+        if (instance == null) {
             instance = new ConcreteOrganization();
+        }
         return instance;
     }
-    
-    private void initializeConnection(){
-        try {
-            if(connector.isClosed())
-                connector = DBConnector.getConnection();
-        } catch (SQLException ex) {
-            Logger.getLogger(ConcreteTrainingStatus.class.getName()).log(Level.SEVERE, null, ex);
-        }
-    }
+
 }

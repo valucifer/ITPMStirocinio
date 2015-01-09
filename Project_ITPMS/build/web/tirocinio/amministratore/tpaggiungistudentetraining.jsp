@@ -32,7 +32,7 @@
 
         <c:choose>
             <c:when test="${sessionScope.person.account.email == null}">
-                <c:redirect url="login.jsp" />
+                <c:redirect url="/login.jsp" />
             </c:when>
         </c:choose>
 
@@ -201,28 +201,17 @@
                                 <span class="title">Visione Tirocini</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratoretirocinanti.jsp">
+                                <i class="linecons-cog"></i>
+                                <span class="title">Tirocinanti</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
 
             <div class="main-content">
-
-                <script>
-                    jQuery(document).ready(function ($) {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                    });
-                </script>
 
                 <div class="row">
                     <div class="col-sm-12">

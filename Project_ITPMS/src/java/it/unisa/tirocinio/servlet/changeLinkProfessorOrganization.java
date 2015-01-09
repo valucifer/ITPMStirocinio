@@ -5,11 +5,11 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.PersonManager;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
 import it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
@@ -40,13 +40,13 @@ public class changeLinkProfessorOrganization extends HttpServlet {
         String professorSSN = request.getParameter("professorSSN");
         String organizationVAT = request.getParameter("organizationVAT");
         HttpSession aSession = request.getSession();
-        ConcretePerson aPerson = ConcretePerson.getInstance();
+        PersonManager aPerson = PersonManager.getInstance();
         Person person = aPerson.readPerson(professorSSN);
 
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
         Organization organization = anOrganization.readOrganization(organizationVAT);
 
-        organization.setProfessor(person.getSSN());
+        organization.setProfessor(person.getSsn());
 
         boolean toReturn = anOrganization.updateOrganization(organization);
 

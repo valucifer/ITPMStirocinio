@@ -31,7 +31,7 @@
 
         <c:choose>
             <c:when test="${sessionScope.person.account.email == null}">
-                <c:redirect url="login.jsp" />
+                <c:redirect url="/login.jsp" />
             </c:when>
         </c:choose>
 
@@ -183,10 +183,16 @@
                     <ul id="main-menu" class="main-menu">
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
-                        <li id="offertaTirocini" class="opened active">
+                        <li id="offertaTirocini"  class="opened active">
                             <a href="#">
-                                <i class="linecons-cog"></i>
+                                <i class="fa-certificate"></i>
                                 <span class="title">Offerta Tirocinio</span>
+                            </a>
+                        </li>
+                        <li id="offertaTirocini">
+                            <a href="${pageContext.request.contextPath}/tirocinio/professore/tpprofessoretirocinanti.jsp">
+                                <i class="fa-group"></i>
+                                <span class="title">Tirocinanti</span>
                             </a>
                         </li>
                     </ul>

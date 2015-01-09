@@ -1,4 +1,4 @@
-<%@page import="it.unisa.tirocinio.beans.Department"%>
+<%@page import="it.unisa.integrazione.model.Department"%>
 <%@page import="it.unisa.tirocinio.beans.TrainingOffer"%>
 <%@page import="java.util.ArrayList"%>
 <%@page import="it.unisa.tirocinio.manager.concrete.ConcreteMessageForServlet"%>
@@ -191,6 +191,12 @@
                             <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpvisionetirocini.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Visione Tirocini</span>
+                            </a>
+                        </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratoretirocinanti.jsp">
+                                <i class="linecons-cog"></i>
+                                <span class="title">Tirocinanti</span>
                             </a>
                         </li>
                     </ul>

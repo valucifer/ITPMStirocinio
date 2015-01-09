@@ -32,7 +32,7 @@
 
         <c:choose>
             <c:when test="${sessionScope.person.account.email == null}">
-                <c:redirect url="login.jsp" />
+                <c:redirect url="/login.jsp" />
             </c:when>
         </c:choose>
         <%
@@ -200,28 +200,17 @@
                                 <span class="title">Visione Tirocini</span>
                             </a>
                         </li>
+                        <li>
+                            <a href="${pageContext.request.contextPath}/tirocinio/amministratore/tpamministratoretirocinanti.jsp">
+                                <i class="linecons-cog"></i>
+                                <span class="title">Tirocinanti</span>
+                            </a>
+                        </li>
                     </ul>
                 </div>
             </div>
 
             <div class="main-content">
-
-                <script>
-                    jQuery(document).ready(function ($) {
-                        $('a[href="#layout-variants"]').on('click', function (ev)
-                        {
-                            ev.preventDefault();
-
-                            var win = {top: $(window).scrollTop(), toTop: $("#layout-variants").offset().top - 15};
-
-                            TweenLite.to(win, .3, {top: win.toTop, roundProps: ["top"], ease: Sine.easeInOut, onUpdate: function ()
-                                {
-                                    $(window).scrollTop(win.top);
-                                }
-                            });
-                        });
-                    });
-                </script>
 
                 <div class="row">
                     <div class="col-sm-12">
@@ -349,16 +338,6 @@
                                                     $("#submit").attr("disabled", "disabled");
                                                 }
                                             });
-
-                                            $("#companyName").keyup(function () {
-                                                if ($("#companyName").val() != "") {
-                                                    $("#emailAccount").val($("#companyName").val() + "@azienda.unisa.it");
-                                                    $("#password").val($("#companyName").val());
-                                                } else {
-                                                    $("#emailAccount").val("");
-                                                    $("#password").val("");
-                                                }
-                                            });
                                         });
                                     </script>
                                     <div class="form-group-separator"></div>
@@ -383,7 +362,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-3 control-label" for="surnameLiable">Cognome Responsabile</label>
                                         <div class="col-sm-9">
-                                            <input type="password" class="form-control" id="password" name="surnameLiable">
+                                            <input type="text" class="form-control" id="password" name="surnameLiable">
                                         </div>
                                     </div>
                                     <div class="form-group">

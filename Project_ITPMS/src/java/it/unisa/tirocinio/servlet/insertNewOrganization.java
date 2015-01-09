@@ -5,17 +5,16 @@
  */
 package it.unisa.tirocinio.servlet;
 
+import it.unisa.integrazione.database.AccountManager;
 import it.unisa.integrazione.database.PersonManager;
 import it.unisa.integrazione.database.exception.ConnectionException;
 import it.unisa.integrazione.database.exception.MissingDataException;
-import it.unisa.tirocinio.beans.Account;
-import it.unisa.tirocinio.beans.Cycle;
-import it.unisa.tirocinio.beans.Department;
+import it.unisa.integrazione.model.Account;
+import it.unisa.integrazione.model.Cycle;
+import it.unisa.integrazione.model.Department;
+import it.unisa.integrazione.model.Person;
 import it.unisa.tirocinio.beans.Organization;
-import it.unisa.tirocinio.beans.Person;
-import it.unisa.tirocinio.manager.concrete.ConcreteAccount;
 import it.unisa.tirocinio.manager.concrete.ConcreteOrganization;
-import it.unisa.tirocinio.manager.concrete.ConcretePerson;
 import java.io.IOException;
 import java.sql.SQLException;
 import java.util.logging.Level;
@@ -69,8 +68,8 @@ public class insertNewOrganization extends HttpServlet {
         cycle.setCycleNumber(1);
         department.setAbbreviation("MIT");
         person.setName(request.getParameter("nameLiable"));
-        person.setLastName(request.getParameter("surnameLiable"));
-        person.setSSN(request.getParameter("ssnLiable"));
+        person.setSurname(request.getParameter("surnameLiable"));
+        person.setSsn(request.getParameter("ssnLiable"));
         person.setAccount(account);
         person.setDepartment(department);
         person.setCycle(cycle);
@@ -82,7 +81,7 @@ public class insertNewOrganization extends HttpServlet {
 
         organization.setProfessor(request.getParameter("professorSSN"));
 
-        ConcreteAccount anAccount = ConcreteAccount.getInstance();
+        AccountManager anAccount = AccountManager.getInstance();
         anAccount.createAccount(account);
 
         ConcreteOrganization anOrganization = ConcreteOrganization.getInstance();
