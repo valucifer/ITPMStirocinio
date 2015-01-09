@@ -14,6 +14,11 @@
  */
 
 tpFunction = {
+    createQuestionnaireAlreadySendPanel: function (panelID) {
+        $(panelID).empty();
+        $(panelID).append("<center><h2>Il questionario è stato completato!</h2><br><h4>Il tirocinio può considerarsi, a questo punto, totalmente completato.</h4></center>");
+
+    },
     createPendingStudentPanel: function (panelID) {
         $(panelID).empty();
         $(panelID).append("<center><h2>La tua richiesta è stata inoltrata!</h2><br><h4>Il personale amministrativo sta visionando la tua richiesta. Riceverai al più presto aggiornamenti sullo stato della pratica che potrai visualizzare su questa pagina o nella Home, sezione News.</h4></center>");

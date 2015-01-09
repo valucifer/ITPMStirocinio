@@ -47,7 +47,7 @@
                 <script>
                     jQuery(document).ready(function ($) {
                         $("#questPanel").empty();
-                        tpFunction.createQuestionnaireAlreadySendPanel('questPanel');
+                        tpFunction.createQuestionnaireAlreadySendPanel('#questPanel');
                     });
                 </script>
             </c:when>
@@ -183,7 +183,7 @@
                         <!-- add class "multiple-expanded" to allow multiple submenus to open -->
                         <!-- class "auto-inherit-active-class" will automatically add "active" class for parent elements who are marked already with class "active" -->
                         <li>
-                            <a href="${pageContext.request.contextPath}/tirocinio/studente/gestioneTirocinio&PlacementStudente.html">
+                            <a href="${pageContext.request.contextPath}/tirocinio/studente/tphome.jsp">
                                 <i class="linecons-cog"></i>
                                 <span class="title">Home</span>
                             </a>
@@ -252,7 +252,7 @@
                                     <div class="form-group">
                                         <label class="col-sm-2 control-label" for="matricolaStudente">Matricola: </label>
                                         <div class="col-sm-9">
-                                            <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente">
+                                            <input required type="text" class="form-control" name="matricolaStudente" id="matricolaStudente" value='${sessionScope.person.matricula }' disabled>
                                         </div>
                                     </div>
                                     <div class="form-group">

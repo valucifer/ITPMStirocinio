@@ -38,12 +38,10 @@ public class getStudentQuestionnaireCompletion extends HttpServlet {
             throws ServletException, IOException {
         response.setContentType("text/html;charset=UTF-8");
         response.setHeader("Access-Control-Allow-Origin", "*");
-        String account = request.getParameter("account");
         HttpSession aSession = request.getSession();
         
-        ConcretePerson aPerson = ConcretePerson.getInstance();
-        Person me = aPerson.readPersonByAccount(account);
-        
+        Person me = (Person) aSession.getAttribute("person");
+        System.out.println("persona "+me.getSSN());
         if ( me != null ) {
 
             ConcreteQuestionnaire aQuestionnaires = ConcreteQuestionnaire.getInstance();

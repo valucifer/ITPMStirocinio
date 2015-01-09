@@ -44,21 +44,17 @@ public class getStudentTrainingStatus extends HttpServlet {
         ConcreteMessageForServlet message = new ConcreteMessageForServlet();
 
         ConcretePerson aPerson = ConcretePerson.getInstance();
-        Person student = (Person) aSession.getAttribute("person");
-        String studentEmail = student.getAccount().getEmail();
-
-        Person person = aPerson.getStudent(studentEmail);
-
+        Person person = (Person) aSession.getAttribute("person");
+        
         ConcreteStudentInformation aStudentInformation = ConcreteStudentInformation.getInstance();
         StudentInformation studentInformation = aStudentInformation.readStudentInformation(person.getSSN());
 
-        ConcreteTrainingRequest aTrainingRequest = ConcreteTrainingRequest.getInstance();
-        TrainingRequest anotherTrainingRequest = aTrainingRequest.readTrainingRequestByStudent(studentInformation.getStudentSSN());
-
-        int studentStatus = anotherTrainingRequest.getIdTrainingRequest();
-
+        int studentStatus = studentInformation.getStudentStatus();
+        ConcreteStudentStatus studentStatusConcrete = ConcreteStudentStatus.getInstance();
+        StudentStatus sStudent = studentStatusConcrete.readStudentStatus(studentStatus);
+                
         message.setMessage("status", 1);
-        message.setMessage("description", anotherTrainingRequest.getDescription());
+        message.setMessage("description", sStudent.getDescription());
         message.setMessage("idStudentStatus", studentStatus);
         aSession.setAttribute("message", message);
 
